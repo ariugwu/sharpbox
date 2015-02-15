@@ -46,6 +46,10 @@
     <Compile Include="Strategy\IStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\sharpbox.Data\sharpbox.Data.csproj">
+      <Project>{45e33825-de18-473d-9770-3532aded63ff}</Project>
+      <Name>sharpbox.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
       <Name>sharpbox.Dispatch</Name>

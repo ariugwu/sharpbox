@@ -18,18 +18,18 @@ namespace sharpbox.Dispatch
 
         #region Field(s)
 
-        private Dictionary<PublisherNames, List<Action<Package>>> _subscribers;
+        private Dictionary<PublisherNames, List<Action<Client,Package>>> _subscribers;
         private List<PublisherNames> _availablePublications;
         #endregion
 
         #region Properties
 
-        public Dictionary<PublisherNames, List<Action<Package>>> Subscribers
+        public Dictionary<PublisherNames, List<Action<Client,Package>>> Subscribers
         {
 
             get
             {
-                return _subscribers ?? (_subscribers = new Dictionary<PublisherNames, List<Action<Package>>>());
+                return _subscribers ?? (_subscribers = new Dictionary<PublisherNames, List<Action<Client,Package>>>());
             }
 
             set { _subscribers = value; }
@@ -52,7 +52,7 @@ namespace sharpbox.Dispatch
         /// </summary>
         /// <param name="publisherName"></param>
         /// <param name="method"></param>
-        public void Subscribe(PublisherNames publisherName, Action<Package> method)
+        public void Subscribe(PublisherNames publisherName, Action<Client,Package> method)
         {
             EnsureSubscriberKey(publisherName);
 
@@ -69,7 +69,7 @@ namespace sharpbox.Dispatch
 
             foreach (var p in Subscribers[package.PublisherName])
             {
-                p.Invoke(package);
+                p.Invoke(this,package);
             }
         }
 
@@ -79,7 +79,7 @@ namespace sharpbox.Dispatch
 
         private void EnsureSubscriberKey(PublisherNames publisherName)
         {
-            if (!Subscribers.ContainsKey(publisherName)) Subscribers.Add(publisherName, new List<Action<Package>>());
+            if (!Subscribers.ContainsKey(publisherName)) Subscribers.Add(publisherName, new List<Action<Client,Package>>());
 
         }
 

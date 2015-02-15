@@ -1,34 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using sharpbox.Data;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit.Strategy
 {
-    public class BaseStrategy : IStrategy
+    public class BaseStrategy<T> : IStrategy<T> where T : class
     {
-        public List<Package> Entries { get; set; }
+        #region Field(s)
 
-        public void RecordDispatch(Package package)
+        private Repository<Package> _repository;
+
+        #endregion
+
+        public Repository<Package> Repository
         {
-            throw new NotImplementedException();
+            get
+            {
+                var auxInfo = new Dictionary<string, object> {{"xmlPath", "AuditXmlRepository.xml"}};
+                return _repository ?? (_repository = new Repository<Package>(auxInfo: auxInfo));
+            }
+            set
+            {
+                _repository = value;
+            }
+        }
+
+        public List<T> Entries { get; set; }
+
+        public void RecordDispatch(Dispatch.Client dispatcher, Package package)
+        {
+            _repository.Create(dispatcher, package);
         }
 
         public void Load()
         {
-            throw new NotImplementedException();
+            Entries = _repository.All().ToList() as List<T>;
         }
 
-        public void Save()
+        public void Save(Dispatch.Client dispatcher)
         {
-            throw new NotImplementedException();
+            _repository.UpdateAll(dispatcher,Entries as List<Package>);
         }
 
-        public Package Create(Package e)
+        public T Create(Dispatch.Client dispatcher, T e)
         {
-            throw new NotImplementedException();
+            return _repository.Create(dispatcher, e as Package) as T; // throw it to the repo as Package and return to the Client as T. Since this is our strategy we know it will always be package.
         }
 
-        public Package Get(int id)
+        public T Get(Dispatch.Client dispatcher, int id)
         {
             throw new NotImplementedException();
         }

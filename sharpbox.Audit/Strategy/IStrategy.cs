@@ -3,18 +3,18 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit.Strategy
 {
-    public interface IStrategy
+    public interface IStrategy<T>
     {
-        List<Package> Entries { get; set; }
+        List<T> Entries { get; set; }
 
-        void RecordDispatch(Package package);
+        void RecordDispatch(Dispatch.Client dispatcher,Package package);
 
         void Load();
 
-        void Save();
+        void Save(Dispatch.Client dispatcher);
 
-        Package Create(Package e);
+        T Create(Dispatch.Client dispatcher, T e);
 
-        Package Get(int id);
+        T Get(Dispatch.Client dispatcher, int id);
     }
 }

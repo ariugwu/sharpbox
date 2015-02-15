@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using sharpbox.Dispatch.Model;
+using sharpbox.Model.Domain.Dispatch;
 
 namespace sharpbox.Cli
 {
@@ -12,8 +13,9 @@ namespace sharpbox.Cli
             var app = new AppContext();
 
             app.Dispatch.Subscribe(PublisherNames.OnLogException, Booya);
-
-            app.Dispatch.Publish(new Package());
+            
+            // Basic test of the dispatch. This says: TO anyone listen to 'OnLogException', here is a package.
+            app.Dispatch.Publish(new Package(){ Message = "Test of anyone listening to OnLogException.", PublisherName = PublisherNames.OnLogException});
 
             // Test Email:
             //app.Email.Send();
