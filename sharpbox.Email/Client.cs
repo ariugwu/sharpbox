@@ -11,5 +11,6 @@ namespace sharpbox.Email
             var mail = new MailMessage("you@yourcompany.com", "user@hotmail.com") {Subject = subject, Body = body};
             smtpClient.Send(mail);
         }
+
     }
 }

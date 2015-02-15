@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppContext.cs" />
+    <Compile Include="Model\Domain\Dispatch\Publist.cs" />
     <Compile Include="Model\Domain\Environment\EnvironmentTypes.cs" />
     <Compile Include="Model\Domain\Environment\Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -48,6 +49,10 @@
     <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
       <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
       <Name>sharpbox.Audit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
+      <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
+      <Name>sharpbox.Dispatch</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Email\sharpbox.Email.csproj">
       <Project>{793637e7-810e-44b7-820e-9e8577a79d4b}</Project>

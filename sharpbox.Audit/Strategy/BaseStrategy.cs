@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace sharpbox.Audit.Strategy
 {
-    public interface IStrategy
+    public class BaseStrategy : IStrategy
     {
     }
 }

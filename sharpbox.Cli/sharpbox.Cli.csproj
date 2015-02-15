@@ -47,6 +47,40 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
+      <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
+      <Name>sharpbox.Audit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
+      <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
+      <Name>sharpbox.Dispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Email\sharpbox.Email.csproj">
+      <Project>{793637e7-810e-44b7-820e-9e8577a79d4b}</Project>
+      <Name>sharpbox.Email</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Intranet\sharpbox.Intranet.csproj">
+      <Project>{a397cee4-e7ae-46b5-86e9-191a1c6db2a3}</Project>
+      <Name>sharpbox.Intranet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Io\sharpbox.Io.csproj">
+      <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
+      <Name>sharpbox.Io</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Log\sharpbox.Log.csproj">
+      <Project>{351f3a6b-9a94-43ea-aaa8-739cc02b529a}</Project>
+      <Name>sharpbox.Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Membership\sharpbox.Membership.csproj">
+      <Project>{bd208390-fbae-4d56-983a-f2c0ca4264b1}</Project>
+      <Name>sharpbox.Membership</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox\sharpbox.csproj">
+      <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>
+      <Name>sharpbox</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

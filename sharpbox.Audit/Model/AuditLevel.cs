@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sharpbox.Audit.Strategy
+namespace sharpbox.Audit.Model
 {
-    public interface IStrategy
+    public enum AuditLevel
     {
+        None,
+        Basic,
+        All
     }
 }
