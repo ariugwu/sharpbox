@@ -8,15 +8,17 @@ namespace sharpbox.Dispatch.Model
         #region Available Publishers List
 
         #region Audit
-
+        public static readonly PublisherNames OnAuditRecord = new PublisherNames("OnAuditRecord");
         #endregion
 
         #region Email
-
+        public static readonly PublisherNames OnEmailSend = new PublisherNames("OnEmailSend");
         #endregion
 
         #region Io
-
+        public static readonly PublisherNames OnFileCreate = new PublisherNames("OnFileCreate");
+        public static readonly PublisherNames OnFileDelete = new PublisherNames("OnFileDelete");
+        public static readonly PublisherNames OnFileAccess = new PublisherNames("OnFileAccess");
         #endregion
 
         #region Log
@@ -25,6 +27,16 @@ namespace sharpbox.Dispatch.Model
         public static readonly PublisherNames OnLogInfo = new PublisherNames("OnLogInfo");
         public static readonly PublisherNames OnLogWarning = new PublisherNames("OnLogWarning");
         public static readonly PublisherNames OnLogException = new PublisherNames("OnLogException");
+
+        #endregion
+
+        #region Data
+
+        public static readonly PublisherNames OnDataCreate = new PublisherNames("OnDataCreate");
+        public static readonly PublisherNames OnDataUpdate = new PublisherNames("OnDataUpdate");
+        public static readonly PublisherNames OnDataDelete = new PublisherNames("OnDataDelete");
+        public static readonly PublisherNames OnDataGetById = new PublisherNames("OnDataGetById");
+        public static readonly PublisherNames OnDataGetAll = new PublisherNames("OnDataGetAll");
 
         #endregion
 
@@ -69,7 +81,12 @@ namespace sharpbox.Dispatch.Model
                 OnLogTrace,
                 OnLogInfo,
                 OnLogWarning,
-                OnLogException
+                OnLogException,
+                OnFileCreate,
+                OnFileDelete,
+                OnFileAccess,
+                OnEmailSend,
+                OnAuditRecord
             };
         } 
 

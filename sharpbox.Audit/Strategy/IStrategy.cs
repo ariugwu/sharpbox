@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using sharpbox.Audit.Model;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit.Strategy
 {
     public interface IStrategy
     {
-        List<Entry> Entries { get; set; }
+        List<Package> Entries { get; set; }
 
         void RecordDispatch(Package package);
 
@@ -14,8 +13,8 @@ namespace sharpbox.Audit.Strategy
 
         void Save();
 
-        Entry Create(Entry e);
+        Package Create(Package e);
 
-        Entry Get(int id);
+        Package Get(int id);
     }
 }

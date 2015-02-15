@@ -35,6 +35,9 @@ namespace sharpbox.Dispatch
             set { _subscribers = value; }
         }
 
+        /// <summary>
+        /// Used almost exclusively by the AppContext so that it can extend and then allow the Auditor to loop and register will all. All internal modules will have access to the Dispatch dll directly.
+        /// </summary>
         public List<PublisherNames> AvailablePublications
         {
             get { return _availablePublications ?? (_availablePublications = new List<PublisherNames>()); }

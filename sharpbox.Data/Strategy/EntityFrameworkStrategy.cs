@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sharpbox.Audit.Model
+namespace sharpbox.Data.Strategy
 {
-    public class Entry
+    class EntityFrameworkStrategy
     {
     }
 }

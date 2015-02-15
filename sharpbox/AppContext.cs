@@ -1,4 +1,6 @@
-﻿using sharpbox.Dispatch;
+﻿using System.Collections.Generic;
+using sharpbox.Dispatch;
+using sharpbox.Dispatch.Model;
 using sharpbox.Model.Domain.Dispatch;
 
 namespace sharpbox
@@ -7,7 +9,7 @@ namespace sharpbox
     {
         public AppContext()
         {
-            Dispatch = new Client(Publist.ExtendedPubList());
+            Dispatch = new Client(AvailablePublications);
         }
 
         #region Encapsulated Entities
@@ -17,6 +19,11 @@ namespace sharpbox
 
         #endregion
 
+        #region Properties
+
+        public List<PublisherNames> AvailablePublications { get { return Publist.ExtendedPubList(); } }
+
+        #endregion
 
         #region Field(s)
 

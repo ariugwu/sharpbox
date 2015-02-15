@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Cli

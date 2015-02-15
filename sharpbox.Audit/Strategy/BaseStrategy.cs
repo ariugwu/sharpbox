@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using sharpbox.Audit.Model;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit.Strategy
 {
     public class BaseStrategy : IStrategy
     {
-        public List<Entry> Entries { get; set; }
+        public List<Package> Entries { get; set; }
 
         public void RecordDispatch(Package package)
         {
@@ -24,12 +23,12 @@ namespace sharpbox.Audit.Strategy
             throw new NotImplementedException();
         }
 
-        public Entry Create(Entry e)
+        public Package Create(Package e)
         {
             throw new NotImplementedException();
         }
 
-        public Entry Get(int id)
+        public Package Get(int id)
         {
             throw new NotImplementedException();
         }
