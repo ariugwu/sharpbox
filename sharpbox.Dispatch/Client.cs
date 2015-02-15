@@ -11,25 +11,25 @@ namespace sharpbox.Dispatch
 
         public Client(List<PublisherNames> publisherNames = null)
         {
-            if (publisherNames != null) _availablePublications = publisherNames;
+            _availablePublications = publisherNames ?? PublisherNames.DefaultPubList();
         }
 
         #endregion
 
         #region Field(s)
 
-        private Dictionary<PublisherNames, List<Action<PublisherNames>>> _subscribers;
+        private Dictionary<PublisherNames, List<Action<Package>>> _subscribers;
         private List<PublisherNames> _availablePublications;
         #endregion
 
         #region Properties
 
-        public Dictionary<PublisherNames, List<Action<PublisherNames>>> Subscribers
+        public Dictionary<PublisherNames, List<Action<Package>>> Subscribers
         {
 
             get
             {
-                return _subscribers ?? (_subscribers = new Dictionary<PublisherNames, List<Action<PublisherNames>>>());
+                return _subscribers ?? (_subscribers = new Dictionary<PublisherNames, List<Action<Package>>>());
             }
 
             set { _subscribers = value; }
@@ -49,7 +49,7 @@ namespace sharpbox.Dispatch
         /// </summary>
         /// <param name="publisherName"></param>
         /// <param name="method"></param>
-        public void Subscribe(PublisherNames publisherName, Action<PublisherNames> method)
+        public void Subscribe(PublisherNames publisherName, Action<Package> method)
         {
             EnsureSubscriberKey(publisherName);
 
@@ -59,14 +59,14 @@ namespace sharpbox.Dispatch
         /// <summary>
         /// Cycle through all the subscribers and fire off the associated action
         /// </summary>
-        /// <param name="publisherName"></param>
-        public void Publish(PublisherNames publisherName)
+        /// <param name="package"></param>
+        public void Publish(Package package)
         {
-            EnsureSubscriberKey(publisherName);
+            EnsureSubscriberKey(package.PublisherName);
 
-            foreach (var p in Subscribers[publisherName])
+            foreach (var p in Subscribers[package.PublisherName])
             {
-                p.Invoke(publisherName);
+                p.Invoke(package);
             }
         }
 
@@ -76,7 +76,7 @@ namespace sharpbox.Dispatch
 
         private void EnsureSubscriberKey(PublisherNames publisherName)
         {
-            if (!Subscribers.ContainsKey(publisherName)) Subscribers.Add(publisherName, new List<Action<PublisherNames>>());
+            if (!Subscribers.ContainsKey(publisherName)) Subscribers.Add(publisherName, new List<Action<Package>>());
 
         }
 

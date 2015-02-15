@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using sharpbox.Audit.Model;
+using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit.Strategy
 {
     public interface IStrategy
     {
+        List<Entry> Entries { get; set; }
+
+        void RecordDispatch(Package package);
+
+        void Load();
+
+        void Save();
+
+        Entry Create(Entry e);
+
+        Entry Get(int id);
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using sharpbox.Audit.Model;
+﻿using sharpbox.Audit.Model;
 using sharpbox.Audit.Strategy;
 
 namespace sharpbox.Audit
@@ -40,7 +35,7 @@ namespace sharpbox.Audit
                 case AuditLevel.All:
                     foreach (var p in dispatcher.AvailablePublications)
                     {
-                        dispatcher.Subscribe(p, );
+                        dispatcher.Subscribe(p, _strategy.RecordDispatch);
                     }
                     break;
                 case AuditLevel.None:

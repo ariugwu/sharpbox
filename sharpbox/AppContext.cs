@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using sharpbox.Dispatch;
-using sharpbox.Dispatch.Model;
+﻿using sharpbox.Dispatch;
 using sharpbox.Model.Domain.Dispatch;
 
 namespace sharpbox
@@ -10,12 +7,7 @@ namespace sharpbox
     {
         public AppContext()
         {
-            
-            Dispatch = new Client();
-
-            Dispatch.Subscribe(Publist.OnException, Booya);
-
-            Dispatch.Publish(Publist.OnException);
+            Dispatch = new Client(Publist.ExtendedPubList());
         }
 
         #region Encapsulated Entities
@@ -30,16 +22,6 @@ namespace sharpbox
 
         #endregion
 
-        #region Method(s)
-
-
-        public void Booya(PublisherNames publisherName)
-        {
-            Debug.WriteLine("Booya worked.");
-        }
-
-        #endregion
-
         #region Module(s)
 
         public Email.Client Email { get; set; }
@@ -50,5 +32,9 @@ namespace sharpbox
 
         #endregion
 
+        #region Method(s)
+
+
+        #endregion
     }
 }

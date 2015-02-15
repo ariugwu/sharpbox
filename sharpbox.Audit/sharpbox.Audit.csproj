@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="Model\AuditLevel.cs" />
+    <Compile Include="Model\Entry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategy\BaseStrategy.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
