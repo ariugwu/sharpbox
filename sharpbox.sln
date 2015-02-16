@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Intranet", "sharpb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Data", "sharpbox.Data\sharpbox.Data.csproj", "{45E33825-DE18-473D-9770-3532ADED63FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Notification", "sharpbox.Notification\sharpbox.Notification.csproj", "{C5E1AB92-967C-467D-97C8-7B42CF3C2366}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{45E33825-DE18-473D-9770-3532ADED63FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45E33825-DE18-473D-9770-3532ADED63FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45E33825-DE18-473D-9770-3532ADED63FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5E1AB92-967C-467D-97C8-7B42CF3C2366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E1AB92-967C-467D-97C8-7B42CF3C2366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E1AB92-967C-467D-97C8-7B42CF3C2366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E1AB92-967C-467D-97C8-7B42CF3C2366}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,5 +96,6 @@ Global
 		{E02A267E-2E9F-4BD0-A3DE-4C2859896BB4} = {FD958131-0183-4EAD-9B55-AD1607B4B829}
 		{A397CEE4-E7AE-46B5-86E9-191A1C6DB2A3} = {FD958131-0183-4EAD-9B55-AD1607B4B829}
 		{45E33825-DE18-473D-9770-3532ADED63FF} = {528C028D-4927-4A8C-9E89-6F7856EEA240}
+		{C5E1AB92-967C-467D-97C8-7B42CF3C2366} = {528C028D-4927-4A8C-9E89-6F7856EEA240}
 	EndGlobalSection
 EndGlobal
