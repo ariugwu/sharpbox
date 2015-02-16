@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Io
@@ -24,22 +19,39 @@ namespace sharpbox.Io
 
         public static void Save(Dispatch.Client dispatcher, string filename, byte[] data)
         {
-            var path = Path.GetDirectoryName( System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase );
 
-            if (path != null)
-            {
-                path = path.Replace(@"file:\", String.Empty);
-                File.WriteAllBytes(Path.Combine(path, filename), data);
-            }
-            else
-            {
-                throw new DirectoryNotFoundException("Could not find path.");
-            }
+            WriteContents(filename, data);
 
             dispatcher.Publish(new Package(){ Message = "File saved", PublisherName = PublisherNames.OnFileAccess});
         }
 
         public static byte[] Load(Dispatch.Client dispatcher, string filename)
+        {
+
+            var data = ReadContents(filename);
+
+            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnFileAccess });
+
+            return data;
+        }
+
+        public static void SaveAudit(Dispatch.Client dispatcher, string filename, byte[] data)
+        {
+            WriteContents(filename, data);
+
+            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnAuditPersist });
+        }
+
+        public static byte[] LoadAudit(Dispatch.Client dispatcher, string filename)
+        {
+            var data = ReadContents(filename);
+
+            dispatcher.Publish(new Package() { Message = "Audit File loaded.", PublisherName = PublisherNames.OnAuditLoad });
+
+            return data;
+        }
+
+        private static byte[] ReadContents(string filename)
         {
             var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
             byte[] data = null;
@@ -53,9 +65,22 @@ namespace sharpbox.Io
                 throw new DirectoryNotFoundException("Could not find path.");
             }
 
-            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnFileAccess });
-
             return data;
+        }
+
+        private static void WriteContents(string filename, byte[] data)
+        {
+            var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+
+            if (path != null)
+            {
+                path = path.Replace(@"file:\", String.Empty);
+                File.WriteAllBytes(Path.Combine(path, filename), data);
+            }
+            else
+            {
+                throw new DirectoryNotFoundException("Could not find path.");
+            }
         }
 
         public static void Delete(Dispatch.Client dispatcher, string filename)

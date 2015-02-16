@@ -9,6 +9,8 @@ namespace sharpbox.Dispatch.Model
 
         #region Audit
         public static readonly PublisherNames OnAuditRecord = new PublisherNames("OnAuditRecord");
+        public static readonly PublisherNames OnAuditPersist = new PublisherNames("OnAuditPersist");
+        public static readonly PublisherNames OnAuditLoad = new PublisherNames("OnAuditLoad");
         #endregion
 
         #region Email

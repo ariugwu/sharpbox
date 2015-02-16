@@ -47,7 +47,7 @@ namespace sharpbox.Audit
             switch (auditLevel)
             {
                 case AuditLevel.Basic:
-                    // For the basic call we excude audit calls and data persistence.
+                    // For the basic call we excude audit calls and data persistence since the first is needless/problematic (event reflection) and the later is noisy and better served by other monitors.
                     list = dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().Contains("onaudit") && !x.ToString().ToLower().Contains("ondata")).ToList();
                     foreach (var p in list)
                     {
