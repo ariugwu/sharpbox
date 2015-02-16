@@ -18,5 +18,9 @@ Consists of a generic repository pattern with to build in strategies: XML and EF
 
 ### Io
 
-## Dispatch
+### Dispatch
 Inspired by the Facebook Flux architecture this module is common to all enteral modules and can the list of available publishers can be extended by the calling layer.
+
+### Data
+Generic repository with two baked in strategies: XML and EF
+Currently XML is the default storage for the Audit module.
