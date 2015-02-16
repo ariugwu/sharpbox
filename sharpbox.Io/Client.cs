@@ -25,6 +25,24 @@ namespace sharpbox.Io
             dispatcher.Publish(new Package(){ Message = "File saved", PublisherName = PublisherNames.OnFileAccess});
         }
 
+        public string[] ReadFileLines(string path)
+        {
+            return System.IO.File.ReadAllLines(path);
+        }
+
+        /// <summary>
+        /// Copies the contents of input to output. Doesn't close either stream.
+        /// </summary>
+        private void CopyStream(Stream input, Stream output)
+        {
+            var buffer = new byte[8 * 1024];
+            int len;
+            while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, len);
+            }
+        }
+
         public static byte[] Load(Dispatch.Client dispatcher, string filename)
         {
 
@@ -117,6 +135,38 @@ namespace sharpbox.Io
             }
 
         }
+
+        /// <summary>
+        /// Not a perfect solution to the "Is File locked?" aka "Don't return me until the write operatin is finished"...but there is no perfect solution @SEE: http://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use/937558#937558
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public virtual bool IsFileLocked(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
+        }
+
         #endregion
     }
 }

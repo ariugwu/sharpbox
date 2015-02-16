@@ -34,7 +34,7 @@ namespace sharpbox.Audit
         public void Record(Dispatch.Client dispatcher, T entity)
         {
             var result = _strategy.Create(dispatcher,entity);
-            dispatcher.Publish(new Package() { PublisherName = PublisherNames.OnAuditRecord, Message = "Audit entry recorded. Please check the Audit.Trail for details.", Entity = result, EntityType = this.GetType().FullName, PackageId = 0, UserId = "System" });
+            dispatcher.Publish(new Package() { PublisherName = PublisherNames.OnAuditRecord, Message = "Audit entry recorded. Please check the Audit.Trail for details.", Entity = result, Type = this.GetType(), PackageId = 0, UserId = "System" });
         }
 
         #endregion
