@@ -10,9 +10,12 @@ namespace sharpbox.Audit.Strategy
     {
         #region Constructor(s)
 
-        public BaseStrategy()
+        public BaseStrategy(Dispatch.Client dispatcher)
         {
-            Load();
+            var auxInfo = new Dictionary<string, object> { { "xmlPath", "AuditXmlRepository.xml" } };
+            _repository = new Repository<Package>(dispatcher, auxInfo: auxInfo);
+
+            Load(dispatcher);
         }
 
         #endregion
@@ -25,11 +28,7 @@ namespace sharpbox.Audit.Strategy
 
         public Repository<Package> Repository
         {
-            get
-            {
-                var auxInfo = new Dictionary<string, object> {{"xmlPath", "AuditXmlRepository.xml"}};
-                return _repository ?? (_repository = new Repository<Package>(auxInfo: auxInfo));
-            }
+            get { return _repository; }
             set
             {
                 _repository = value;
@@ -41,24 +40,24 @@ namespace sharpbox.Audit.Strategy
         public void RecordDispatch(Dispatch.Client dispatcher, Package package)
         {
             Repository.Create(dispatcher, package);
-            Load();
+            Load(dispatcher);
         }
 
-        public void Load()
+        public void Load(Dispatch.Client dispatcher)
         {
-            Entries = Repository.All().ToList() as List<T>;
+            Entries = Repository.All(dispatcher).ToList() as List<T>;
         }
 
         public void Save(Dispatch.Client dispatcher)
         {
             Repository.UpdateAll(dispatcher,Entries as List<Package>);
-            Load();
+            Load(dispatcher);
         }
 
         public T Create(Dispatch.Client dispatcher, T e)
         {
             var entity = Repository.Create(dispatcher, e as Package) as T; // throw it to the repo as Package and return to the Client as T. Since this is our strategy we know it will always be package.
-            Load();
+            Load(dispatcher);
             return entity;
         }
 

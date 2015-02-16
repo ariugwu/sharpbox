@@ -9,7 +9,7 @@ namespace sharpbox.Audit.Strategy
 
         void RecordDispatch(Dispatch.Client dispatcher,Package package);
 
-        void Load();
+        void Load(Dispatch.Client dispatcher);
 
         void Save(Dispatch.Client dispatcher);
 

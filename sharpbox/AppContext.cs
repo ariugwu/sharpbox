@@ -16,13 +16,9 @@ namespace sharpbox
 
             var dispatcher = Dispatch;
 
-            Audit = new Client<Package>(ref dispatcher);
-
-            Dispatch = dispatcher;
+            Audit = new Client<Package>(ref dispatcher); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
 
             File = new sharpbox.Io.Client();
-
-
         }
 
         #region Encapsulated Entities
