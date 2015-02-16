@@ -43,17 +43,20 @@ namespace sharpbox.Audit
 
         private void ConfigureAuditLevel(Dispatch.Client dispatcher, AuditLevel auditLevel = AuditLevel.Basic)
         {
+            List<PublisherNames> list;
             switch (auditLevel)
             {
                 case AuditLevel.Basic:
                     // For the basic call we excude audit calls and data persistence.
-                    foreach (var p in dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().StartsWith("onaudit") || !x.ToString().ToLower().StartsWith("ondata")))
+                    list = dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().Contains("onaudit") && !x.ToString().ToLower().Contains("ondata")).ToList();
+                    foreach (var p in list)
                     {
                         dispatcher.Subscribe(p, _strategy.RecordDispatch);
                     }
                     break;
                 case AuditLevel.All:
                     // We exclude any of the audit publishers because we don't want to create a circular call.
+                    list = dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().Contains("onaudit")).ToList();
                     foreach (var p in dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().StartsWith("onaudit")))
                     {
                         dispatcher.Subscribe(p, _strategy.RecordDispatch);

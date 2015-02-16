@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Cli
@@ -8,6 +9,22 @@ namespace sharpbox.Cli
     {
         static void Main(string[] args)
         {
+
+
+
+
+
+
+            !!!!!!!!!!//NOTE: THe call from Audit -> Repository -> FileSave causes a circle reference because the FileSave causes an Audit record which causes a file save.
+
+
+
+
+
+
+
+
+
             // The benefit of the dispatcher is being able to see all subscribed events in one place at one time.
             // This is centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event.
             var app = new AppContext();
