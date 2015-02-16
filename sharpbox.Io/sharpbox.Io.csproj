@@ -41,11 +41,8 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategy\IStrategy.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>

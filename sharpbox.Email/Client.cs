@@ -12,7 +12,7 @@ namespace sharpbox.Email
             var mail = new MailMessage("you@yourcompany.com", "user@hotmail.com") {Subject = subject, Body = body};
             smtpClient.Send(mail);
 
-            dispatcher.Publish(new Package{ Entity = mail, EntityType = this.GetType().FullName, Message = "E-Mail sent with message :" + subject , PublisherName = PublisherNames.OnEmailSend, PackageId = 0, UserId = ""});
+            dispatcher.Publish(new Package{ Entity = mail, Type = this.GetType(), Message = "E-Mail sent with message :" + subject , PublisherName = PublisherNames.OnEmailSend, PackageId = 0, UserId = ""});
         }
 
     }
