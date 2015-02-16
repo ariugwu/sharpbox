@@ -8,6 +8,15 @@ namespace sharpbox.Audit.Strategy
 {
     public class BaseStrategy<T> : IStrategy<T> where T : class
     {
+        #region Constructor(s)
+
+        public BaseStrategy()
+        {
+            Load();
+        }
+
+        #endregion
+
         #region Field(s)
 
         private Repository<Package> _repository;
@@ -31,22 +40,26 @@ namespace sharpbox.Audit.Strategy
 
         public void RecordDispatch(Dispatch.Client dispatcher, Package package)
         {
-            _repository.Create(dispatcher, package);
+            Repository.Create(dispatcher, package);
+            Load();
         }
 
         public void Load()
         {
-            Entries = _repository.All().ToList() as List<T>;
+            Entries = Repository.All().ToList() as List<T>;
         }
 
         public void Save(Dispatch.Client dispatcher)
         {
-            _repository.UpdateAll(dispatcher,Entries as List<Package>);
+            Repository.UpdateAll(dispatcher,Entries as List<Package>);
+            Load();
         }
 
         public T Create(Dispatch.Client dispatcher, T e)
         {
-            return _repository.Create(dispatcher, e as Package) as T; // throw it to the repo as Package and return to the Client as T. Since this is our strategy we know it will always be package.
+            var entity = Repository.Create(dispatcher, e as Package) as T; // throw it to the repo as Package and return to the Client as T. Since this is our strategy we know it will always be package.
+            Load();
+            return entity;
         }
 
         public T Get(Dispatch.Client dispatcher, int id)

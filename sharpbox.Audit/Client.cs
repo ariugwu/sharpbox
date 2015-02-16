@@ -22,7 +22,7 @@ namespace sharpbox.Audit
 
         #region Constructor(s)
 
-        public Client(Dispatch.Client dispatcher, Audit.Strategy.IStrategy<T> strategy = null, AuditLevel auditLevel = AuditLevel.None)
+        public Client(ref Dispatch.Client dispatcher, Audit.Strategy.IStrategy<T> strategy = null, AuditLevel auditLevel = AuditLevel.Basic)
         {
             _strategy = strategy ?? new BaseStrategy<T>();
             ConfigureAuditLevel(dispatcher, auditLevel);

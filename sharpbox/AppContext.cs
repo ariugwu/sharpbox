@@ -1,4 +1,5 @@
-﻿using sharpbox.Dispatch;
+﻿using sharpbox.Audit;
+using sharpbox.Dispatch;
 using sharpbox.Dispatch.Model;
 using sharpbox.Model.Domain.Dispatch;
 
@@ -10,6 +11,18 @@ namespace sharpbox
         {
             Dispatch = new Client(PublicationNamesExtension.ExtendedPubList);
             
+            Email = new Email.Client();
+            Log = new Log.Client();
+
+            var dispatcher = Dispatch;
+
+            Audit = new Client<Package>(ref dispatcher);
+
+            Dispatch = dispatcher;
+
+            File = new sharpbox.Io.Client();
+
+
         }
 
         #region Encapsulated Entities

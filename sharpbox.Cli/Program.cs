@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using sharpbox.Dispatch.Model;
-using sharpbox.Model.Domain.Dispatch;
 
 namespace sharpbox.Cli
 {
@@ -17,17 +17,23 @@ namespace sharpbox.Cli
             // Basic test of the dispatch. This says: TO anyone listen to 'OnLogException', here is a package.
             app.Dispatch.Publish(new Package(){ Message = "Test of anyone listening to OnLogException.", PublisherName = PublisherNames.OnLogException});
 
-            // Test Email:
+            // Email: Test Email:
             //app.Email.Send();
 
-            // Test logging
+            // Log: Test logging
             //app.Log.Exception();
 
-            // Test file operations
+            // Io: Test file operations
             // app.File
+
+            // Audit: See the results in the audit trail
+            var trail = app.Audit.Trail;
+                Debug.WriteLine(trail.Count);
+
+            // Membership:
         }
 
-        public static void Booya(Package package)
+        public static void Booya(Dispatch.Client dispatcher, Package package)
         {
             Debug.WriteLine("Booya worked.");
         }
