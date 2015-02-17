@@ -47,9 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppContext.cs" />
-    <Compile Include="Model\Domain\Dispatch\PublicationNamesExtension.cs" />
-    <Compile Include="Model\Domain\Environment\EnvironmentTypes.cs" />
-    <Compile Include="Model\Domain\Environment\Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,10 +69,6 @@
     <ProjectReference Include="..\sharpbox.Log\sharpbox.Log.csproj">
       <Project>{351f3a6b-9a94-43ea-aaa8-739cc02b529a}</Project>
       <Name>sharpbox.Log</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Membership\sharpbox.Membership.csproj">
-      <Project>{bd208390-fbae-4d56-983a-f2c0ca4264b1}</Project>
-      <Name>sharpbox.Membership</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
       <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>

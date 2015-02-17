@@ -90,7 +90,8 @@ namespace sharpbox.Dispatch.Model
                 OnFileDelete,
                 OnFileAccess,
                 OnEmailSend,
-                OnAuditRecord
+                OnAuditRecord,
+                OnUserChange
             };
         } 
 

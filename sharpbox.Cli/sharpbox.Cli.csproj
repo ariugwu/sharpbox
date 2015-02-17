@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Domain\AppContext\ConsoleContext.cs" />
+    <Compile Include="Model\Domain\Dispatch\PublicationNamesExtension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -71,10 +73,6 @@
     <ProjectReference Include="..\sharpbox.Log\sharpbox.Log.csproj">
       <Project>{351f3a6b-9a94-43ea-aaa8-739cc02b529a}</Project>
       <Name>sharpbox.Log</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Membership\sharpbox.Membership.csproj">
-      <Project>{bd208390-fbae-4d56-983a-f2c0ca4264b1}</Project>
-      <Name>sharpbox.Membership</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox\sharpbox.csproj">
       <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>

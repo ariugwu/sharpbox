@@ -1,39 +1,41 @@
-﻿using sharpbox.Audit;
+﻿using System.Collections.Generic;
+using System.Net.Mail;
+using sharpbox.Audit;
 using sharpbox.Dispatch;
 using sharpbox.Dispatch.Model;
-using sharpbox.Model.Domain.Dispatch;
 
 namespace sharpbox
 {
-    public class AppContext
+    public abstract class AppContext
     {
         #region Constructor(s)
 
-        public AppContext(string userIdentity)
+        protected AppContext(string userIdentity, SmtpClient smtpClient, List<PublisherNames> extendedPublisherNames = null)
         {
             // Pub/Sub System(s)
 
-            Dispatch = new Client(userIdentity, PublicationNamesExtension.ExtendedPubList);
+            Dispatch = new Client(userIdentity, extendedPublisherNames ?? PublisherNames.DefaultPubList());
             Notification = new Notification.Client();
 
             // Module(s)
 
-            Email = new Email.Client();
+            Email = new Email.Client(smtpClient);
             Log = new Log.Client();
 
             var dispatcher = Dispatch;
             Audit = new Client<Package>(ref dispatcher); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
 
             File = new sharpbox.Io.Client();
+
         }
 
         #endregion
 
-        public AppContext() { }
+        protected AppContext() { }
 
         #region Encapsulated Entities
 
-        public Model.Domain.Environment.Info Environment { get; set; }
+        // public Model.Domain.Environment.Info Environment { get; set; } Not sure environment is something to include
         public Dispatch.Client Dispatch { get; set; }
         public Notification.Client Notification { get; set; }
 
@@ -45,7 +47,6 @@ namespace sharpbox
         public Log.Client Log { get; set; }
         public Audit.Client<Package> Audit { get; set; }
         public Io.Client File { get; set; }
-        public Membership.Provider MembershipProvider { get; set; }
 
         #endregion
 

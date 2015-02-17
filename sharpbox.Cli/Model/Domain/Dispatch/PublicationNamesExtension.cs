@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using sharpbox.Dispatch.Model;
 
-namespace sharpbox.Model.Domain.Dispatch
+namespace sharpbox.Cli.Model.Domain.Dispatch
 {
     /// <summary>
     /// This will be the list that all calls within the application will use to register their dispatch requests. The Dispatch module has the built action defined. This is for extension.
