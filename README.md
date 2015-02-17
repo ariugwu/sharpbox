@@ -11,10 +11,7 @@ Can be configured via Audit Levels. For example the 'All' level will register a 
 
 ### Log
 
-### Data
-Consists of a generic repository pattern with to build in strategies: XML and EF
-
-### Membership
+### Notification
 
 ### Io
 
