@@ -6,17 +6,6 @@ namespace sharpbox.Io
 {
     public class Client
     {
-        #region Field(s)
-        #endregion
-
-        #region Properties
-        #endregion
-
-        #region Constructor(s)
-        #endregion
-
-        #region Method(s)
-
         public static void Save(Dispatch.Client dispatcher, string filename, byte[] data)
         {
 
@@ -25,7 +14,7 @@ namespace sharpbox.Io
             dispatcher.Publish(new Package(){ Message = "File saved", PublisherName = PublisherNames.OnFileAccess});
         }
 
-        public string[] ReadFileLines(string path)
+        public static string[] ReadFileLines(string path)
         {
             return System.IO.File.ReadAllLines(path);
         }
@@ -141,7 +130,7 @@ namespace sharpbox.Io
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
-        public virtual bool IsFileLocked(FileInfo file)
+        public static bool IsFileLocked(FileInfo file)
         {
             FileStream stream = null;
 
@@ -166,7 +155,5 @@ namespace sharpbox.Io
             //file is not locked
             return false;
         }
-
-        #endregion
     }
 }

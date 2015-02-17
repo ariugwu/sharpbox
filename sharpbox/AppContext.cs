@@ -20,12 +20,10 @@ namespace sharpbox
             // Module(s)
 
             Email = new Email.Client(smtpClient);
-            Log = new Log.Client();
+            Log = new Log.Client(Dispatch);
 
             var dispatcher = Dispatch;
             Audit = new Client<Package>(ref dispatcher); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
-
-            File = new sharpbox.Io.Client();
 
         }
 
@@ -46,7 +44,6 @@ namespace sharpbox
         public Email.Client Email { get; set; }
         public Log.Client Log { get; set; }
         public Audit.Client<Package> Audit { get; set; }
-        public Io.Client File { get; set; }
 
         #endregion
 

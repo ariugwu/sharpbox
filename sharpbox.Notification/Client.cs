@@ -82,9 +82,9 @@ namespace sharpbox.Notification
             _strategy.SaveBackLog(dispatcher);
         }
 
-        public void AddBackLogItem(BackLog backlog)
+        public void AddBackLogItem(Dispatch.Client dispatcher, BackLog backlog)
         {
-            _strategy.AddBackLogItem(backlog);
+            _strategy.AddBackLogItem(dispatcher, backlog);
         }
 
         public void LoadSubscribers(Dispatch.Client dispatcher)

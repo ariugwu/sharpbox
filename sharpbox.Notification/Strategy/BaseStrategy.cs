@@ -21,6 +21,7 @@ namespace sharpbox.Notification.Strategy
         
         private string _xmlPath;
         private Repository<BackLog> _repository;
+
         private Dictionary<PublisherNames, List<Entry>> _queue;
         private Dictionary<PublisherNames, List<string>> _subscribers;
         private List<BackLog> _backLog;
@@ -64,7 +65,7 @@ namespace sharpbox.Notification.Strategy
             foreach (var s in Subscribers[package.PublisherName])
             {
                 // Add the backlog item
-                AddBackLogItem(new BackLog
+                AddBackLogItem(dispatcher, new BackLog
                 {
                     AttempNumber = 0,
                     BackLogId = Backlog.Count + 1,
@@ -94,9 +95,14 @@ namespace sharpbox.Notification.Strategy
             LoadBacklog(dispatcher);
         }
 
-        public void AddBackLogItem(BackLog backlog)
+        public void AddBackLogItem(Dispatch.Client dispatcher, BackLog backlog)
         {
+            
+            //Bail if there is already an entry for this user and this event.
+            if (Backlog.Exists(x => x.EntryId.Equals(backlog.EntryId) && x.UserId.Trim().ToLower().Equals(backlog.UserId.Trim().ToLower()))) return;
+
             Backlog.Add(backlog);
+            SaveBackLog(dispatcher);
         }
 
         public void AddQueueEntry(Entry entry)

@@ -40,8 +40,9 @@ namespace sharpbox.Notification.Strategy
         /// <summary>
         /// Add a item to backlog
         /// </summary>
+        /// <param name="dispatcher"></param>
         /// <param name="backlog">Backlog item represents a message which needs or has been sent to a use.</param>
-        void AddBackLogItem(BackLog backlog);
+        void AddBackLogItem(Dispatch.Client dispatcher, BackLog backlog);
 
         void AddQueueEntry(Entry entry);
 

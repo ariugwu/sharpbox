@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net.Mail;
+using System.Text;
 using sharpbox.Cli.Model.Domain.AppContext;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Dispatch;
@@ -32,21 +34,22 @@ namespace sharpbox.Cli
 
 
             // Notification
-            Debug.WriteLine(app.Notification.Subscribers.Count);
+            Debug.WriteLine("###Notification Info####");
+            Debug.WriteLine("Total subscribers: " + app.Notification.Subscribers.Count);
+            Debug.WriteLine("Total queue: " + app.Notification.Subscribers.Count);
+
             // Email: Test Email:
             //app.Email.Send();
 
             // Log: Test logging
-            //app.Log.Exception();
+            app.Log.Info(app.Dispatch, "Test of the info logging!");
 
-            // Io: Test file operations
-            // app.File
+            // Io: Test file operations. We pass in the dispatcher so everything threads back.
+            Io.Client.Save(app.Dispatch, "text.txt", Encoding.ASCII.GetBytes(String.Format("This is a test string for fun. : {0}", DateTime.Now.ToLongDateString())));
 
             // Audit: See the results in the audit trail
             var trail = app.Audit.Trail;
                 Debug.WriteLine(trail.Count);
-
-            // Membership:
         }
 
         public static void Booya(Dispatch.Client dispatcher, Package package)

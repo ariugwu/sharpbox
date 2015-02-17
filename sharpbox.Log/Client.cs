@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using sharpbox.Log.Strategy;
@@ -13,29 +14,11 @@ namespace sharpbox.Log
 
         #endregion
 
-        #region Properties
-
-        private IStrategy Strategy
-        {
-            get
-            {
-                if (_strategy != null) return _strategy;
-
-                _strategy = new BaseStrategy();
-                _strategy.Trace("Logging module created without supplying a logging strategy. Defaulting to the base XML.");
-
-                return _strategy;
-            }
-            set { _strategy = value; }
-        }
-
-        #endregion
-
         #region Constructor(s)
 
-        public Client(IStrategy strategy)
+        public Client(Dispatch.Client dispatcher, IStrategy strategy = null, Dictionary<string, object> auxInfo = null)
         {
-            Strategy = strategy;
+            _strategy = strategy ?? new BaseStrategy(dispatcher, auxInfo ?? new Dictionary<string, object> { { "xmlPath", "LogXmlRepository.xml" } });
         }
 
         public Client()
@@ -46,37 +29,37 @@ namespace sharpbox.Log
 
         #region Strategy Method(s)
 
-        public void Exception(string message,
+        public void Exception(Dispatch.Client dispatcher, string message,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string sourceFilePath = "",
         [CallerLineNumber] int sourceLineNumber = 0)
         {
-            _strategy.Exception(message, memberName, sourceFilePath, sourceLineNumber);
+            _strategy.Exception(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
         }
 
-        public void Warning(string message,
+        public void Warning(Dispatch.Client dispatcher, string message,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string sourceFilePath = "",
         [CallerLineNumber] int sourceLineNumber = 0)
         {
-            _strategy.Warning(message, memberName, sourceFilePath, sourceLineNumber);
+            _strategy.Warning(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
         }
 
-        public void Info(string message,
+        public void Info(Dispatch.Client dispatcher, string message,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string sourceFilePath = "",
         [CallerLineNumber] int sourceLineNumber = 0)
         {
-            _strategy.Info(message, memberName, sourceFilePath, sourceLineNumber);
+            _strategy.Info(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
         }
 
         [Conditional("DEBUG")]
-        public void Trace(string message,
+        public void Trace(Dispatch.Client dispatcher, string message,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string sourceFilePath = "",
         [CallerLineNumber] int sourceLineNumber = 0)
         {
-            _strategy.Trace(message, memberName, sourceFilePath, sourceLineNumber);
+            _strategy.Trace(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
             Debug.WriteLine(String.Format("TRACE: {0}", message)); // Write to the output window in visual studio
         }
         #endregion
