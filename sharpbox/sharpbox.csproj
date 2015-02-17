@@ -77,6 +77,10 @@
       <Project>{bd208390-fbae-4d56-983a-f2c0ca4264b1}</Project>
       <Name>sharpbox.Membership</Name>
     </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
+      <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>
+      <Name>sharpbox.Notification</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
