@@ -20,13 +20,19 @@ namespace sharpbox.Cli
             app.Dispatch.Subscribe(PublicationNamesExtension.ExampleExtendedPublisher, Booya);
             
             // Basic test of the dispatch. This says: TO anyone listen to 'OnLogException', here is a package.
-            app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to OnLogException.", PublisherName = PublicationNamesExtension.ExampleExtendedPublisher });
+            app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to OnLogException.", PublisherName = PublisherNames.OnLogException });
+
+            // Another test from the subscription we set a few lines above.
+            app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to Example Extended publisher.", PublisherName = PublicationNamesExtension.ExampleExtendedPublisher });
 
             // Next we're going to try the built in user change event.
             Debug.WriteLine(app.Dispatch.CurrentUserId);
-            app.Dispatch.Publish(new Package{ PublisherName = PublicationNamesExtension.OnUserChange, Message = "Changing the userid to lyleb", UserId = "lyleb"});
+            app.Dispatch.Publish(new Package{ PublisherName = PublisherNames.OnUserChange, Message = "Changing the userid to lyleb", UserId = "lyleb"});
             Debug.WriteLine(app.Dispatch.CurrentUserId);
 
+
+            // Notification
+            Debug.WriteLine(app.Notification.Subscribers.Count);
             // Email: Test Email:
             //app.Email.Send();
 
@@ -45,7 +51,7 @@ namespace sharpbox.Cli
 
         public static void Booya(Dispatch.Client dispatcher, Package package)
         {
-            Debug.WriteLine("Booya worked.");
+            Debug.WriteLine(string.Format("{0} broadcasts: {1}", package.PublisherName, package.Message));
         }
     }
 }

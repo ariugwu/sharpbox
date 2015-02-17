@@ -12,7 +12,8 @@ namespace sharpbox.Data.Strategy
         public XmlStrategy(Dispatch.Client dispatcher, Dictionary<string, object> auxInfo)
         {
             AuxInfo = auxInfo;
-            Init(dispatcher);
+            _xmlPath = (string)AuxInfo["xmlPath"];
+            Load(dispatcher);
         } 
 
         #endregion
@@ -34,11 +35,6 @@ namespace sharpbox.Data.Strategy
         private XmlSerializer _serializer = new XmlSerializer(typeof(List<T>));
 
         #region Interface Methods / Members
-        public void Init(Dispatch.Client dispatcher)
-        {
-            _xmlPath = (string)AuxInfo["xmlPath"];
-            Load(dispatcher);
-        }
 
         public IEnumerable<T> All(Dispatch.Client dispatcher)
         {

@@ -15,7 +15,7 @@ namespace sharpbox
             // Pub/Sub System(s)
 
             Dispatch = new Client(userIdentity, extendedPublisherNames ?? PublisherNames.DefaultPubList());
-            Notification = new Notification.Client();
+            Notification = new Notification.Client(Dispatch);
 
             // Module(s)
 

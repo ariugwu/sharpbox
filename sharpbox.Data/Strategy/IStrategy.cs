@@ -6,8 +6,6 @@ namespace sharpbox.Data.Strategy
     {
         Dictionary<string, object> AuxInfo { get; set; } 
         List<T> Entities { get; set; }
-
-        void Init(Dispatch.Client dispatcher);
         
         IEnumerable<T> All(Dispatch.Client dispatcher);
         T Create(Dispatch.Client dispatcher, T entity);

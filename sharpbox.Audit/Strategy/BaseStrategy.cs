@@ -22,9 +22,12 @@ namespace sharpbox.Audit.Strategy
 
         #region Field(s)
 
+        private string _xmlPath;
         private Repository<Package> _repository;
 
         #endregion
+
+        public Dictionary<string, object> AuxInfo { get; set; }
 
         public Repository<Package> Repository
         {

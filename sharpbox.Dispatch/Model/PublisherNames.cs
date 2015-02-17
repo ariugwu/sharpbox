@@ -48,6 +48,15 @@ namespace sharpbox.Dispatch.Model
 
         #endregion
 
+        #region Notification
+
+        public static readonly PublisherNames OnNotificationAddQueueEntry = new PublisherNames("OnNotificationAddQueueEntry");
+        public static readonly PublisherNames OnNotificationAddBacklogItem = new PublisherNames("OnNotificationAddBacklogItem");
+        public static readonly PublisherNames OnNotificationSaveBacklog = new PublisherNames("OnNotificationSaveBacklog");
+        public static readonly PublisherNames OnNotificationSaveQueue = new PublisherNames("OnNotificationSaveQueue");
+        public static readonly PublisherNames OnNotificationNotify = new PublisherNames("OnNotificationNotify");
+        #endregion
+
         #endregion
 
         #region Field(s)
@@ -91,7 +100,12 @@ namespace sharpbox.Dispatch.Model
                 OnFileAccess,
                 OnEmailSend,
                 OnAuditRecord,
-                OnUserChange
+                OnUserChange,
+                OnNotificationAddBacklogItem,
+                OnNotificationAddQueueEntry,
+                OnNotificationNotify,
+                OnNotificationSaveBacklog,
+                OnNotificationSaveQueue
             };
         } 
 

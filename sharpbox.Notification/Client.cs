@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using sharpbox.Dispatch.Model;
 using sharpbox.Notification.Model;
 using sharpbox.Notification.Strategy;
@@ -9,8 +10,9 @@ namespace sharpbox.Notification
     {
         #region Constructor(s)
 
-        public Client(Dispatch.Client dispatcher)
+        public Client(Dispatch.Client dispatcher, IStrategy strategy = null, Dictionary<string, object> auxInfo = null)
         {
+            _strategy = strategy ?? new BaseStrategy(dispatcher, auxInfo ?? new Dictionary<string, object> { { "xmlPath", "NotificationXmlRepository.xml" } });
             ConfigureNotification(dispatcher);
         }
 
@@ -28,8 +30,10 @@ namespace sharpbox.Notification
 
         #region Properties
 
-        public Dictionary<PublisherNames, List<QueueEntry>> Queue { get { return _strategy.Queue; } }
-        
+        public Dictionary<PublisherNames, List<Entry>> Queue { get { return _strategy.Queue; } }
+        public Dictionary<PublisherNames, List<string>> Subscribers { get { return _strategy.Subscribers;  } }
+        public List<BackLog> Backlog { get { return _strategy.Backlog;  } }
+
         #endregion
 
         #region Client Method(s)
@@ -37,9 +41,9 @@ namespace sharpbox.Notification
         public void ConfigureNotification(Dispatch.Client dispatcher)
         {
 
-            foreach (var p in dispatcher.AvailablePublications)
+            foreach (var p in dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().Contains("onnotification"))) // subscribe to everything but our own events
             {
-                dispatcher.Subscribe(p, ProcessQueue);
+                dispatcher.Subscribe(p, ProcessPackage);
             }
 
         }
@@ -48,19 +52,49 @@ namespace sharpbox.Notification
 
         #region Strategy Method(s)
 
-        public void ProcessQueue(Dispatch.Client dispatcher, Package package)
+        /// <summary>
+        /// Whenever the dispatcher publishes an event we create a message for it and stick it on the queue. Then we see if anyone is requesting notification and we create a backlog entry for them to be processed at a later date. Likely by a scheduled task or explict request.
+        /// </summary>
+        /// <param name="dispatcher"></param>
+        /// <param name="package"></param>
+        public void ProcessPackage(Dispatch.Client dispatcher, Package package)
         {
-            _strategy.ProcessQueue(dispatcher, package);
+            _strategy.ProcessPackage(dispatcher, package);
         }
 
-        public void LoadQueue()
+        public void LoadBacklog(Dispatch.Client dispatcher)
         {
-            _strategy.LoadQueue();
+            _strategy.LoadBacklog(dispatcher);
         }
 
-        public void AddQueueEntry(QueueEntry entry)
+        public void AddQueueEntry(Entry entry)
         {
             _strategy.AddQueueEntry(entry);
+        }
+
+        public void Notify(BackLog backLog)
+        {
+           _strategy.Notify(backLog);
+        }
+
+        public void SaveBackLog(Dispatch.Client dispatcher)
+        {
+            _strategy.SaveBackLog(dispatcher);
+        }
+
+        public void AddBackLogItem(BackLog backlog)
+        {
+            _strategy.AddBackLogItem(backlog);
+        }
+
+        public void LoadSubscribers(Dispatch.Client dispatcher)
+        {
+            _strategy.LoadSubscribers(dispatcher);
+        }
+
+        public void AddSubscriber(PublisherNames publisherName, string userId)
+        {
+            _strategy.AddSubscriber(publisherName, userId);
         }
 
         #endregion

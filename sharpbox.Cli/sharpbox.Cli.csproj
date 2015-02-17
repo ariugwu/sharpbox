@@ -54,6 +54,10 @@
       <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
       <Name>sharpbox.Audit</Name>
     </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Data\sharpbox.Data.csproj">
+      <Project>{45e33825-de18-473d-9770-3532aded63ff}</Project>
+      <Name>sharpbox.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
       <Name>sharpbox.Dispatch</Name>
@@ -73,6 +77,10 @@
     <ProjectReference Include="..\sharpbox.Log\sharpbox.Log.csproj">
       <Project>{351f3a6b-9a94-43ea-aaa8-739cc02b529a}</Project>
       <Name>sharpbox.Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
+      <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>
+      <Name>sharpbox.Notification</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox\sharpbox.csproj">
       <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>
