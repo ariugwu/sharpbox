@@ -7,9 +7,9 @@ namespace sharpbox
 {
     public class AppContext
     {
-        public AppContext()
+        public AppContext(string userIdentity)
         {
-            Dispatch = new Client(PublicationNamesExtension.ExtendedPubList);
+            Dispatch = new Client(userIdentity, PublicationNamesExtension.ExtendedPubList);
             
             Email = new Email.Client();
             Log = new Log.Client();

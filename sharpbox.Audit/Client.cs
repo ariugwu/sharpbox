@@ -57,7 +57,7 @@ namespace sharpbox.Audit
                 case AuditLevel.All:
                     // We exclude any of the audit publishers because we don't want to create a circular call.
                     list = dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().Contains("onaudit")).ToList();
-                    foreach (var p in dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().StartsWith("onaudit")))
+                    foreach (var p in list)
                     {
                         dispatcher.Subscribe(p, _strategy.RecordDispatch);
                     }

@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="Model\QueueEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -48,6 +48,9 @@
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
       <Name>sharpbox.Dispatch</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Strategy\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

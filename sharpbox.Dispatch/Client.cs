@@ -9,9 +9,13 @@ namespace sharpbox.Dispatch
 
         #region Constructor(s)
 
-        public Client(List<PublisherNames> publisherNames = null)
+        public Client(string userId, List<PublisherNames> publisherNames = null)
         {
+            CurrentUserId = userId;
             _availablePublications = publisherNames ?? PublisherNames.DefaultPubList();
+
+            // Wire up the dispatcher itself to listen for User changes.
+            Subscribe(PublisherNames.OnUserChange, OnUserChange);
         }
 
         #endregion
@@ -20,9 +24,12 @@ namespace sharpbox.Dispatch
 
         private Dictionary<PublisherNames, List<Action<Client,Package>>> _subscribers;
         private List<PublisherNames> _availablePublications;
+
         #endregion
 
         #region Properties
+
+        public string CurrentUserId { get; set; }
 
         public Dictionary<PublisherNames, List<Action<Client,Package>>> Subscribers
         {
@@ -71,6 +78,16 @@ namespace sharpbox.Dispatch
             {
                 p.Invoke(this,package);
             }
+        }
+
+        /// <summary>
+        /// This gets wired in the constructor so the dispatch always has the current user.
+        /// </summary>
+        /// <param name="dispatcher"></param>
+        /// <param name="package"></param>
+        public void OnUserChange(Client dispatcher, Package package)
+        {
+            CurrentUserId = package.UserId;
         }
 
         #endregion

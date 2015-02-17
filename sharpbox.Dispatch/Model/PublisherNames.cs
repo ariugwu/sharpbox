@@ -44,6 +44,8 @@ namespace sharpbox.Dispatch.Model
 
         #region Membership
 
+        public static readonly PublisherNames OnUserChange = new PublisherNames("OnUserChange");
+
         #endregion
 
         #endregion
