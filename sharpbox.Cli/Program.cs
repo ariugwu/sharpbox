@@ -15,29 +15,29 @@ namespace sharpbox.Cli
         {
 
             // The benefit of the dispatcher is being able to see all subscribed events in one place at one time.
-            // This is centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event.
+            // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
             var app = new ConsoleContext("ugwua", smtpClient, PublicationNamesExtension.ExtendedPubList);
 
             app.Dispatch.Subscribe(PublicationNamesExtension.ExampleExtendedPublisher, Booya);
             
-            // Basic test of the dispatch. This says: TO anyone listen to 'OnLogException', here is a package.
+            // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
             app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to OnLogException.", PublisherName = PublisherNames.OnLogException });
 
             // Another test from the subscription we set a few lines above.
             app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to Example Extended publisher.", PublisherName = PublicationNamesExtension.ExampleExtendedPublisher });
 
             // Next we're going to try the built in user change event.
-            Debug.WriteLine(app.Dispatch.CurrentUserId);
+            Debug.WriteLine("Current UserId: " + app.Dispatch.CurrentUserId);
             app.Dispatch.Publish(new Package{ PublisherName = PublisherNames.OnUserChange, Message = "Changing the userid to lyleb", UserId = "lyleb"});
-            Debug.WriteLine(app.Dispatch.CurrentUserId);
+            Debug.WriteLine("Current UserId: " + app.Dispatch.CurrentUserId);
 
 
             // Notification
             Debug.WriteLine("###Notification Info####");
             Debug.WriteLine("Total subscribers: " + app.Notification.Subscribers.Count);
-            Debug.WriteLine("Total queue: " + app.Notification.Subscribers.Count);
+            Debug.WriteLine("Total queue: " + app.Notification.Queue.Count);
 
             // Email: Test Email:
             try
