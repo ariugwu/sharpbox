@@ -21,11 +21,11 @@ namespace sharpbox.Data
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="auxInfo">General use dictionary for anything a strategy might need. For xml it's the key "xmlPath", and for EF it's the key "dbContext"</param>
-        public Repository(Dispatch.Client dispatcher, IStrategy<T> strategy = null, Dictionary<string, object> auxInfo = null)
+        /// <param name="props">General use dictionary for anything a strategy might need. For xml it's the key "xmlPath", and for EF it's the key "dbContext"</param>
+        public Repository(Dispatch.Client dispatcher, IStrategy<T> strategy = null, Dictionary<string, object> props = null)
         {
-            _strategy = strategy ?? new XmlStrategy<T>(dispatcher, auxInfo);
-            _strategy.AuxInfo = auxInfo ?? new Dictionary<string, object>();
+            _strategy = strategy ?? new XmlStrategy<T>(dispatcher, props);
+            _strategy.Props = props ?? new Dictionary<string, object>();
         }
 
         public Repository()

@@ -9,11 +9,11 @@ namespace sharpbox.Notification.Strategy
 {
     public class BaseStrategy : IStrategy
     {
-        public BaseStrategy(Dispatch.Client dispatcher, Dictionary<string, object> auxInfo)
+        public BaseStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props)
         {
-            AuxInfo = auxInfo;
-            _xmlPath = (string)AuxInfo["xmlPath"];
-            _repository = new Repository<BackLog>(dispatcher, auxInfo: auxInfo);
+            Props = props;
+            _xmlPath = (string)Props["xmlPath"];
+            _repository = new Repository<BackLog>(dispatcher, props: props);
 
             LoadBacklog(dispatcher);
             LoadSubscribers(dispatcher);
@@ -35,7 +35,7 @@ namespace sharpbox.Notification.Strategy
             }
         }
 
-        public Dictionary<string, object> AuxInfo { get; set; }
+        public Dictionary<string, object> Props { get; set; }
 
         public Dictionary<PublisherNames, List<Entry>> Queue { get { return _queue ?? (_queue = new Dictionary<PublisherNames, List<Entry>>());} set { _queue = value;} }
         public Dictionary<PublisherNames, List<string>> Subscribers { get{ return _subscribers ?? (_subscribers = new Dictionary<PublisherNames, List<string>>());} set { _subscribers = value; } }

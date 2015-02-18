@@ -9,17 +9,17 @@ namespace sharpbox.Data.Strategy
     {
         #region Constructor(s)
 
-        public EntityFrameworkStrategy(Dispatch.Client dispatcher, Dictionary<string, object> auxInfo)
+        public EntityFrameworkStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props)
         {
-            Db = (DbContext) auxInfo["dbContext"];
-            AuxInfo = auxInfo;
+            Db = (DbContext) props["dbContext"];
+            Props = props;
         }
 
         #endregion
 
         #region Properties
 
-        public Dictionary<string, object> AuxInfo { get; set; }
+        public Dictionary<string, object> Props { get; set; }
         public List<T> Entities { get; set; }
         public DbContext Db { get; set; }
         #endregion

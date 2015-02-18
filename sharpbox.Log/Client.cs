@@ -16,9 +16,9 @@ namespace sharpbox.Log
 
         #region Constructor(s)
 
-        public Client(Dispatch.Client dispatcher, IStrategy strategy = null, Dictionary<string, object> auxInfo = null)
+        public Client(Dispatch.Client dispatcher, IStrategy strategy = null, Dictionary<string, object> props = null)
         {
-            _strategy = strategy ?? new BaseStrategy(dispatcher, auxInfo ?? new Dictionary<string, object> { { "xmlPath", "LogXmlRepository.xml" } });
+            _strategy = strategy ?? new BaseStrategy(dispatcher, props ?? new Dictionary<string, object> { { "xmlPath", "LogXmlRepository.xml" } });
         }
 
         public Client()

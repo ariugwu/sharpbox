@@ -12,8 +12,8 @@ namespace sharpbox.Audit.Strategy
 
         public BaseStrategy(Dispatch.Client dispatcher)
         {
-            var auxInfo = new Dictionary<string, object> { { "xmlPath", "AuditXmlRepository.xml" } };
-            _repository = new Repository<Package>(dispatcher, auxInfo: auxInfo);
+            var props = new Dictionary<string, object> { { "xmlPath", "AuditXmlRepository.xml" } };
+            _repository = new Repository<Package>(dispatcher, props: props);
 
             Load(dispatcher);
         }
@@ -22,12 +22,11 @@ namespace sharpbox.Audit.Strategy
 
         #region Field(s)
 
-        private string _xmlPath;
         private Repository<Package> _repository;
 
         #endregion
 
-        public Dictionary<string, object> AuxInfo { get; set; }
+        public Dictionary<string, object> Props { get; set; }
 
         public Repository<Package> Repository
         {

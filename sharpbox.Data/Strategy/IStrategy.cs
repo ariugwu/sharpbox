@@ -4,7 +4,7 @@ namespace sharpbox.Data.Strategy
 {
     public interface IStrategy<T>
     {
-        Dictionary<string, object> AuxInfo { get; set; } 
+        Dictionary<string, object> Props { get; set; } 
         List<T> Entities { get; set; }
         
         IEnumerable<T> All(Dispatch.Client dispatcher);

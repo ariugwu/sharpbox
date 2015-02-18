@@ -9,10 +9,10 @@ namespace sharpbox.Data.Strategy
     {
         #region Constructor(s)
 
-        public XmlStrategy(Dispatch.Client dispatcher, Dictionary<string, object> auxInfo)
+        public XmlStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props)
         {
-            AuxInfo = auxInfo;
-            _xmlPath = (string)AuxInfo["xmlPath"];
+            Props = props;
+            _xmlPath = (string)Props["xmlPath"];
             Load(dispatcher);
         } 
 
@@ -20,7 +20,7 @@ namespace sharpbox.Data.Strategy
         
         private List<T> _entities;
  
-        public Dictionary<string, object> AuxInfo { get; set; }
+        public Dictionary<string, object> Props { get; set; }
 
         public List<T> Entities
         {

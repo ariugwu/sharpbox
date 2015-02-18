@@ -10,11 +10,11 @@ namespace sharpbox.Log.Strategy
     {
 
         public BaseStrategy(Dispatch.Client dispatcher,
-            Dictionary<string, object> auxInfo)
+            Dictionary<string, object> props)
         {
-            AuxInfo = auxInfo;
-            _xmlPath = (string)AuxInfo["xmlPath"];
-            _repository = new Repository<Entry>(dispatcher, auxInfo: auxInfo);
+            Props = props;
+            _xmlPath = (string)Props["xmlPath"];
+            _repository = new Repository<Entry>(dispatcher, props: props);
         }
 
         private string _xmlPath;
@@ -32,7 +32,7 @@ namespace sharpbox.Log.Strategy
 
         public List<Entry> Entries { get { return _entries ?? (_entries = new List<Entry>()); } } 
 
-        public Dictionary<string, object> AuxInfo { get; set; }
+        public Dictionary<string, object> Props { get; set; }
 
         public void Exception(Dispatch.Client dispatcher, string message,string memberName = "",string sourceFilePath = "",int sourceLineNumber = 0)
         {
