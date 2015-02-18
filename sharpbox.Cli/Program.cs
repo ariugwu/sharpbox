@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Text;
@@ -16,7 +17,7 @@ namespace sharpbox.Cli
             // The benefit of the dispatcher is being able to see all subscribed events in one place at one time.
             // This is centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
-            var smtpClient = new SmtpClient("gmail.com", 25);
+            var smtpClient = new SmtpClient("smtp.google.com", 587);
             var app = new ConsoleContext("ugwua", smtpClient, PublicationNamesExtension.ExtendedPubList);
 
             app.Dispatch.Subscribe(PublicationNamesExtension.ExampleExtendedPublisher, Booya);
@@ -39,7 +40,16 @@ namespace sharpbox.Cli
             Debug.WriteLine("Total queue: " + app.Notification.Subscribers.Count);
 
             // Email: Test Email:
-            //app.Email.Send();
+            try
+            {
+                // We know this will fail because the smtp client isn't fully configured and the emails are bad
+                app.Email.Send(app.Dispatch, new List<string> {"test@testy.com"}, "foo.bar@gmail.com",
+                    "This is a test email from my framework", "Testing is good for you.");
+            }
+            catch (Exception ex)
+            {
+                app.Log.Exception(app.Dispatch, ex.Message);
+            }
 
             // Log: Test logging
             app.Log.Info(app.Dispatch, "Test of the info logging!");
