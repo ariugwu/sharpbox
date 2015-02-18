@@ -11,31 +11,16 @@ namespace sharpbox.Notification.Strategy
     {
         public BaseStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props)
         {
-            Props = props;
-            _xmlPath = (string)Props["xmlPath"];
-            _repository = new Repository<BackLog>(dispatcher, props: props);
-
+            Repository = new Repository<BackLog>(dispatcher, props: props);
             LoadBacklog(dispatcher);
             LoadSubscribers(dispatcher);
         }
         
-        private string _xmlPath;
-        private Repository<BackLog> _repository;
-
         private Dictionary<PublisherNames, List<Entry>> _queue;
         private Dictionary<PublisherNames, List<string>> _subscribers;
         private List<BackLog> _backLog;
- 
-        public Repository<BackLog> Repository
-        {
-            get { return _repository; }
-            set
-            {
-                _repository = value;
-            }
-        }
 
-        public Dictionary<string, object> Props { get; set; }
+        public Repository<BackLog> Repository { get; set; }
 
         public Dictionary<PublisherNames, List<Entry>> Queue { get { return _queue ?? (_queue = new Dictionary<PublisherNames, List<Entry>>());} set { _queue = value;} }
         public Dictionary<PublisherNames, List<string>> Subscribers { get{ return _subscribers ?? (_subscribers = new Dictionary<PublisherNames, List<string>>());} set { _subscribers = value; } }
@@ -73,7 +58,8 @@ namespace sharpbox.Notification.Strategy
                     EntryId = entry.EntryId,
                     SentDate = null,
                     UserId = s,
-                    WasSent = false
+                    WasSent = false,
+                    Message = entry.UserFriendlyMessage
                 });
             }
 
@@ -118,7 +104,7 @@ namespace sharpbox.Notification.Strategy
                 {PublisherNames.OnLogException, new List<string>() {"ugwua"}}
             };
 
-            dispatcher.Publish(new Package{ Entity = null, Message = "The base strategy for Notfication does not have a way to persist users", PublisherName = PublisherNames.OnNotificationAddQueueEntry});
+            dispatcher.Publish(new Package{ Entity = null, Message = "The base strategy for Notfication does not have a way to persist users", PublisherName = PublisherNames.OnNotificationAddQueueEntry, UserId = "system"});
         }
 
         public void AddSubscriber(PublisherNames publisherName, string userId)

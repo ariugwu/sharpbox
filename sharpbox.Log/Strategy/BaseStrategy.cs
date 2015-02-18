@@ -9,30 +9,15 @@ namespace sharpbox.Log.Strategy
     public class BaseStrategy : IStrategy
     {
 
-        public BaseStrategy(Dispatch.Client dispatcher,
-            Dictionary<string, object> props)
+        public BaseStrategy(Dispatch.Client dispatcher,Dictionary<string, object> props)
         {
-            Props = props;
-            _xmlPath = (string)Props["xmlPath"];
-            _repository = new Repository<Entry>(dispatcher, props: props);
+            Repository = new Repository<Entry>(dispatcher, props: props);
+            LoadEntries(dispatcher);
         }
 
-        private string _xmlPath;
-        private Repository<Entry> _repository;
-        private List<Entry> _entries;
- 
-        public Repository<Entry> Repository
-        {
-            get { return _repository; }
-            set
-            {
-                _repository = value;
-            }
-        }
+        public Repository<Entry> Repository { get; set; }
 
-        public List<Entry> Entries { get { return _entries ?? (_entries = new List<Entry>()); } } 
-
-        public Dictionary<string, object> Props { get; set; }
+        public List<Entry> Entries { get; set; } 
 
         public void Exception(Dispatch.Client dispatcher, string message,string memberName = "",string sourceFilePath = "",int sourceLineNumber = 0)
         {
@@ -60,7 +45,7 @@ namespace sharpbox.Log.Strategy
 
         public void LoadEntries(Dispatch.Client dispatcher)
         {
-            _entries = Repository.All(dispatcher).ToList();
+            Entries = Repository.All(dispatcher).ToList();
         }
 
         public void SaveEntries(Dispatch.Client dispatcher)

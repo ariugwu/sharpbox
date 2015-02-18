@@ -23,14 +23,14 @@ namespace sharpbox.Cli
             app.Dispatch.Subscribe(PublicationNamesExtension.ExampleExtendedPublisher, Booya);
             
             // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
-            app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to OnLogException.", PublisherName = PublisherNames.OnLogException });
+            app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to OnLogException.", PublisherName = PublisherNames.OnLogException, UserId = app.Dispatch.CurrentUserId});
 
             // Another test from the subscription we set a few lines above.
-            app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to Example Extended publisher.", PublisherName = PublicationNamesExtension.ExampleExtendedPublisher });
+            app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to Example Extended publisher.", PublisherName = PublicationNamesExtension.ExampleExtendedPublisher, UserId = app.Dispatch.CurrentUserId });
 
             // Next we're going to try the built in user change event.
             Debug.WriteLine("Current UserId: " + app.Dispatch.CurrentUserId);
-            app.Dispatch.Publish(new Package{ PublisherName = PublisherNames.OnUserChange, Message = "Changing the userid to lyleb", UserId = "lyleb"});
+            app.Dispatch.Publish(new Package{ PublisherName = PublisherNames.OnUserChange, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null,  UserId = app.Dispatch.CurrentUserId});
             Debug.WriteLine("Current UserId: " + app.Dispatch.CurrentUserId);
 
 
@@ -60,6 +60,13 @@ namespace sharpbox.Cli
             // Audit: See the results in the audit trail
             var trail = app.Audit.Trail;
                 Debug.WriteLine(trail.Count);
+
+            // The end result of this demo should be the following:
+            // Wired and functional: Logging, Email, and IO
+            // Dispatch: A functional pub/sub system for broadcasting events and data changes.
+            // Audit: A subscriber to all dispatch events that logs them using your chosen strategy (XML to filesystem by default)
+            // Notification: Another subscriber to all dispatch events. Provides a 'queue' of system events and their user friendly messages (dies with session). A list of 'subscribers' to events. A 'backlog' of messages which are the intersection of published events and subscribers to them. Persists to the filesystem by default. 
+            Console.ReadLine();
         }
 
         public static void Booya(Dispatch.Client dispatcher, Package package)

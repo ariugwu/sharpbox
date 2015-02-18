@@ -18,18 +18,9 @@ namespace sharpbox.Data.Strategy
 
         #endregion
         
-        private List<T> _entities;
- 
         public Dictionary<string, object> Props { get; set; }
 
-        public List<T> Entities
-        {
-            get
-            {
-                return _entities;
-            } 
-            set { _entities = value; }
-        }
+        public List<T> Entities { get; set; }
 
         private string _xmlPath;
         private XmlSerializer _serializer = new XmlSerializer(typeof(List<T>));
@@ -39,7 +30,7 @@ namespace sharpbox.Data.Strategy
         public IEnumerable<T> All(Dispatch.Client dispatcher)
         {
 
-            return Entities;
+            return Entities ?? (Entities = new List<T>());
         }
 
         public T Create(Dispatch.Client dispatcher, T entity)

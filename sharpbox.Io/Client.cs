@@ -11,7 +11,7 @@ namespace sharpbox.Io
 
             WriteContents(filename, data);
 
-            dispatcher.Publish(new Package(){ Message = "File saved", PublisherName = PublisherNames.OnFileAccess});
+            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnFileAccess, UserId = dispatcher.CurrentUserId });
         }
 
         public static string[] ReadFileLines(string path)
@@ -37,7 +37,7 @@ namespace sharpbox.Io
 
             var data = ReadContents(filename);
 
-            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnFileAccess });
+            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnFileAccess, UserId = dispatcher.CurrentUserId });
 
             return data;
         }
@@ -46,14 +46,14 @@ namespace sharpbox.Io
         {
             WriteContents(filename, data);
 
-            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnAuditPersist });
+            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnAuditPersist, UserId = dispatcher.CurrentUserId });
         }
 
         public static byte[] LoadAudit(Dispatch.Client dispatcher, string filename)
         {
             var data = ReadContents(filename);
 
-            dispatcher.Publish(new Package() { Message = "Audit File loaded.", PublisherName = PublisherNames.OnAuditLoad });
+            dispatcher.Publish(new Package() { Message = "Audit File loaded.", PublisherName = PublisherNames.OnAuditLoad, UserId = dispatcher.CurrentUserId });
 
             return data;
         }
@@ -104,7 +104,7 @@ namespace sharpbox.Io
                 throw new DirectoryNotFoundException("Could not find path.");
             }
 
-            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnFileDelete });
+            dispatcher.Publish(new Package() { Message = "File saved", PublisherName = PublisherNames.OnFileDelete, UserId = dispatcher.CurrentUserId });
         }
 
         public static bool Exists(string filename)

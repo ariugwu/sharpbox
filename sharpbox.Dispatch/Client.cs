@@ -87,7 +87,8 @@ namespace sharpbox.Dispatch
         /// <param name="package"></param>
         public void OnUserChange(Client dispatcher, Package package)
         {
-            CurrentUserId = package.UserId;
+            var entity = (string)package.Entity;
+            CurrentUserId = entity;
         }
 
         #endregion

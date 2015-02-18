@@ -22,9 +22,9 @@ namespace sharpbox.Audit
 
         #region Constructor(s)
 
-        public Client(ref Dispatch.Client dispatcher, Audit.Strategy.IStrategy<T> strategy = null, AuditLevel auditLevel = AuditLevel.Basic)
+        public Client(ref Dispatch.Client dispatcher, Audit.Strategy.IStrategy<T> strategy = null, Dictionary<string, object> props = null, AuditLevel auditLevel = AuditLevel.Basic)
         {
-            _strategy = strategy ?? new BaseStrategy<T>(dispatcher);
+            _strategy = strategy ?? new BaseStrategy<T>(dispatcher, props ?? new Dictionary<string, object> { { "xmlPath", "AuditXmlRepository.xml" } });
             ConfigureAuditLevel(dispatcher, auditLevel);
         }
         #endregion
@@ -34,7 +34,7 @@ namespace sharpbox.Audit
         public void Record(Dispatch.Client dispatcher, T entity)
         {
             var result = _strategy.Create(dispatcher,entity);
-            dispatcher.Publish(new Package() { PublisherName = PublisherNames.OnAuditRecord, Message = "Audit entry recorded. Please check the Audit.Trail for details.", Entity = result, Type = this.GetType(), PackageId = 0, UserId = "System" });
+            dispatcher.Publish(new Package() { PublisherName = PublisherNames.OnAuditRecord, Message = "Audit entry recorded. Please check the Audit.Trail for details.", Entity = result, Type = this.GetType(), PackageId = 0, UserId = dispatcher.CurrentUserId });
         }
 
         #endregion

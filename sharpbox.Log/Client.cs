@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using sharpbox.Dispatch.Model;
 using sharpbox.Log.Strategy;
 
 namespace sharpbox.Log
@@ -35,6 +36,8 @@ namespace sharpbox.Log
         [CallerLineNumber] int sourceLineNumber = 0)
         {
             _strategy.Exception(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
+            dispatcher.Publish(new Package() { Message = message, PublisherName = PublisherNames.OnLogException, UserId = dispatcher.CurrentUserId });
+
         }
 
         public void Warning(Dispatch.Client dispatcher, string message,
@@ -43,6 +46,7 @@ namespace sharpbox.Log
         [CallerLineNumber] int sourceLineNumber = 0)
         {
             _strategy.Warning(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
+            dispatcher.Publish(new Package() { Message = message, PublisherName = PublisherNames.OnLogWarning, UserId = dispatcher.CurrentUserId });
         }
 
         public void Info(Dispatch.Client dispatcher, string message,
@@ -51,6 +55,7 @@ namespace sharpbox.Log
         [CallerLineNumber] int sourceLineNumber = 0)
         {
             _strategy.Info(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
+            dispatcher.Publish(new Package() { Message = message, PublisherName = PublisherNames.OnLogInfo, UserId = dispatcher.CurrentUserId });
         }
 
         [Conditional("DEBUG")]
@@ -60,6 +65,7 @@ namespace sharpbox.Log
         [CallerLineNumber] int sourceLineNumber = 0)
         {
             _strategy.Trace(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
+            dispatcher.Publish(new Package() { Message = message, PublisherName = PublisherNames.OnLogTrace, UserId = dispatcher.CurrentUserId });
             Debug.WriteLine(String.Format("TRACE: {0}", message)); // Write to the output window in visual studio
         }
         #endregion

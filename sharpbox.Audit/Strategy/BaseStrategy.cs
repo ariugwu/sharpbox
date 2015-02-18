@@ -8,34 +8,14 @@ namespace sharpbox.Audit.Strategy
 {
     public class BaseStrategy<T> : IStrategy<T> where T : class
     {
-        #region Constructor(s)
-
-        public BaseStrategy(Dispatch.Client dispatcher)
+        public BaseStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props = null)
         {
-            var props = new Dictionary<string, object> { { "xmlPath", "AuditXmlRepository.xml" } };
-            _repository = new Repository<Package>(dispatcher, props: props);
+            Repository = new Repository<Package>(dispatcher, props: props);
 
             Load(dispatcher);
         }
 
-        #endregion
-
-        #region Field(s)
-
-        private Repository<Package> _repository;
-
-        #endregion
-
-        public Dictionary<string, object> Props { get; set; }
-
-        public Repository<Package> Repository
-        {
-            get { return _repository; }
-            set
-            {
-                _repository = value;
-            }
-        }
+        public Repository<Package> Repository { get; set; }
 
         public List<T> Entries { get; set; }
 

@@ -41,7 +41,7 @@ namespace sharpbox.Email
 
             _smtpClient.Send(mail);
 
-            dispatcher.Publish(new Package{ Entity = mail, Type = this.GetType(), Message = string.Format("E-Mail sent from ({0}) to ({1}) with subject ('{2}')", from, to, subject) , PublisherName = PublisherNames.OnEmailSend, PackageId = 0, UserId = ""});
+            dispatcher.Publish(new Package { Entity = mail, Type = this.GetType(), Message = string.Format("E-Mail sent from ({0}) to ({1}) with subject ('{2}')", from, to, subject), PublisherName = PublisherNames.OnEmailSend, PackageId = 0, UserId = dispatcher.CurrentUserId });
         }
 
         public void Send(Dispatch.Client dispatcher, List<string> to, string from, string subject, string body)

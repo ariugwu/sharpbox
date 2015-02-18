@@ -31,7 +31,7 @@ namespace sharpbox.Notification
         #region Properties
 
         public Dictionary<PublisherNames, List<Entry>> Queue { get { return _strategy.Queue; } }
-        public Dictionary<PublisherNames, List<string>> Subscribers { get { return _strategy.Subscribers;  } }
+        public Dictionary<PublisherNames, List<string>> Subscribers { get { return _strategy.Subscribers;  } set{ _strategy.Subscribers = value;} }
         public List<BackLog> Backlog { get { return _strategy.Backlog;  } }
 
         #endregion

@@ -11,5 +11,6 @@ namespace sharpbox.Notification.Model
         public DateTime? SentDate { get; set; }
         public int AttempNumber { get; set; }
         public DateTime? NextAttempTime { get; set; }
+        public string Message { get; set; }
     }
 }
