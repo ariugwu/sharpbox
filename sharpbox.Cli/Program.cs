@@ -18,7 +18,7 @@ namespace sharpbox.Cli
             // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
-            var app = new ConsoleContext("ugwua", smtpClient, PublicationNamesExtension.ExtendedPubList);
+            var app = new ConsoleContext("ugwua", PublicationNamesExtension.ExtendedPubList,smtpClient);
 
             app.Dispatch.Subscribe(PublicationNamesExtension.ExampleExtendedPublisher, Booya);
             
