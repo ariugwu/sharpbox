@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD208390-FBAE-4D56-983A-F2C0CA4264B1}</ProjectGuid>
+    <ProjectGuid>{285E6890-7735-45DC-B634-C2216C2665CE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>sharpbox.Membership</RootNamespace>
-    <AssemblyName>sharpbox.Membership</AssemblyName>
+    <RootNamespace>sharpbox.Log.Strategy.File</RootNamespace>
+    <AssemblyName>sharpbox.Log.Strategy.File</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,12 +39,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Provider.cs" />
+    <Compile Include="FileStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategy\IStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
+    <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
+      <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
+      <Name>sharpbox.Dispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Io\sharpbox.Io.csproj">
+      <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
+      <Name>sharpbox.Io</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Log\sharpbox.Log.csproj">
+      <Project>{351f3a6b-9a94-43ea-aaa8-739cc02b529a}</Project>
+      <Name>sharpbox.Log</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

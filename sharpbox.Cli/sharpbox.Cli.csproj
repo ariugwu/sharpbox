@@ -50,9 +50,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\sharpbox.Audit.Strategy.Xml\sharpbox.Audit.Strategy.Xml.csproj">
-      <Project>{53dcdeee-c36e-4907-b1c3-432efd8208d3}</Project>
-      <Name>sharpbox.Audit.Strategy.Xml</Name>
+    <ProjectReference Include="..\sharpbox.Audit.Strategy.File\sharpbox.Audit.Strategy.File.csproj">
+      <Project>{a9fe2778-c66a-4bdc-a938-cb3823be6188}</Project>
+      <Name>sharpbox.Audit.Strategy.File</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
       <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
@@ -82,17 +82,17 @@
       <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
       <Name>sharpbox.Io</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Log.Strategy.Xml\sharpbox.Log.Strategy.Xml.csproj">
-      <Project>{d0e6a5f0-219b-491d-ad9d-ed9d2ed44446}</Project>
-      <Name>sharpbox.Log.Strategy.Xml</Name>
+    <ProjectReference Include="..\sharpbox.Log.Strategy.File\sharpbox.Log.Strategy.File.csproj">
+      <Project>{285e6890-7735-45dc-b634-c2216c2665ce}</Project>
+      <Name>sharpbox.Log.Strategy.File</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Log\sharpbox.Log.csproj">
       <Project>{351f3a6b-9a94-43ea-aaa8-739cc02b529a}</Project>
       <Name>sharpbox.Log</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Notification.Strategy.Xml\sharpbox.Notification.Strategy.Xml.csproj">
-      <Project>{76910824-a41a-4721-884b-d0bc631db9dd}</Project>
-      <Name>sharpbox.Notification.Strategy.Xml</Name>
+    <ProjectReference Include="..\sharpbox.Notification.Strategy.File\sharpbox.Notification.Strategy.File.csproj">
+      <Project>{43837322-2fdb-45d9-92d5-22400c54d908}</Project>
+      <Name>sharpbox.Notification.Strategy.File</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
       <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>

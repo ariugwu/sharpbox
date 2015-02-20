@@ -12,7 +12,7 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
         /// </summary>
         /// <param name="userIdentity">Used to create a Dispatch instance which is then used to bootstrap Notification, Log, and Audit functionality.</param>
-        /// <param name="publisherNames">Used to bootstrap Dispatch. this way things like Audit wire into whatever events are in a derived system as well as the default list. If not provided then at empty list is used.</param>
+        /// <param name="eventNames">Used to bootstrap Dispatch. this way things like Audit wire into whatever events are in a derived system as well as the default list. If not provided then at empty list is used.</param>
         /// <param name="smtpClient">Powers the email client.</param>
         public ConsoleContext(string userIdentity, List<EventNames> eventNames, List<ActionNames> actionNames, SmtpClient smtpClient)
             : base(userIdentity, eventNames, actionNames)
@@ -24,20 +24,21 @@ namespace sharpbox.Cli.Model.Domain.AppContext
             var dispatcher = Dispatch;
 
             // Setup auditing
-            // Figure out our working directory
-            var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+
             var filename = "AuditLog.xml";
-            var auditStrategy = new Audit.Strategy.Xml.XmlStrategy(dispatcher, new Dictionary<string, object> {{"filePath", filename}});
+            var persistenceStrategy = new Io.Strategy.Xml.XmlStrategy();
+
+            var auditStrategy = new Audit.Strategy.File.FileStrategy(dispatcher, persistenceStrategy, new Dictionary<string, object> {{"filePath", filename}});
             Audit = new Audit.Client(ref dispatcher, auditStrategy); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
         
             // Setup Notification
             filename = "NotificationLog.xml";
-            var notificationStrategy = new Notification.Strategy.Xml.XmlStrategy(dispatcher, new Dictionary<string, object> { { "filePath", filename } });
+            var notificationStrategy = new Notification.Strategy.File.FileStrategy(dispatcher, persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
             Notification = new Notification.Client(Dispatch, notificationStrategy);
             
             // Setup Logging
             filename = "Log.xml";
-            var fileStrategy = new Log.Strategy.Xml.XmlStrategy(dispatcher, new Dictionary<string, object> { { "filePath", filename } });
+            var fileStrategy = new Log.Strategy.File.FileStrategy(dispatcher, persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
             Log = new Log.Client(fileStrategy);
         }
 

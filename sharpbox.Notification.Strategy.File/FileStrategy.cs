@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using sharpbox.Dispatch.Model;
 using sharpbox.Notification.Model;
 
-namespace sharpbox.Notification.Strategy.Xml
+namespace sharpbox.Notification.Strategy.File
 {
-    public class XmlStrategy : IStrategy
+    public class FileStrategy : IStrategy
     {
         private Io.Client _file;
         private Dictionary<string, object> _props;
 
-        public XmlStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props)
+        public FileStrategy(Dispatch.Client dispatcher, Io.Strategy.IStrategy persistenceStrategy, Dictionary<string, object> props)
         {
-            _file = new Io.Client(new Io.Strategy.Xml.XmlStrategy());
+            _file = new Io.Client(persistenceStrategy);
             _props = props;
 
             LoadBacklog(dispatcher);
