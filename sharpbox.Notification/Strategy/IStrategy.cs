@@ -9,12 +9,12 @@ namespace sharpbox.Notification.Strategy
         /// <summary>
         /// As the system fires events the Notification strategy will create a list a list of entries for each publisher 
         /// </summary>
-        Dictionary<PublisherNames, List<Entry>> Queue { get; set; }
+        Dictionary<EventNames, List<Entry>> Queue { get; set; }
 
         /// <summary>
-        /// Subscribers are most likely loaded from an external system. These are the users who wish to have messages sent to them for certain events.
+        /// EventSubscribers are most likely loaded from an external system. These are the users who wish to have messages sent to them for certain events.
         /// </summary>
-        Dictionary<PublisherNames, List<string>> Subscribers { get; set; }
+        Dictionary<EventNames, List<string>> Subscribers { get; set; }
 
         // The backlog is the list of messages that have been or need to be sent to subscribers. Usually persisted to an outside system.
         List<BackLog> Backlog { get; set; }
@@ -48,7 +48,7 @@ namespace sharpbox.Notification.Strategy
 
         void LoadSubscribers(Dispatch.Client dispatcher);
 
-        void AddSubscriber(PublisherNames publisherName, string userId);
+        void AddSubscriber(EventNames publisherName, string userId);
 
     }
 }

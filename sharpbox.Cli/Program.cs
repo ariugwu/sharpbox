@@ -18,19 +18,26 @@ namespace sharpbox.Cli
             // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
-            var app = new ConsoleContext("ugwua", PublicationNamesExtension.ExtendedPubList,smtpClient);
+            var app = new ConsoleContext("ugwua", PublicationNamesExtension.ExtendedPubList, ActionNames.DefaultActionList(), smtpClient);
 
-            app.Dispatch.Subscribe(PublicationNamesExtension.ExampleExtendedPublisher, Booya);
+            app.Dispatch.Register(ActionNames.SetFeedback, app.ExampleProcessFeedback);
+
+            var feedback = new Feedback{ ActionName = ActionNames.ChangeUser, Message = "Meaningless message", Successful = true};
+            app.Dispatch.Process(new Request{ ActionName = ActionNames.SetFeedback, Message = "A test to set the feedback", Entity = feedback, RequestId = 0, Type = typeof(Feedback), UserId = app.Dispatch.CurrentUserId});
+
+            app.Dispatch.Listen(PublicationNamesExtension.ExampleExtendedPublisher, ExampleListener);
             
             // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
-            app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to OnLogException.", PublisherName = PublisherNames.OnLogException, UserId = app.Dispatch.CurrentUserId});
+            app.Dispatch.Broadcast(new Package() { Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, UserId = app.Dispatch.CurrentUserId});
 
             // Another test from the subscription we set a few lines above.
-            app.Dispatch.Publish(new Package() { Message = "Test of anyone listening to Example Extended publisher.", PublisherName = PublicationNamesExtension.ExampleExtendedPublisher, UserId = app.Dispatch.CurrentUserId });
+            app.Dispatch.Broadcast(new Package() { Message = "Test of anyone listening to Example Extended publisher.", EventName = PublicationNamesExtension.ExampleExtendedPublisher, UserId = app.Dispatch.CurrentUserId });
+
+            app.Dispatch.Register(ActionNames.ChangeUser, app.ChangeUser);
 
             // Next we're going to try the built in user change event.
             Debug.WriteLine("Current UserId: " + app.Dispatch.CurrentUserId);
-            app.Dispatch.Publish(new Package{ PublisherName = PublisherNames.OnUserChange, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null,  UserId = app.Dispatch.CurrentUserId});
+            app.Dispatch.Process(new Request{ ActionName = ActionNames.ChangeUser, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null,  UserId = app.Dispatch.CurrentUserId});
             Debug.WriteLine("Current UserId: " + app.Dispatch.CurrentUserId);
 
 
@@ -69,9 +76,10 @@ namespace sharpbox.Cli
             Console.ReadLine();
         }
 
-        public static void Booya(Dispatch.Client dispatcher, Package package)
+        public static void ExampleListener(Dispatch.Client dispatcher, Package package)
         {
-            Debug.WriteLine(string.Format("{0} broadcasts: {1}", package.PublisherName, package.Message));
+            Debug.WriteLine("{0} broadcasts: {1}", package.EventName, package.Message);
         }
+
     }
 }

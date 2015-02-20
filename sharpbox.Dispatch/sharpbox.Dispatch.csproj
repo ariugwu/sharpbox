@@ -40,8 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Model\ActionNames.cs" />
+    <Compile Include="Model\Feedback.cs" />
     <Compile Include="Model\Package.cs" />
-    <Compile Include="Model\PublisherNames.cs" />
+    <Compile Include="Model\EventNames.cs" />
+    <Compile Include="Model\Request.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

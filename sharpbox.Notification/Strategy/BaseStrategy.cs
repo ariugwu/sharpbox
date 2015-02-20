@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using sharpbox.Data;
+using sharpbox.Data.Strategy;
 using sharpbox.Dispatch.Model;
 using sharpbox.Notification.Model;
 
@@ -11,31 +12,31 @@ namespace sharpbox.Notification.Strategy
     {
         public BaseStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props)
         {
-            Repository = new Repository<BackLog>(dispatcher, props: props);
+            Repository = new Repository<BackLog>(dispatcher, new XmlStrategy<BackLog>(dispatcher, props), props);
             LoadBacklog(dispatcher);
             LoadSubscribers(dispatcher);
         }
         
-        private Dictionary<PublisherNames, List<Entry>> _queue;
-        private Dictionary<PublisherNames, List<string>> _subscribers;
+        private Dictionary<EventNames, List<Entry>> _queue;
+        private Dictionary<EventNames, List<string>> _subscribers;
         private List<BackLog> _backLog;
 
         public Repository<BackLog> Repository { get; set; }
 
-        public Dictionary<PublisherNames, List<Entry>> Queue { get { return _queue ?? (_queue = new Dictionary<PublisherNames, List<Entry>>());} set { _queue = value;} }
-        public Dictionary<PublisherNames, List<string>> Subscribers { get{ return _subscribers ?? (_subscribers = new Dictionary<PublisherNames, List<string>>());} set { _subscribers = value; } }
+        public Dictionary<EventNames, List<Entry>> Queue { get { return _queue ?? (_queue = new Dictionary<EventNames, List<Entry>>());} set { _queue = value;} }
+        public Dictionary<EventNames, List<string>> Subscribers { get{ return _subscribers ?? (_subscribers = new Dictionary<EventNames, List<string>>());} set { _subscribers = value; } }
 
         public List<BackLog> Backlog { get { return _backLog ?? (_backLog = new List<BackLog>()); } set { _backLog = value;} }
  
         public void ProcessPackage(Dispatch.Client dispatcher, Package package)
         {
-            if(!Queue.ContainsKey(package.PublisherName)) Queue.Add(package.PublisherName, new List<Entry>());
+            if(!Queue.ContainsKey(package.EventName)) Queue.Add(package.EventName, new List<Entry>());
 
             // Add a queue entry so we know all the system events regardless of whether anyone is subscribed to them.
             var entry = new Entry
             {
                 CreatedDate = DateTime.Now,
-                PublisherName = package.PublisherName,
+                PublisherName = package.EventName,
                 EntryId = Queue.Count + 1,
                 SystemMessage = package.Message,
                 UserFriendlyMessage = package.Message
@@ -44,10 +45,10 @@ namespace sharpbox.Notification.Strategy
             // Add the Entry
             AddQueueEntry(entry);
 
-            if (!Subscribers.ContainsKey(package.PublisherName)) return; // Bail early if there are no subscribers.
+            if (!Subscribers.ContainsKey(package.EventName)) return; // Bail early if there are no subscribers.
 
             // Run through all of the subscribers for this publisher and generate a backlog item for them.
-            foreach (var s in Subscribers[package.PublisherName])
+            foreach (var s in Subscribers[package.EventName])
             {
                 // Add the backlog item
                 AddBackLogItem(dispatcher, new BackLog
@@ -99,15 +100,15 @@ namespace sharpbox.Notification.Strategy
 
         public void LoadSubscribers(Dispatch.Client dispatcher)
         {
-            _subscribers = new Dictionary<PublisherNames, List<string>>
+            _subscribers = new Dictionary<EventNames, List<string>>
             {
-                {PublisherNames.OnLogException, new List<string>() {"ugwua"}}
+                {EventNames.OnLogException, new List<string>() {"ugwua"}}
             };
 
-            dispatcher.Publish(new Package{ Entity = null, Message = "The base strategy for Notfication does not have a way to persist users", PublisherName = PublisherNames.OnNotificationAddQueueEntry, UserId = "system"});
+            dispatcher.Broadcast(new Package{ Entity = null, Message = "The base strategy for Notfication does not have a way to persist users", EventName = EventNames.OnNotificationAddQueueEntry, UserId = "system"});
         }
 
-        public void AddSubscriber(PublisherNames publisherName, string userId)
+        public void AddSubscriber(EventNames publisherName, string userId)
         {
             if (!Subscribers.ContainsKey(publisherName)) Subscribers.Add(publisherName, new List<string>());
 

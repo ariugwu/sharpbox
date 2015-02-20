@@ -34,7 +34,7 @@ namespace sharpbox.Audit
         public void Record(Dispatch.Client dispatcher, T entity)
         {
             var result = _strategy.Create(dispatcher,entity);
-            dispatcher.Publish(new Package() { PublisherName = PublisherNames.OnAuditRecord, Message = "Audit entry recorded. Please check the Audit.Trail for details.", Entity = result, Type = this.GetType(), PackageId = 0, UserId = dispatcher.CurrentUserId });
+            dispatcher.Broadcast(new Package() { EventName = EventNames.OnAuditRecord, Message = "Audit entry recorded. Please check the Audit.Trail for details.", Entity = result, Type = this.GetType(), PackageId = 0, UserId = dispatcher.CurrentUserId });
         }
 
         #endregion
@@ -43,23 +43,29 @@ namespace sharpbox.Audit
 
         private void ConfigureAuditLevel(Dispatch.Client dispatcher, AuditLevel auditLevel = AuditLevel.Basic)
         {
-            List<PublisherNames> list;
+            // Capture the actions as well as the events. An example audit log could say -> Action -> Resulting Event. Which could be an exception. so we want to see the actions that preceed it.
+            foreach (var a in dispatcher.AvailableActions)
+            {
+                dispatcher.Register(a, _strategy.RecordDispatch);
+            }
+
+            List<EventNames> list;
             switch (auditLevel)
             {
                 case AuditLevel.Basic:
                     // For the basic call we excude audit calls and data persistence since the first is needless/problematic (event reflection) and the later is noisy and better served by other monitors.
-                    list = dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().Contains("onaudit") && !x.ToString().ToLower().Contains("ondata")).ToList();
+                    list = dispatcher.AvailableEvents.Where(x => !x.ToString().ToLower().Contains("onaudit") && !x.ToString().ToLower().Contains("ondata")).ToList();
                     foreach (var p in list)
                     {
-                        dispatcher.Subscribe(p, _strategy.RecordDispatch);
+                        dispatcher.Listen(p, _strategy.RecordDispatch);
                     }
                     break;
                 case AuditLevel.All:
                     // We exclude any of the audit publishers because we don't want to create a circular call.
-                    list = dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().Contains("onaudit")).ToList();
+                    list = dispatcher.AvailableEvents.Where(x => !x.ToString().ToLower().Contains("onaudit")).ToList();
                     foreach (var p in list)
                     {
-                        dispatcher.Subscribe(p, _strategy.RecordDispatch);
+                        dispatcher.Listen(p, _strategy.RecordDispatch);
                     }
                     break;
                 case AuditLevel.None:

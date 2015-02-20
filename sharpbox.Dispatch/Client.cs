@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Dispatch
@@ -9,46 +10,62 @@ namespace sharpbox.Dispatch
 
         #region Constructor(s)
 
-        public Client(string userId, List<PublisherNames> publisherNames = null)
+        public Client(string userId, List<EventNames> eventNames = null, List<ActionNames> actionNames = null)
         {
             CurrentUserId = userId;
-            _availablePublications = publisherNames ?? PublisherNames.DefaultPubList();
-
-            // Wire up the dispatcher itself to listen for User changes.
-            Subscribe(PublisherNames.OnUserChange, OnUserChange);
+            _availableEvents = eventNames ?? EventNames.DefaultPubList();
+            _availableActions = actionNames ?? ActionNames.DefaultActionList();
         }
 
         #endregion
 
         #region Field(s)
 
-        private Dictionary<PublisherNames, List<Action<Client,Package>>> _subscribers;
-        private List<PublisherNames> _availablePublications;
-
+        private Dictionary<EventNames, List<Action<Client, Package>>> _eventSubscribers;
+        private Dictionary<ActionNames, Action<Client, Request>> _actionSubscribers;
+        private List<EventNames> _availableEvents;
+        private List<ActionNames> _availableActions;
         #endregion
 
         #region Properties
 
         public string CurrentUserId { get; set; }
 
-        public Dictionary<PublisherNames, List<Action<Client,Package>>> Subscribers
+        public Dictionary<EventNames, List<Action<Client, Package>>> EventSubscribers
         {
 
             get
             {
-                return _subscribers ?? (_subscribers = new Dictionary<PublisherNames, List<Action<Client,Package>>>());
+                return _eventSubscribers ?? (_eventSubscribers = new Dictionary<EventNames, List<Action<Client, Package>>>());
             }
 
-            set { _subscribers = value; }
+            set { _eventSubscribers = value; }
+        }
+
+        public Dictionary<ActionNames, Action<Client, Request>> ActionSubscribers
+        {
+
+            get
+            {
+                return _actionSubscribers ?? (_actionSubscribers = new Dictionary<ActionNames, Action<Client, Request>>());
+            }
+
+            set { _actionSubscribers = value; }
         }
 
         /// <summary>
         /// Used almost exclusively by the AppContext so that it can extend and then allow the Auditor to loop and register will all. All internal modules will have access to the Dispatch dll directly.
         /// </summary>
-        public List<PublisherNames> AvailablePublications
+        public List<EventNames> AvailableEvents
         {
-            get { return _availablePublications ?? (_availablePublications = new List<PublisherNames>()); }
-            set { _availablePublications = value; }
+            get { return _availableEvents ?? (_availableEvents = new List<EventNames>()); }
+            set { _availableEvents = value; }
+        }
+
+        public List<ActionNames> AvailableActions
+        {
+            get { return _availableActions ?? (_availableActions = new List<ActionNames>()); }
+            set { _availableActions = value; }
         }
 
         #endregion
@@ -59,45 +76,67 @@ namespace sharpbox.Dispatch
         /// </summary>
         /// <param name="publisherName"></param>
         /// <param name="method"></param>
-        public void Subscribe(PublisherNames publisherName, Action<Client,Package> method)
+        public void Listen(EventNames publisherName, Action<Client, Package> method)
         {
             EnsureSubscriberKey(publisherName);
 
-            Subscribers[publisherName].Add(method);
+            EventSubscribers[publisherName].Add(method);
+        }
+
+        public void Register(ActionNames actionName, Action<Client, Request> method)
+        {
+            if (!ActionSubscribers.ContainsKey(ActionNames.SetFeedback) && actionName != ActionNames.SetFeedback) throw new Exception("A 'SetFeedback' action must be registered before using any action registration!");
+
+            if (ActionSubscribers.ContainsKey(actionName))
+            {
+                var feedback = new Feedback { ActionName = ActionNames.RegisterAction, Message = "Action is already registered!", Successful = false };
+
+                Process(new Request { ActionName = ActionNames.SetFeedback, Entity = feedback, Message = feedback.Message, RequestId = 0, Type = typeof(Feedback), UserId = CurrentUserId });
+            }
+            else
+            {
+                ActionSubscribers.Add(actionName, method);
+            }
         }
 
         /// <summary>
         /// Cycle through all the subscribers and fire off the associated action
         /// </summary>
         /// <param name="package"></param>
-        public void Publish(Package package)
+        public void Broadcast(Package package)
         {
-            EnsureSubscriberKey(package.PublisherName);
+            EnsureSubscriberKey(package.EventName);
 
-            foreach (var p in Subscribers[package.PublisherName])
+            foreach (var p in EventSubscribers[package.EventName])
             {
-                p.Invoke(this,package);
+                try
+                {
+                    p.Invoke(this, package);
+                }
+                catch (TargetInvocationException tEx)
+                {
+
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
 
-        /// <summary>
-        /// This gets wired in the constructor so the dispatch always has the current user.
-        /// </summary>
-        /// <param name="dispatcher"></param>
-        /// <param name="package"></param>
-        public void OnUserChange(Client dispatcher, Package package)
+
+        public void Process(Request request)
         {
-            var entity = (string)package.Entity;
-            CurrentUserId = entity;
+            ActionSubscribers[request.ActionName].Invoke(this, request);
         }
 
         #endregion
 
         #region Helper(s)
 
-        private void EnsureSubscriberKey(PublisherNames publisherName)
+        private void EnsureSubscriberKey(EventNames publisherName)
         {
-            if (!Subscribers.ContainsKey(publisherName)) Subscribers.Add(publisherName, new List<Action<Client,Package>>());
+            if (!EventSubscribers.ContainsKey(publisherName)) EventSubscribers.Add(publisherName, new List<Action<Client, Package>>());
 
         }
 

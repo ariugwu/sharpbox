@@ -9,6 +9,8 @@ namespace sharpbox.Audit.Strategy
 
         void RecordDispatch(Dispatch.Client dispatcher,Package package);
 
+        void RecordDispatch(Dispatch.Client dispatcher, Request request);
+
         void Load(Dispatch.Client dispatcher);
 
         void Save(Dispatch.Client dispatcher);

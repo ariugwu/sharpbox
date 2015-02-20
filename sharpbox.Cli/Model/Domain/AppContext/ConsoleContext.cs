@@ -12,8 +12,8 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         /// <param name="userIdentity">Used to create a Dispatch instance which is then used to bootstrap Notification, Log, and Audit functionality.</param>
         /// <param name="publisherNames">Used to bootstrap Dispatch. this way things like Audit wire into whatever events are in a derived system as well as the default list. If not provided then at empty list is used.</param>
         /// <param name="smtpClient">Powers the email client.</param>
-        public ConsoleContext(string userIdentity, List<PublisherNames> publisherNames, SmtpClient smtpClient)
-            : base(userIdentity, publisherNames)
+        public ConsoleContext(string userIdentity, List<EventNames> eventNames, List<ActionNames> actionNames, SmtpClient smtpClient)
+            : base(userIdentity, eventNames, actionNames)
         {
             Notification = new Notification.Client(Dispatch);
             Email = new Email.Client(smtpClient);
@@ -22,9 +22,24 @@ namespace sharpbox.Cli.Model.Domain.AppContext
             Audit = new Audit.Client<Package>(ref dispatcher); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
         }
 
+        public Feedback Feedback { get; set; } // Should be populated after every action request.
+
         public Notification.Client Notification { get; set; } // A dispatch friendly notification system.
         public Email.Client Email { get; set; } // A dispatch friendly email client
         public Log.Client Log { get; set; } // A dispatch friendly logger
         public Audit.Client<Package> Audit { get; set; } // A dispatch friendly Auditor
+
+        public void ExampleProcessFeedback(sharpbox.Dispatch.Client dispatcher, Request request)
+        {
+            var feedback = (Feedback) request.Entity;
+            Feedback = feedback;
+        }
+
+        public void ChangeUser(sharpbox.Dispatch.Client dispatcher, Request request)
+        {
+            var entity = (string)request.Entity;
+            Dispatch.CurrentUserId = entity;
+            Dispatch.Broadcast(new Package { Entity = request.Entity, Message = "User changed to" + entity, PackageId = 0, EventName = EventNames.OnUserChange, Type = typeof(string), UserId = request.UserId });
+        }
     }
 }

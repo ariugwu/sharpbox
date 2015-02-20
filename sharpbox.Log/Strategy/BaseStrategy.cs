@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using sharpbox.Data;
+using sharpbox.Data.Strategy;
 using sharpbox.Log.Model;
 
 namespace sharpbox.Log.Strategy
@@ -11,7 +12,7 @@ namespace sharpbox.Log.Strategy
 
         public BaseStrategy(Dispatch.Client dispatcher,Dictionary<string, object> props)
         {
-            Repository = new Repository<Entry>(dispatcher, props: props);
+            Repository = new Repository<Entry>(dispatcher, new XmlStrategy<Entry>(dispatcher,props), props);
             LoadEntries(dispatcher);
         }
 

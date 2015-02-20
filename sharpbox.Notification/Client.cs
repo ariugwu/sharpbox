@@ -30,8 +30,8 @@ namespace sharpbox.Notification
 
         #region Properties
 
-        public Dictionary<PublisherNames, List<Entry>> Queue { get { return _strategy.Queue; } }
-        public Dictionary<PublisherNames, List<string>> Subscribers { get { return _strategy.Subscribers;  } set{ _strategy.Subscribers = value;} }
+        public Dictionary<EventNames, List<Entry>> Queue { get { return _strategy.Queue; } }
+        public Dictionary<EventNames, List<string>> Subscribers { get { return _strategy.Subscribers;  } set{ _strategy.Subscribers = value;} }
         public List<BackLog> Backlog { get { return _strategy.Backlog;  } }
 
         #endregion
@@ -41,9 +41,9 @@ namespace sharpbox.Notification
         public void ConfigureNotification(Dispatch.Client dispatcher)
         {
 
-            foreach (var p in dispatcher.AvailablePublications.Where(x => !x.ToString().ToLower().Contains("onnotification"))) // subscribe to everything but our own events
+            foreach (var p in dispatcher.AvailableEvents.Where(x => !x.ToString().ToLower().Contains("onnotification"))) // subscribe to everything but our own events
             {
-                dispatcher.Subscribe(p, ProcessPackage);
+                dispatcher.Listen(p, ProcessPackage);
             }
 
         }
@@ -92,7 +92,7 @@ namespace sharpbox.Notification
             _strategy.LoadSubscribers(dispatcher);
         }
 
-        public void AddSubscriber(PublisherNames publisherName, string userId)
+        public void AddSubscriber(EventNames publisherName, string userId)
         {
             _strategy.AddSubscriber(publisherName, userId);
         }

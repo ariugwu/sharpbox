@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using sharpbox.Data;
+using sharpbox.Data.Strategy;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit.Strategy
@@ -10,7 +11,7 @@ namespace sharpbox.Audit.Strategy
     {
         public BaseStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props = null)
         {
-            Repository = new Repository<Package>(dispatcher, props: props);
+            Repository = new Repository<Package>(dispatcher, new XmlStrategy<Package>(dispatcher, props), props);
 
             Load(dispatcher);
         }
@@ -22,6 +23,12 @@ namespace sharpbox.Audit.Strategy
         public void RecordDispatch(Dispatch.Client dispatcher, Package package)
         {
             Repository.Create(dispatcher, package);
+            Load(dispatcher);
+        }
+
+        public void RecordDispatch(Dispatch.Client dispatcher, Request request)
+        {
+            //Repository.Create(dispatcher, request);
             Load(dispatcher);
         }
 

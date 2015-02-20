@@ -6,19 +6,19 @@ namespace sharpbox.Cli.Model.Domain.Dispatch
     /// <summary>
     /// This will be the list that all calls within the application will use to register their dispatch requests. The Dispatch module has the built action defined. This is for extension.
     /// </summary>
-    public class PublicationNamesExtension : PublisherNames
+    public class PublicationNamesExtension : EventNames
     {
-        public static readonly PublisherNames ExampleExtendedPublisher = new PublisherNames("ExampleExtendedPublisher");
+        public static readonly EventNames ExampleExtendedPublisher = new EventNames("ExampleExtendedPublisher");
 
 
         #region Field(s)
 
-        private static List<PublisherNames> _extendedPublisherList; 
+        private static List<EventNames> _extendedPublisherList; 
 
         #endregion
         #region Properties
 
-        public static List<PublisherNames> ExtendedPubList
+        public static List<EventNames> ExtendedPubList
         {
             get
             {
@@ -27,7 +27,7 @@ namespace sharpbox.Cli.Model.Domain.Dispatch
                 var pubList = DefaultPubList();
 
                 // Create a list of our app specific publishers.
-                var extensionList = new List<PublisherNames>()
+                var extensionList = new List<EventNames>()
                 {
                     ExampleExtendedPublisher
                 };
