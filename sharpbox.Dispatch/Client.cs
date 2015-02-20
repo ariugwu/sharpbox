@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using sharpbox.Dispatch.Model;
 
@@ -22,7 +23,7 @@ namespace sharpbox.Dispatch
         #region Field(s)
 
         private Dictionary<EventNames, List<Action<Client, Package>>> _eventSubscribers;
-        private Dictionary<ActionNames, Action<Client, Request>> _actionSubscribers;
+        private Dictionary<ActionNames, List<Action<Client, Request>>> _actionSubscribers;
         private List<EventNames> _availableEvents;
         private List<ActionNames> _availableActions;
         #endregion
@@ -42,12 +43,12 @@ namespace sharpbox.Dispatch
             set { _eventSubscribers = value; }
         }
 
-        public Dictionary<ActionNames, Action<Client, Request>> ActionSubscribers
+        public Dictionary<ActionNames, List<Action<Client, Request>>> ActionSubscribers
         {
 
             get
             {
-                return _actionSubscribers ?? (_actionSubscribers = new Dictionary<ActionNames, Action<Client, Request>>());
+                return _actionSubscribers ?? (_actionSubscribers = new Dictionary<ActionNames, List<Action<Client, Request>>>());
             }
 
             set { _actionSubscribers = value; }
@@ -78,7 +79,7 @@ namespace sharpbox.Dispatch
         /// <param name="method"></param>
         public void Listen(EventNames publisherName, Action<Client, Package> method)
         {
-            EnsureSubscriberKey(publisherName);
+            EnsureEventSubscriberKey(publisherName);
 
             EventSubscribers[publisherName].Add(method);
         }
@@ -87,16 +88,9 @@ namespace sharpbox.Dispatch
         {
             if (!ActionSubscribers.ContainsKey(ActionNames.SetFeedback) && actionName != ActionNames.SetFeedback) throw new Exception("A 'SetFeedback' action must be registered before using any action registration!");
 
-            if (ActionSubscribers.ContainsKey(actionName))
-            {
-                var feedback = new Feedback { ActionName = ActionNames.RegisterAction, Message = "Action is already registered!", Successful = false };
+            EnsureActionSubscriberKey(actionName);
 
-                Process(new Request { ActionName = ActionNames.SetFeedback, Entity = feedback, Message = feedback.Message, RequestId = 0, Type = typeof(Feedback), UserId = CurrentUserId });
-            }
-            else
-            {
-                ActionSubscribers.Add(actionName, method);
-            }
+            ActionSubscribers[actionName].Add(method);
         }
 
         /// <summary>
@@ -105,7 +99,7 @@ namespace sharpbox.Dispatch
         /// <param name="package"></param>
         public void Broadcast(Package package)
         {
-            EnsureSubscriberKey(package.EventName);
+            EnsureEventSubscriberKey(package.EventName);
 
             foreach (var p in EventSubscribers[package.EventName])
             {
@@ -127,19 +121,38 @@ namespace sharpbox.Dispatch
 
         public void Process(Request request)
         {
-            ActionSubscribers[request.ActionName].Invoke(this, request);
+            foreach (var a in ActionSubscribers[request.ActionName])
+            {
+                try
+                {
+                    a.Invoke(this, request);
+                }
+                catch (TargetInvocationException tEx)
+                {
+
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
         }
 
         #endregion
 
         #region Helper(s)
 
-        private void EnsureSubscriberKey(EventNames publisherName)
+        private void EnsureEventSubscriberKey(EventNames eventName)
         {
-            if (!EventSubscribers.ContainsKey(publisherName)) EventSubscribers.Add(publisherName, new List<Action<Client, Package>>());
+            if (!EventSubscribers.ContainsKey(eventName)) EventSubscribers.Add(eventName, new List<Action<Client, Package>>());
 
         }
 
+        private void EnsureActionSubscriberKey(ActionNames actionName)
+        {
+            if (!ActionSubscribers.ContainsKey(actionName)) ActionSubscribers.Add(actionName, new List<Action<Client, Request>>());
+
+        }
         #endregion
 
     }
