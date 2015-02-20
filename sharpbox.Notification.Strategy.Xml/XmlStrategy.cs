@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using sharpbox.Data;
-using sharpbox.Data.Strategy;
 using sharpbox.Dispatch.Model;
 using sharpbox.Notification.Model;
 
-namespace sharpbox.Notification.Strategy
+namespace sharpbox.Notification.Strategy.Xml
 {
-    public class BaseStrategy : IStrategy
+    public class XmlStrategy : IStrategy
     {
-        public BaseStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props)
+        private Io.Client _file;
+        private Dictionary<string, object> _props;
+
+        public XmlStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props)
         {
-            Repository = new Repository<BackLog>(dispatcher, new XmlStrategy<BackLog>(dispatcher, props), props);
+            _file = new Io.Client(new Io.Strategy.Xml.XmlStrategy());
+            _props = props;
+
             LoadBacklog(dispatcher);
             LoadSubscribers(dispatcher);
         }
@@ -20,8 +22,6 @@ namespace sharpbox.Notification.Strategy
         private Dictionary<EventNames, List<Entry>> _queue;
         private Dictionary<EventNames, List<string>> _subscribers;
         private List<BackLog> _backLog;
-
-        public Repository<BackLog> Repository { get; set; }
 
         public Dictionary<EventNames, List<Entry>> Queue { get { return _queue ?? (_queue = new Dictionary<EventNames, List<Entry>>());} set { _queue = value;} }
         public Dictionary<EventNames, List<string>> Subscribers { get{ return _subscribers ?? (_subscribers = new Dictionary<EventNames, List<string>>());} set { _subscribers = value; } }
@@ -73,12 +73,14 @@ namespace sharpbox.Notification.Strategy
 
         public void LoadBacklog(Dispatch.Client dispatcher)
         {
-            _backLog = Repository.All(dispatcher).ToList();
+            var filePath = _props["filePath"].ToString();
+            if (!_file.Exists(filePath)) _file.Write(dispatcher, filePath, new List<BackLog>());
+            Backlog = _file.Read<List<BackLog>>(dispatcher, _props["filePath"].ToString());
         }
 
         public void SaveBackLog(Dispatch.Client dispatcher)
         {
-            Repository.UpdateAll(dispatcher, Backlog);
+            _file.Write(dispatcher, _props["filePath"].ToString(), Backlog);
             LoadBacklog(dispatcher);
         }
 

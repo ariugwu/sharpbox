@@ -3,20 +3,17 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit.Strategy
 {
-    public interface IStrategy<T>
+    public interface IStrategy
     {
-        List<T> Entries { get; set; }
+        List<Package> Trail { get; set; }
 
+        /// <summary>
+        /// Used as a callback to record
+        /// </summary>
+        /// <param name="dispatcher"></param>
+        /// <param name="package"></param>
         void RecordDispatch(Dispatch.Client dispatcher,Package package);
 
         void RecordDispatch(Dispatch.Client dispatcher, Request request);
-
-        void Load(Dispatch.Client dispatcher);
-
-        void Save(Dispatch.Client dispatcher);
-
-        T Create(Dispatch.Client dispatcher, T e);
-
-        T Get(Dispatch.Client dispatcher, int id);
     }
 }

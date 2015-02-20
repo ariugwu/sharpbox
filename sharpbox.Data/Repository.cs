@@ -12,12 +12,10 @@ namespace sharpbox.Data
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="dispatcher"></param>
         /// <param name="strategy">A persistence strategy is required.</param>
-        /// <param name="props">General use dictionary for anything a strategy might need. For xml it's the key "xmlPath", and for EF it's the key "dbContext"</param>
-        public Repository(Dispatch.Client dispatcher, IStrategy<T> strategy, Dictionary<string, object> props = null)
+        public Repository(IStrategy<T> strategy)
         {
-            _strategy = strategy ?? new XmlStrategy<T>(dispatcher, props ?? new Dictionary<string, object> { { "xmlPath", "DataXmlRepository.xml" } });
+            _strategy = strategy;// ?? new XmlStrategy<T>(dispatcher, props ?? new Dictionary<string, object> { { "xmlPath", "DataXmlRepository.xml" } });
         }
 
         public Repository()

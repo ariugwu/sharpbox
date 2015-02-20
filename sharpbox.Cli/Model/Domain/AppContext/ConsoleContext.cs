@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
+using sharpbox.Io;
 
 namespace sharpbox.Cli.Model.Domain.AppContext
 {
@@ -15,11 +17,28 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         public ConsoleContext(string userIdentity, List<EventNames> eventNames, List<ActionNames> actionNames, SmtpClient smtpClient)
             : base(userIdentity, eventNames, actionNames)
         {
-            Notification = new Notification.Client(Dispatch);
             Email = new Email.Client(smtpClient);
-            Log = new Log.Client(Dispatch);
+            File = new Client(new Io.Strategy.Xml.XmlStrategy());
+
+            // The following modules require persistence
             var dispatcher = Dispatch;
-            Audit = new Audit.Client<Package>(ref dispatcher); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
+
+            // Setup auditing
+            // Figure out our working directory
+            var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+            var filename = "AuditLog.xml";
+            var auditStrategy = new Audit.Strategy.Xml.XmlStrategy(dispatcher, new Dictionary<string, object> {{"filePath", filename}});
+            Audit = new Audit.Client(ref dispatcher, auditStrategy); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
+        
+            // Setup Notification
+            filename = "NotificationLog.xml";
+            var notificationStrategy = new Notification.Strategy.Xml.XmlStrategy(dispatcher, new Dictionary<string, object> { { "filePath", filename } });
+            Notification = new Notification.Client(Dispatch, notificationStrategy);
+            
+            // Setup Logging
+            filename = "Log.xml";
+            var fileStrategy = new Log.Strategy.Xml.XmlStrategy(dispatcher, new Dictionary<string, object> { { "filePath", filename } });
+            Log = new Log.Client(fileStrategy);
         }
 
         public Feedback Feedback { get; set; } // Should be populated after every action request.
@@ -27,7 +46,8 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         public Notification.Client Notification { get; set; } // A dispatch friendly notification system.
         public Email.Client Email { get; set; } // A dispatch friendly email client
         public Log.Client Log { get; set; } // A dispatch friendly logger
-        public Audit.Client<Package> Audit { get; set; } // A dispatch friendly Auditor
+        public Audit.Client Audit { get; set; } // A dispatch friendly Auditor
+        public Io.Client File { get; set; } // A dispatch friendly file client
 
         public void ExampleProcessFeedback(sharpbox.Dispatch.Client dispatcher, Request request)
         {

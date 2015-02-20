@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Mail;
-using System.Text;
 using sharpbox.Cli.Model.Domain.AppContext;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Dispatch;
@@ -15,7 +15,7 @@ namespace sharpbox.Cli
         {
 
             // The benefit of the dispatcher is being able to see all subscribed events in one place at one time.
-            // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event.
+            // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event. We use basic since we're using xml and want to prevent event reflection. Audit saves file -> file generates audit message -> Audit saves file.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
             var app = new ConsoleContext("ugwua", PublicationNamesExtension.ExtendedPubList, ActionNames.DefaultActionList(), smtpClient);
@@ -62,7 +62,7 @@ namespace sharpbox.Cli
             app.Log.Info(app.Dispatch, "Test of the info logging!");
 
             // Io: Test file operations. We pass in the dispatcher so everything threads back.
-            Io.Client.Save(app.Dispatch, "text.txt", Encoding.ASCII.GetBytes(String.Format("This is a test string for fun. : {0}", DateTime.Now.ToLongDateString())));
+            app.File.Write<List<Notification.Model.BackLog>>(app.Dispatch, "Test.xml", app.Notification.Backlog);
 
             // Audit: See the results in the audit trail
             var trail = app.Audit.Trail;

@@ -10,9 +10,9 @@ namespace sharpbox.Notification
     {
         #region Constructor(s)
 
-        public Client(Dispatch.Client dispatcher, IStrategy strategy = null, Dictionary<string, object> props = null)
+        public Client(Dispatch.Client dispatcher, IStrategy strategy)
         {
-            _strategy = strategy ?? new BaseStrategy(dispatcher, props ?? new Dictionary<string, object> { { "xmlPath", "NotificationXmlRepository.xml" } });
+            _strategy = strategy;
             ConfigureNotification(dispatcher);
         }
 

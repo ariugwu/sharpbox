@@ -1,88 +1,53 @@
 ﻿using System;
 using System.IO;
 using sharpbox.Dispatch.Model;
+using sharpbox.Io.Strategy;
 
 namespace sharpbox.Io
 {
     public class Client
     {
-        public static void Save(Dispatch.Client dispatcher, string filename, byte[] data)
+
+        public Client(IStrategy strategy)
         {
-
-            WriteContents(filename, data);
-
-            dispatcher.Broadcast(new Package() { Message = "File saved", EventName = EventNames.OnFileAccess, UserId = dispatcher.CurrentUserId });
+            _strategy = strategy;
         }
 
-        public static string[] ReadFileLines(string path)
+        private IStrategy _strategy;
+ 
+        public void Write<T>(Dispatch.Client dispatcher, string filePath, T objectToWrite, bool append = false)
+            where T : new()
         {
-            return System.IO.File.ReadAllLines(path);
+            filePath = FixPath(filePath);
+            _strategy.Write(dispatcher, filePath, objectToWrite, append);
+            dispatcher.Broadcast(new Package() { Message = "File Written", EventName = EventNames.OnFileCreate, UserId = dispatcher.CurrentUserId });
+
         }
 
-        /// <summary>
-        /// Copies the contents of input to output. Doesn't close either stream.
-        /// </summary>
-        private void CopyStream(Stream input, Stream output)
+        public T Read<T>(Dispatch.Client dispatcher, string filePath) where T : new()
         {
-            var buffer = new byte[8 * 1024];
-            int len;
-            while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                output.Write(buffer, 0, len);
-            }
+            filePath = FixPath(filePath);
+            var result = _strategy.Read<T>(dispatcher, filePath);
+            dispatcher.Broadcast(new Package() { Message = "File Read", EventName = EventNames.OnFileAccess, UserId = dispatcher.CurrentUserId });
+
+            return result;
         }
 
-        public static byte[] Load(Dispatch.Client dispatcher, string filename)
+        public void Delete<T>(Dispatch.Client dispatcher, string filePath) where T : new()
         {
-
-            var data = ReadContents(filename);
-
-            dispatcher.Broadcast(new Package() { Message = "File saved", EventName = EventNames.OnFileAccess, UserId = dispatcher.CurrentUserId });
-
-            return data;
+            filePath = FixPath(filePath);
+            _strategy.Delete<T>(dispatcher, filePath);
+            dispatcher.Broadcast(new Package() { Message = "File Deleted", EventName = EventNames.OnFileDelete, UserId = dispatcher.CurrentUserId });
         }
 
-        public static void SaveAudit(Dispatch.Client dispatcher, string filename, byte[] data)
-        {
-            WriteContents(filename, data);
-
-            dispatcher.Broadcast(new Package() { Message = "File saved", EventName = EventNames.OnAuditPersist, UserId = dispatcher.CurrentUserId });
-        }
-
-        public static byte[] LoadAudit(Dispatch.Client dispatcher, string filename)
-        {
-            var data = ReadContents(filename);
-
-            dispatcher.Broadcast(new Package() { Message = "Audit File loaded.", EventName = EventNames.OnAuditLoad, UserId = dispatcher.CurrentUserId });
-
-            return data;
-        }
-
-        private static byte[] ReadContents(string filename)
-        {
-            var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
-            byte[] data = null;
-            if (path != null)
-            {
-                path = path.Replace(@"file:\", String.Empty);
-                data = System.IO.File.ReadAllBytes(Path.Combine(path, filename));
-            }
-            else
-            {
-                throw new DirectoryNotFoundException("Could not find path.");
-            }
-
-            return data;
-        }
-
-        private static void WriteContents(string filename, byte[] data)
+        private static string FixPath(string filePath)
         {
             var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
 
             if (path != null)
             {
                 path = path.Replace(@"file:\", String.Empty);
-                File.WriteAllBytes(Path.Combine(path, filename), data);
+                return Path.Combine(path, filePath);
             }
             else
             {
@@ -90,38 +55,10 @@ namespace sharpbox.Io
             }
         }
 
-        public static void Delete(Dispatch.Client dispatcher, string filename)
+        public bool Exists(string filename)
         {
-            var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
 
-            if (path != null)
-            {
-                path = path.Replace(@"file:\", String.Empty);
-                System.IO.File.Delete(Path.Combine(path, filename));
-            }
-            else
-            {
-                throw new DirectoryNotFoundException("Could not find path.");
-            }
-
-            dispatcher.Broadcast(new Package() { Message = "File saved", EventName = EventNames.OnFileDelete, UserId = dispatcher.CurrentUserId });
-        }
-
-        public static bool Exists(string filename)
-        {
-            var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
-
-            if (path != null)
-            {
-                path = path.Replace(@"file:\", String.Empty);
-                bool exists = System.IO.File.Exists(Path.Combine(path, filename));
-
-                return exists;
-            }
-            else
-            {
-                throw new DirectoryNotFoundException("Could not find path.");
-            }
+          return System.IO.File.Exists(filename);
 
         }
 

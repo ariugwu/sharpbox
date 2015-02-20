@@ -6,40 +6,24 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit
 {
-    public class Client<T> where T : class
+    public class Client
     {
-        #region Field(s)
 
-        private Audit.Strategy.IStrategy<T> _strategy;
+        private IStrategy _strategy;
 
-        #endregion
+        public List<Package> Trail { get { return _strategy.Trail; } } 
 
-        #region Properties
-
-        public List<T> Trail { get { return _strategy.Entries; } } 
-
-        #endregion
-
-        #region Constructor(s)
-
-        public Client(ref Dispatch.Client dispatcher, Audit.Strategy.IStrategy<T> strategy = null, Dictionary<string, object> props = null, AuditLevel auditLevel = AuditLevel.Basic)
+        public Client(ref Dispatch.Client dispatcher, IStrategy strategy, AuditLevel auditLevel = AuditLevel.Basic)
         {
-            _strategy = strategy ?? new BaseStrategy<T>(dispatcher, props ?? new Dictionary<string, object> { { "xmlPath", "AuditXmlRepository.xml" } });
+            _strategy = strategy; //?? new BaseStrategy<T>(dispatcher, props ?? new Dictionary<string, object> { { "xmlPath", "AuditXmlRepository.xml" } });
             ConfigureAuditLevel(dispatcher, auditLevel);
         }
-        #endregion
 
-        #region Strategy Methods
-
-        public void Record(Dispatch.Client dispatcher, T entity)
+        public void Record(Dispatch.Client dispatcher, Package package)
         {
-            var result = _strategy.Create(dispatcher,entity);
-            dispatcher.Broadcast(new Package() { EventName = EventNames.OnAuditRecord, Message = "Audit entry recorded. Please check the Audit.Trail for details.", Entity = result, Type = this.GetType(), PackageId = 0, UserId = dispatcher.CurrentUserId });
+            _strategy.RecordDispatch(dispatcher,package);
+            dispatcher.Broadcast(new Package() { EventName = EventNames.OnAuditRecord, Message = "Audit entry recorded. Please check the Audit.Trail for details.", Entity = package, Type = typeof(Package), PackageId = 0, UserId = dispatcher.CurrentUserId });
         }
-
-        #endregion
-
-        #region Helper(s)
 
         private void ConfigureAuditLevel(Dispatch.Client dispatcher, AuditLevel auditLevel = AuditLevel.Basic)
         {
@@ -54,7 +38,7 @@ namespace sharpbox.Audit
             {
                 case AuditLevel.Basic:
                     // For the basic call we excude audit calls and data persistence since the first is needless/problematic (event reflection) and the later is noisy and better served by other monitors.
-                    list = dispatcher.AvailableEvents.Where(x => !x.ToString().ToLower().Contains("onaudit") && !x.ToString().ToLower().Contains("ondata")).ToList();
+                    list = dispatcher.AvailableEvents.Where(x => !x.ToString().ToLower().Contains("onaudit") && !x.ToString().ToLower().Contains("ondata") && !x.ToString().ToLower().Contains("onfile")).ToList();
                     foreach (var p in list)
                     {
                         dispatcher.Listen(p, _strategy.RecordDispatch);
@@ -73,6 +57,5 @@ namespace sharpbox.Audit
             }
         }
 
-        #endregion
     }
 }

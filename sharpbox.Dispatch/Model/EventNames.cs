@@ -8,34 +8,22 @@ namespace sharpbox.Dispatch.Model
     public class EventNames
     {
 
-        #region Available Publishers List
 
-        #region Audit
         public static readonly EventNames OnAuditRecord = new EventNames("OnAuditRecord");
         public static readonly EventNames OnAuditPersist = new EventNames("OnAuditPersist");
         public static readonly EventNames OnAuditLoad = new EventNames("OnAuditLoad");
-        #endregion
+        public static readonly EventNames OnRecordAction = new EventNames("OnRecordAction");
 
-        #region Email
         public static readonly EventNames OnEmailSend = new EventNames("OnEmailSend");
-        #endregion
 
-        #region Io
         public static readonly EventNames OnFileCreate = new EventNames("OnFileCreate");
         public static readonly EventNames OnFileDelete = new EventNames("OnFileDelete");
         public static readonly EventNames OnFileAccess = new EventNames("OnFileAccess");
-        #endregion
-
-        #region Log
 
         public static readonly EventNames OnLogTrace = new EventNames("OnLogTrace");
         public static readonly EventNames OnLogInfo = new EventNames("OnLogInfo");
         public static readonly EventNames OnLogWarning = new EventNames("OnLogWarning");
         public static readonly EventNames OnLogException = new EventNames("OnLogException");
-
-        #endregion
-
-        #region Data
 
         public static readonly EventNames OnDataCreate = new EventNames("OnDataCreate");
         public static readonly EventNames OnDataUpdate = new EventNames("OnDataUpdate");
@@ -43,33 +31,16 @@ namespace sharpbox.Dispatch.Model
         public static readonly EventNames OnDataGetById = new EventNames("OnDataGetById");
         public static readonly EventNames OnDataGetAll = new EventNames("OnDataGetAll");
 
-        #endregion
-
-        #region Membership
-
         public static readonly EventNames OnUserChange = new EventNames("OnUserChange");
-
-        #endregion
-
-        #region Notification
 
         public static readonly EventNames OnNotificationAddQueueEntry = new EventNames("OnNotificationAddQueueEntry");
         public static readonly EventNames OnNotificationAddBacklogItem = new EventNames("OnNotificationAddBacklogItem");
         public static readonly EventNames OnNotificationSaveBacklog = new EventNames("OnNotificationSaveBacklog");
         public static readonly EventNames OnNotificationSaveQueue = new EventNames("OnNotificationSaveQueue");
         public static readonly EventNames OnNotificationNotify = new EventNames("OnNotificationNotify");
-        #endregion
-
-        #endregion
-
-        #region Field(s)
 
         protected string _value;
 
-        #endregion
-
-
-        #region Constructor(s)
         public EventNames(string value)
         {
             _value = value;
@@ -77,18 +48,10 @@ namespace sharpbox.Dispatch.Model
 
         public EventNames() { }
 
-        #endregion
-
-
-        #region Override(s)
         public override string ToString()
         {
             return _value;
         }
-
-        #endregion
-
-        #region Method(s)
 
         public static List<EventNames> DefaultPubList()
         {
@@ -108,10 +71,10 @@ namespace sharpbox.Dispatch.Model
                 OnNotificationAddQueueEntry,
                 OnNotificationNotify,
                 OnNotificationSaveBacklog,
-                OnNotificationSaveQueue
+                OnNotificationSaveQueue,
+                OnRecordAction
             };
         } 
 
-        #endregion
     }
 }
