@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sharpbox.Audit.Strategy.InMemory
+namespace sharpbox.Data.Strategy.InMemory
 {
-    public class InMemoryStrategy
+    public class Class1
     {
     }
 }

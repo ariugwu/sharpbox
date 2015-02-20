@@ -10,7 +10,7 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
         /// </summary>
         /// <param name="userIdentity">Used to create a Dispatch instance which is then used to bootstrap Notification, Log, and Audit functionality.</param>
-        /// <param name="extendedPublisherNames">Used to bootstrap Dispatch. this way things like Audit wire into whatever events are in a derived system as well as the default list. If not provided then at empty list is used.</param>
+        /// <param name="publisherNames">Used to bootstrap Dispatch. this way things like Audit wire into whatever events are in a derived system as well as the default list. If not provided then at empty list is used.</param>
         /// <param name="smtpClient">Powers the email client.</param>
         public ConsoleContext(string userIdentity, List<PublisherNames> publisherNames, SmtpClient smtpClient)
             : base(userIdentity, publisherNames)
@@ -19,7 +19,7 @@ namespace sharpbox.Cli.Model.Domain.AppContext
             Email = new Email.Client(smtpClient);
             Log = new Log.Client(Dispatch);
             var dispatcher = Dispatch;
-            Audit = new Client<Package>(ref dispatcher); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
+            Audit = new Audit.Client<Package>(ref dispatcher); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
         }
 
         public Notification.Client Notification { get; set; } // A dispatch friendly notification system.

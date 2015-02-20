@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sharpbox.Audit.Strategy.Xml
+namespace sharpbox.Data.Strategy.Binary
 {
-    public class XmlStrategy
+    public class Class1
     {
     }
 }

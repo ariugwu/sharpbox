@@ -15,7 +15,7 @@ namespace sharpbox
         protected AppContext(string userIdentity, List<PublisherNames> extendedPublisherNames = null)
         {
             // Pub/Sub System(s)
-            Dispatch = new Client(userIdentity, extendedPublisherNames ?? new List<PublisherNames());
+            Dispatch = new Client(userIdentity, extendedPublisherNames ?? new List<PublisherNames>());
         }
 
         protected AppContext() { }

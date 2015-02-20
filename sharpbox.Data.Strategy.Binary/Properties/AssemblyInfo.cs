@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("sharpbox.Audit.Strategy.InMemory")]
+[assembly: AssemblyTitle("sharpbox.Data.Strategy.Binary")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("sharpbox.Audit.Strategy.InMemory")]
+[assembly: AssemblyProduct("sharpbox.Data.Strategy.Binary")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("76785a07-a0cc-44ab-b08c-db8960b24ca2")]
+[assembly: Guid("653ff7ef-1fe0-4fe4-8a55-437f903d1613")]
 
 // Version information for an assembly consists of the following four values:
 //

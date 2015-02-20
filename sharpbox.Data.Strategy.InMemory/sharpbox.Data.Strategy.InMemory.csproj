@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{820C72C5-8C8B-43B2-9C08-193EC8FB6346}</ProjectGuid>
+    <ProjectGuid>{70CC1478-E84B-4DDE-A878-35C331E7A5E6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>sharpbox.Audit.Strategy.Xml</RootNamespace>
-    <AssemblyName>sharpbox.Audit.Strategy.Xml</AssemblyName>
+    <RootNamespace>sharpbox.Data.Strategy.InMemory</RootNamespace>
+    <AssemblyName>sharpbox.Data.Strategy.InMemory</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="XmlStrategy.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

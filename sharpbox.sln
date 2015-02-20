@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox", "sharpbox\sharpbox.csproj", "{5421FF47-83AE-4E05-80F0-368FD912D50A}"
 EndProject
@@ -41,9 +41,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Data.Strategy.Xml"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Data.Strategy.EntityFramework", "sharpbox.Data.Strategy.EntityFramework\sharpbox.Data.Strategy.EntityFramework.csproj", "{FD67DC94-C5BB-4FD9-BD62-FF89A054C921}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Audit.Strategy.InMemory", "sharpbox.Audit.Strategy.InMemory\sharpbox.Audit.Strategy.InMemory.csproj", "{2AC6F020-F3B7-4132-9A77-71A9ADC85483}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Data.Strategy.Binary", "sharpbox.Data.Strategy.Binary\sharpbox.Data.Strategy.Binary.csproj", "{F399CD72-CF52-4F36-8651-3B419FB1C9FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Audit.Strategy.Xml", "sharpbox.Audit.Strategy.Xml\sharpbox.Audit.Strategy.Xml.csproj", "{820C72C5-8C8B-43B2-9C08-193EC8FB6346}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Data.Strategy.InMemory", "sharpbox.Data.Strategy.InMemory\sharpbox.Data.Strategy.InMemory.csproj", "{70CC1478-E84B-4DDE-A878-35C331E7A5E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,14 +111,14 @@ Global
 		{FD67DC94-C5BB-4FD9-BD62-FF89A054C921}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD67DC94-C5BB-4FD9-BD62-FF89A054C921}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD67DC94-C5BB-4FD9-BD62-FF89A054C921}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AC6F020-F3B7-4132-9A77-71A9ADC85483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AC6F020-F3B7-4132-9A77-71A9ADC85483}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AC6F020-F3B7-4132-9A77-71A9ADC85483}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AC6F020-F3B7-4132-9A77-71A9ADC85483}.Release|Any CPU.Build.0 = Release|Any CPU
-		{820C72C5-8C8B-43B2-9C08-193EC8FB6346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{820C72C5-8C8B-43B2-9C08-193EC8FB6346}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{820C72C5-8C8B-43B2-9C08-193EC8FB6346}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{820C72C5-8C8B-43B2-9C08-193EC8FB6346}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F399CD72-CF52-4F36-8651-3B419FB1C9FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F399CD72-CF52-4F36-8651-3B419FB1C9FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F399CD72-CF52-4F36-8651-3B419FB1C9FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F399CD72-CF52-4F36-8651-3B419FB1C9FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70CC1478-E84B-4DDE-A878-35C331E7A5E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70CC1478-E84B-4DDE-A878-35C331E7A5E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70CC1478-E84B-4DDE-A878-35C331E7A5E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70CC1478-E84B-4DDE-A878-35C331E7A5E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,7 +139,7 @@ Global
 		{36073F41-F30E-4D74-A8B0-92A0A1FBD95C} = {5B470941-84E5-482A-AC79-F26CF280798C}
 		{D7B33398-FEA9-4B30-9F31-3547433879A5} = {5B470941-84E5-482A-AC79-F26CF280798C}
 		{FD67DC94-C5BB-4FD9-BD62-FF89A054C921} = {5B470941-84E5-482A-AC79-F26CF280798C}
-		{2AC6F020-F3B7-4132-9A77-71A9ADC85483} = {5B470941-84E5-482A-AC79-F26CF280798C}
-		{820C72C5-8C8B-43B2-9C08-193EC8FB6346} = {5B470941-84E5-482A-AC79-F26CF280798C}
+		{F399CD72-CF52-4F36-8651-3B419FB1C9FA} = {5B470941-84E5-482A-AC79-F26CF280798C}
+		{70CC1478-E84B-4DDE-A878-35C331E7A5E6} = {5B470941-84E5-482A-AC79-F26CF280798C}
 	EndGlobalSection
 EndGlobal
