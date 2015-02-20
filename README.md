@@ -1,27 +1,20 @@
 # sharpbox
 A group of common intranet application components (modules) that are encapsulated within a (app) context and communicate via a dispatcher. The dispatcher and the concept of a unidirectional data flow come from the [Facebook Flux Architecture](http://facebook.github.io/flux/docs/overview.html).
 
-## Modules 
-Most projects are simply thin wrappers for injecting the dispatcher dependency. The strategy pattern is also used heavily to allow for a good deal of implementation flexibility without compromising the integrity of the framework.
+The basic approach looks like this:
 
-### Audit
-Can be configured via Audit Levels. For example the 'All' level will register a callback for all available publications. When in this state all actions from the other modules will be logged. (The actual audit action will be ignored to prevent looping)
+```c#
+var smtpClient = new SmtpClient("smtp.google.com", 587);
+var app = new ConsoleContext("ugwua", PublicationNamesExtension.ExtendedPubList, ActionNames.DefaultActionList(), smtpClient);
 
-### Email
-A thin wrapper for the System.Net.Mail namespace. Functionality may expand in the future.
+// Register a callback for the 'SetFeedback' action
+app.Dispatch.Register(ActionNames.SetFeedback, app.ExampleProcessFeedback);
 
-### Log
-Logging is very simple and differs from Auditing only in that it utilizies System.Runtime.CompilerServices to assist in the log entry formatting.
+// Create a new feedback message and ask the dispatcher to process it.
+var feedback = new Feedback{ ActionName = ActionNames.ChangeUser, Message = "Meaningless message", Successful = true};
 
-### Notification
-Much like auditing this will register itself with all known publishers. It will keep a queue of all actions which have occured during a session. It will persist a backlog of messages to users who subcribed to various events.
+// The goal is to only have one primary action do the processing. Other system monitoring events may also be called (auditing for example).
+app.Dispatch.Process(new Request{ ActionName = ActionNames.SetFeedback, Message = "A test to set the feedback", Entity = feedback, RequestId = 0, Type = typeof(Feedback), UserId = app.Dispatch.CurrentUserId});
 
-### Io
-I thin wrapper for the File namespace.
-
-### Dispatch
-Inspired by the Facebook Flux architecture this module is common to all enteral modules and can the list of available publishers can be extended by the calling layer.
-
-### Data
-Generic repository with two baked in strategies: XML and EF
-Currently XML is the default storage for the Audit module.
+// In this example the app (application context) is the store (Flux term) and container for it's own components. So it's // responsible for processing actions and passing those updates to its components.
+```
