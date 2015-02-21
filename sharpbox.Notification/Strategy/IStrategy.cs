@@ -17,7 +17,7 @@ namespace sharpbox.Notification.Strategy
         Dictionary<EventNames, List<string>> Subscribers { get; set; }
 
         // The backlog is the list of messages that have been or need to be sent to subscribers. Usually persisted to an outside system.
-        List<BackLog> Backlog { get; set; }
+        List<BackLog> PendingMessages { get; set; }
 
         void ProcessPackage(Dispatch.Client dispatcher, Package package);
 
@@ -41,7 +41,7 @@ namespace sharpbox.Notification.Strategy
         /// Add a item to backlog
         /// </summary>
         /// <param name="dispatcher"></param>
-        /// <param name="backlog">Backlog item represents a message which needs or has been sent to a use.</param>
+        /// <param name="backlog">PendingMessages item represents a message which needs or has been sent to a use.</param>
         void AddBackLogItem(Dispatch.Client dispatcher, BackLog backlog);
 
         void AddQueueEntry(Entry entry);

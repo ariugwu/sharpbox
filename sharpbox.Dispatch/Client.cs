@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using sharpbox.Dispatch.Model;
 
@@ -109,11 +108,11 @@ namespace sharpbox.Dispatch
                 }
                 catch (TargetInvocationException tEx)
                 {
-
+                    this.Process(new Request{ ActionName = ActionNames.LogException, Entity = tEx, Message = String.Format("The following method failed: {0}", p.Method.Name), RequestId = 0, Type = tEx.GetType(), UserId = CurrentUserId});
                 }
                 catch (Exception ex)
                 {
-
+                    this.Process(new Request { ActionName = ActionNames.LogException, Entity = ex, Message = String.Format("The following method failed: {0}", p.Method.Name), RequestId = 0, Type = ex.GetType(), UserId = CurrentUserId });
                 }
             }
         }
@@ -129,11 +128,11 @@ namespace sharpbox.Dispatch
                 }
                 catch (TargetInvocationException tEx)
                 {
-
+                    this.Process(new Request { ActionName = ActionNames.LogException, Entity = tEx, Message = String.Format("The following method failed: {0}", a.Method.Name), RequestId = 0, Type = tEx.GetType(), UserId = CurrentUserId });
                 }
                 catch (Exception ex)
                 {
-
+                    this.Process(new Request { ActionName = ActionNames.LogException, Entity = ex, Message = String.Format("The following method failed: {0}", a.Method.Name), RequestId = 0, Type = ex.GetType(), UserId = CurrentUserId });
                 }
             }
         }

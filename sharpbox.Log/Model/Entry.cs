@@ -4,6 +4,8 @@ namespace sharpbox.Log.Model
 {
     public class Entry
     {
+        public Entry() { }
+
         public int EntryId { get; set; }
         public EntryType EntryType { get; set; }
         public string Message { get; set; }

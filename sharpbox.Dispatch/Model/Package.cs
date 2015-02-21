@@ -4,6 +4,8 @@ namespace sharpbox.Dispatch.Model
 {
     public class Package
     {
+        public Package() { }
+
         public int PackageId { get; set; }
         public string Message { get; set; }
         public EventNames EventName { get; set; }

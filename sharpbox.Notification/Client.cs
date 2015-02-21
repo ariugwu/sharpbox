@@ -32,7 +32,7 @@ namespace sharpbox.Notification
 
         public Dictionary<EventNames, List<Entry>> Queue { get { return _strategy.Queue; } }
         public Dictionary<EventNames, List<string>> Subscribers { get { return _strategy.Subscribers;  } set{ _strategy.Subscribers = value;} }
-        public List<BackLog> Backlog { get { return _strategy.Backlog;  } }
+        public List<BackLog> PendingMessages { get { return _strategy.PendingMessages;  } }
 
         #endregion
 

@@ -26,7 +26,7 @@ namespace sharpbox.Notification.Strategy.File
         public Dictionary<EventNames, List<Entry>> Queue { get { return _queue ?? (_queue = new Dictionary<EventNames, List<Entry>>());} set { _queue = value;} }
         public Dictionary<EventNames, List<string>> Subscribers { get{ return _subscribers ?? (_subscribers = new Dictionary<EventNames, List<string>>());} set { _subscribers = value; } }
 
-        public List<BackLog> Backlog { get { return _backLog ?? (_backLog = new List<BackLog>()); } set { _backLog = value;} }
+        public List<BackLog> PendingMessages { get { return _backLog ?? (_backLog = new List<BackLog>()); } set { _backLog = value;} }
  
         public void ProcessPackage(Dispatch.Client dispatcher, Package package)
         {
@@ -54,7 +54,7 @@ namespace sharpbox.Notification.Strategy.File
                 AddBackLogItem(dispatcher, new BackLog
                 {
                     AttempNumber = 0,
-                    BackLogId = Backlog.Count + 1,
+                    BackLogId = PendingMessages.Count + 1,
                     NextAttempTime = null,
                     EntryId = entry.EntryId,
                     SentDate = null,
@@ -75,12 +75,12 @@ namespace sharpbox.Notification.Strategy.File
         {
             var filePath = _props["filePath"].ToString();
             if (!_file.Exists(filePath)) _file.Write(dispatcher, filePath, new List<BackLog>());
-            Backlog = _file.Read<List<BackLog>>(dispatcher, _props["filePath"].ToString());
+            PendingMessages = _file.Read<List<BackLog>>(dispatcher, _props["filePath"].ToString());
         }
 
         public void SaveBackLog(Dispatch.Client dispatcher)
         {
-            _file.Write(dispatcher, _props["filePath"].ToString(), Backlog);
+            _file.Write(dispatcher, _props["filePath"].ToString(), PendingMessages);
             LoadBacklog(dispatcher);
         }
 
@@ -88,9 +88,9 @@ namespace sharpbox.Notification.Strategy.File
         {
             
             //Bail if there is already an entry for this user and this event.
-            if (Backlog.Exists(x => x.EntryId.Equals(backlog.EntryId) && x.UserId.Trim().ToLower().Equals(backlog.UserId.Trim().ToLower()))) return;
+            if (PendingMessages.Exists(x => x.EntryId.Equals(backlog.EntryId) && x.UserId.Trim().ToLower().Equals(backlog.UserId.Trim().ToLower()))) return;
 
-            Backlog.Add(backlog);
+            PendingMessages.Add(backlog);
             SaveBackLog(dispatcher);
         }
 

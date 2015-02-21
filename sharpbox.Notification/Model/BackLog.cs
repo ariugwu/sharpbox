@@ -4,6 +4,8 @@ namespace sharpbox.Notification.Model
 {
     public class BackLog
     {
+        public BackLog() { }
+
         public int BackLogId { get; set; }
         public int EntryId { get; set; }
         public string UserId { get; set; }

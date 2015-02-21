@@ -62,7 +62,7 @@ namespace sharpbox.Cli
             app.Log.Info(app.Dispatch, "Test of the info logging!");
 
             // Io: Test file operations. We pass in the dispatcher so everything threads back.
-            app.File.Write<List<Notification.Model.BackLog>>(app.Dispatch, "Test.xml", app.Notification.Backlog);
+            app.File.Write<List<Notification.Model.BackLog>>(app.Dispatch, "Test.xml", app.Notification.PendingMessages);
 
             // Audit: See the results in the audit trail
             var trail = app.Audit.Trail;

@@ -15,7 +15,7 @@ namespace sharpbox.Dispatch.Model
 
         #endregion
 
-        #region Available Publishers List
+        #region Available Actions List
 
         public static readonly ActionNames RegisterAction = new ActionNames("RegisterAction");
 
@@ -28,6 +28,14 @@ namespace sharpbox.Dispatch.Model
         #region Membership
 
         public static readonly ActionNames ChangeUser = new ActionNames("ChangeUser");
+
+        #endregion
+
+        #region Logging
+
+        public static readonly ActionNames LogException = new ActionNames("LogException");
+        public static readonly ActionNames LogWarning = new ActionNames("LogWarning");
+        public static readonly ActionNames LogInfo = new ActionNames("LogInfo");
 
         #endregion
 

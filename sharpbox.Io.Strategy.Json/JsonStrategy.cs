@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace sharpbox.Io.Strategy.Json
 {
-    public class Class1
+    public class JsonStrategy
     {
     }
 }

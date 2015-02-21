@@ -19,6 +19,11 @@ namespace sharpbox.Audit
             ConfigureAuditLevel(dispatcher, auditLevel);
         }
 
+        public Client()
+        {
+            
+        }
+
         public void Record(Dispatch.Client dispatcher, Package package)
         {
             _strategy.RecordDispatch(dispatcher,package);
