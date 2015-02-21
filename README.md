@@ -61,16 +61,21 @@ static void Main(string[] args){
   var dispatch = new Dispatch();
   var depA = new DependencyA();
   var debB = new DependencyB();
-  var something = new SomeObject();
-  var container = EncapsulateComponents(dispatch, depA, debB something);
+  var someObject = new SomeObject();
+  var container = EncapsulateComponents(dispatch, depA, debB, someObject);
   
+  // Tell the dispatch that whenever a request to fire is sent for 'FireSomeUnitOfWork' to pass the request to the 'SomeUnitOfWork' callback.
   dispatch.Register(FireSomeUnitOfWork, SomeUnitOfWork);
+  
+  // Once the SomeUnitOfWork fires it will broadcast to anyone listening. Below we'll register some listeners.
   dispatch.Listen(DoStuffExtensionFired, container.UpdateSomethingObject);
-  dispatch.Listen(DoStuffExtensionFired, depA.UpdateWithStatusOfSomeObject);
+  dispatch.Listen(DoStuffExtensionFired, depA.UpdateUsersWithStatusOfSomeObject);
   dispatch.Listen(DoStuffExtensionFired, depB.PersistObject);
   
+  // Send a request to process the object in our container.
   dispatch.Process(FireSomeUnitOfWork, container.Something);
   
+  // It's our containers job to pass the new values of someObject to any components that might need it.
   Debug.WriteLine(container.Something.MutableProperty);
   
 }
