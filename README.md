@@ -1,7 +1,7 @@
 # sharpbox
 A group of common intranet application components (modules) that are encapsulated within a (app) context and communicate via a dispatcher. The dispatcher and the concept of a unidirectional data flow come from the [Facebook Flux Architecture](http://facebook.github.io/flux/docs/overview.html).
 
-The basic approach looks like this:
+## The basic approach looks like this (As seen in the CLI example project):
 
 ```c#
 var smtpClient = new SmtpClient("smtp.google.com", 587);
@@ -18,3 +18,58 @@ app.Dispatch.Process(new Request{ ActionName = ActionNames.SetFeedback, Message 
 
 // In this example the app (application context) is the store (Flux term) and container for it's own components. So it's // responsible for processing actions and passing those updates to its components.
 ```
+## The problem it solves:
+
+#### Turn this
+```c#
+public static T SomeUnitOfWork(T SomeObject, DependencyA depA, DependencyB, depB){
+    // Do Stuff to Object
+    someObject.DoStuffExtension();
+    // Run a check
+    if(someObject.ResultOfExtension > 5){
+      // Do Other stuff.
+    }
+    
+    // Call the first dependency to do something like send email.
+    depA.UpdateWithStatusOfSomeObject(someObject);
+    
+    // Call the second dependency for whatever reason
+    someObject = depB.PersistObject(someObject);
+    
+    return SomeObject;
+}
+
+static void Main(string[] args){
+  var something = new SomeObject();
+  var depA = new DependencyA();
+  var debB = new DependencyB();
+  something = SomeUnitOfWork(something, depA, depB);
+}
+```
+
+#### Into this
+
+```c#
+public static T SomeUnitOfWork(Dispatcher dispatch, T someObject){
+    // Do Stuff to Object
+    someObject.DoStuffExtension();
+    dispatch.BroadCast(DoStuffExtensionFired, someObject);
+    return someObject;
+}
+
+static void Main(string[] args){
+  var dispatch = new Dispatch();
+  var depA = new DependencyA();
+  var debB = new DependencyB();
+  var something = new SomeObject();
+  var container = EncapsulateComponents(dispatch, depA, debB, something);
+  
+  dispatch.Register(FireSomeUnitOfWork, SomeUnitOfWork);
+  dispatch.Listen(DoStuffExtensionFired, depA.UpdateWithStatusOfSomeObject);
+  dispatch.Listen(DoStuffExtensionFired, depB.PersistObject);
+  
+  dispatch.Process(FireSomeUnitOfWork, container.Something);
+  
+  Debug.WriteLine(container.Something.MutableProperty);
+  
+}
