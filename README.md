@@ -22,7 +22,7 @@ app.Dispatch.Process(new Request{ ActionName = ActionNames.SetFeedback, Message 
 
 #### Turn this
 ```c#
-public static T SomeUnitOfWork(T SomeObject, DependencyA depA, DependencyB, depB){
+public static T SomeUnitOfWork(T SomeObject, DependencyA depA, DependencyB depB){
     // Do Stuff to Object
     someObject.DoStuffExtension();
     // Run a check
@@ -62,7 +62,7 @@ static void Main(string[] args){
   var depA = new DependencyA();
   var debB = new DependencyB();
   var something = new SomeObject();
-  var container = EncapsulateComponents(dispatch, depA, debB, something);
+  var container = EncapsulateComponents(dispatch, depA, debB something);
   
   dispatch.Register(FireSomeUnitOfWork, SomeUnitOfWork);
   dispatch.Listen(DoStuffExtensionFired, container.UpdateSomethingObject);
