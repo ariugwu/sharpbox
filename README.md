@@ -1,7 +1,7 @@
 # sharpbox
 A group of common intranet application components (modules) that are encapsulated within a (app) context and communicate via a dispatcher. The dispatcher and the concept of a unidirectional data flow come from the [Facebook Flux Architecture](http://facebook.github.io/flux/docs/overview.html).
 
-## The basic approach looks like this (As seen in the CLI example project):
+## Example (@SEE CLI example project):
 
 ```c#
 var smtpClient = new SmtpClient("smtp.google.com", 587);
@@ -65,6 +65,7 @@ static void Main(string[] args){
   var container = EncapsulateComponents(dispatch, depA, debB, something);
   
   dispatch.Register(FireSomeUnitOfWork, SomeUnitOfWork);
+  dispatch.Listen(DoStuffExtensionFired, container.UpdateSomethingObject);
   dispatch.Listen(DoStuffExtensionFired, depA.UpdateWithStatusOfSomeObject);
   dispatch.Listen(DoStuffExtensionFired, depB.PersistObject);
   
@@ -73,3 +74,8 @@ static void Main(string[] args){
   Debug.WriteLine(container.Something.MutableProperty);
   
 }
+```
+
+The benefit (hopefully) is that we can maintain single responsbility throughout the system. At the same time we can have clean central auditing and extend the system from the calling layer instead of nesting functionality in business logic. 
+
+Keep in the mind that the first example gets *more* complicated in a real example as you add error handling, roll backs, and such. The second example gets *less* complicated as each channel is self contained.
