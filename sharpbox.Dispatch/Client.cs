@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using sharpbox.Dispatch.Model;
 
@@ -108,11 +109,11 @@ namespace sharpbox.Dispatch
                 }
                 catch (TargetInvocationException tEx)
                 {
-                    this.Process(new Request{ ActionName = ActionNames.LogException, Entity = tEx, Message = String.Format("The following method failed: {0}", p.Method.Name), RequestId = 0, Type = tEx.GetType(), UserId = CurrentUserId});
+                    Process(new Request{ ActionName = ActionNames.LogException, Entity = tEx, Message = String.Format("The following method failed: {0}", p.Method.Name), RequestId = 0, Type = tEx.GetType(), UserId = CurrentUserId});
                 }
                 catch (Exception ex)
                 {
-                    this.Process(new Request { ActionName = ActionNames.LogException, Entity = ex, Message = String.Format("The following method failed: {0}", p.Method.Name), RequestId = 0, Type = ex.GetType(), UserId = CurrentUserId });
+                    Process(new Request { ActionName = ActionNames.LogException, Entity = ex, Message = String.Format("The following method failed: {0}", p.Method.Name), RequestId = 0, Type = ex.GetType(), UserId = CurrentUserId });
                 }
             }
         }
@@ -128,18 +129,18 @@ namespace sharpbox.Dispatch
                 }
                 catch (TargetInvocationException tEx)
                 {
-                    this.Process(new Request { ActionName = ActionNames.LogException, Entity = tEx, Message = String.Format("The following method failed: {0}", a.Method.Name), RequestId = 0, Type = tEx.GetType(), UserId = CurrentUserId });
+                    Process(new Request { ActionName = ActionNames.LogException, Entity = tEx, Message = String.Format("The following method failed: {0}", a.Method.Name), RequestId = 0, Type = tEx.GetType(), UserId = CurrentUserId });
                 }
                 catch (Exception ex)
                 {
-                    this.Process(new Request { ActionName = ActionNames.LogException, Entity = ex, Message = String.Format("The following method failed: {0}", a.Method.Name), RequestId = 0, Type = ex.GetType(), UserId = CurrentUserId });
+                    Process(new Request { ActionName = ActionNames.LogException, Entity = ex, Message = String.Format("The following method failed: {0}", a.Method.Name), RequestId = 0, Type = ex.GetType(), UserId = CurrentUserId });
                 }
             }
         }
 
         #endregion
 
-        #region Helper(s)
+        #region Private Helper(s)
 
         private void EnsureEventSubscriberKey(EventNames eventName)
         {
@@ -152,6 +153,27 @@ namespace sharpbox.Dispatch
             if (!ActionSubscribers.ContainsKey(actionName)) ActionSubscribers.Add(actionName, new List<Action<Client, Request>>());
 
         }
+
+        #endregion
+
+        #region Public Helper(s)
+
+        public void ExtendAvailableEvents(List<EventNames> eventNames)
+        {
+            foreach (var e in eventNames.Where(e => !AvailableEvents.Contains(e)))
+            {
+                AvailableEvents.Add(e);
+            }
+        }
+
+        public void ExtendAvailableActions(List<ActionNames> actionNames)
+        {
+            foreach (var a in actionNames.Where(a => !AvailableActions.Contains(a)))
+            {
+                AvailableActions.Add(a);
+            }
+        }
+
         #endregion
 
     }

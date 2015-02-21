@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Net.Mail;
 using sharpbox.Cli.Model.Domain.AppContext;
 using sharpbox.Dispatch.Model;
@@ -28,10 +27,10 @@ namespace sharpbox.Cli
             app.Dispatch.Listen(PublicationNamesExtension.ExampleExtendedPublisher, ExampleListener);
             
             // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
-            app.Dispatch.Broadcast(new Package() { Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, UserId = app.Dispatch.CurrentUserId});
+            app.Dispatch.Broadcast(new Package { Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, UserId = app.Dispatch.CurrentUserId});
 
             // Another test from the subscription we set a few lines above.
-            app.Dispatch.Broadcast(new Package() { Message = "Test of anyone listening to Example Extended publisher.", EventName = PublicationNamesExtension.ExampleExtendedPublisher, UserId = app.Dispatch.CurrentUserId });
+            app.Dispatch.Broadcast(new Package { Message = "Test of anyone listening to Example Extended publisher.", EventName = PublicationNamesExtension.ExampleExtendedPublisher, UserId = app.Dispatch.CurrentUserId });
 
             app.Dispatch.Register(ActionNames.ChangeUser, app.ChangeUser);
 
@@ -62,7 +61,7 @@ namespace sharpbox.Cli
             app.Log.Info(app.Dispatch, "Test of the info logging!");
 
             // Io: Test file operations. We pass in the dispatcher so everything threads back.
-            app.File.Write<List<Notification.Model.BackLog>>(app.Dispatch, "Test.xml", app.Notification.PendingMessages);
+            app.File.Write(app.Dispatch, "Test.xml", app.Notification.PendingMessages);
 
             // Audit: See the results in the audit trail
             var trail = app.Audit.Trail;

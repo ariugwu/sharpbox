@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
-using sharpbox.Io;
 
 namespace sharpbox.Cli.Model.Domain.AppContext
 {
@@ -17,8 +15,10 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         public ConsoleContext(string userIdentity, List<EventNames> eventNames, List<ActionNames> actionNames, SmtpClient smtpClient)
             : base(userIdentity, eventNames, actionNames)
         {
+            // Append all the events and roles we're going to need.
+
             Email = new Email.Client(smtpClient);
-            File = new Client(new Io.Strategy.Xml.XmlStrategy());
+            File = new Io.Client(new Io.Strategy.Xml.XmlStrategy());
 
             // The following modules require persistence
             var dispatcher = Dispatch;

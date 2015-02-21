@@ -43,6 +43,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Log.Strategy.File"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Notification.Strategy.File", "sharpbox.Notification.Strategy.File\sharpbox.Notification.Strategy.File.csproj", "{43837322-2FDB-45D9-92D5-22400C54D908}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Security", "sharpbox.Security\sharpbox.Security.csproj", "{CC785E7E-A11D-4EE0-A29C-379824AB590D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Security.Strategy.Crypto.DpApi", "sharpbox.Security.Strategy.Crypto.DpApi\sharpbox.Security.Strategy.Crypto.DpApi.csproj", "{2B912659-4231-45BA-8D8E-178F48A99BD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Security.Strategy.Crypto.Pgp", "sharpbox.Security.Strategy.Crypto.Pgp\sharpbox.Security.Strategy.Crypto.Pgp.csproj", "{647C1853-3D98-4CDB-A041-984F0F29638B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +119,18 @@ Global
 		{43837322-2FDB-45D9-92D5-22400C54D908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43837322-2FDB-45D9-92D5-22400C54D908}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43837322-2FDB-45D9-92D5-22400C54D908}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC785E7E-A11D-4EE0-A29C-379824AB590D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC785E7E-A11D-4EE0-A29C-379824AB590D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC785E7E-A11D-4EE0-A29C-379824AB590D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC785E7E-A11D-4EE0-A29C-379824AB590D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B912659-4231-45BA-8D8E-178F48A99BD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B912659-4231-45BA-8D8E-178F48A99BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B912659-4231-45BA-8D8E-178F48A99BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B912659-4231-45BA-8D8E-178F48A99BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{647C1853-3D98-4CDB-A041-984F0F29638B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{647C1853-3D98-4CDB-A041-984F0F29638B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{647C1853-3D98-4CDB-A041-984F0F29638B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{647C1853-3D98-4CDB-A041-984F0F29638B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -134,5 +152,8 @@ Global
 		{A9FE2778-C66A-4BDC-A938-CB3823BE6188} = {5B470941-84E5-482A-AC79-F26CF280798C}
 		{285E6890-7735-45DC-B634-C2216C2665CE} = {5B470941-84E5-482A-AC79-F26CF280798C}
 		{43837322-2FDB-45D9-92D5-22400C54D908} = {5B470941-84E5-482A-AC79-F26CF280798C}
+		{CC785E7E-A11D-4EE0-A29C-379824AB590D} = {528C028D-4927-4A8C-9E89-6F7856EEA240}
+		{2B912659-4231-45BA-8D8E-178F48A99BD5} = {5B470941-84E5-482A-AC79-F26CF280798C}
+		{647C1853-3D98-4CDB-A041-984F0F29638B} = {5B470941-84E5-482A-AC79-F26CF280798C}
 	EndGlobalSection
 EndGlobal
