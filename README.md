@@ -1,6 +1,8 @@
 # sharpbox
 A group of common intranet application components (modules) that are encapsulated within a (app) context and communicate via a dispatcher. The dispatcher and the concept of a unidirectional data flow come from the [Facebook Flux Architecture](http://facebook.github.io/flux/docs/overview.html).
 
+Where the simplicity of that approach fails the concepts of [Event Sourcing] (https://msdn.microsoft.com/en-us/library/jj591559.aspx), [CQRS] (https://msdn.microsoft.com/en-us/library/dn568103.aspx) and [Domain Driven Design] (https://domainlanguage.com/ddd/) will come into play. For example an aggregate root is a great candidate for a domain. (i.e - In a Cookbook app the 'Reciepe' would be the aggregate root of Ingredients, Steps, and Notes associated with that entity). However the possible business questions (queries) related to receipes (i.e. - GetAllReceipesWhichIncludeCheese()) should be developed and extended separately from the command domain. So we have a command domain and a query domain (CQRS).
+
 ## Example (@SEE CLI example project):
 
 ```c#
@@ -22,7 +24,7 @@ app.Dispatch.Process(new Request{ ActionName = ActionNames.SetFeedback, Message 
 
 #### Turn this
 ```c#
-public static T SomeUnitOfWork(T SomeObject, DependencyA depA, DependencyB, depB){
+public static T SomeUnitOfWork(T SomeObject, DependencyA depA, DependencyB depB){
     // Do Stuff to Object
     someObject.DoStuffExtension();
     // Run a check
@@ -43,6 +45,10 @@ static void Main(string[] args){
   var something = new SomeObject();
   var depA = new DependencyA();
   var debB = new DependencyB();
+  var logger = new Logger();
+  
+  debB.ObjectPersists += logger.LogEvent;
+  
   something = SomeUnitOfWork(something, depA, depB);
 }
 ```
@@ -61,16 +67,23 @@ static void Main(string[] args){
   var dispatch = new Dispatch();
   var depA = new DependencyA();
   var debB = new DependencyB();
-  var something = new SomeObject();
-  var container = EncapsulateComponents(dispatch, depA, debB, something);
+  var logger = new Logger();
+  var someObject = new SomeObject();
+  var container = EncapsulateComponents(dispatch, depA, debB, logger, someObject);
   
+  // Tell the dispatch that whenever a request to fire is sent for 'FireSomeUnitOfWork' to pass the request to the 'SomeUnitOfWork' callback.
   dispatch.Register(FireSomeUnitOfWork, SomeUnitOfWork);
-  dispatch.Listen(DoStuffExtensionFired, container.UpdateSomethingObject);
-  dispatch.Listen(DoStuffExtensionFired, depA.UpdateWithStatusOfSomeObject);
-  dispatch.Listen(DoStuffExtensionFired, depB.PersistObject);
   
+  // Once the SomeUnitOfWork fires it will broadcast to anyone listening. Below we'll register some listeners.
+  dispatch.Listen(DoStuffExtensionFired, container.UpdateSomethingObject);
+  dispatch.Listen(DoStuffExtensionFired, depA.UpdateUsersWithStatusOfSomeObject);
+  dispatch.Listen(DoStuffExtensionFired, depB.PersistObject);
+  dispatch.Listen(OnDepBObjectPersisted, app.Logger.LogEvent);
+  
+  // Send a request to process the object in our container.
   dispatch.Process(FireSomeUnitOfWork, container.Something);
   
+  // It's our containers job to pass the new values of someObject to any components that might need it.
   Debug.WriteLine(container.Something.MutableProperty);
   
 }
