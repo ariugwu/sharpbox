@@ -1,6 +1,8 @@
 # sharpbox
 A group of common intranet application components (modules) that are encapsulated within a (app) context and communicate via a dispatcher. The dispatcher and the concept of a unidirectional data flow come from the [Facebook Flux Architecture](http://facebook.github.io/flux/docs/overview.html).
 
+Where the simplicity of that approach fails the concepts of [Event Sourcing[ (https://msdn.microsoft.com/en-us/library/jj591559.aspx) will come into play.
+
 ## Example (@SEE CLI example project):
 
 ```c#
