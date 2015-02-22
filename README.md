@@ -45,6 +45,10 @@ static void Main(string[] args){
   var something = new SomeObject();
   var depA = new DependencyA();
   var debB = new DependencyB();
+  var logger = new Logger();
+  
+  debB.ObjectPersists += logger.LogEvent;
+  
   something = SomeUnitOfWork(something, depA, depB);
 }
 ```
@@ -63,8 +67,9 @@ static void Main(string[] args){
   var dispatch = new Dispatch();
   var depA = new DependencyA();
   var debB = new DependencyB();
+  var logger = new Logger();
   var someObject = new SomeObject();
-  var container = EncapsulateComponents(dispatch, depA, debB, someObject);
+  var container = EncapsulateComponents(dispatch, depA, debB, logger, someObject);
   
   // Tell the dispatch that whenever a request to fire is sent for 'FireSomeUnitOfWork' to pass the request to the 'SomeUnitOfWork' callback.
   dispatch.Register(FireSomeUnitOfWork, SomeUnitOfWork);
@@ -73,6 +78,7 @@ static void Main(string[] args){
   dispatch.Listen(DoStuffExtensionFired, container.UpdateSomethingObject);
   dispatch.Listen(DoStuffExtensionFired, depA.UpdateUsersWithStatusOfSomeObject);
   dispatch.Listen(DoStuffExtensionFired, depB.PersistObject);
+  dispatch.Listen(OnDepBObjectPersisted, app.Logger.LogEvent);
   
   // Send a request to process the object in our container.
   dispatch.Process(FireSomeUnitOfWork, container.Something);
