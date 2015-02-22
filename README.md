@@ -1,7 +1,7 @@
 # sharpbox
 A group of common intranet application components (modules) that are encapsulated within a (app) context and communicate via a dispatcher. The dispatcher and the concept of a unidirectional data flow come from the [Facebook Flux Architecture](http://facebook.github.io/flux/docs/overview.html).
 
-Where the simplicity of that approach fails the concepts of [Event Sourcing] (https://msdn.microsoft.com/en-us/library/jj591559.aspx) will come into play.
+Where the simplicity of that approach fails the concepts of [Event Sourcing] (https://msdn.microsoft.com/en-us/library/jj591559.aspx) [CQRS] (https://msdn.microsoft.com/en-us/library/dn568103.aspx) and [Domain Driven Design] (https://domainlanguage.com/ddd/) will come into play. For example an aggregate root is a great candidate for a domain. (i.e - In a Cookbook app the 'Reciepe' would be the aggregate root of Ingredients, Steps, and Notes associated with that entity). However the possible business questions (queries) related to receipes (i.e. - GetAllReceipesWhichIncludeCheese()) should be developed and extended separately from the command domain. So we have a command domain and a query domain (CQRS).
 
 ## Example (@SEE CLI example project):
 
