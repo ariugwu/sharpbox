@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Cli.Model.Domain.AppContext
 {
-    public class ConsoleContext : sharpbox.AppContext
+    public class ExampleContext : sharpbox.DomainContext
     {
         /// <summary>
         /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
@@ -12,7 +13,7 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         /// <param name="userIdentity">Used to create a Dispatch instance which is then used to bootstrap Notification, Log, and Audit functionality.</param>
         /// <param name="eventNames">Used to bootstrap Dispatch. this way things like Audit wire into whatever events are in a derived system as well as the default list. If not provided then at empty list is used.</param>
         /// <param name="smtpClient">Powers the email client.</param>
-        public ConsoleContext(string userIdentity, List<EventNames> eventNames, List<ActionNames> actionNames, SmtpClient smtpClient)
+        public ExampleContext(string userIdentity, List<EventNames> eventNames, List<CommandNames> actionNames, SmtpClient smtpClient)
             : base(userIdentity, eventNames, actionNames)
         {
             // Append all the events and roles we're going to need.
@@ -38,7 +39,7 @@ namespace sharpbox.Cli.Model.Domain.AppContext
             
             // Setup Logging
             filename = "Log.xml";
-            var fileStrategy = new Log.Strategy.File.FileStrategy(dispatcher, persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
+            var fileStrategy = new Log.Strategy.File.FileStrategy(persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
             Log = new Log.Client(fileStrategy);
         }
 
@@ -50,17 +51,17 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         public Audit.Client Audit { get; set; } // A dispatch friendly Auditor
         public Io.Client File { get; set; } // A dispatch friendly file client
 
-        public void ExampleProcessFeedback(sharpbox.Dispatch.Client dispatcher, Request request)
+        public void ExampleProcessFeedback(Request request)
         {
             var feedback = (Feedback) request.Entity;
             Feedback = feedback;
         }
 
-        public void ChangeUser(sharpbox.Dispatch.Client dispatcher, Request request)
+        public void ChangeUser(Request request)
         {
             var entity = (string)request.Entity;
             Dispatch.CurrentUserId = entity;
-            Dispatch.Broadcast(new Package { Entity = request.Entity, Message = "User changed to" + entity, PackageId = 0, EventName = EventNames.OnUserChange, Type = typeof(string), UserId = request.UserId });
         }
+
     }
 }

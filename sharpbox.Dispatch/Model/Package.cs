@@ -6,7 +6,8 @@ namespace sharpbox.Dispatch.Model
     {
         public Package() { }
 
-        public int PackageId { get; set; }
+        public Guid PackageId { get; set; }
+        public int PackageClusteringKey { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
         public string Message { get; set; }
         public EventNames EventName { get; set; }
         public object Entity { get; set; }

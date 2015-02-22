@@ -39,6 +39,8 @@ namespace sharpbox.Dispatch.Model
         public static readonly EventNames OnNotificationSaveQueue = new EventNames("OnNotificationSaveQueue");
         public static readonly EventNames OnNotificationNotify = new EventNames("OnNotificationNotify");
 
+        public static readonly EventNames OnFeedbackSet = new EventNames("OnFeedbackSet");
+
         protected string _value;
 
         public EventNames(string value)

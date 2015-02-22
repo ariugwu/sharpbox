@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Mail;
+using System.Reflection;
 using sharpbox.Cli.Model.Domain.AppContext;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Dispatch;
@@ -17,55 +18,86 @@ namespace sharpbox.Cli
             // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event. We use basic since we're using xml and want to prevent event reflection. Audit saves file -> file generates audit message -> Audit saves file.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
-            var app = new ConsoleContext("ugwua", PublicationNamesExtension.ExtendedPubList, ActionNames.DefaultActionList(), smtpClient);
+            var example = new ExampleContext("ugwua", EventNamesExtension.ExtendedPubList, CommandNames.DefaultActionList(), smtpClient);
 
-            app.Dispatch.Register(ActionNames.SetFeedback, app.ExampleProcessFeedback);
+            // Use this to 1-to-1 map an action to an event. Every action should have on primary "I'm done." broadcast with the updated data.
+            example.Dispatch.CommandEventMap.Add(CommandNames.ChangeUser, EventNames.OnUserChange);
+            example.Dispatch.CommandEventMap.Add(CommandNames.SetFeedback, EventNames.OnFeedbackSet);
 
-            var feedback = new Feedback{ ActionName = ActionNames.ChangeUser, Message = "Meaningless message", Successful = true};
-            app.Dispatch.Process(new Request{ ActionName = ActionNames.SetFeedback, Message = "A test to set the feedback", Entity = feedback, RequestId = 0, Type = typeof(Feedback), UserId = app.Dispatch.CurrentUserId});
+            // Now we need to tell the various commands what to actually do.
+            example.Dispatch.Register(CommandNames.ChangeUser, example.ChangeUser);
+            example.Dispatch.Register(CommandNames.SetFeedback, example.ExampleProcessFeedback);
 
-            app.Dispatch.Listen(PublicationNamesExtension.ExampleExtendedPublisher, ExampleListener);
-            
-            // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
-            app.Dispatch.Broadcast(new Package { Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, UserId = app.Dispatch.CurrentUserId});
+            // Piggy back additional listeners.
+            example.Dispatch.Listen(EventNames.OnUserChange, ExampleListener);
+            example.Dispatch.Listen(EventNames.OnFeedbackSet, ExampleListener);
+
+            // Listen to an under the covers 'system' event
+            example.Dispatch.Listen(EventNames.OnLogException, ExampleListener);
+
+            // Now we're set to actually use the application.
+            var feedback = new Feedback { ActionName = CommandNames.ChangeUser, Message = "Meaningless message", Successful = true };
+
+            try
+            {
+                example.Dispatch.Process(new Request
+                {
+                    CommandName = CommandNames.SetFeedback,
+                    Message = "A test to set the feedback",
+                    Entity = feedback,
+                    RequestId = Guid.NewGuid(),
+                    Type = typeof(Feedback),
+                    UserId = example.Dispatch.CurrentUserId
+                });
+            }
+            catch (TargetInvocationException tEx)
+            {
+                example.Log.Exception(example.Dispatch, tEx.Message);
+                example.Dispatch.Broadcast(new Package { Message = tEx.Message, EventName = EventNames.OnLogException, Entity = tEx, Type = tEx.GetType(), UserId = example.Dispatch.CurrentUserId });
+            }
+            catch (Exception ex)
+            {
+                example.Log.Exception(example.Dispatch, ex.Message);
+                // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
+                example.Dispatch.Broadcast(new Package { Message = ex.Message, EventName = EventNames.OnLogException, Entity = ex, Type = ex.GetType(), UserId = example.Dispatch.CurrentUserId });
+            }
 
             // Another test from the subscription we set a few lines above.
-            app.Dispatch.Broadcast(new Package { Message = "Test of anyone listening to Example Extended publisher.", EventName = PublicationNamesExtension.ExampleExtendedPublisher, UserId = app.Dispatch.CurrentUserId });
+            example.Dispatch.Broadcast(new Package { Message = "Test of anyone listening to Example Extended publisher.", EventName = EventNamesExtension.ExampleExtendedPublisher, UserId = example.Dispatch.CurrentUserId });
 
-            app.Dispatch.Register(ActionNames.ChangeUser, app.ChangeUser);
-
-            // Next we're going to try the built in user change event.
-            Debug.WriteLine("Current UserId: " + app.Dispatch.CurrentUserId);
-            app.Dispatch.Process(new Request{ ActionName = ActionNames.ChangeUser, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null,  UserId = app.Dispatch.CurrentUserId});
-            Debug.WriteLine("Current UserId: " + app.Dispatch.CurrentUserId);
-
+            // Next we're going to try the user change command we registered earlier.
+            Debug.WriteLine("Current UserId: " + example.Dispatch.CurrentUserId);
+            example.Dispatch.Process(new Request { CommandName = CommandNames.ChangeUser, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null, UserId = example.Dispatch.CurrentUserId });
+            Debug.WriteLine("Current UserId: " + example.Dispatch.CurrentUserId);
 
             // Notification
             Debug.WriteLine("###Notification Info####");
-            Debug.WriteLine("Total subscribers: " + app.Notification.Subscribers.Count);
-            Debug.WriteLine("Total queue: " + app.Notification.Queue.Count);
+            Debug.WriteLine("Total subscribers: " + example.Notification.Subscribers.Count);
+            Debug.WriteLine("Total back log: " + example.Notification.Queue.Count);
 
             // Email: Test Email:
             try
             {
                 // We know this will fail because the smtp client isn't fully configured and the emails are bad
-                app.Email.Send(app.Dispatch, new List<string> {"test@testy.com"}, "foo.bar@gmail.com",
+                example.Email.Send(new List<string> { "test@testy.com" }, "foo.bar@gmail.com",
                     "This is a test email from my framework", "Testing is good for you.");
             }
             catch (Exception ex)
             {
-                app.Log.Exception(app.Dispatch, ex.Message);
+                example.Log.Exception(example.Dispatch, ex.Message);
+                // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
+                example.Dispatch.Broadcast(new Package { Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, Entity = ex, Type = ex.GetType(), UserId = example.Dispatch.CurrentUserId });
             }
 
             // Log: Test logging
-            app.Log.Info(app.Dispatch, "Test of the info logging!");
+            example.Log.Info(example.Dispatch, "Test of the info logging!");
 
             // Io: Test file operations. We pass in the dispatcher so everything threads back.
-            app.File.Write(app.Dispatch, "Test.xml", app.Notification.PendingMessages);
+            example.File.Write("Test.xml", example.Notification.Queue);
 
             // Audit: See the results in the audit trail
-            var trail = app.Audit.Trail;
-                Debug.WriteLine(trail.Count);
+            var trail = example.Audit.Trail;
+            Debug.WriteLine(trail.Count);
 
             // The end result of this demo should be the following:
             // Wired and functional: Logging, Email, and IO
@@ -75,7 +107,7 @@ namespace sharpbox.Cli
             Console.ReadLine();
         }
 
-        public static void ExampleListener(Dispatch.Client dispatcher, Package package)
+        public static void ExampleListener(Package package)
         {
             Debug.WriteLine("{0} broadcasts: {1}", package.EventName, package.Message);
         }

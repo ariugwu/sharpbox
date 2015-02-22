@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using sharpbox.Dispatch.Model;
 using sharpbox.Io.Strategy;
 
 namespace sharpbox.Io
@@ -15,29 +14,25 @@ namespace sharpbox.Io
 
         private IStrategy _strategy;
  
-        public void Write<T>(Dispatch.Client dispatcher, string filePath, T objectToWrite, bool append = false)
+        public void Write<T>(string filePath, T objectToWrite, bool append = false)
             where T : new()
         {
             filePath = FixPath(filePath);
-            _strategy.Write(dispatcher, filePath, objectToWrite, append);
-            dispatcher.Broadcast(new Package() { Message = "File Written", EventName = EventNames.OnFileCreate, UserId = dispatcher.CurrentUserId });
-
+            _strategy.Write(filePath, objectToWrite, append);
         }
 
-        public T Read<T>(Dispatch.Client dispatcher, string filePath) where T : new()
+        public T Read<T>(string filePath) where T : new()
         {
             filePath = FixPath(filePath);
-            var result = _strategy.Read<T>(dispatcher, filePath);
-            dispatcher.Broadcast(new Package() { Message = "File Read", EventName = EventNames.OnFileAccess, UserId = dispatcher.CurrentUserId });
+            var result = _strategy.Read<T>(filePath);
 
             return result;
         }
 
-        public void Delete<T>(Dispatch.Client dispatcher, string filePath) where T : new()
+        public void Delete<T>(string filePath) where T : new()
         {
             filePath = FixPath(filePath);
-            _strategy.Delete<T>(dispatcher, filePath);
-            dispatcher.Broadcast(new Package() { Message = "File Deleted", EventName = EventNames.OnFileDelete, UserId = dispatcher.CurrentUserId });
+            _strategy.Delete<T>(filePath);
         }
 
         private static string FixPath(string filePath)

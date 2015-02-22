@@ -6,8 +6,8 @@ namespace sharpbox.Notification.Model
     {
         public BackLog() { }
 
-        public int BackLogId { get; set; }
-        public int EntryId { get; set; }
+        public Guid BackLogId { get; set; }
+        public Guid EntryId { get; set; }
         public string UserId { get; set; }
         public bool WasSent { get; set; }
         public DateTime? SentDate { get; set; }

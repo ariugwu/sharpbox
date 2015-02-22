@@ -2,7 +2,7 @@
 {
     public class Feedback
     {
-        public ActionNames ActionName { get; set; }
+        public CommandNames ActionName { get; set; }
         public bool Successful { get; set; }
         public string Message { get; set; }
     }

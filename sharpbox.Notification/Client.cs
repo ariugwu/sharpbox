@@ -30,9 +30,8 @@ namespace sharpbox.Notification
 
         #region Properties
 
-        public Dictionary<EventNames, List<Entry>> Queue { get { return _strategy.Queue; } }
         public Dictionary<EventNames, List<string>> Subscribers { get { return _strategy.Subscribers;  } set{ _strategy.Subscribers = value;} }
-        public List<BackLog> PendingMessages { get { return _strategy.PendingMessages;  } }
+        public List<BackLog> Queue { get { return _strategy.Queue;  } }
 
         #endregion
 
@@ -40,12 +39,10 @@ namespace sharpbox.Notification
 
         public void ConfigureNotification(Dispatch.Client dispatcher)
         {
-
             foreach (var p in dispatcher.AvailableEvents.Where(x => !x.ToString().ToLower().Contains("onnotification"))) // subscribe to everything but our own events
             {
                 dispatcher.Listen(p, ProcessPackage);
             }
-
         }
 
         #endregion
@@ -57,19 +54,14 @@ namespace sharpbox.Notification
         /// </summary>
         /// <param name="dispatcher"></param>
         /// <param name="package"></param>
-        public void ProcessPackage(Dispatch.Client dispatcher, Package package)
+        public void ProcessPackage(Package package)
         {
-            _strategy.ProcessPackage(dispatcher, package);
+            _strategy.ProcessPackage(package);
         }
 
-        public void LoadBacklog(Dispatch.Client dispatcher)
+        public void LoadBacklog()
         {
-            _strategy.LoadBacklog(dispatcher);
-        }
-
-        public void AddQueueEntry(Entry entry)
-        {
-            _strategy.AddQueueEntry(entry);
+            _strategy.LoadBacklog();
         }
 
         public void Notify(BackLog backLog)
@@ -77,19 +69,19 @@ namespace sharpbox.Notification
            _strategy.Notify(backLog);
         }
 
-        public void SaveBackLog(Dispatch.Client dispatcher)
+        public void SaveBackLog()
         {
-            _strategy.SaveBackLog(dispatcher);
+            _strategy.SaveBackLog();
         }
 
         public void AddBackLogItem(Dispatch.Client dispatcher, BackLog backlog)
         {
-            _strategy.AddBackLogItem(dispatcher, backlog);
+            _strategy.AddBackLogItem(backlog);
         }
 
         public void LoadSubscribers(Dispatch.Client dispatcher)
         {
-            _strategy.LoadSubscribers(dispatcher);
+            _strategy.LoadSubscribers();
         }
 
         public void AddSubscriber(EventNames publisherName, string userId)

@@ -10,10 +10,8 @@ namespace sharpbox.Audit.Strategy
         /// <summary>
         /// Used as a callback to record
         /// </summary>
-        /// <param name="dispatcher"></param>
         /// <param name="package"></param>
-        void RecordDispatch(Dispatch.Client dispatcher,Package package);
+        void Record(Package package);
 
-        void RecordDispatch(Dispatch.Client dispatcher, Request request);
     }
 }

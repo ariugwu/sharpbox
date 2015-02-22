@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using sharpbox.Dispatch.Model;
+﻿using System.Runtime.CompilerServices;
 using sharpbox.Log.Strategy;
 
 namespace sharpbox.Log
@@ -30,44 +26,30 @@ namespace sharpbox.Log
 
         #region Strategy Method(s)
 
-        public void Exception(Dispatch.Client dispatcher, string message,
+        public T Exception<T>(T entity, string message,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string sourceFilePath = "",
         [CallerLineNumber] int sourceLineNumber = 0)
         {
-            _strategy.Exception(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
-            dispatcher.Broadcast(new Package() { Message = message, EventName = EventNames.OnLogException, UserId = dispatcher.CurrentUserId });
-
+            return _strategy.Exception(entity, message, memberName, sourceFilePath, sourceLineNumber);
         }
 
-        public void Warning(Dispatch.Client dispatcher, string message,
+        public T Warning<T>(T entity, string message,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string sourceFilePath = "",
         [CallerLineNumber] int sourceLineNumber = 0)
         {
-            _strategy.Warning(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
-            dispatcher.Broadcast(new Package() { Message = message, EventName = EventNames.OnLogWarning, UserId = dispatcher.CurrentUserId });
+            return _strategy.Warning(entity, message, memberName, sourceFilePath, sourceLineNumber);
         }
 
-        public void Info(Dispatch.Client dispatcher, string message,
+        public T Info<T>(T entity, string message,
         [CallerMemberName] string memberName = "",
         [CallerFilePath] string sourceFilePath = "",
         [CallerLineNumber] int sourceLineNumber = 0)
         {
-            _strategy.Info(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
-            dispatcher.Broadcast(new Package() { Message = message, EventName = EventNames.OnLogInfo, UserId = dispatcher.CurrentUserId });
+            return _strategy.Info(entity, message, memberName, sourceFilePath, sourceLineNumber);
         }
 
-        [Conditional("DEBUG")]
-        public void Trace(Dispatch.Client dispatcher, string message,
-        [CallerMemberName] string memberName = "",
-        [CallerFilePath] string sourceFilePath = "",
-        [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            _strategy.Trace(dispatcher, message, memberName, sourceFilePath, sourceLineNumber);
-            dispatcher.Broadcast(new Package() { Message = message, EventName = EventNames.OnLogTrace, UserId = dispatcher.CurrentUserId });
-            Debug.WriteLine(String.Format("TRACE: {0}", message)); // Write to the output window in visual studio
-        }
         #endregion
 
     }

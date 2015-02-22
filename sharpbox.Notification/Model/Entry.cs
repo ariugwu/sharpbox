@@ -8,11 +8,15 @@ namespace sharpbox.Notification.Model
     /// </summary>
     public class Entry
     {
-        public Entry() { }
-        public int EntryId { get; set; }
+        public Entry()
+        {
+        }
+
+        public Guid EntryId { get; set; }
         public EventNames PublisherName { get; set; }
-        public string SystemMessage { get; set; }
         public string UserFriendlyMessage { get; set; }
         public DateTime CreatedDate { get; set; }
+        public Guid PackageId { get; set; }
+        public Package Package { get; set; }
     }
 }

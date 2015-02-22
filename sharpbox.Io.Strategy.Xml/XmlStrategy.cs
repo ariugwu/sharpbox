@@ -7,7 +7,7 @@ namespace sharpbox.Io.Strategy.Xml
     public class XmlStrategy : sharpbox.Io.Strategy.IStrategy
     {
 
-        public void Write<T>(Dispatch.Client dispatcher, string filePath, T objectToWrite, bool append = false) where T : new()
+        public void Write<T>(string filePath, T objectToWrite, bool append = false) where T : new()
         {
             TextWriter writer = null;
             try
@@ -23,7 +23,7 @@ namespace sharpbox.Io.Strategy.Xml
             }
         }
 
-        public T Read<T>(Dispatch.Client dispatcher, string filePath) where T : new()
+        public T Read<T>(string filePath) where T : new()
         {
             TextReader reader = null;
             try
@@ -39,7 +39,7 @@ namespace sharpbox.Io.Strategy.Xml
             }
         }
 
-        public void Delete<T>(Dispatch.Client dispatcher, string filePath) where T : new()
+        public void Delete<T>(string filePath) where T : new()
         {
             throw new System.NotImplementedException();
         }

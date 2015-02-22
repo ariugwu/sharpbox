@@ -6,68 +6,84 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Dispatch
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <exception cref="System.Reflection.TargetInvocationException">A registered Action failed during either the Command Processing or the Event Broadcast.</exception>
+    /// <exception cref="System.Exception">General uncaught exception from either Command Processing or an Event Broadcast</exception>
     public class Client
     {
 
         #region Constructor(s)
 
-        public Client(string userId, List<EventNames> eventNames = null, List<ActionNames> actionNames = null)
+        public Client(string userId, List<EventNames> eventNames = null, List<CommandNames> commandNames = null)
         {
             CurrentUserId = userId;
             _availableEvents = eventNames ?? EventNames.DefaultPubList();
-            _availableActions = actionNames ?? ActionNames.DefaultActionList();
+            _availableCommands = commandNames ?? CommandNames.DefaultActionList();
         }
 
         #endregion
 
         #region Field(s)
 
-        private Dictionary<EventNames, List<Action<Client, Package>>> _eventSubscribers;
-        private Dictionary<ActionNames, List<Action<Client, Request>>> _actionSubscribers;
+        private Dictionary<EventNames, List<Action<Package>>> _eventSubscribers;
+        private Dictionary<CommandNames, List<Action<Request>>> _commandSubscribers;
         private List<EventNames> _availableEvents;
-        private List<ActionNames> _availableActions;
+        private List<CommandNames> _availableCommands;
+        private List<Package> _eventStream = new List<Package>();
+        private List<Request> _commandStream = new List<Request>();
+        private Dictionary<CommandNames, EventNames> _commandEventMap = new Dictionary<CommandNames, EventNames>();
+
         #endregion
 
         #region Properties
 
         public string CurrentUserId { get; set; }
 
-        public Dictionary<EventNames, List<Action<Client, Package>>> EventSubscribers
+        public Dictionary<EventNames, List<Action<Package>>> EventSubscribers
         {
 
             get
             {
-                return _eventSubscribers ?? (_eventSubscribers = new Dictionary<EventNames, List<Action<Client, Package>>>());
+                return _eventSubscribers ?? (_eventSubscribers = new Dictionary<EventNames, List<Action<Package>>>());
             }
 
             set { _eventSubscribers = value; }
         }
 
-        public Dictionary<ActionNames, List<Action<Client, Request>>> ActionSubscribers
+        public Dictionary<CommandNames, List<Action<Request>>> CommandSubscribers
         {
 
             get
             {
-                return _actionSubscribers ?? (_actionSubscribers = new Dictionary<ActionNames, List<Action<Client, Request>>>());
+                return _commandSubscribers ?? (_commandSubscribers = new Dictionary<CommandNames, List<Action<Request>>>());
             }
 
-            set { _actionSubscribers = value; }
+            set { _commandSubscribers = value; }
         }
 
+        public Dictionary<CommandNames, EventNames> CommandEventMap { get { return _commandEventMap; } set { _commandEventMap = value; } }
+
         /// <summary>
-        /// Used almost exclusively by the AppContext so that it can extend and then allow the Auditor to loop and register will all. All internal modules will have access to the Dispatch dll directly.
+        /// Used almost exclusively by the AppContext so that it can extended and then allow the Auditor to loop and listen to all. Note: All internal modules will have access to the Dispatch dll directly.
         /// </summary>
         public List<EventNames> AvailableEvents
         {
             get { return _availableEvents ?? (_availableEvents = new List<EventNames>()); }
-            set { _availableEvents = value; }
         }
 
-        public List<ActionNames> AvailableActions
+        /// <summary>
+        /// The list of commands that have been registered and can be called at any given time. Also looped through by the Auditor.
+        /// </summary>
+        public List<CommandNames> AvailableCommands
         {
-            get { return _availableActions ?? (_availableActions = new List<ActionNames>()); }
-            set { _availableActions = value; }
+            get { return _availableCommands ?? (_availableCommands = new List<CommandNames>()); }
         }
+
+        public List<Package> EventStream { get { return _eventStream ?? (_eventStream = new List<Package>()); } }
+
+        public List<Request> CommandStream { get { return _commandStream ?? (_commandStream = new List<Request>()); } }
 
         #endregion
 
@@ -77,64 +93,61 @@ namespace sharpbox.Dispatch
         /// </summary>
         /// <param name="publisherName"></param>
         /// <param name="method"></param>
-        public void Listen(EventNames publisherName, Action<Client, Package> method)
+        public void Listen(EventNames publisherName, Action<Package> method)
         {
             EnsureEventSubscriberKey(publisherName);
 
             EventSubscribers[publisherName].Add(method);
         }
 
-        public void Register(ActionNames actionName, Action<Client, Request> method)
+        /// <summary>
+        /// While the CommandEvent map is used for creating the 1-to-1 relationship between thier commands name and event. i.e. - UpdateReciepe and OnReceipeUpdate you still need to register what callback you want to run on UpdateReceipe. Same with the event.
+        /// </summary>
+        /// <param name="commandName"></param>
+        /// <param name="method"></param>
+        public void Register(CommandNames commandName, Action<Request> method)
         {
-            if (!ActionSubscribers.ContainsKey(ActionNames.SetFeedback) && actionName != ActionNames.SetFeedback) throw new Exception("A 'SetFeedback' action must be registered before using any action registration!");
+            if (!CommandSubscribers.ContainsKey(CommandNames.SetFeedback) && commandName != CommandNames.SetFeedback) throw new Exception("A 'SetFeedback' action must be registered before using any action registration!");
 
-            EnsureActionSubscriberKey(actionName);
+            EnsureCommandSubscriberKey(commandName);
 
-            ActionSubscribers[actionName].Add(method);
+            CommandSubscribers[commandName].Add(method);
         }
 
         /// <summary>
-        /// Cycle through all the subscribers and fire off the associated action
+        /// Ensure the key exists, add the package to the Event stream. Cycle through all the subscribers and fire off the associated action.
         /// </summary>
         /// <param name="package"></param>
         public void Broadcast(Package package)
         {
             EnsureEventSubscriberKey(package.EventName);
 
+            _eventStream.Add(package);
+
             foreach (var p in EventSubscribers[package.EventName])
             {
-                try
-                {
-                    p.Invoke(this, package);
-                }
-                catch (TargetInvocationException tEx)
-                {
-                    Process(new Request{ ActionName = ActionNames.LogException, Entity = tEx, Message = String.Format("The following method failed: {0}", p.Method.Name), RequestId = 0, Type = tEx.GetType(), UserId = CurrentUserId});
-                }
-                catch (Exception ex)
-                {
-                    Process(new Request { ActionName = ActionNames.LogException, Entity = ex, Message = String.Format("The following method failed: {0}", p.Method.Name), RequestId = 0, Type = ex.GetType(), UserId = CurrentUserId });
-                }
+
+                p.Invoke(package);
+
             }
         }
 
-
+        /// <summary>
+        /// Ensure the key exists. Add request to the Command stream. Cycle through all the subscribers and fire off the associated action.
+        /// </summary>
+        /// <param name="request"></param>
         public void Process(Request request)
         {
-            foreach (var a in ActionSubscribers[request.ActionName])
+            EnsureCommandSubscriberKey(request.CommandName);
+
+            _commandStream.Add(request);
+
+            foreach (var a in CommandSubscribers[request.CommandName])
             {
-                try
-                {
-                    a.Invoke(this, request);
-                }
-                catch (TargetInvocationException tEx)
-                {
-                    Process(new Request { ActionName = ActionNames.LogException, Entity = tEx, Message = String.Format("The following method failed: {0}", a.Method.Name), RequestId = 0, Type = tEx.GetType(), UserId = CurrentUserId });
-                }
-                catch (Exception ex)
-                {
-                    Process(new Request { ActionName = ActionNames.LogException, Entity = ex, Message = String.Format("The following method failed: {0}", a.Method.Name), RequestId = 0, Type = ex.GetType(), UserId = CurrentUserId });
-                }
+                a.Invoke(request);
+
+                //Auto broadcast to the command's primary event
+                if (CommandEventMap.ContainsKey(request.CommandName)) Broadcast(new Package { Entity = request.Entity, EventName = CommandEventMap[request.CommandName], Message = String.Format("Processed Request : {0}", request.RequestId), PackageId = Guid.NewGuid(), UserId = CurrentUserId });
             }
         }
 
@@ -144,13 +157,13 @@ namespace sharpbox.Dispatch
 
         private void EnsureEventSubscriberKey(EventNames eventName)
         {
-            if (!EventSubscribers.ContainsKey(eventName)) EventSubscribers.Add(eventName, new List<Action<Client, Package>>());
+            if (!EventSubscribers.ContainsKey(eventName)) EventSubscribers.Add(eventName, new List<Action<Package>>());
 
         }
 
-        private void EnsureActionSubscriberKey(ActionNames actionName)
+        private void EnsureCommandSubscriberKey(CommandNames commandName)
         {
-            if (!ActionSubscribers.ContainsKey(actionName)) ActionSubscribers.Add(actionName, new List<Action<Client, Request>>());
+            if (!CommandSubscribers.ContainsKey(commandName)) CommandSubscribers.Add(commandName, new List<Action<Request>>());
 
         }
 
@@ -166,11 +179,11 @@ namespace sharpbox.Dispatch
             }
         }
 
-        public void ExtendAvailableActions(List<ActionNames> actionNames)
+        public void ExtendAvailableCommands(List<CommandNames> actionNames)
         {
-            foreach (var a in actionNames.Where(a => !AvailableActions.Contains(a)))
+            foreach (var a in actionNames.Where(a => !AvailableCommands.Contains(a)))
             {
-                AvailableActions.Add(a);
+                AvailableCommands.Add(a);
             }
         }
 

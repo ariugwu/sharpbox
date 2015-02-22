@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using sharpbox.Audit.Model;
 using sharpbox.Audit.Strategy;
@@ -11,6 +12,9 @@ namespace sharpbox.Audit
 
         private IStrategy _strategy;
 
+        /// <summary>
+        /// The Event Stream from all users
+        /// </summary>
         public List<Package> Trail { get { return _strategy.Trail; } } 
 
         public Client(ref Dispatch.Client dispatcher, IStrategy strategy, AuditLevel auditLevel = AuditLevel.Basic)
@@ -24,20 +28,13 @@ namespace sharpbox.Audit
             
         }
 
-        public void Record(Dispatch.Client dispatcher, Package package)
+        public void Record(Package package)
         {
-            _strategy.RecordDispatch(dispatcher,package);
-            dispatcher.Broadcast(new Package() { EventName = EventNames.OnAuditRecord, Message = "Audit entry recorded. Please check the Audit.Trail for details.", Entity = package, Type = typeof(Package), PackageId = 0, UserId = dispatcher.CurrentUserId });
+            _strategy.Record(package);
         }
 
         private void ConfigureAuditLevel(Dispatch.Client dispatcher, AuditLevel auditLevel = AuditLevel.Basic)
         {
-            // Capture the actions as well as the events. An example audit log could say -> Action -> Resulting Event. Which could be an exception. so we want to see the actions that preceed it.
-            foreach (var a in dispatcher.AvailableActions)
-            {
-                dispatcher.Register(a, _strategy.RecordDispatch);
-            }
-
             List<EventNames> list;
             switch (auditLevel)
             {
@@ -46,7 +43,7 @@ namespace sharpbox.Audit
                     list = dispatcher.AvailableEvents.Where(x => !x.ToString().ToLower().Contains("onaudit") && !x.ToString().ToLower().Contains("ondata") && !x.ToString().ToLower().Contains("onfile")).ToList();
                     foreach (var p in list)
                     {
-                        dispatcher.Listen(p, _strategy.RecordDispatch);
+                        dispatcher.Listen(p, _strategy.Record);
                     }
                     break;
                 case AuditLevel.All:
@@ -54,7 +51,7 @@ namespace sharpbox.Audit
                     list = dispatcher.AvailableEvents.Where(x => !x.ToString().ToLower().Contains("onaudit")).ToList();
                     foreach (var p in list)
                     {
-                        dispatcher.Listen(p, _strategy.RecordDispatch);
+                        dispatcher.Listen(p, _strategy.Record);
                     }
                     break;
                 case AuditLevel.None:

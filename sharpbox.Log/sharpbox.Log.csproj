@@ -45,20 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\sharpbox.Data\sharpbox.Data.csproj">
-      <Project>{45e33825-de18-473d-9770-3532aded63ff}</Project>
-      <Name>sharpbox.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
-      <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
-      <Name>sharpbox.Dispatch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Io\sharpbox.Io.csproj">
-      <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
-      <Name>sharpbox.Io</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

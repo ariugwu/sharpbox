@@ -15,29 +15,17 @@ namespace sharpbox.Audit.Strategy.File
             _props = props;
 
             var filePath = _props["filePath"].ToString();
-            if (!_file.Exists(filePath)) _file.Write(dispatcher, filePath, new List<Package>());
-            Trail = _file.Read<List<Package>>(dispatcher, filePath);
+            if (!_file.Exists(filePath)) _file.Write(filePath, new List<Package>());
+            Trail = _file.Read<List<Package>>(filePath);
         }
 
         public List<Package> Trail { get; set; }
 
-        public void RecordDispatch(Dispatch.Client dispatcher, Package package)
+        public void Record(Package package)
         {
             Trail.Add(package);
-            _file.Write(dispatcher, _props["filePath"].ToString(), Trail);
+            _file.Write(_props["filePath"].ToString(), Trail);
         }
 
-        public void RecordDispatch(Dispatch.Client dispatcher, Request request)
-        {
-            var package = new Package
-            {
-                Entity = request.Entity,
-                EventName = EventNames.OnRecordAction,
-                Message = request.Message,
-                PackageId = 0,
-                Type = request.Type
-            };
-            RecordDispatch(dispatcher, package);
-        }
     }
 }
