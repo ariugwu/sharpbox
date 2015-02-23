@@ -33,7 +33,7 @@ namespace sharpbox.Cli
             example.Dispatch.Listen(EventNames.OnFeedbackSet, ExampleListener);
 
             // Listen to an under the covers 'system' event
-            example.Dispatch.Listen(EventNames.OnLogException, ExampleListener);
+            example.Dispatch.Listen(EventNames.OnLogException, OnExceptionDumpEventStream);
 
             // Now we're set to actually use the application.
             var feedback = new Feedback { ActionName = CommandNames.ChangeUser, Message = "Meaningless message", Successful = true };
@@ -86,7 +86,7 @@ namespace sharpbox.Cli
             {
                 example.Log.Exception(example.Dispatch, ex.Message);
                 // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
-                example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, Entity = example.Dispatch.EventStream, Type = example.Dispatch.EventStream.GetType(), UserId = example.Dispatch.CurrentUserId });
+                example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, UserId = example.Dispatch.CurrentUserId });
             }
 
             // Log: Test logging
@@ -112,14 +112,14 @@ namespace sharpbox.Cli
             Debug.WriteLine("{0} broadcasts: {1}", package.EventName, package.Message);
         }
 
-        public void OnExceptionDumpEventStream(Package package)
+        public static void OnExceptionDumpEventStream(Package package)
         {
             Debug.WriteLine("### Event Stream Dump ###");
-
-            foreach (var e in (List<Package>) package.Entity)
-            {
-                Debug.WriteLine("{0}: {1} - {2}", e.EventName, e.Message, e.UserId);
-            }
+            Debug.WriteLine("TODO: Would like to pass the EventStream on exception but the serializer for the xml audit isn't quite smart enough to write the full thing to file.");
+            //foreach (var e in (List<Package>) package.Entity)
+            //{
+            //    Debug.WriteLine("{0}: {1} - {2}", e.EventName, e.Message, e.UserId);
+            //}
         }
 
     }
