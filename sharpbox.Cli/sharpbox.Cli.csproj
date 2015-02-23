@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Domain\AppContext\ExampleContext.cs" />
+    <Compile Include="Model\Domain\AppContext\ExampleMediator.cs" />
     <Compile Include="Model\Domain\Dispatch\PublicationNamesExtension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

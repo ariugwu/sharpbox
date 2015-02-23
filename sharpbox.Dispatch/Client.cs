@@ -26,12 +26,12 @@ namespace sharpbox.Dispatch
 
         #region Field(s)
 
-        private Dictionary<EventNames, List<Action<Package>>> _eventSubscribers;
-        private Dictionary<CommandNames, List<Action<Request>>> _commandSubscribers;
+        private Dictionary<EventNames, Queue<Action<Response>>> _eventSubscribers;
+        private Dictionary<CommandNames, Queue<Action<Request>>> _commandSubscribers;
         private List<EventNames> _availableEvents;
         private List<CommandNames> _availableCommands;
-        private List<Package> _eventStream = new List<Package>();
-        private List<Request> _commandStream = new List<Request>();
+        private Queue<Response> _eventStream = new Queue<Response>();
+        private Queue<Request> _commandStream = new Queue<Request>();
         private Dictionary<CommandNames, EventNames> _commandEventMap = new Dictionary<CommandNames, EventNames>();
 
         #endregion
@@ -40,23 +40,23 @@ namespace sharpbox.Dispatch
 
         public string CurrentUserId { get; set; }
 
-        public Dictionary<EventNames, List<Action<Package>>> EventSubscribers
+        public Dictionary<EventNames, Queue<Action<Response>>> EventSubscribers
         {
 
             get
             {
-                return _eventSubscribers ?? (_eventSubscribers = new Dictionary<EventNames, List<Action<Package>>>());
+                return _eventSubscribers ?? (_eventSubscribers = new Dictionary<EventNames, Queue<Action<Response>>>());
             }
 
             set { _eventSubscribers = value; }
         }
 
-        public Dictionary<CommandNames, List<Action<Request>>> CommandSubscribers
+        public Dictionary<CommandNames, Queue<Action<Request>>> CommandSubscribers
         {
 
             get
             {
-                return _commandSubscribers ?? (_commandSubscribers = new Dictionary<CommandNames, List<Action<Request>>>());
+                return _commandSubscribers ?? (_commandSubscribers = new Dictionary<CommandNames, Queue<Action<Request>>>());
             }
 
             set { _commandSubscribers = value; }
@@ -80,9 +80,9 @@ namespace sharpbox.Dispatch
             get { return _availableCommands ?? (_availableCommands = new List<CommandNames>()); }
         }
 
-        public List<Package> EventStream { get { return _eventStream ?? (_eventStream = new List<Package>()); } }
+        public Queue<Response> EventStream { get { return _eventStream ?? (_eventStream = new Queue<Response>()); } }
 
-        public List<Request> CommandStream { get { return _commandStream ?? (_commandStream = new List<Request>()); } }
+        public Queue<Request> CommandStream { get { return _commandStream ?? (_commandStream = new Queue<Request>()); } }
 
         #endregion
 
@@ -92,11 +92,11 @@ namespace sharpbox.Dispatch
         /// </summary>
         /// <param name="publisherName"></param>
         /// <param name="method"></param>
-        public void Listen(EventNames publisherName, Action<Package> method)
+        public void Listen(EventNames publisherName, Action<Response> method)
         {
             EnsureEventSubscriberKey(publisherName);
 
-            EventSubscribers[publisherName].Add(method);
+            EventSubscribers[publisherName].Enqueue(method);
         }
 
         /// <summary>
@@ -110,23 +110,23 @@ namespace sharpbox.Dispatch
 
             EnsureCommandSubscriberKey(commandName);
 
-            CommandSubscribers[commandName].Add(method);
+            CommandSubscribers[commandName].Enqueue(method);
         }
 
         /// <summary>
-        /// Ensure the key exists, add the package to the Event stream. Cycle through all the subscribers and fire off the associated action.
+        /// Ensure the key exists, add the response to the Event stream. Cycle through all the subscribers and fire off the associated action.
         /// </summary>
-        /// <param name="package"></param>
-        public void Broadcast(Package package)
+        /// <param name="response"></param>
+        public void Broadcast(Response response)
         {
-            EnsureEventSubscriberKey(package.EventName);
+            EnsureEventSubscriberKey(response.EventName);
 
-            _eventStream.Add(package);
+            _eventStream.Enqueue(response);
 
-            foreach (var p in EventSubscribers[package.EventName])
+            foreach (var p in EventSubscribers[response.EventName])
             {
 
-                p.Invoke(package);
+                p.Invoke(response);
 
             }
         }
@@ -139,14 +139,14 @@ namespace sharpbox.Dispatch
         {
             EnsureCommandSubscriberKey(request.CommandName);
 
-            _commandStream.Add(request);
+            _commandStream.Enqueue(request);
 
             foreach (var a in CommandSubscribers[request.CommandName])
             {
                 a.Invoke(request);
 
                 //Auto broadcast to the command's primary event
-                if (CommandEventMap.ContainsKey(request.CommandName)) Broadcast(new Package { Entity = request.Entity, EventName = CommandEventMap[request.CommandName], Message = String.Format("Processed Request : {0}", request.RequestId), PackageId = Guid.NewGuid(), UserId = CurrentUserId });
+                if (CommandEventMap.ContainsKey(request.CommandName)) Broadcast(new Response { Entity = request.Entity, EventName = CommandEventMap[request.CommandName], Message = String.Format("Processed Request : {0}", request.RequestId), ResponseId = Guid.NewGuid(), UserId = CurrentUserId });
             }
         }
 
@@ -156,13 +156,13 @@ namespace sharpbox.Dispatch
 
         private void EnsureEventSubscriberKey(EventNames eventName)
         {
-            if (!EventSubscribers.ContainsKey(eventName)) EventSubscribers.Add(eventName, new List<Action<Package>>());
+            if (!EventSubscribers.ContainsKey(eventName)) EventSubscribers.Add(eventName, new Queue<Action<Response>>());
 
         }
 
         private void EnsureCommandSubscriberKey(CommandNames commandName)
         {
-            if (!CommandSubscribers.ContainsKey(commandName)) CommandSubscribers.Add(commandName, new List<Action<Request>>());
+            if (!CommandSubscribers.ContainsKey(commandName)) CommandSubscribers.Add(commandName, new Queue<Action<Request>>());
 
         }
 

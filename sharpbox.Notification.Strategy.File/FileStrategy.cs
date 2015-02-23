@@ -26,22 +26,22 @@ namespace sharpbox.Notification.Strategy.File
 
         public List<BackLog> Queue { get { return _queue ?? (_queue = new List<BackLog>()); } set { _queue = value;} }
  
-        public void ProcessPackage(Package package)
+        public void ProcessPackage(Response response)
         {
             // Add a queue entry so we know all the system events regardless of whether anyone is subscribed to them.
             var entry = new Entry
             {
                 CreatedDate = DateTime.Now,
-                PublisherName = package.EventName,
+                PublisherName = response.EventName,
                 EntryId = Guid.NewGuid(),
-                UserFriendlyMessage = package.Message
+                UserFriendlyMessage = response.Message
             };
 
 
-            if (!Subscribers.ContainsKey(package.EventName)) return; // Bail early if there are no subscribers.
+            if (!Subscribers.ContainsKey(response.EventName)) return; // Bail early if there are no subscribers.
 
             // Run through all of the subscribers for this publisher and generate a backlog item for them.
-            foreach (var s in Subscribers[package.EventName])
+            foreach (var s in Subscribers[response.EventName])
             {
                 // Add the backlog item
                 AddBackLogItem(new BackLog

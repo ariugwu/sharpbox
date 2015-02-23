@@ -5,15 +5,16 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Cli.Model.Domain.AppContext
 {
-    public class ExampleContext : sharpbox.DomainContext
+    public class ExampleMediator : sharpbox.Mediator
     {
         /// <summary>
         /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
         /// </summary>
         /// <param name="userIdentity">Used to create a Dispatch instance which is then used to bootstrap Notification, Log, and Audit functionality.</param>
         /// <param name="eventNames">Used to bootstrap Dispatch. this way things like Audit wire into whatever events are in a derived system as well as the default list. If not provided then at empty list is used.</param>
+        /// <param name="actionNames"></param>
         /// <param name="smtpClient">Powers the email client.</param>
-        public ExampleContext(string userIdentity, List<EventNames> eventNames, List<CommandNames> actionNames, SmtpClient smtpClient)
+        public ExampleMediator(string userIdentity, List<EventNames> eventNames, List<CommandNames> actionNames, SmtpClient smtpClient)
             : base(userIdentity, eventNames, actionNames)
         {
             // Append all the events and roles we're going to need.

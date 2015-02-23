@@ -15,15 +15,15 @@ namespace sharpbox.Audit.Strategy.File
             _props = props;
 
             var filePath = _props["filePath"].ToString();
-            if (!_file.Exists(filePath)) _file.Write(filePath, new List<Package>());
-            Trail = _file.Read<List<Package>>(filePath);
+            if (!_file.Exists(filePath)) _file.Write(filePath, new List<Response>());
+            Trail = _file.Read<List<Response>>(filePath);
         }
 
-        public List<Package> Trail { get; set; }
+        public List<Response> Trail { get; set; }
 
-        public void Record(Package package)
+        public void Record(Response response)
         {
-            Trail.Add(package);
+            Trail.Add(response);
             _file.Write(_props["filePath"].ToString(), Trail);
         }
 

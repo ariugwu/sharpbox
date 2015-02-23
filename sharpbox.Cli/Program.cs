@@ -18,7 +18,7 @@ namespace sharpbox.Cli
             // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event. We use basic since we're using xml and want to prevent event reflection. Audit saves file -> file generates audit message -> Audit saves file.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
-            var example = new ExampleContext("ugwua", EventNamesExtension.ExtendedPubList, CommandNames.DefaultActionList(), smtpClient);
+            var example = new ExampleMediator("ugwua", EventNamesExtension.ExtendedPubList, CommandNames.DefaultActionList(), smtpClient);
 
             // Use this to 1-to-1 map an action to an event. Every action should have on primary "I'm done." broadcast with the updated data.
             example.Dispatch.CommandEventMap.Add(CommandNames.ChangeUser, EventNames.OnUserChange);
@@ -53,17 +53,17 @@ namespace sharpbox.Cli
             catch (TargetInvocationException tEx)
             {
                 example.Log.Exception(example.Dispatch, tEx.Message);
-                example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = tEx.Message, EventName = EventNames.OnLogException, Entity = tEx, Type = tEx.GetType(), UserId = example.Dispatch.CurrentUserId });
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = tEx.Message, EventName = EventNames.OnLogException, Entity = tEx, Type = tEx.GetType(), UserId = example.Dispatch.CurrentUserId });
             }
             catch (Exception ex)
             {
                 example.Log.Exception(example.Dispatch, ex.Message);
-                // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
-                example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = ex.Message, EventName = EventNames.OnLogException, Entity = ex, Type = ex.GetType(), UserId = example.Dispatch.CurrentUserId });
+                // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response.
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = ex.Message, EventName = EventNames.OnLogException, Entity = ex, Type = ex.GetType(), UserId = example.Dispatch.CurrentUserId });
             }
 
             // Another test from the subscription we set a few lines above.
-            example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = "Test of anyone listening to Example Extended publisher.", EventName = EventNamesExtension.ExampleExtendedPublisher, UserId = example.Dispatch.CurrentUserId });
+            example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = "Test of anyone listening to Example Extended publisher.", EventName = EventNamesExtension.ExampleExtendedPublisher, UserId = example.Dispatch.CurrentUserId });
 
             // Next we're going to try the user change command we registered earlier.
             Debug.WriteLine("Current UserId: " + example.Dispatch.CurrentUserId);
@@ -85,8 +85,8 @@ namespace sharpbox.Cli
             catch (Exception ex)
             {
                 example.Log.Exception(example.Dispatch, ex.Message);
-                // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
-                example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, UserId = example.Dispatch.CurrentUserId });
+                // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response.
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, UserId = example.Dispatch.CurrentUserId });
             }
 
             // Log: Test logging
@@ -107,16 +107,16 @@ namespace sharpbox.Cli
             Console.ReadLine();
         }
 
-        public static void ExampleListener(Package package)
+        public static void ExampleListener(Response response)
         {
-            Debug.WriteLine("{0} broadcasts: {1}", package.EventName, package.Message);
+            Debug.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
         }
 
-        public static void OnExceptionDumpEventStream(Package package)
+        public static void OnExceptionDumpEventStream(Response response)
         {
             Debug.WriteLine("### Event Stream Dump ###");
             Debug.WriteLine("TODO: Would like to pass the EventStream on exception but the serializer for the xml audit isn't quite smart enough to write the full thing to file.");
-            //foreach (var e in (List<Package>) package.Entity)
+            //foreach (var e in (List<response>) response.Entity)
             //{
             //    Debug.WriteLine("{0}: {1} - {2}", e.EventName, e.Message, e.UserId);
             //}

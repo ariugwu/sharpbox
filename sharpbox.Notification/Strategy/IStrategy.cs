@@ -14,7 +14,7 @@ namespace sharpbox.Notification.Strategy
         // The backlog is the list of messages that have been or need to be sent to subscribers. Usually persisted to an outside system.
         List<BackLog> Queue { get; set; }
 
-        void ProcessPackage(Package package);
+        void ProcessPackage(Response response);
 
         /// <summary>
         /// Use whatever the strategy decides is the notification for backlog items. Upload the backlog as needed after the attempt

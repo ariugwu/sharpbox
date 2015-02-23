@@ -52,11 +52,10 @@ namespace sharpbox.Notification
         /// <summary>
         /// Whenever the dispatcher publishes an event we create a message for it and stick it on the queue. Then we see if anyone is requesting notification and we create a backlog entry for them to be processed at a later date. Likely by a scheduled task or explict request.
         /// </summary>
-        /// <param name="dispatcher"></param>
-        /// <param name="package"></param>
-        public void ProcessPackage(Package package)
+        /// <param name="response"></param>
+        public void ProcessPackage(Response response)
         {
-            _strategy.ProcessPackage(package);
+            _strategy.ProcessPackage(response);
         }
 
         public void LoadBacklog()

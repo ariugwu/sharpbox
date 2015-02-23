@@ -17,6 +17,6 @@ namespace sharpbox.Notification.Model
         public string UserFriendlyMessage { get; set; }
         public DateTime CreatedDate { get; set; }
         public Guid PackageId { get; set; }
-        public Package Package { get; set; }
+        public Response Response { get; set; }
     }
 }

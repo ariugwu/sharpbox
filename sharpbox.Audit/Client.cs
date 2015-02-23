@@ -15,7 +15,7 @@ namespace sharpbox.Audit
         /// <summary>
         /// The Event Stream from all users
         /// </summary>
-        public List<Package> Trail { get { return _strategy.Trail; } } 
+        public List<Response> Trail { get { return _strategy.Trail; } } 
 
         public Client(ref Dispatch.Client dispatcher, IStrategy strategy, AuditLevel auditLevel = AuditLevel.Basic)
         {
@@ -28,9 +28,9 @@ namespace sharpbox.Audit
             
         }
 
-        public void Record(Package package)
+        public void Record(Response response)
         {
-            _strategy.Record(package);
+            _strategy.Record(response);
         }
 
         private void ConfigureAuditLevel(Dispatch.Client dispatcher, AuditLevel auditLevel = AuditLevel.Basic)
