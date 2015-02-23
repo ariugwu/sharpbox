@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace sharpbox.Io.Strategy.Xml
 {
 
-    public class XmlStrategy : sharpbox.Io.Strategy.IStrategy
+    public class XmlStrategy : IStrategy
     {
 
         public void Write<T>(string filePath, T objectToWrite, bool append = false) where T : new()

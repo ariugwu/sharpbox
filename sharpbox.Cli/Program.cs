@@ -24,9 +24,9 @@ namespace sharpbox.Cli
             example.Dispatch.CommandEventMap.Add(CommandNames.ChangeUser, EventNames.OnUserChange);
             example.Dispatch.CommandEventMap.Add(CommandNames.SetFeedback, EventNames.OnFeedbackSet);
 
-            // Now we need to tell the various commands what to actually do.
-            example.Dispatch.Register(CommandNames.ChangeUser, example.ChangeUser);
+            // Now we need to tell the various commands what to actually do. NOTE: We have the condition that a setfeedback action be the first thing you set!
             example.Dispatch.Register(CommandNames.SetFeedback, example.ExampleProcessFeedback);
+            example.Dispatch.Register(CommandNames.ChangeUser, example.ChangeUser);
 
             // Piggy back additional listeners.
             example.Dispatch.Listen(EventNames.OnUserChange, ExampleListener);
@@ -53,21 +53,21 @@ namespace sharpbox.Cli
             catch (TargetInvocationException tEx)
             {
                 example.Log.Exception(example.Dispatch, tEx.Message);
-                example.Dispatch.Broadcast(new Package { Message = tEx.Message, EventName = EventNames.OnLogException, Entity = tEx, Type = tEx.GetType(), UserId = example.Dispatch.CurrentUserId });
+                example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = tEx.Message, EventName = EventNames.OnLogException, Entity = tEx, Type = tEx.GetType(), UserId = example.Dispatch.CurrentUserId });
             }
             catch (Exception ex)
             {
                 example.Log.Exception(example.Dispatch, ex.Message);
                 // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
-                example.Dispatch.Broadcast(new Package { Message = ex.Message, EventName = EventNames.OnLogException, Entity = ex, Type = ex.GetType(), UserId = example.Dispatch.CurrentUserId });
+                example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = ex.Message, EventName = EventNames.OnLogException, Entity = ex, Type = ex.GetType(), UserId = example.Dispatch.CurrentUserId });
             }
 
             // Another test from the subscription we set a few lines above.
-            example.Dispatch.Broadcast(new Package { Message = "Test of anyone listening to Example Extended publisher.", EventName = EventNamesExtension.ExampleExtendedPublisher, UserId = example.Dispatch.CurrentUserId });
+            example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = "Test of anyone listening to Example Extended publisher.", EventName = EventNamesExtension.ExampleExtendedPublisher, UserId = example.Dispatch.CurrentUserId });
 
             // Next we're going to try the user change command we registered earlier.
             Debug.WriteLine("Current UserId: " + example.Dispatch.CurrentUserId);
-            example.Dispatch.Process(new Request { CommandName = CommandNames.ChangeUser, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null, UserId = example.Dispatch.CurrentUserId });
+            example.Dispatch.Process(new Request { RequestId = Guid.NewGuid(), CommandName = CommandNames.ChangeUser, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null, UserId = example.Dispatch.CurrentUserId });
             Debug.WriteLine("Current UserId: " + example.Dispatch.CurrentUserId);
 
             // Notification
@@ -86,7 +86,7 @@ namespace sharpbox.Cli
             {
                 example.Log.Exception(example.Dispatch, ex.Message);
                 // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a package.
-                example.Dispatch.Broadcast(new Package { Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, Entity = ex, Type = ex.GetType(), UserId = example.Dispatch.CurrentUserId });
+                example.Dispatch.Broadcast(new Package { PackageId = Guid.NewGuid(), Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, Entity = example.Dispatch.EventStream, Type = example.Dispatch.EventStream.GetType(), UserId = example.Dispatch.CurrentUserId });
             }
 
             // Log: Test logging
@@ -110,6 +110,16 @@ namespace sharpbox.Cli
         public static void ExampleListener(Package package)
         {
             Debug.WriteLine("{0} broadcasts: {1}", package.EventName, package.Message);
+        }
+
+        public void OnExceptionDumpEventStream(Package package)
+        {
+            Debug.WriteLine("### Event Stream Dump ###");
+
+            foreach (var e in (List<Package>) package.Entity)
+            {
+                Debug.WriteLine("{0}: {1} - {2}", e.EventName, e.Message, e.UserId);
+            }
         }
 
     }
