@@ -13,7 +13,6 @@ namespace sharpbox.Cli
     {
         static void Main(string[] args)
         {
-
             // The benefit of the dispatcher is being able to see all subscribed events in one place at one time.
             // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event. We use basic since we're using xml and want to prevent event reflection. Audit saves file -> file generates audit message -> Audit saves file.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
@@ -22,21 +21,19 @@ namespace sharpbox.Cli
             
             example = WireUpEvents(example); // Wire the commands, and listeners.
 
-
             // Now we're set to actually use the application.
             var feedback = new Feedback { ActionName = CommandNames.ChangeUser, Message = "Meaningless message", Successful = true };
 
-            try
-            {
-                example.Dispatch.Process(new Request
-                {
-                    CommandName = CommandNames.SetFeedback,
-                    Message = "A test to set the feedback",
-                    Entity = feedback,
-                    RequestId = Guid.NewGuid(),
-                    Type = typeof(Feedback),
-                    UserId = example.Dispatch.CurrentUserId
-                });
+            try {
+                    example.Dispatch.Process(new Request
+                    {
+                        CommandName = CommandNames.SetFeedback,
+                        Message = "Testing the feedback system.",
+                        Entity = feedback,
+                        RequestId = Guid.NewGuid(),
+                        Type = typeof(Feedback),
+                        UserId = example.Dispatch.CurrentUserId
+                    });  
             }
             catch (TargetInvocationException tEx)
             {
@@ -67,8 +64,7 @@ namespace sharpbox.Cli
             try
             {
                 // We know this will fail because the smtp client isn't fully configured and the emails are bad
-                example.Email.Send(new List<string> { "test@testy.com" }, "foo.bar@gmail.com",
-                    "This is a test email from my framework", "Testing is good for you.");
+                example.Email.Send(new List<string> { "test@testy.com" }, "foo.bar@gmail.com","This is a test email from my framework", "Testing is good for you.");
             }
             catch (Exception ex)
             {
@@ -123,7 +119,6 @@ namespace sharpbox.Cli
         public static void OnExceptionDumpEventStream(Response response)
         {
             Debug.WriteLine("### Event Stream Dump ###");
-            Debug.WriteLine("TODO: Would like to pass the EventStream on exception but the serializer for the xml audit isn't quite smart enough to write the full thing to file.");
             foreach (var e in (Queue<Response>) response.Entity)
             {
                Debug.WriteLine("{0}: {1} - {2}", e.EventName, e.Message, e.UserId);

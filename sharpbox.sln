@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Security.Strategy.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Security.Strategy.Crypto.Pgp", "sharpbox.Security.Strategy.Crypto.Pgp\sharpbox.Security.Strategy.Crypto.Pgp.csproj", "{647C1853-3D98-4CDB-A041-984F0F29638B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Io.Strategy.DataContract", "sharpbox.Io.Strategy.DataContract\sharpbox.Io.Strategy.DataContract.csproj", "{01C2CB7C-1E74-4923-972B-7775544B1CF9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,10 @@ Global
 		{647C1853-3D98-4CDB-A041-984F0F29638B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{647C1853-3D98-4CDB-A041-984F0F29638B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{647C1853-3D98-4CDB-A041-984F0F29638B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01C2CB7C-1E74-4923-972B-7775544B1CF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01C2CB7C-1E74-4923-972B-7775544B1CF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01C2CB7C-1E74-4923-972B-7775544B1CF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01C2CB7C-1E74-4923-972B-7775544B1CF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,5 +161,6 @@ Global
 		{CC785E7E-A11D-4EE0-A29C-379824AB590D} = {528C028D-4927-4A8C-9E89-6F7856EEA240}
 		{2B912659-4231-45BA-8D8E-178F48A99BD5} = {5B470941-84E5-482A-AC79-F26CF280798C}
 		{647C1853-3D98-4CDB-A041-984F0F29638B} = {5B470941-84E5-482A-AC79-F26CF280798C}
+		{01C2CB7C-1E74-4923-972B-7775544B1CF9} = {5B470941-84E5-482A-AC79-F26CF280798C}
 	EndGlobalSection
 EndGlobal

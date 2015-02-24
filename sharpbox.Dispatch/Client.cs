@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Dispatch
@@ -13,81 +12,43 @@ namespace sharpbox.Dispatch
     [Serializable]
     public class Client
     {
-
-        #region Constructor(s)
+        public Client() { }
 
         public Client(string userId, List<EventNames> eventNames = null, List<CommandNames> commandNames = null)
         {
             CurrentUserId = userId;
-            _availableEvents = eventNames ?? EventNames.DefaultPubList();
-            _availableCommands = commandNames ?? CommandNames.DefaultActionList();
+            AvailableEvents = eventNames ?? EventNames.DefaultPubList();
+            AvailableCommands = commandNames ?? CommandNames.DefaultActionList();
+
+            EventSubscribers = new Dictionary<EventNames, Queue<Action<Response>>>();
+            CommandSubscribers = new Dictionary<CommandNames, Queue<Action<Request>>>();
+            CommandEventMap = new Dictionary<CommandNames, EventNames>();
+
+            CommandStream = new Queue<Request>();
+            EventStream = new Queue<Response>();
         }
-
-        #endregion
-
-        #region Field(s)
-
-        private Dictionary<EventNames, Queue<Action<Response>>> _eventSubscribers;
-        private Dictionary<CommandNames, Queue<Action<Request>>> _commandSubscribers;
-        private List<EventNames> _availableEvents;
-        private List<CommandNames> _availableCommands;
-        private Queue<Response> _eventStream = new Queue<Response>();
-        private Queue<Request> _commandStream = new Queue<Request>();
-        private Dictionary<CommandNames, EventNames> _commandEventMap = new Dictionary<CommandNames, EventNames>();
-
-        #endregion
-
-        #region Properties
 
         public string CurrentUserId { get; set; }
 
-        public Dictionary<EventNames, Queue<Action<Response>>> EventSubscribers
-        {
+        public Dictionary<EventNames, Queue<Action<Response>>> EventSubscribers { get; set; }
 
-            get
-            {
-                return _eventSubscribers ?? (_eventSubscribers = new Dictionary<EventNames, Queue<Action<Response>>>());
-            }
+        public Dictionary<CommandNames, Queue<Action<Request>>> CommandSubscribers { get; set; }
 
-            set { _eventSubscribers = value; }
-        }
-
-        public Dictionary<CommandNames, Queue<Action<Request>>> CommandSubscribers
-        {
-
-            get
-            {
-                return _commandSubscribers ?? (_commandSubscribers = new Dictionary<CommandNames, Queue<Action<Request>>>());
-            }
-
-            set { _commandSubscribers = value; }
-        }
-
-        public Dictionary<CommandNames, EventNames> CommandEventMap { get { return _commandEventMap; } set { _commandEventMap = value; } }
+        public Dictionary<CommandNames, EventNames> CommandEventMap { get; set; }
 
         /// <summary>
         /// Used almost exclusively by the AppContext so that it can extended and then allow the Auditor to loop and listen to all. Note: All internal modules will have access to the Dispatch dll directly.
         /// </summary>
-        public List<EventNames> AvailableEvents
-        {
-            get { return _availableEvents ?? (_availableEvents = new List<EventNames>()); }
-        }
-
+        public List<EventNames> AvailableEvents { get; set; }
         /// <summary>
         /// The list of commands that have been registered and can be called at any given time. Also looped through by the Auditor.
         /// </summary>
-        public List<CommandNames> AvailableCommands
-        {
-            get { return _availableCommands ?? (_availableCommands = new List<CommandNames>()); }
-        }
+        public List<CommandNames> AvailableCommands { get; set; }
+        public Queue<Response> EventStream { get; set; }
 
-        public Queue<Response> EventStream { get { return _eventStream ?? (_eventStream = new Queue<Response>()); } }
+        public Queue<Request> CommandStream { get; set; }
 
-        public Queue<Request> CommandStream { get { return _commandStream ?? (_commandStream = new Queue<Request>()); } }
 
-        #endregion
-
-        #region Method(s)
         /// <summary>
         /// This method will take the action and append it to the list for the given publisher name. Whenever publish is called for that publisherName the associated methods will be invoked.
         /// </summary>
@@ -122,13 +83,11 @@ namespace sharpbox.Dispatch
         {
             EnsureEventSubscriberKey(response.EventName);
 
-            _eventStream.Enqueue(response);
+            EventStream.Enqueue(response);
 
             foreach (var p in EventSubscribers[response.EventName])
             {
-
                 p.Invoke(response);
-
             }
         }
 
@@ -140,7 +99,7 @@ namespace sharpbox.Dispatch
         {
             EnsureCommandSubscriberKey(request.CommandName);
 
-            _commandStream.Enqueue(request);
+            CommandStream.Enqueue(request);
 
             foreach (var a in CommandSubscribers[request.CommandName])
             {
@@ -151,43 +110,14 @@ namespace sharpbox.Dispatch
             }
         }
 
-        #endregion
-
-        #region Private Helper(s)
-
         private void EnsureEventSubscriberKey(EventNames eventName)
         {
             if (!EventSubscribers.ContainsKey(eventName)) EventSubscribers.Add(eventName, new Queue<Action<Response>>());
-
         }
 
         private void EnsureCommandSubscriberKey(CommandNames commandName)
         {
             if (!CommandSubscribers.ContainsKey(commandName)) CommandSubscribers.Add(commandName, new Queue<Action<Request>>());
-
         }
-
-        #endregion
-
-        #region Public Helper(s)
-
-        public void ExtendAvailableEvents(List<EventNames> eventNames)
-        {
-            foreach (var e in eventNames.Where(e => !AvailableEvents.Contains(e)))
-            {
-                AvailableEvents.Add(e);
-            }
-        }
-
-        public void ExtendAvailableCommands(List<CommandNames> actionNames)
-        {
-            foreach (var a in actionNames.Where(a => !AvailableCommands.Contains(a)))
-            {
-                AvailableCommands.Add(a);
-            }
-        }
-
-        #endregion
-
     }
 }
