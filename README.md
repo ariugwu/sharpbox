@@ -59,7 +59,6 @@ static void Main(string[] args){
 public static T SomeUnitOfWork(Dispatcher dispatch, T someObject){
     // Do Stuff to Object
     someObject.DoStuffExtension();
-    dispatch.BroadCast(DoStuffExtensionFired, someObject);
     return someObject;
 }
 
@@ -71,21 +70,23 @@ static void Main(string[] args){
   var someObject = new SomeObject();
   var container = EncapsulateComponents(dispatch, depA, debB, logger, someObject);
   
+  // Map the 1-to-1 Command/Event pairs so that when a given command is processed the response will be passed to the event
+  dispatch.CommandEventMap.Add(FireSomeUnitOfWork, OnStuffDone);
+  
   // Tell the dispatch that whenever a request to fire is sent for 'FireSomeUnitOfWork' to pass the request to the 'SomeUnitOfWork' callback.
   dispatch.Register(FireSomeUnitOfWork, SomeUnitOfWork);
   
   // Once the SomeUnitOfWork fires it will broadcast to anyone listening. Below we'll register some listeners.
-  dispatch.Listen(DoStuffExtensionFired, container.UpdateSomethingObject);
-  dispatch.Listen(DoStuffExtensionFired, depA.UpdateUsersWithStatusOfSomeObject);
-  dispatch.Listen(DoStuffExtensionFired, depB.PersistObject);
-  dispatch.Listen(OnDepBObjectPersisted, app.Logger.LogEvent);
+  dispatch.Listen(OnStuffDone, container.UpdateSomethingObject);
+  dispatch.Listen(OnStuffDone, depA.UpdateUsersWithStatusOfSomeObject);
+  dispatch.Listen(OnStuffDone, depB.PersistObject);
+  dispatch.Listen(OnStuffDone, app.Logger.LogEvent);
   
   // Send a request to process the object in our container.
   dispatch.Process(FireSomeUnitOfWork, container.Something);
   
   // It's our containers job to pass the new values of someObject to any components that might need it.
   Debug.WriteLine(container.Something.MutableProperty);
-  
 }
 ```
 
