@@ -13,6 +13,7 @@ namespace sharpbox.Dispatch.Model
         public EventNames EventName { get; set; }
         public object Entity { get; set; }
         public Type Type { get; set; }
-        public string UserId { get; set; }
+
+        public Guid RequestId { get; set; }
     }
 }

@@ -10,10 +10,10 @@ namespace sharpbox.Notification
     {
         #region Constructor(s)
 
-        public Client(Dispatch.Client dispatcher, IStrategy strategy)
+        public Client(Dispatch.Client dispatcher,List<EventNames> availableEvents, IStrategy strategy)
         {
             _strategy = strategy;
-            ConfigureNotification(dispatcher);
+            ConfigureNotification(dispatcher, availableEvents);
         }
 
         public Client()
@@ -37,9 +37,9 @@ namespace sharpbox.Notification
 
         #region Client Method(s)
 
-        public void ConfigureNotification(Dispatch.Client dispatcher)
+        public void ConfigureNotification(Dispatch.Client dispatcher, List<EventNames> availableEvents)
         {
-            foreach (var p in dispatcher.AvailableEvents.Where(x => !x.ToString().ToLower().Contains("onnotification"))) // subscribe to everything but our own events
+            foreach (var p in availableEvents.Where(x => !x.ToString().ToLower().Contains("onnotification"))) // subscribe to everything but our own events
             {
                 dispatcher.Listen(p, ProcessPackage);
             }

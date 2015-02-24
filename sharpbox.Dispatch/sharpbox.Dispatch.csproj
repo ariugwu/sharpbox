@@ -40,7 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Model\CommandHubItem.cs" />
     <Compile Include="Model\CommandNames.cs" />
+    <Compile Include="Model\CommandStreamItem.cs" />
     <Compile Include="Model\Feedback.cs" />
     <Compile Include="Model\Response.cs" />
     <Compile Include="Model\EventNames.cs" />

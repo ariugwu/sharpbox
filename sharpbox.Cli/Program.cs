@@ -17,7 +17,7 @@ namespace sharpbox.Cli
             // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event. We use basic since we're using xml and want to prevent event reflection. Audit saves file -> file generates audit message -> Audit saves file.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
-            var example = new ExampleMediator("ugwua", EventNamesExtension.ExtendedPubList, CommandNames.DefaultActionList(), smtpClient);
+            var example = new ExampleMediator("ugwua", EventNamesExtension.ExtendedPubList, smtpClient);
             
             example = WireUpEvents(example); // Wire the commands, and listeners.
 
@@ -31,29 +31,28 @@ namespace sharpbox.Cli
                         Message = "Testing the feedback system.",
                         Entity = feedback,
                         RequestId = Guid.NewGuid(),
-                        Type = typeof(Feedback),
-                        UserId = example.Dispatch.CurrentUserId
+                        Type = typeof(Feedback)
                     });  
             }
             catch (TargetInvocationException tEx)
             {
                 example.Log.Exception(example.Dispatch, tEx.Message);
-                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = tEx.Message, EventName = EventNames.OnLogException, Entity = tEx, Type = tEx.GetType(), UserId = example.Dispatch.CurrentUserId });
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = tEx.Message, EventName = EventNames.OnLogException, Entity = tEx, Type = tEx.GetType()});
             }
             catch (Exception ex)
             {
                 example.Log.Exception(example.Dispatch, ex.Message);
                 // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response.
-                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = ex.Message, EventName = EventNames.OnLogException, Entity = ex, Type = ex.GetType(), UserId = example.Dispatch.CurrentUserId });
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = ex.Message, EventName = EventNames.OnLogException, Entity = ex, Type = ex.GetType()});
             }
 
             // Another test from the subscription we set a few lines above.
-            example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = "Test of anyone listening to Example Extended publisher.", EventName = EventNamesExtension.ExampleExtendedPublisher, UserId = example.Dispatch.CurrentUserId });
+            example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = "Test of anyone listening to Example Extended publisher.", EventName = EventNamesExtension.ExampleExtendedPublisher});
 
             // Next we're going to try the user change command we registered earlier.
-            Debug.WriteLine("Current UserId: " + example.Dispatch.CurrentUserId);
-            example.Dispatch.Process(new Request { RequestId = Guid.NewGuid(), CommandName = CommandNames.ChangeUser, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null, UserId = example.Dispatch.CurrentUserId });
-            Debug.WriteLine("Current UserId: " + example.Dispatch.CurrentUserId);
+            Debug.WriteLine("Current UserId: " + example.UserId);
+            example.Dispatch.Process(new Request { RequestId = Guid.NewGuid(), CommandName = CommandNames.ChangeUser, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null});
+            Debug.WriteLine("Current UserId: " + example.UserId);
 
             // Notification
             Debug.WriteLine("###Notification Info####");
@@ -68,9 +67,9 @@ namespace sharpbox.Cli
             }
             catch (Exception ex)
             {
-                example.Log.Exception(example.Dispatch, ex.Message);
+                example.Log.Exception(ex, ex.Message);
                 // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response.
-                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = example.Dispatch.EventStream, Message = "Failed to send email message.", EventName = EventNames.OnLogException, UserId = example.Dispatch.CurrentUserId });
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = example.Dispatch.CommandStream, Message = ex.Message, EventName = EventNames.OnLogException,});
             }
 
             // Log: Test logging
@@ -93,19 +92,15 @@ namespace sharpbox.Cli
 
         public static ExampleMediator WireUpEvents(ExampleMediator example)
         {
-            // Use this to 1-to-1 map an action to an event. Every action should have on primary "I'm done." broadcast with the updated data.
-            example.Dispatch.CommandEventMap.Add(CommandNames.ChangeUser, EventNames.OnUserChange);
-            example.Dispatch.CommandEventMap.Add(CommandNames.SetFeedback, EventNames.OnFeedbackSet);
+            // Setup what a command should do and who it should broadcast to when it's done
+            example.Dispatch.Register(CommandNames.SetFeedback, example.ExampleProcessFeedback, EventNames.OnFeedbackSet);
+            example.Dispatch.Register(CommandNames.ChangeUser, example.ChangeUser, EventNames.OnUserChange);
 
-            // Now we need to tell the various commands what to actually do. NOTE: We have the condition that a setfeedback action be the first thing you set!
-            example.Dispatch.Register(CommandNames.SetFeedback, example.ExampleProcessFeedback);
-            example.Dispatch.Register(CommandNames.ChangeUser, example.ChangeUser);
-
-            // Piggy back additional listeners.
+            // Add some listeners to those broadcasts. NOTE: This is a queue so things will be fired in FIFO order.
             example.Dispatch.Listen(EventNames.OnUserChange, ExampleListener);
             example.Dispatch.Listen(EventNames.OnFeedbackSet, ExampleListener);
 
-            // Listen to an under the covers 'system' event
+            // Listen to an 'under the covers' system event
             example.Dispatch.Listen(EventNames.OnLogException, OnExceptionDumpEventStream);
 
             return example;
@@ -119,9 +114,9 @@ namespace sharpbox.Cli
         public static void OnExceptionDumpEventStream(Response response)
         {
             Debug.WriteLine("### Event Stream Dump ###");
-            foreach (var e in (Queue<Response>) response.Entity)
+            foreach (var e in (Queue<CommandStreamItem>)response.Entity)
             {
-               Debug.WriteLine("{0}: {1} - {2}", e.EventName, e.Message, e.UserId);
+               Debug.WriteLine("Command:{0} | Response Msg: '{1}' | Channel: {2}", e.Command, e.Response.Message, e.Response.EventName);
             }
         }
 

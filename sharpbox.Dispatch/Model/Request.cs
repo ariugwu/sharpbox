@@ -11,6 +11,5 @@ namespace sharpbox.Dispatch.Model
         public CommandNames CommandName { get; set; }
         public object Entity { get; set; }
         public Type Type { get; set; }
-        public string UserId { get; set; }
     }
 }

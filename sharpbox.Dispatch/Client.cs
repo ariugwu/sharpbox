@@ -12,41 +12,18 @@ namespace sharpbox.Dispatch
     [Serializable]
     public class Client
     {
-        public Client() { }
-
-        public Client(string userId, List<EventNames> eventNames = null, List<CommandNames> commandNames = null)
+        public Client()
         {
-            CurrentUserId = userId;
-            AvailableEvents = eventNames ?? EventNames.DefaultPubList();
-            AvailableCommands = commandNames ?? CommandNames.DefaultActionList();
-
+            CommandHub = new Dictionary<CommandNames, CommandHubItem>();
             EventSubscribers = new Dictionary<EventNames, Queue<Action<Response>>>();
-            CommandSubscribers = new Dictionary<CommandNames, Queue<Action<Request>>>();
-            CommandEventMap = new Dictionary<CommandNames, EventNames>();
-
-            CommandStream = new Queue<Request>();
-            EventStream = new Queue<Response>();
+            CommandStream = new Queue<CommandStreamItem>();
         }
-
-        public string CurrentUserId { get; set; }
 
         public Dictionary<EventNames, Queue<Action<Response>>> EventSubscribers { get; set; }
 
-        public Dictionary<CommandNames, Queue<Action<Request>>> CommandSubscribers { get; set; }
+        public Dictionary<CommandNames, CommandHubItem> CommandHub { get; set; }
 
-        public Dictionary<CommandNames, EventNames> CommandEventMap { get; set; }
-
-        /// <summary>
-        /// Used almost exclusively by the AppContext so that it can extended and then allow the Auditor to loop and listen to all. Note: All internal modules will have access to the Dispatch dll directly.
-        /// </summary>
-        public List<EventNames> AvailableEvents { get; set; }
-        /// <summary>
-        /// The list of commands that have been registered and can be called at any given time. Also looped through by the Auditor.
-        /// </summary>
-        public List<CommandNames> AvailableCommands { get; set; }
-        public Queue<Response> EventStream { get; set; }
-
-        public Queue<Request> CommandStream { get; set; }
+        public Queue<CommandStreamItem> CommandStream { get; set; }
 
 
         /// <summary>
@@ -65,14 +42,18 @@ namespace sharpbox.Dispatch
         /// While the CommandEvent map is used for creating the 1-to-1 relationship between thier commands name and event. i.e. - UpdateReciepe and OnReceipeUpdate you still need to register what callback you want to run on UpdateReceipe. Same with the event.
         /// </summary>
         /// <param name="commandName"></param>
-        /// <param name="method"></param>
-        public void Register(CommandNames commandName, Action<Request> method)
+        /// <param name="action"></param>
+        /// <param name="eventName"></param>
+        public void Register(CommandNames commandName, Func<Request, Request> action, EventNames eventName)
         {
-            if (!CommandSubscribers.ContainsKey(CommandNames.SetFeedback) && commandName != CommandNames.SetFeedback) throw new Exception("A 'SetFeedback' action must be registered before using any action registration!");
-
-            EnsureCommandSubscriberKey(commandName);
-
-            CommandSubscribers[commandName].Enqueue(method);
+            try
+            {
+                CommandHub.Add(commandName, new CommandHubItem { Action = action, EventName = eventName }); // wireup the action associated with this command, and the event channel to broadcast to when this command is processed.
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -83,8 +64,6 @@ namespace sharpbox.Dispatch
         {
             EnsureEventSubscriberKey(response.EventName);
 
-            EventStream.Enqueue(response);
-
             foreach (var p in EventSubscribers[response.EventName])
             {
                 p.Invoke(response);
@@ -92,32 +71,41 @@ namespace sharpbox.Dispatch
         }
 
         /// <summary>
-        /// Ensure the key exists. Add request to the Command stream. Cycle through all the subscribers and fire off the associated action.
+        /// Ensure the key exists. Fire off the actio associated with this request's command.
         /// </summary>
         /// <param name="request"></param>
+        /// <exception cref=""></exception>
         public void Process(Request request)
         {
-            EnsureCommandSubscriberKey(request.CommandName);
-
-            CommandStream.Enqueue(request);
-
-            foreach (var a in CommandSubscribers[request.CommandName])
+            try
             {
-                a.Invoke(request);
+                request = CommandHub[request.CommandName].Action.Invoke(request);
 
                 //Auto broadcast to the command's primary event
-                if (CommandEventMap.ContainsKey(request.CommandName)) Broadcast(new Response { Entity = request.Entity, EventName = CommandEventMap[request.CommandName], Message = String.Format("{0} | RequestId : {1}", request.Message, request.RequestId), ResponseId = Guid.NewGuid(), UserId = CurrentUserId });
+                var response = new Response
+                {
+                    Entity = request.Entity,
+                    EventName = CommandHub[request.CommandName].EventName,
+                    Message = String.Format("{0} | RequestId : {1}", request.Message, request.RequestId),
+                    ResponseId = Guid.NewGuid(),
+                    RequestId = request.RequestId
+                };
+
+                // Add The incoming request and out going response to the command stream.
+                CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Request = request, Response = response });
+
+                // Broadcase the response to all listeners.
+                Broadcast(response);
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
         private void EnsureEventSubscriberKey(EventNames eventName)
         {
             if (!EventSubscribers.ContainsKey(eventName)) EventSubscribers.Add(eventName, new Queue<Action<Response>>());
-        }
-
-        private void EnsureCommandSubscriberKey(CommandNames commandName)
-        {
-            if (!CommandSubscribers.ContainsKey(commandName)) CommandSubscribers.Add(commandName, new Queue<Action<Request>>());
         }
     }
 }
