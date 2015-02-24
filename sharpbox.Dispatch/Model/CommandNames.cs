@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace sharpbox.Dispatch.Model
 {
+    [Serializable]
     public class CommandNames
     {
         #region Constructor(s)

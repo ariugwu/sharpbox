@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sharpbox.Io.Strategy.Binary
+namespace sharpbox.Data
 {
-    public class Class1
+    class Validator
     {
     }
 }

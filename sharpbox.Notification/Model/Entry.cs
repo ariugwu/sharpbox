@@ -6,6 +6,7 @@ namespace sharpbox.Notification.Model
     /// <summary>
     /// The Notification Entry extends the package and allows for a more robust message to be created.
     /// </summary>
+    [Serializable]
     public class Entry
     {
         public Entry()

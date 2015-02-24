@@ -1,5 +1,8 @@
-﻿namespace sharpbox.Log.Model
+﻿using System;
+
+namespace sharpbox.Log.Model
 {
+    [Serializable]
     public enum EntryType
     {
         Trace,

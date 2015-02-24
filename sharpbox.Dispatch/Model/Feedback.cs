@@ -1,5 +1,8 @@
-﻿namespace sharpbox.Dispatch.Model
+﻿using System;
+
+namespace sharpbox.Dispatch.Model
 {
+    [Serializable]
     public class Feedback
     {
         public CommandNames ActionName { get; set; }

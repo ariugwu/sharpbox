@@ -10,6 +10,7 @@ namespace sharpbox.Dispatch
     /// </summary>
     /// <exception cref="System.Reflection.TargetInvocationException">A registered Action failed during either the Command Processing or the Event Broadcast.</exception>
     /// <exception cref="System.Exception">General uncaught exception from either Command Processing or an Event Broadcast</exception>
+    [Serializable]
     public class Client
     {
 
@@ -146,7 +147,7 @@ namespace sharpbox.Dispatch
                 a.Invoke(request);
 
                 //Auto broadcast to the command's primary event
-                if (CommandEventMap.ContainsKey(request.CommandName)) Broadcast(new Response { Entity = request.Entity, EventName = CommandEventMap[request.CommandName], Message = String.Format("Processed Request : {0}", request.RequestId), ResponseId = Guid.NewGuid(), UserId = CurrentUserId });
+                if (CommandEventMap.ContainsKey(request.CommandName)) Broadcast(new Response { Entity = request.Entity, EventName = CommandEventMap[request.CommandName], Message = String.Format("{0} | RequestId : {1}", request.Message, request.RequestId), ResponseId = Guid.NewGuid(), UserId = CurrentUserId });
             }
         }
 

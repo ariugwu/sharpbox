@@ -1,6 +1,8 @@
 ﻿using System;
+
 namespace sharpbox.Dispatch.Model
 {
+    [Serializable]
     public class Request
     {
         public Guid RequestId { get; set; }

@@ -2,6 +2,7 @@
 
 namespace sharpbox.Dispatch.Model
 {
+    [Serializable]
     public class Response
     {
         public Response() { }

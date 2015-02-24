@@ -2,6 +2,7 @@
 
 namespace sharpbox.Notification.Model
 {
+    [Serializable]
     public class BackLog
     {
         public BackLog() { }

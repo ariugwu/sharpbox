@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 
@@ -20,26 +19,26 @@ namespace sharpbox.Cli.Model.Domain.AppContext
             // Append all the events and roles we're going to need.
 
             Email = new Email.Client(smtpClient);
-            File = new Io.Client(new Io.Strategy.Xml.XmlStrategy());
+            File = new Io.Client(new Io.Strategy.Binary.BinaryStrategy());
 
             // The following modules require persistence
             var dispatcher = Dispatch;
 
             // Setup auditing
 
-            var filename = "AuditLog.xml";
-            var persistenceStrategy = new Io.Strategy.Xml.XmlStrategy();
+            var filename = "AuditLog.dat";
+            var persistenceStrategy = new Io.Strategy.Binary.BinaryStrategy();
 
             var auditStrategy = new Audit.Strategy.File.FileStrategy(dispatcher, persistenceStrategy, new Dictionary<string, object> {{"filePath", filename}});
             Audit = new Audit.Client(ref dispatcher, auditStrategy); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
         
             // Setup Notification
-            filename = "NotificationLog.xml";
+            filename = "NotificationLog.dat";
             var notificationStrategy = new Notification.Strategy.File.FileStrategy(dispatcher, persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
             Notification = new Notification.Client(Dispatch, notificationStrategy);
             
             // Setup Logging
-            filename = "Log.xml";
+            filename = "Log.dat";
             var fileStrategy = new Log.Strategy.File.FileStrategy(persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
             Log = new Log.Client(fileStrategy);
         }

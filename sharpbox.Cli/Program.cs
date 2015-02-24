@@ -19,21 +19,9 @@ namespace sharpbox.Cli
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
             var example = new ExampleMediator("ugwua", EventNamesExtension.ExtendedPubList, CommandNames.DefaultActionList(), smtpClient);
+            
+            example = WireUpEvents(example); // Wire the commands, and listeners.
 
-            // Use this to 1-to-1 map an action to an event. Every action should have on primary "I'm done." broadcast with the updated data.
-            example.Dispatch.CommandEventMap.Add(CommandNames.ChangeUser, EventNames.OnUserChange);
-            example.Dispatch.CommandEventMap.Add(CommandNames.SetFeedback, EventNames.OnFeedbackSet);
-
-            // Now we need to tell the various commands what to actually do. NOTE: We have the condition that a setfeedback action be the first thing you set!
-            example.Dispatch.Register(CommandNames.SetFeedback, example.ExampleProcessFeedback);
-            example.Dispatch.Register(CommandNames.ChangeUser, example.ChangeUser);
-
-            // Piggy back additional listeners.
-            example.Dispatch.Listen(EventNames.OnUserChange, ExampleListener);
-            example.Dispatch.Listen(EventNames.OnFeedbackSet, ExampleListener);
-
-            // Listen to an under the covers 'system' event
-            example.Dispatch.Listen(EventNames.OnLogException, OnExceptionDumpEventStream);
 
             // Now we're set to actually use the application.
             var feedback = new Feedback { ActionName = CommandNames.ChangeUser, Message = "Meaningless message", Successful = true };
@@ -86,7 +74,7 @@ namespace sharpbox.Cli
             {
                 example.Log.Exception(example.Dispatch, ex.Message);
                 // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response.
-                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Message = "Test of anyone listening to OnLogException.", EventName = EventNames.OnLogException, UserId = example.Dispatch.CurrentUserId });
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = example.Dispatch.EventStream, Message = "Failed to send email message.", EventName = EventNames.OnLogException, UserId = example.Dispatch.CurrentUserId });
             }
 
             // Log: Test logging
@@ -107,6 +95,26 @@ namespace sharpbox.Cli
             Console.ReadLine();
         }
 
+        public static ExampleMediator WireUpEvents(ExampleMediator example)
+        {
+            // Use this to 1-to-1 map an action to an event. Every action should have on primary "I'm done." broadcast with the updated data.
+            example.Dispatch.CommandEventMap.Add(CommandNames.ChangeUser, EventNames.OnUserChange);
+            example.Dispatch.CommandEventMap.Add(CommandNames.SetFeedback, EventNames.OnFeedbackSet);
+
+            // Now we need to tell the various commands what to actually do. NOTE: We have the condition that a setfeedback action be the first thing you set!
+            example.Dispatch.Register(CommandNames.SetFeedback, example.ExampleProcessFeedback);
+            example.Dispatch.Register(CommandNames.ChangeUser, example.ChangeUser);
+
+            // Piggy back additional listeners.
+            example.Dispatch.Listen(EventNames.OnUserChange, ExampleListener);
+            example.Dispatch.Listen(EventNames.OnFeedbackSet, ExampleListener);
+
+            // Listen to an under the covers 'system' event
+            example.Dispatch.Listen(EventNames.OnLogException, OnExceptionDumpEventStream);
+
+            return example;
+        }
+
         public static void ExampleListener(Response response)
         {
             Debug.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
@@ -116,10 +124,10 @@ namespace sharpbox.Cli
         {
             Debug.WriteLine("### Event Stream Dump ###");
             Debug.WriteLine("TODO: Would like to pass the EventStream on exception but the serializer for the xml audit isn't quite smart enough to write the full thing to file.");
-            //foreach (var e in (List<response>) response.Entity)
-            //{
-            //    Debug.WriteLine("{0}: {1} - {2}", e.EventName, e.Message, e.UserId);
-            //}
+            foreach (var e in (Queue<Response>) response.Entity)
+            {
+               Debug.WriteLine("{0}: {1} - {2}", e.EventName, e.Message, e.UserId);
+            }
         }
 
     }

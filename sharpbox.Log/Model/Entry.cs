@@ -2,6 +2,7 @@
 
 namespace sharpbox.Log.Model
 {
+    [Serializable]
     public class Entry
     {
         public Entry() { }
