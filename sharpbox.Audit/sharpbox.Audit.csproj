@@ -41,8 +41,6 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="Model\AuditLevel.cs" />
-    <Compile Include="Model\Dispatch\ExtendedActions.cs" />
-    <Compile Include="Model\Dispatch\ExtendedEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
   </ItemGroup>

@@ -67,5 +67,13 @@ namespace sharpbox.Cli.Model.Domain.AppContext
             return new Response(request, "User changed in the ExampleMediator");
         }
 
+        public Response BroadCastEventStream(Request request)
+        {
+            // Example of being able to bend the rules a little bit and simply use the system to kick off a response, as apposed to deliverying something to be processed.
+            request.Entity = Dispatch.CommandStream;
+            request.Type = typeof (Queue<CommandStreamItem>);
+            return new Response(request, "Broadcasting current command stream.");
+        }
+
     }
 }

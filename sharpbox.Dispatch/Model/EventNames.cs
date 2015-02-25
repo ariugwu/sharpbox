@@ -9,7 +9,8 @@ namespace sharpbox.Dispatch.Model
     [Serializable]
     public class EventNames
     {
-
+        public static readonly EventNames OnBroadcastCommandStream = new EventNames("OnBroadcastCommandStream");
+        public static readonly EventNames OnBroadcastEventStream = new EventNames("OnBroadcastEventStream");
 
         public static readonly EventNames OnAuditRecord = new EventNames("OnAuditRecord");
         public static readonly EventNames OnAuditPersist = new EventNames("OnAuditPersist");
@@ -77,7 +78,9 @@ namespace sharpbox.Dispatch.Model
                 OnNotificationSaveBacklog,
                 OnNotificationSaveQueue,
                 OnRecordAction,
-                OnFeedbackSet
+                OnFeedbackSet,
+                OnBroadcastCommandStream,
+                OnBroadcastEventStream
             };
         } 
 

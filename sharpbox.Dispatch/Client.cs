@@ -14,17 +14,16 @@ namespace sharpbox.Dispatch
     {
         public Client()
         {
-            CommandHub = new Dictionary<CommandNames, CommandHubItem>();
-            EventSubscribers = new Dictionary<EventNames, Queue<Action<Response>>>();
+            _commandHub = new Dictionary<CommandNames, CommandHubItem>();
+            _eventSubscribers = new Dictionary<EventNames, Queue<Action<Response>>>();
             CommandStream = new Queue<CommandStreamItem>();
         }
 
-        public Dictionary<EventNames, Queue<Action<Response>>> EventSubscribers { get; set; }
+        private Dictionary<EventNames, Queue<Action<Response>>> _eventSubscribers;
 
-        public Dictionary<CommandNames, CommandHubItem> CommandHub { get; set; }
+        private Dictionary<CommandNames, CommandHubItem> _commandHub;
 
-        public Queue<CommandStreamItem> CommandStream { get; set; }
-
+        public Queue<CommandStreamItem> CommandStream { get; private set; }
 
         /// <summary>
         /// This method will take the action and append it to the list for the given publisher name. Whenever publish is called for that publisherName the associated methods will be invoked.
@@ -35,7 +34,7 @@ namespace sharpbox.Dispatch
         {
             EnsureEventSubscriberKey(publisherName);
 
-            EventSubscribers[publisherName].Enqueue(method);
+            _eventSubscribers[publisherName].Enqueue(method);
         }
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace sharpbox.Dispatch
         {
             try
             {
-                CommandHub.Add(commandName, new CommandHubItem { Action = action, EventName = eventName }); // wireup the action associated with this command, and the event channel to broadcast to when this command is processed.
+                _commandHub.Add(commandName, new CommandHubItem { Action = action, EventName = eventName }); // wireup the action associated with this command, and the event channel to broadcast to when this command is processed.
             }
             catch (Exception ex)
             {
@@ -64,7 +63,7 @@ namespace sharpbox.Dispatch
         {
             EnsureEventSubscriberKey(response.EventName);
 
-            foreach (var p in EventSubscribers[response.EventName])
+            foreach (var p in _eventSubscribers[response.EventName])
             {
                 p.Invoke(response);
             }
@@ -80,8 +79,8 @@ namespace sharpbox.Dispatch
             try
             {
                 // Get the response from the registered action.
-                var response = CommandHub[request.CommandName].Action.Invoke(request);
-                response.EventName = CommandHub[request.CommandName].EventName; // Set the event name.
+                var response = _commandHub[request.CommandName].Action.Invoke(request);
+                response.EventName = _commandHub[request.CommandName].EventName; // Set the event name.
 
                 // Add The incoming request and out going response to the command stream.
                 CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Request = request, Response = response });
@@ -97,7 +96,7 @@ namespace sharpbox.Dispatch
 
         private void EnsureEventSubscriberKey(EventNames eventName)
         {
-            if (!EventSubscribers.ContainsKey(eventName)) EventSubscribers.Add(eventName, new Queue<Action<Response>>());
+            if (!_eventSubscribers.ContainsKey(eventName)) _eventSubscribers.Add(eventName, new Queue<Action<Response>>());
         }
     }
 }

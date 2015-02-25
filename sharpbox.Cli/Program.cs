@@ -69,7 +69,7 @@ namespace sharpbox.Cli
             {
                 example.Log.Exception(ex, ex.Message);
                 // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response.
-                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = example.Dispatch.CommandStream, Message = ex.Message, EventName = EventNames.OnLogException,});
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = ex, Message = ex.Message, EventName = EventNames.OnLogException,});
             }
 
             // Log: Test logging
@@ -77,6 +77,23 @@ namespace sharpbox.Cli
 
             // Io: Test file operations. We pass in the dispatcher so everything threads back.
             example.File.Write("Test.xml", example.Notification.Queue);
+
+            // Broad Cast the command stream to test usefulness.
+            try
+            {
+                example.Dispatch.Process(new Request
+                {
+                    RequestId = Guid.NewGuid(),
+                    CommandName = CommandNames.BroadcastCommandStream,
+                    Message = "Request to broadcast command stream",
+                    Entity = null,
+                    Type = null
+                });
+            }
+            catch (Exception ex)
+            {
+                
+            }
 
             // Audit: See the results in the audit trail
             var trail = example.Audit.Trail;
@@ -95,13 +112,14 @@ namespace sharpbox.Cli
             // Setup what a command should do and who it should broadcast to when it's done
             example.Dispatch.Register(CommandNames.SetFeedback, example.ExampleProcessFeedback, EventNames.OnFeedbackSet);
             example.Dispatch.Register(CommandNames.ChangeUser, example.ChangeUser, EventNames.OnUserChange);
+            example.Dispatch.Register(CommandNames.BroadcastCommandStream, example.BroadCastEventStream, EventNames.OnBroadcastCommandStream);
 
             // Add some listeners to those broadcasts. NOTE: This is a queue so things will be fired in FIFO order.
             example.Dispatch.Listen(EventNames.OnUserChange, ExampleListener);
             example.Dispatch.Listen(EventNames.OnFeedbackSet, ExampleListener);
-
+            example.Dispatch.Listen(EventNames.OnBroadcastCommandStream, OutPutCommandStream);
             // Listen to an 'under the covers' system event
-            example.Dispatch.Listen(EventNames.OnLogException, OnExceptionDumpEventStream);
+            example.Dispatch.Listen(EventNames.OnLogException, ExampleListener);
 
             return example;
         }
@@ -111,7 +129,7 @@ namespace sharpbox.Cli
             Debug.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
         }
 
-        public static void OnExceptionDumpEventStream(Response response)
+        public static void OutPutCommandStream(Response response)
         {
             Debug.WriteLine("### Event Stream Dump ###");
             foreach (var e in (Queue<CommandStreamItem>)response.Entity)
