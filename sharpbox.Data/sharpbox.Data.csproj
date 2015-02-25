@@ -30,17 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -49,23 +41,10 @@
     <Compile Include="Repository.cs" />
     <Compile Include="Strategy\IStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategy\EntityFrameworkStrategy.cs" />
-    <Compile Include="Strategy\XmlStrategy.cs" />
     <Compile Include="Validator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
-      <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
-      <Name>sharpbox.Dispatch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Io\sharpbox.Io.csproj">
-      <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
-      <Name>sharpbox.Io</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Strategy\Validation\" />

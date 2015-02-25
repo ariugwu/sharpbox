@@ -92,7 +92,7 @@ namespace sharpbox.Cli
             }
             catch (Exception ex)
             {
-                
+                example.Dispatch.Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = "Failed our example broadcast in Progam.cs", ResponseId = Guid.NewGuid() });
             }
 
             // Audit: See the results in the audit trail
@@ -121,12 +121,22 @@ namespace sharpbox.Cli
             // Listen to an 'under the covers' system event
             example.Dispatch.Listen(EventNames.OnLogException, ExampleListener);
 
+            // All of our internal stuff uses the broadcast system so we'll listen on exception and rethrow.
+            // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method?
+            example.Dispatch.Listen(EventNames.OnException, FireOnException);
+
             return example;
         }
 
         public static void ExampleListener(Response response)
         {
             Debug.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
+        }
+
+        public static void FireOnException(Response response)
+        {
+            var exception = response.Entity as Exception;
+            if (exception != null) throw exception;
         }
 
         public static void OutPutCommandStream(Response response)

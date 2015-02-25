@@ -22,38 +22,38 @@ namespace sharpbox.Data
 
         }
 
-        public IEnumerable<T> All(Dispatch.Client dispatcher)
+        public IEnumerable<T> All()
         {
-            return _strategy.All(dispatcher);
+            return _strategy.All();
         }
 
-        public T Create(Dispatch.Client dispatcher, T entity)
+        public T Create(T entity)
         {
-            var e = _strategy.Create(dispatcher, entity);
+            var e = _strategy.Create(entity);
             return e;
         }
 
-        public T Get(Dispatch.Client dispatcher, int id)
+        public T Get(int id)
         {
-            var e = _strategy.Get(dispatcher, id);
+            var e = _strategy.Get(id);
             return e;
         }
 
-        public T Update(Dispatch.Client dispatcher, T entity)
+        public T Update(T entity)
         {
-            var e = _strategy.Update(dispatcher, entity);
+            var e = _strategy.Update(entity);
             return e;
         }
 
-        public IEnumerable<T> UpdateAll(Dispatch.Client dispatcher, IEnumerable<T> entities)
+        public IEnumerable<T> UpdateAll(IEnumerable<T> entities)
         {
-            var e = _strategy.UpdateAll(dispatcher, entities);
+            var e = _strategy.UpdateAll(entities);
             return e;
         }
 
-        public void Delete(Dispatch.Client dispatcher, T entity)
+        public void Delete(T entity)
         {
-            _strategy.Delete(dispatcher, entity);
+            _strategy.Delete(entity);
 
         }
 

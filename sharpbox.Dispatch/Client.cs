@@ -51,7 +51,7 @@ namespace sharpbox.Dispatch
             }
             catch (Exception ex)
             {
-                throw;
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = "Dispatch failed to register the action", ResponseId = Guid.NewGuid() });
             }
         }
 
@@ -90,7 +90,7 @@ namespace sharpbox.Dispatch
             }
             catch (Exception ex)
             {
-                throw;
+                Broadcast(new Response{ Entity = ex, Type= ex.GetType(), EventName = EventNames.OnException, Message = "Dispatch process failed for Request Id:" + request.RequestId, RequestId = request.RequestId, ResponseId = Guid.NewGuid()});
             }
         }
 

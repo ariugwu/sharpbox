@@ -1,15 +1,14 @@
-﻿using System.Data.Entity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
-using sharpbox.Dispatch;
 
-namespace sharpbox.Data.Strategy
+namespace sharpbox.Data.Strategy.EntityFramework
 {
-    public class EntityFrameworkStrategy<T> : IStrategy<T> where T : class
+    public class EfStrategy<T> : IStrategy<T> where T : class
     {
         #region Constructor(s)
 
-        public EntityFrameworkStrategy(Dispatch.Client dispatcher, Dictionary<string, object> props)
+        public EfStrategy(Dictionary<string, object> props)
         {
             Db = (DbContext) props["dbContext"];
             Props = props;
@@ -25,39 +24,35 @@ namespace sharpbox.Data.Strategy
         #endregion
 
         #region Interface Methods / Members
-        public void Init(Client dispatcher)
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public IEnumerable<T> All(Client dispatcher)
+        public IEnumerable<T> All()
         {
             return Db.Set<T>();
         }
 
-        public T Create(Client dispatcher, T entity)
+        public T Create(T entity)
         {
             Db.Set<T>().AddOrUpdate(entity);
 
             return entity;
         }
 
-        public T Get(Client dispatcher, int id)
+        public T Get(int id)
         {
             return Db.Set<T>().Find(id);
         }
 
-        public T Update(Client dispatcher, T entity)
+        public T Update(T entity)
         {
-            return Create(dispatcher, entity);
+            return Create(entity);
         }
 
-        public IEnumerable<T> UpdateAll(Client dispatcher, IEnumerable<T> list)
+        public IEnumerable<T> UpdateAll(IEnumerable<T> list)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Delete(Client dispatcher, T entity)
+        public void Delete(T entity)
         {
             Db.Set<T>().Remove(entity);
         }

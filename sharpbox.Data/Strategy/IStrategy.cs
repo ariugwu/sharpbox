@@ -7,12 +7,12 @@ namespace sharpbox.Data.Strategy
         Dictionary<string, object> Props { get; set; } 
         List<T> Entities { get; set; }
         
-        IEnumerable<T> All(Dispatch.Client dispatcher);
-        T Create(Dispatch.Client dispatcher, T entity);
-        T Get(Dispatch.Client dispatcher, int id);
-        T Update(Dispatch.Client dispatcher, T entity);
-        IEnumerable<T> UpdateAll(Dispatch.Client dispatcher, IEnumerable<T> list);
-        void Delete(Dispatch.Client dispatcher, T entity);
+        IEnumerable<T> All();
+        T Create(T entity);
+        T Get(int id);
+        T Update(T entity);
+        IEnumerable<T> UpdateAll(IEnumerable<T> list);
+        void Delete(T entity);
 
     }
 }

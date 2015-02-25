@@ -44,6 +44,8 @@ namespace sharpbox.Dispatch.Model
 
         public static readonly EventNames OnFeedbackSet = new EventNames("OnFeedbackSet");
 
+        public static readonly EventNames OnException = new EventNames("OnException");
+
         protected string _value;
 
         public EventNames(string value)
@@ -80,7 +82,8 @@ namespace sharpbox.Dispatch.Model
                 OnRecordAction,
                 OnFeedbackSet,
                 OnBroadcastCommandStream,
-                OnBroadcastEventStream
+                OnBroadcastEventStream,
+                OnException
             };
         } 
 
