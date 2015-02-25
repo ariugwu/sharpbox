@@ -70,11 +70,8 @@ static void Main(string[] args){
   var someObject = new SomeObject();
   var container = EncapsulateComponents(dispatch, depA, debB, logger, someObject);
   
-  // Map the 1-to-1 Command/Event pairs so that when a given command is processed the response will be passed to the event
-  dispatch.CommandEventMap.Add(FireSomeUnitOfWork, OnStuffDone);
-  
-  // Tell the dispatch that whenever a request to fire is sent for 'FireSomeUnitOfWork' to pass the request to the 'SomeUnitOfWork' callback.
-  dispatch.Register(FireSomeUnitOfWork, SomeUnitOfWork);
+  // Says: When you process 'FireSomeUnitOfWork' call 'SomeUnitOfWork' then pass the result to 'OnStuffDone' and broadcast to listeners.
+  dispatch.Register(FireSomeUnitOfWork, SomeUnitOfWork, OnStuffDone);
   
   // Once the SomeUnitOfWork fires it will broadcast to anyone listening. Below we'll register some listeners.
   dispatch.Listen(OnStuffDone, container.UpdateSomethingObject);
@@ -85,8 +82,8 @@ static void Main(string[] args){
   // Send a request to process the object in our container.
   dispatch.Process(FireSomeUnitOfWork, container.Something);
   
-  // It's our containers job to pass the new values of someObject to any components that might need it.
-  Debug.WriteLine(container.Something.MutableProperty);
+  // The command stream contains all of our processed actions as well as their pre and post processed states.
+  var commandStream = dispatch.CommandStream; 
 }
 ```
 
