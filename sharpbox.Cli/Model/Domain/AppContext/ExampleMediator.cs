@@ -51,19 +51,20 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         public Audit.Client Audit { get; set; } // A dispatch friendly Auditor
         public Io.Client File { get; set; } // A dispatch friendly file client
 
-        public Request ExampleProcessFeedback(Request request)
+        public Response ExampleProcessFeedback(Request request)
         {
             var feedback = (Feedback) request.Entity;
             Feedback = feedback;
-            return request;
+
+            return new Response(request, "Feedback set in ExampleMediator");
         }
 
-        public Request ChangeUser(Request request)
+        public Response ChangeUser(Request request)
         {
             var entity = (string)request.Entity;
             UserId = entity;
 
-            return request;
+            return new Response(request, "User changed in the ExampleMediator");
         }
 
     }

@@ -76,7 +76,8 @@ namespace sharpbox.Dispatch.Model
                 OnNotificationNotify,
                 OnNotificationSaveBacklog,
                 OnNotificationSaveQueue,
-                OnRecordAction
+                OnRecordAction,
+                OnFeedbackSet
             };
         } 
 

@@ -44,7 +44,7 @@ namespace sharpbox.Dispatch
         /// <param name="commandName"></param>
         /// <param name="action"></param>
         /// <param name="eventName"></param>
-        public void Register(CommandNames commandName, Func<Request, Request> action, EventNames eventName)
+        public void Register(CommandNames commandName, Func<Request, Response> action, EventNames eventName)
         {
             try
             {
@@ -79,17 +79,9 @@ namespace sharpbox.Dispatch
         {
             try
             {
-                request = CommandHub[request.CommandName].Action.Invoke(request);
-
-                //Auto broadcast to the command's primary event
-                var response = new Response
-                {
-                    Entity = request.Entity,
-                    EventName = CommandHub[request.CommandName].EventName,
-                    Message = String.Format("{0} | RequestId : {1}", request.Message, request.RequestId),
-                    ResponseId = Guid.NewGuid(),
-                    RequestId = request.RequestId
-                };
+                // Get the response from the registered action.
+                var response = CommandHub[request.CommandName].Action.Invoke(request);
+                response.EventName = CommandHub[request.CommandName].EventName; // Set the event name.
 
                 // Add The incoming request and out going response to the command stream.
                 CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Request = request, Response = response });

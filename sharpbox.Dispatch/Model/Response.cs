@@ -5,6 +5,14 @@ namespace sharpbox.Dispatch.Model
     [Serializable]
     public class Response
     {
+        public Response(Request request, string message)
+        {
+            Entity = request.Entity;
+            Message = message;
+            ResponseId = Guid.NewGuid();
+            RequestId = request.RequestId;
+        }
+
         public Response() { }
 
         public Guid ResponseId { get; set; }
@@ -13,6 +21,8 @@ namespace sharpbox.Dispatch.Model
         public EventNames EventName { get; set; }
         public object Entity { get; set; }
         public Type Type { get; set; }
+
+        bool WasSuccessful { get; set; }
 
         public Guid RequestId { get; set; }
     }
