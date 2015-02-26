@@ -4,7 +4,7 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Cli.Model.Domain.AppContext
 {
-    public class ExampleMediator : sharpbox.Mediator
+    public class ExampleMediator : Mediator
     {
         /// <summary>
         /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
@@ -33,7 +33,7 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         
             // Setup Notification
             filename = "NotificationLog.dat";
-            var notificationStrategy = new Notification.Strategy.File.FileStrategy(dispatcher, persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
+            var notificationStrategy = new Notification.Strategy.File.FileStrategy(persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
             Notification = new Notification.Client(Dispatch, eventNames, notificationStrategy);
             
             // Setup Logging

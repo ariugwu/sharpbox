@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using sharpbox.Util.Enum;
 
 namespace sharpbox.Dispatch.Model
 {
     [Serializable]
-    public class CommandNames
+    public class CommandNames : EnumPattern
     {
-        public CommandNames(string value)
+        public CommandNames(string value) : base(value)
         {
-            _value = value;
         }
 
         public CommandNames() { }
@@ -18,14 +18,9 @@ namespace sharpbox.Dispatch.Model
 
         public static readonly CommandNames SetFeedback = new CommandNames("SetFeedback");
 
+        public static readonly CommandNames SendNotification = new CommandNames("SendNotification");
+
         public static readonly CommandNames ChangeUser = new CommandNames("ChangeUser");
-
-        protected string _value;
-
-        public override string ToString()
-        {
-            return _value;
-        }
 
         public static List<CommandNames> DefaultActionList()
         {
@@ -34,7 +29,8 @@ namespace sharpbox.Dispatch.Model
                 SetFeedback,
                 ChangeUser,
                 BroadcastCommandStream,
-                BroadcastEventStream
+                BroadcastEventStream,
+                SendNotification
             };
         }
     }

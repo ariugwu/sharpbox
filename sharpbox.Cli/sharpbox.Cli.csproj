@@ -117,6 +117,10 @@
       <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>
       <Name>sharpbox.Notification</Name>
     </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
+      <Project>{15B019A3-9142-4220-B6DE-A75515B5E288}</Project>
+      <Name>sharpbox.Util</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox\sharpbox.csproj">
       <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>
       <Name>sharpbox</Name>

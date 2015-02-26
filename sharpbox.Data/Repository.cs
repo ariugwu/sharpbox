@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using sharpbox.Data.Strategy;
+using sharpbox.Data.Strategy.Repository;
 
 namespace sharpbox.Data
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace sharpbox.Data.Strategy
+namespace sharpbox.Data.Strategy.Repository
 {
     public interface IStrategy<T>
     {

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace sharpbox.Notification.Model
 {
     [Serializable]
-    public class BackLog
+    public class BackLogItem
     {
-        public BackLog() { }
+        public BackLogItem() { }
 
         public Guid BackLogId { get; set; }
         public Guid EntryId { get; set; }
@@ -14,6 +15,15 @@ namespace sharpbox.Notification.Model
         public DateTime? SentDate { get; set; }
         public int AttempNumber { get; set; }
         public DateTime? NextAttempTime { get; set; }
+
+        public List<string> To { get; set; }
+        public string From { get; set; }
+        public List<string> Cc { get; set; }
+        public List<string> Bcc { get; set; }
+
+        public string Subject { get; set; }
+
         public string Message { get; set; }
+
     }
 }

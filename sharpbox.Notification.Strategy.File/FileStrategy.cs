@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using sharpbox.Dispatch.Model;
 using sharpbox.Notification.Model;
 
@@ -10,80 +11,59 @@ namespace sharpbox.Notification.Strategy.File
         private Io.Client _file;
         private Dictionary<string, object> _props;
 
-        public FileStrategy(Dispatch.Client dispatcher, Io.Strategy.IStrategy persistenceStrategy, Dictionary<string, object> props)
+        public FileStrategy(Io.Strategy.IStrategy persistenceStrategy, Dictionary<string, object> props)
         {
             _file = new Io.Client(persistenceStrategy);
             _props = props;
 
+            _emailClient = (Email.Client) props["emailClient"];
+
             LoadBacklog();
             LoadSubscribers();
         }
-        
+
+        private Email.Client _emailClient;
         private Dictionary<EventNames, List<string>> _subscribers;
-        private List<BackLog> _queue;
+        private Queue<BackLogItem> _backLog;
 
         public Dictionary<EventNames, List<string>> Subscribers { get{ return _subscribers ?? (_subscribers = new Dictionary<EventNames, List<string>>());} set { _subscribers = value; } }
 
-        public List<BackLog> Queue { get { return _queue ?? (_queue = new List<BackLog>()); } set { _queue = value;} }
- 
-        public void ProcessPackage(Response response)
+        public Queue<BackLogItem> BackLog { get { return _backLog ?? (_backLog = new Queue<BackLogItem>()); } set { _backLog = value; } }
+
+        public BackLogItem ProcessBackLogItem(BackLogItem backLogItem)
         {
-            // Add a queue entry so we know all the system events regardless of whether anyone is subscribed to them.
-            var entry = new Entry
-            {
-                CreatedDate = DateTime.Now,
-                PublisherName = response.EventName,
-                EntryId = Guid.NewGuid(),
-                UserFriendlyMessage = response.Message
-            };
-
-
-            if (!Subscribers.ContainsKey(response.EventName)) return; // Bail early if there are no subscribers.
-
-            // Run through all of the subscribers for this publisher and generate a backlog item for them.
-            foreach (var s in Subscribers[response.EventName])
-            {
-                // Add the backlog item
-                AddBackLogItem(new BackLog
-                {
-                    AttempNumber = 0,
-                    BackLogId = Guid.NewGuid(),
-                    NextAttempTime = null,
-                    EntryId = entry.EntryId,
-                    SentDate = null,
-                    UserId = s,
-                    WasSent = false,
-                    Message = entry.UserFriendlyMessage
-                });
-            }
-
+            return backLogItem;
         }
 
-        public void Notify(BackLog backLog)
+        public Response Notify(Request request)
         {
-            throw new NotImplementedException();
+            var bli = (BackLogItem) request.Entity;
+
+            _emailClient.Send(bli.To, bli.From, bli.Subject, bli.Message, bli.Cc ?? new List<string>(1), bli.Bcc ?? new List<string>(1), new Dictionary<string, byte[]>(1));
+
+            return new Response(request, String.Format("Email sent to {0}. With Subject: {1}", String.Join(";", bli.To),bli.Subject));
         }
 
         public void LoadBacklog()
         {
             var filePath = _props["filePath"].ToString();
-            if (!_file.Exists(filePath)) _file.Write(filePath, new List<BackLog>());
-            Queue = _file.Read<List<BackLog>>(_props["filePath"].ToString());
+            if (!_file.Exists(filePath)) _file.Write(filePath, new Queue<BackLogItem>());
+            BackLog = _file.Read<Queue<BackLogItem>>(_props["filePath"].ToString());
         }
 
         public void SaveBackLog()
         {
-            _file.Write(_props["filePath"].ToString(), Queue);
+            _file.Write(_props["filePath"].ToString(), BackLog);
             LoadBacklog();
         }
 
-        public void AddBackLogItem(BackLog backlog)
+        public void AddBackLogItem(BackLogItem backlog)
         {
             
             //Bail if there is already an entry for this user and this event.
-            if (Queue.Exists(x => x.EntryId.Equals(backlog.EntryId) && x.UserId.Trim().ToLower().Equals(backlog.UserId.Trim().ToLower()))) return;
+            if (BackLog.FirstOrDefault(x => x.Equals(backlog.EntryId) && x.UserId.Trim().ToLower().Equals(backlog.UserId.Trim().ToLower())) != null) return;
 
-            Queue.Add(backlog);
+            BackLog.Enqueue(backlog);
             SaveBackLog();
         }
 

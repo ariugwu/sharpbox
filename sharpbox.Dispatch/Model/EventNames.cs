@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using sharpbox.Util.Enum;
 
 namespace sharpbox.Dispatch.Model
 {
@@ -7,7 +8,7 @@ namespace sharpbox.Dispatch.Model
     /// As a rule there are events and requests. "Events" begin with "On" and have a One-To-Many relationship. Anything else is a request and should generally have a One-to-One relationship
     /// </summary>
     [Serializable]
-    public class EventNames
+    public class EventNames : EnumPattern
     {
         public static readonly EventNames OnBroadcastCommandStream = new EventNames("OnBroadcastCommandStream");
         public static readonly EventNames OnBroadcastEventStream = new EventNames("OnBroadcastEventStream");
@@ -46,19 +47,13 @@ namespace sharpbox.Dispatch.Model
 
         public static readonly EventNames OnException = new EventNames("OnException");
 
-        protected string _value;
 
-        public EventNames(string value)
+        public EventNames(string value) : base(value)
         {
-            _value = value;
         }
 
         public EventNames() { }
 
-        public override string ToString()
-        {
-            return _value;
-        }
 
         public static List<EventNames> DefaultPubList()
         {
