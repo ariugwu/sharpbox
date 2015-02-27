@@ -8,7 +8,7 @@ namespace sharpbox.Notification.Model
     {
         public BackLogItem() { }
 
-        public Guid BackLogId { get; set; }
+        public Guid BackLogItemId { get; set; }
         public Guid EntryId { get; set; }
         public string UserId { get; set; }
         public bool WasSent { get; set; }

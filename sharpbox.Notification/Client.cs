@@ -32,7 +32,7 @@ namespace sharpbox.Notification
         #region Properties
 
         public Dictionary<EventNames, List<string>> Subscribers { get { return _strategy.Subscribers;  } set{ _strategy.Subscribers = value;} }
-        public Queue<BackLogItem> BackLog { get { return _strategy.BackLog;  } }
+        public List<BackLogItem> BackLog { get { return _strategy.BackLog; } }
 
         #endregion
 
@@ -75,7 +75,7 @@ namespace sharpbox.Notification
                 var bli = new BackLogItem
                 {
                     AttempNumber = 0,
-                    BackLogId = Guid.NewGuid(),
+                    BackLogItemId = Guid.NewGuid(),
                     NextAttempTime = null,
                     EntryId = entry.EntryId,
                     SentDate = null,
@@ -84,9 +84,7 @@ namespace sharpbox.Notification
                     Message = entry.UserFriendlyMessage
                 };
 
-                bli = _strategy.ProcessBackLogItem(bli);
-
-                BackLog.Enqueue(bli);
+                _strategy.ProcessBackLogItem(bli);  
             }
             
         }

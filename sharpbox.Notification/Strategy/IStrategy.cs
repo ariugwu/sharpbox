@@ -12,14 +12,13 @@ namespace sharpbox.Notification.Strategy
         Dictionary<EventNames, List<string>> Subscribers { get; set; }
 
         // The backlog is the list of messages that have been or need to be sent to subscribers. Usually persisted to an outside system.
-        Queue<BackLogItem> BackLog { get; set; }
+        List<BackLogItem> BackLog { get; set; }
 
         /// <summary>
         /// The Notification Client is setup to fire this *every* time an event happens in the dispatcher. Once it creates a backLogItem it will pass it to this meathod for further processing.
         /// This allows for your strategy to whateve additional tweaks (i.e. - a more defined message, process it immediately, etc) before having it be added to the running queue.
         /// </summary>
-        /// <param name="backLogItem"></param>
-        BackLogItem ProcessBackLogItem(BackLogItem backLogItem);
+        void ProcessBackLogItem(BackLogItem backLogItem);
 
         /// <summary>
         /// If something wishes to notify a person immediately you can use this to answer the request.
