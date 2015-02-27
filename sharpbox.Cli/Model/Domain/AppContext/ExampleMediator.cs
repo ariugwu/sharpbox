@@ -33,8 +33,8 @@ namespace sharpbox.Cli.Model.Domain.AppContext
         
             // Setup Notification
             filename = "NotificationLog.dat";
-            var notificationStrategy = new Notification.Strategy.File.FileStrategy(persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
-            Notification = new Notification.Client(Dispatch, eventNames, notificationStrategy);
+            var notificationStrategy = new Notification.Strategy.File.FileStrategy(persistenceStrategy,Email, new Dictionary<string, object> { { "filePath", filename } });
+            Notification = new Notification.Client(ref dispatcher, eventNames, notificationStrategy);
             
             // Setup Logging
             filename = "Log.dat";

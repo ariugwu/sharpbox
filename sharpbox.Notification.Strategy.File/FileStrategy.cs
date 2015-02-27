@@ -10,12 +10,12 @@ namespace sharpbox.Notification.Strategy.File
         private Io.Client _file;
         private Dictionary<string, object> _props;
 
-        public FileStrategy(Io.Strategy.IStrategy persistenceStrategy, Dictionary<string, object> props)
+        public FileStrategy(Io.Strategy.IStrategy persistenceStrategy,Email.Client emailClient, Dictionary<string, object> props)
         {
             _file = new Io.Client(persistenceStrategy);
             _props = props;
 
-            _emailClient = (Email.Client) props["emailClient"];
+            _emailClient = emailClient;
 
             LoadBacklog();
 

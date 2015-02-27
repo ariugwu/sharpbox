@@ -11,7 +11,7 @@ namespace sharpbox.Notification
     {
         #region Constructor(s)
 
-        public Client(Dispatch.Client dispatcher,List<EventNames> availableEvents, IStrategy strategy)
+        public Client(ref Dispatch.Client dispatcher,List<EventNames> availableEvents, IStrategy strategy)
         {
             _strategy = strategy;
             ConfigureNotification(dispatcher, availableEvents);
@@ -85,6 +85,12 @@ namespace sharpbox.Notification
             return _strategy.Notify(request);
         }
 
+
+        public void AddSub(EventNames eventName, string user)
+        {   
+            if(!_strategy.Subscribers.ContainsKey(eventName)) _strategy.Subscribers.Add(eventName, new List<string>());
+            _strategy.Subscribers[eventName].Add(user);
+        }
         #endregion
     }
 }

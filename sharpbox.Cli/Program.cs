@@ -127,6 +127,9 @@ namespace sharpbox.Cli
             // Listen to an 'under the covers' system event
             example.Dispatch.Listen(EventNames.OnLogException, ExampleListener);
 
+            // Give the notification a subscriber.
+            example.Notification.AddSub(EventNames.OnUserChange, "ugwua");
+
             // All of our internal stuff uses the broadcast system so we'll listen on exception and rethrow.
             // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
             example.Dispatch.Listen(EventNames.OnException, FireOnException);
