@@ -23,7 +23,7 @@ namespace sharpbox.Notification.Strategy
         /// <summary>
         /// If something wishes to notify a person immediately you can use this to answer the request.
         /// </summary>
-        /// <param name="request">It's assumed that the Entity within the request will be a backLogItem</param>
+        /// <param name="request">It's assumed that the Entity within the request will be a backLogItem from the BackLog. On notify the method should update the item in the backlog (possibly save/update)</param>
         /// <returns></returns>
         Response Notify(Request request);
 

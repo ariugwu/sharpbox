@@ -56,16 +56,6 @@ namespace sharpbox.Notification
         /// <param name="response"></param>
         public void ProcessEvent(Response response)
         {
-            // Add a queue entry so we know all the system events regardless of whether anyone is subscribed to them.
-            var entry = new Entry
-            {
-                CreatedDate = DateTime.Now,
-                PublisherName = response.EventName,
-                EntryId = Guid.NewGuid(),
-                UserFriendlyMessage = response.Message
-            };
-
-
             if (!Subscribers.ContainsKey(response.EventName)) return; // Bail early if there are no subscribers.
 
             // Run through all of the subscribers for this publisher and generate a backlog item for them.
@@ -77,11 +67,12 @@ namespace sharpbox.Notification
                     AttempNumber = 0,
                     BackLogItemId = Guid.NewGuid(),
                     NextAttempTime = null,
-                    EntryId = entry.EntryId,
+                    RequestId = response.RequestId,
+                    ResponseId = response.ResponseId,
                     SentDate = null,
                     UserId = s,
                     WasSent = false,
-                    Message = entry.UserFriendlyMessage
+                    Message = response.Message
                 };
 
                 _strategy.ProcessBackLogItem(bli);  

@@ -33,7 +33,6 @@ namespace sharpbox.Notification.Strategy.File
         {
             _backLog.Add(backLogItem);
             SaveBackLog();
-            return backLogItem;
         }
 
         public Response Notify(Request request)
