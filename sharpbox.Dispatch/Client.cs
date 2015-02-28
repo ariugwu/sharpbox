@@ -106,7 +106,7 @@ namespace sharpbox.Dispatch
 
                 Broadcast(exResponse);
 
-                return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}",request.CommandName, exResponse.ResponseId), false);
+                return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}",request.CommandName, exResponse.ResponseId), ResponseTypes.Error);
             }
         }
 

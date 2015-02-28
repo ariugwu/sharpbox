@@ -56,8 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Domain\AppContext\ExampleMediator.cs" />
-    <Compile Include="Model\Domain\Dispatch\PublicationNamesExtension.cs" />
+    <Compile Include="Model\Domain\Sharpbox\ExampleMediator.cs" />
+    <Compile Include="Model\Domain\Dispatch\EventNamesExt.cs" />
+    <Compile Include="Model\Domain\Localization\ResourceNamesExt.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -101,9 +102,9 @@
       <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
       <Name>sharpbox.Io</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Log.Strategy.File\sharpbox.Log.Strategy.File.csproj">
-      <Project>{285e6890-7735-45dc-b634-c2216c2665ce}</Project>
-      <Name>sharpbox.Log.Strategy.File</Name>
+    <ProjectReference Include="..\sharpbox.Localization\sharpbox.Localization.csproj">
+      <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
+      <Name>sharpbox.Localization</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Log\sharpbox.Log.csproj">
       <Project>{351f3a6b-9a94-43ea-aaa8-739cc02b529a}</Project>

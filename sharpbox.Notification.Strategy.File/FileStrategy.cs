@@ -63,7 +63,7 @@ namespace sharpbox.Notification.Strategy.File
 
             SaveBackLog();
 
-            return new Response(request, String.Format("Email sent to {0}. With Subject: {1}", String.Join(";", bli.To, bli.Subject)), true);
+            return new Response(request, String.Format("Email sent to {0}. With Subject: {1}", String.Join(";", bli.To, bli.Subject)), ResponseTypes.Success);
         }
 
         public void LoadBacklog()

@@ -1,56 +1,48 @@
-﻿using System.Runtime.CompilerServices;
-using sharpbox.Log.Strategy;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using sharpbox.Dispatch.Model;
+using sharpbox.Log.Model;
 
 namespace sharpbox.Log
 {
     public class Client
     {
-        #region Field(s)
+        public Stack<Entry> LogStream { get { return _logStream ?? (_logStream = new Stack<Entry>()); } set { _logStream= value;}}
+        private Stack<Entry> _logStream;
 
-        private IStrategy _strategy;
-
-        #endregion
-
-        #region Constructor(s)
-
-        public Client(IStrategy strategy)
+        private Response Log(Request request, EntryType entryType, string memberName,string sourceFilePath,int sourceLineNumber)
         {
-            _strategy = strategy;
+            var entry = new Entry()
+            {
+                EntryType = entryType,
+                EntryId = LogStream.Count + 1,
+                Message = request.Message,
+                MemberName = memberName,
+                SourceFilePath = sourceFilePath,
+                SourceLineNumber = sourceLineNumber,
+                CreatedDate = DateTime.Now
+            };
+
+           LogStream.Push(entry);
+
+           return new Response(request, "Entry logged", ResponseTypes.Success);
         }
 
-        public Client()
+        public Response Exception<T>(Request request, [CallerMemberName] string memberName = "",[CallerFilePath] string sourceFilePath = "",[CallerLineNumber] int sourceLineNumber = 0)
         {
+            return Log(request, EntryType.Exception, memberName, sourceFilePath, sourceLineNumber);
         }
 
-        #endregion
-
-        #region Strategy Method(s)
-
-        public T Exception<T>(T entity, string message,
-        [CallerMemberName] string memberName = "",
-        [CallerFilePath] string sourceFilePath = "",
-        [CallerLineNumber] int sourceLineNumber = 0)
+        public Response Warning(Request request, [CallerMemberName] string memberName = "",[CallerFilePath] string sourceFilePath = "",[CallerLineNumber] int sourceLineNumber = 0)
         {
-            return _strategy.Exception(entity, message, memberName, sourceFilePath, sourceLineNumber);
+            return Log(request, EntryType.Exception, memberName, sourceFilePath, sourceLineNumber);
         }
 
-        public T Warning<T>(T entity, string message,
-        [CallerMemberName] string memberName = "",
-        [CallerFilePath] string sourceFilePath = "",
-        [CallerLineNumber] int sourceLineNumber = 0)
+        public Response Info(Request request, [CallerMemberName] string memberName = "",[CallerFilePath] string sourceFilePath = "",[CallerLineNumber] int sourceLineNumber = 0)
         {
-            return _strategy.Warning(entity, message, memberName, sourceFilePath, sourceLineNumber);
+            return Log(request, EntryType.Exception, memberName, sourceFilePath, sourceLineNumber);
         }
-
-        public T Info<T>(T entity, string message,
-        [CallerMemberName] string memberName = "",
-        [CallerFilePath] string sourceFilePath = "",
-        [CallerLineNumber] int sourceLineNumber = 0)
-        {
-            return _strategy.Info(entity, message, memberName, sourceFilePath, sourceLineNumber);
-        }
-
-        #endregion
 
     }
 }

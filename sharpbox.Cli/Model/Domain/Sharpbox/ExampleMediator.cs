@@ -19,6 +19,8 @@ namespace sharpbox.Cli.Model.Domain.AppContext
 
             Email = new Email.Client(smtpClient);
             File = new Io.Client(new Io.Strategy.Binary.BinaryStrategy());
+            // Setup Logging
+            Log = new Log.Client();
 
             // The following modules require persistence
             var dispatcher = Dispatch;
@@ -36,10 +38,7 @@ namespace sharpbox.Cli.Model.Domain.AppContext
             var notificationStrategy = new Notification.Strategy.File.FileStrategy(persistenceStrategy,Email, new Dictionary<string, object> { { "filePath", filename } });
             Notification = new Notification.Client(ref dispatcher, eventNames, notificationStrategy);
             
-            // Setup Logging
-            filename = "Log.dat";
-            var fileStrategy = new Log.Strategy.File.FileStrategy(persistenceStrategy, new Dictionary<string, object> { { "filePath", filename } });
-            Log = new Log.Client(fileStrategy);
+
         }
 
         public string UserId { get; set; }
@@ -55,7 +54,7 @@ namespace sharpbox.Cli.Model.Domain.AppContext
             var entity = (string)request.Entity;
             UserId = entity;
             
-            return new Response(request, "User changed in the ExampleMediator", true);
+            return new Response(request, "User changed in the ExampleMediator",ResponseTypes.Success);
         }
 
         public Response BroadCastEventStream(Request request)
@@ -63,7 +62,7 @@ namespace sharpbox.Cli.Model.Domain.AppContext
             // Example of being able to bend the rules a little bit and simply use the system to kick off a response, as apposed to deliverying something to be processed.
             request.Entity = Dispatch.CommandStream;
             request.Type = typeof (Queue<CommandStreamItem>);
-            return new Response(request, "Broadcasting current command stream.", true);
+            return new Response(request, "Broadcasting current command stream.", ResponseTypes.Success);
         }
 
     }

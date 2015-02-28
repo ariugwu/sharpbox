@@ -46,6 +46,7 @@
     <Compile Include="Model\Response.cs" />
     <Compile Include="Model\EventNames.cs" />
     <Compile Include="Model\Request.cs" />
+    <Compile Include="Model\ResponseTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
-using System.Reflection;
 using sharpbox.Cli.Model.Domain.AppContext;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Dispatch;
@@ -33,7 +32,7 @@ namespace sharpbox.Cli
 
 
             // ########################
-            // NOTE: For the next three calls we're calling them directly instead of using the pub/sub system so we're responsible for catching and broadcasting errors. To keep it brif this has only been done for the first call.
+            // NOTE: For the next two calls we're calling them directly instead of using the pub/sub system so we're responsible for catching and broadcasting errors. To keep it brif this has only been done for the first call.
             // Email: Test Email:
             try
             {
@@ -42,13 +41,9 @@ namespace sharpbox.Cli
             }
             catch (Exception ex)
             {
-                example.Log.Exception(ex, ex.Message);
-                // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response.
-                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = ex, Message = ex.Message, EventName = EventNames.OnLogException, });
+                // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response. Typically this might be Audit, Logging, and Notification
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = ex, Message = ex.Message, EventName = EventNames.OnLogException });
             }
-
-            // Log: Test logging
-            example.Log.Info(example.Dispatch, "Test of the info logging!");
 
             // Io: Test file operations. We pass in the dispatcher so everything threads back.
             example.File.Write("Test.xml", example.Notification.BackLog);

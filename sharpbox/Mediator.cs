@@ -15,5 +15,21 @@ namespace sharpbox
 
         public Client Dispatch { get; set; }
 
+
+        #region Email Call(s)
+
+        #endregion
+
+        #region IO Call(s)
+
+        #endregion
+
+        #region Localization Call(s)
+
+        #endregion
+
+        #region Security Call(s)
+
+        #endregion
     }
 }

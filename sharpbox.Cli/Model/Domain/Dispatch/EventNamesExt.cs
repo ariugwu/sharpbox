@@ -10,7 +10,6 @@ namespace sharpbox.Cli.Model.Domain.Dispatch
     {
         public static readonly EventNames ExampleExtendedPublisher = new EventNames("ExampleExtendedPublisher");
 
-
         #region Field(s)
 
         private static List<EventNames> _extendedPublisherList; 
