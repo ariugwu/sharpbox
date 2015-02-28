@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2985B13A-C07A-42B5-B293-697CA78A69BD}</ProjectGuid>
+    <ProjectGuid>{C279E7A9-BFC7-4A86-95C1-C367DBFA3B3C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>sharpbox.Dispatch</RootNamespace>
-    <AssemblyName>sharpbox.Dispatch</AssemblyName>
+    <RootNamespace>sharpbox.EfCodeFirst.Localization</RootNamespace>
+    <AssemblyName>sharpbox.EfCodeFirst.Localization</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,7 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -39,18 +46,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
-    <Compile Include="Model\CommandHubItem.cs" />
-    <Compile Include="Model\CommandNames.cs" />
-    <Compile Include="Model\CommandStreamItem.cs" />
-    <Compile Include="Model\Response.cs" />
-    <Compile Include="Model\EventNames.cs" />
-    <Compile Include="Model\Request.cs" />
+    <Compile Include="LocalizationContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\sharpbox.Localization\sharpbox.Localization.csproj">
+      <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
+      <Name>sharpbox.Localization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
-      <Project>{15b019a3-9142-4220-b6de-a75515b5e288}</Project>
+      <Project>{15B019A3-9142-4220-B6DE-A75515B5E288}</Project>
       <Name>sharpbox.Util</Name>
     </ProjectReference>
   </ItemGroup>

@@ -43,8 +43,6 @@ namespace sharpbox.Dispatch.Model
         public static readonly EventNames OnNotificationSaveQueue = new EventNames("OnNotificationSaveQueue");
         public static readonly EventNames OnNotificationNotify = new EventNames("OnNotificationNotify");
 
-        public static readonly EventNames OnFeedbackSet = new EventNames("OnFeedbackSet");
-
         public static readonly EventNames OnException = new EventNames("OnException");
 
 
@@ -75,7 +73,6 @@ namespace sharpbox.Dispatch.Model
                 OnNotificationSaveBacklog,
                 OnNotificationSaveQueue,
                 OnRecordAction,
-                OnFeedbackSet,
                 OnBroadcastCommandStream,
                 OnBroadcastEventStream,
                 OnException

@@ -44,18 +44,26 @@ namespace sharpbox.Notification.Strategy.File
             bli.WasSent = true;
             bli.SentDate = DateTime.Now;
 
-            // update the item in our backlog
-            for (var i = 0; i < _backLog.Count; i++)
+            // If this doesn't exist then add it. If it does then update it.
+            if (!_backLog.Exists(x => x.BackLogItemId.Equals(bli.BackLogItemId)))
             {
-                if (_backLog[i].BackLogItemId != bli.BackLogItemId) continue;
+                _backLog.Add(bli);
+            }
+            else
+            {
+                // update the item in our backlog
+                for (var i = 0; i < _backLog.Count; i++)
+                {
+                    if (_backLog[i].BackLogItemId != bli.BackLogItemId) continue;
 
-                _backLog[i] = bli;
-                break;
+                    _backLog[i] = bli;
+                    break;
+                }
             }
 
             SaveBackLog();
 
-            return new Response(request, String.Format("Email sent to {0}. With Subject: {1}", String.Join(";", bli.To),bli.Subject));
+            return new Response(request, String.Format("Email sent to {0}. With Subject: {1}", String.Join(";", bli.To, bli.Subject)), true);
         }
 
         public void LoadBacklog()

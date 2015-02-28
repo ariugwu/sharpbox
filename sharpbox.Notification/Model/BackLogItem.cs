@@ -13,9 +13,11 @@ namespace sharpbox.Notification.Model
         public Guid ResponseId { get; set; }
 
         public string UserId { get; set; }
+
         public bool WasSent { get; set; }
         public DateTime? SentDate { get; set; }
         public int AttempNumber { get; set; }
+        public DateTime? PreviousAttempTime { get; set; }
         public DateTime? NextAttempTime { get; set; }
 
         public List<string> To { get; set; }

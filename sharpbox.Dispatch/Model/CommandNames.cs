@@ -16,8 +16,6 @@ namespace sharpbox.Dispatch.Model
         public static readonly CommandNames BroadcastCommandStream = new CommandNames("BroadcastCommandStream");
         public static readonly CommandNames BroadcastEventStream = new CommandNames("BroadcastEventStream");
 
-        public static readonly CommandNames SetFeedback = new CommandNames("SetFeedback");
-
         public static readonly CommandNames SendNotification = new CommandNames("SendNotification");
 
         public static readonly CommandNames ChangeUser = new CommandNames("ChangeUser");
@@ -26,7 +24,6 @@ namespace sharpbox.Dispatch.Model
         {
             return new List<CommandNames>()
             {
-                SetFeedback,
                 ChangeUser,
                 BroadcastCommandStream,
                 BroadcastEventStream,

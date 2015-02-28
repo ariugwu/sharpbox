@@ -74,7 +74,7 @@ namespace sharpbox.Dispatch
         /// </summary>
         /// <param name="request"></param>
         /// <exception cref=""></exception>
-        public void Process(Request request)
+        public Response Process(Request request)
         {
             try
             {
@@ -87,10 +87,26 @@ namespace sharpbox.Dispatch
 
                 // Broadcase the response to all listeners.
                 Broadcast(response);
+
+                return response;
             }
             catch (Exception ex)
             {
-                Broadcast(new Response{ Entity = ex, Type= ex.GetType(), EventName = EventNames.OnException, Message = "Dispatch process failed for Request Id:" + request.RequestId, RequestId = request.RequestId, ResponseId = Guid.NewGuid()});
+                var exResponse = new Response
+                {
+                    Entity = ex,
+                    Type = ex.GetType(),
+                    EventName = EventNames.OnException,
+                    Message = "Dispatch process failed for Request Id:" + request.RequestId,
+                    RequestId = request.RequestId,
+                    ResponseId = Guid.NewGuid()
+                };
+
+                CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Request = request, Response = exResponse });
+
+                Broadcast(exResponse);
+
+                return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}",request.CommandName, exResponse.ResponseId), false);
             }
         }
 
