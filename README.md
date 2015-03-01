@@ -75,9 +75,9 @@ static void Main(string[] args){
   
   // Once the SomeUnitOfWork fires it will broadcast to anyone listening. Below we'll register some listeners.
   dispatch.Listen(OnStuffDone, container.UpdateSomethingObject);
-  dispatch.Listen(OnStuffDone, depA.UpdateUsersWithStatusOfSomeObject);
-  dispatch.Listen(OnStuffDone, depB.PersistObject);
-  dispatch.Listen(OnStuffDone, app.Logger.LogEvent);
+  dispatch.Listen(OnStuffDone, container.depA.UpdateUsersWithStatusOfSomeObject);
+  dispatch.Listen(OnStuffDone, container.depB.PersistObject);
+  dispatch.Listen(OnStuffDone, container.app.Logger.LogEvent);
   
   // Send a request to process the object in our container.
   dispatch.Process(FireSomeUnitOfWork, container.Something);
