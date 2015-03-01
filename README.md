@@ -3,23 +3,8 @@ A group of common intranet application components (modules) that are encapsulate
 
 Where the simplicity of that approach fails the concepts of [Event Sourcing] (https://msdn.microsoft.com/en-us/library/jj591559.aspx), [CQRS] (https://msdn.microsoft.com/en-us/library/dn568103.aspx) and [Domain Driven Design] (https://domainlanguage.com/ddd/) will come into play. For example an aggregate root is a great candidate for a domain. (i.e - In a Cookbook app the 'Reciepe' would be the aggregate root of Ingredients, Steps, and Notes associated with that entity). However the possible business questions (queries) related to receipes (i.e. - GetAllReceipesWhichIncludeCheese()) should be developed and extended separately from the command domain. So we have a command domain and a query domain (CQRS).
 
-## Example (@SEE CLI example project):
+There's a low ceiling on the scope and features for this approach. Nested commands and replay functionality are not within scope [for example]. There's some 'better than what we have today' goal that lies between **_but can it do this_** and **_inscrutable_**.
 
-```c#
-var smtpClient = new SmtpClient("smtp.google.com", 587);
-var app = new ConsoleContext("ugwua", PublicationNamesExtension.ExtendedPubList, ActionNames.DefaultActionList(), smtpClient);
-
-// Register a callback for the 'SetFeedback' action
-app.Dispatch.Register(ActionNames.SetFeedback, app.ExampleProcessFeedback);
-
-// Create a new feedback message and ask the dispatcher to process it.
-var feedback = new Feedback{ ActionName = ActionNames.ChangeUser, Message = "Meaningless message", Successful = true};
-
-// The goal is to only have one primary action do the processing. Other system monitoring events may also be called (auditing for example).
-app.Dispatch.Process(new Request{ ActionName = ActionNames.SetFeedback, Message = "A test to set the feedback", Entity = feedback, RequestId = 0, Type = typeof(Feedback), UserId = app.Dispatch.CurrentUserId});
-
-// In this example the app (application context) is the store (Flux term) and container for it's own components. So it's // responsible for processing actions and passing those updates to its components.
-```
 ## The problem it solves:
 
 #### Turn this
@@ -75,9 +60,9 @@ static void Main(string[] args){
   
   // Once the SomeUnitOfWork fires it will broadcast to anyone listening. Below we'll register some listeners.
   dispatch.Listen(OnStuffDone, container.UpdateSomethingObject);
-  dispatch.Listen(OnStuffDone, depA.UpdateUsersWithStatusOfSomeObject);
-  dispatch.Listen(OnStuffDone, depB.PersistObject);
-  dispatch.Listen(OnStuffDone, app.Logger.LogEvent);
+  dispatch.Listen(OnStuffDone, container.depA.UpdateUsersWithStatusOfSomeObject);
+  dispatch.Listen(OnStuffDone, container.depB.PersistObject);
+  dispatch.Listen(OnStuffDone, container.app.Logger.LogEvent);
   
   // Send a request to process the object in our container.
   dispatch.Process(FireSomeUnitOfWork, container.Something);
