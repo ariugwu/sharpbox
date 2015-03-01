@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
-using sharpbox.Cli.Model.Domain.AppContext;
 using sharpbox.Dispatch.Model;
-using sharpbox.Cli.Model.Domain.Dispatch;
+using sharpbox.Cli.Model.Domain.Sharpbox;
 using sharpbox.Notification.Model;
 
 namespace sharpbox.Cli
@@ -42,7 +41,7 @@ namespace sharpbox.Cli
             catch (Exception ex)
             {
                 // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response. Typically this might be Audit, Logging, and Notification
-                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = ex, Message = ex.Message, EventName = EventNames.OnLogException });
+                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = ex, Message = ex.Message, EventName = BaseEventNames.OnException });
             }
 
             // Io: Test file operations. We pass in the dispatcher so everything threads back.
@@ -52,7 +51,7 @@ namespace sharpbox.Cli
             response = example.Dispatch.Process(new Request
                 {
                     RequestId = Guid.NewGuid(),
-                    CommandName = CommandNames.BroadcastCommandStream,
+                    CommandName = BaseCommandNames.BroadcastCommandStream,
                     Message = "Request to broadcast command stream",
                     Entity = null,
                     Type = null
@@ -63,7 +62,7 @@ namespace sharpbox.Cli
                 {
                     Entity = example.Notification.BackLog.First(),
                     Type = typeof(BackLogItem),
-                    CommandName = CommandNames.SendNotification,
+                    CommandName = BaseCommandNames.SendNotification,
                     Message = "Sending out backlogitem",
                     RequestId = Guid.NewGuid()
                 });
@@ -88,22 +87,22 @@ namespace sharpbox.Cli
         public static ExampleMediator WireUpEvents(ExampleMediator example)
         {
             // Setup what a command should do and who it should broadcast to when it's done
-            example.Dispatch.Register(CommandNames.ChangeUser, example.ChangeUser, EventNames.OnUserChange);
-            example.Dispatch.Register(CommandNames.BroadcastCommandStream, example.BroadCastEventStream, EventNames.OnBroadcastCommandStream);
-            example.Dispatch.Register(CommandNames.SendNotification, example.Notification.Notify, EventNames.OnNotificationNotify);
+            example.Dispatch.Register(BaseCommandNames.ChangeUser, example.ChangeUser, EventNamesExtension.OnUserChange);
+            example.Dispatch.Register(BaseCommandNames.BroadcastCommandStream, example.BroadCastEventStream, BaseEventNames.OnBroadcastCommandStream);
+            example.Dispatch.Register(BaseCommandNames.SendNotification, example.Notification.Notify, BaseEventNames.OnNotificationNotify);
 
             // Add some listeners to those broadcasts. NOTE: This is a queue so things will be fired in FIFO order.
-            example.Dispatch.Listen(EventNames.OnUserChange, ExampleListener);
-            example.Dispatch.Listen(EventNames.OnBroadcastCommandStream, OutPutCommandStream);
+            example.Dispatch.Listen(EventNamesExtension.OnUserChange, ExampleListener);
+            example.Dispatch.Listen(BaseEventNames.OnBroadcastCommandStream, OutPutCommandStream);
             // Listen to an 'under the covers' system event
-            example.Dispatch.Listen(EventNames.OnLogException, ExampleListener);
+            example.Dispatch.Listen(BaseEventNames.OnException, ExampleListener);
 
             // Give the notification a subscriber.
-            example.Notification.AddSub(EventNames.OnUserChange, "ugwua");
+            example.Notification.AddSub(EventNamesExtension.OnUserChange, "ugwua");
 
             // All of our internal stuff uses the broadcast system so we'll listen on exception and rethrow.
             // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
-            example.Dispatch.Listen(EventNames.OnException, FireOnException);
+            example.Dispatch.Listen(BaseEventNames.OnException, FireOnException);
 
             return example;
         }

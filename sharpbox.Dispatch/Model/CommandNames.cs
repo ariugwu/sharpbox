@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using sharpbox.Util.Enum;
 
 namespace sharpbox.Dispatch.Model
@@ -13,22 +12,5 @@ namespace sharpbox.Dispatch.Model
 
         public CommandNames() { }
 
-        public static readonly CommandNames BroadcastCommandStream = new CommandNames("BroadcastCommandStream");
-        public static readonly CommandNames BroadcastEventStream = new CommandNames("BroadcastEventStream");
-
-        public static readonly CommandNames SendNotification = new CommandNames("SendNotification");
-
-        public static readonly CommandNames ChangeUser = new CommandNames("ChangeUser");
-
-        public static List<CommandNames> DefaultActionList()
-        {
-            return new List<CommandNames>()
-            {
-                ChangeUser,
-                BroadcastCommandStream,
-                BroadcastEventStream,
-                SendNotification
-            };
-        }
     }
 }

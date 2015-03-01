@@ -86,10 +86,14 @@ namespace sharpbox.Notification
         }
 
 
-        public void AddSub(EventNames eventName, string user)
-        {   
-            if(!_strategy.Subscribers.ContainsKey(eventName)) _strategy.Subscribers.Add(eventName, new List<string>());
-            _strategy.Subscribers[eventName].Add(user);
+        public Response AddSub(Request request)
+        {
+            var sub = (Subscriber) request.Entity;
+
+            if (!_strategy.Subscribers.ContainsKey(sub.EventName)) _strategy.Subscribers.Add(sub.EventName, new List<string>());
+            _strategy.Subscribers[sub.EventName].Add(sub.UserId);
+
+            return new Response(request, String.Format("Added the following user '{0}' to the subscription for: {1}", sub.UserId, sub.EventName), ResponseTypes.Success);
         }
         #endregion
     }

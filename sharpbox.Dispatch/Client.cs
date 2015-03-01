@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.Serialization;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Dispatch
@@ -57,6 +59,7 @@ namespace sharpbox.Dispatch
 
         /// <summary>
         /// Ensure the key exists, add the response to the Event stream. Cycle through all the subscribers and fire off the associated action.
+        /// @SEE: For the apparoch to catch Target Invocation exceptions -> http://csharptest.net/350/throw-innerexception-without-the-loosing-stack-trace/
         /// </summary>
         /// <param name="response"></param>
         public void Broadcast(Response response)
@@ -65,12 +68,30 @@ namespace sharpbox.Dispatch
 
             foreach (var p in _eventSubscribers[response.EventName])
             {
-                p.Invoke(response);
+                try
+                {
+                    p.Invoke(response);
+                }
+                catch (TargetInvocationException ex)
+                {
+                    var exResponse = new Response
+                    {
+                        Entity = ex,
+                        Type = ex.GetType(),
+                        EventName = EventNames.OnException,
+                        Message = "Dispatch process failed to broadcast Request Id:" + response.RequestId + " on channel: " + response.EventName,
+                        RequestId = response.RequestId,
+                        ResponseId = Guid.NewGuid()
+                    };
+
+                    Broadcast(exResponse);
+                }
             }
         }
 
         /// <summary>
         /// Ensure the key exists. Fire off the actio associated with this request's command.
+        /// @SEE: For the apparoch to catch Target Invocation exceptions -> http://csharptest.net/350/throw-innerexception-without-the-loosing-stack-trace/
         /// </summary>
         /// <param name="request"></param>
         /// <exception cref=""></exception>
@@ -106,7 +127,7 @@ namespace sharpbox.Dispatch
 
                 Broadcast(exResponse);
 
-                return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}",request.CommandName, exResponse.ResponseId), ResponseTypes.Error);
+                return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}", request.CommandName, exResponse.ResponseId), ResponseTypes.Error);
             }
         }
 

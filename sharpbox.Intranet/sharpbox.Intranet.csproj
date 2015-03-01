@@ -144,6 +144,8 @@
     <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Core\Domain\Dispatch\BaseMediator.cs" />
+    <Compile Include="Core\Domain\Notification\Mediator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -188,6 +190,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Core\Domain\Audit\" />
+    <Folder Include="Core\Domain\Localization\" />
     <Folder Include="Helpers\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -197,6 +201,52 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\sharpbox.Audit.Strategy.File\sharpbox.Audit.Strategy.File.csproj">
+      <Project>{a9fe2778-c66a-4bdc-a938-cb3823be6188}</Project>
+      <Name>sharpbox.Audit.Strategy.File</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
+      <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
+      <Name>sharpbox.Audit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
+      <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
+      <Name>sharpbox.Dispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Email\sharpbox.Email.csproj">
+      <Project>{793637e7-810e-44b7-820e-9e8577a79d4b}</Project>
+      <Name>sharpbox.Email</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Io.Strategy.Binary\sharpbox.Io.Strategy.Binary.csproj">
+      <Project>{36073f41-f30e-4d74-a8b0-92a0a1fbd95c}</Project>
+      <Name>sharpbox.Io.Strategy.Binary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Io\sharpbox.Io.csproj">
+      <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
+      <Name>sharpbox.Io</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Localization\sharpbox.Localization.csproj">
+      <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
+      <Name>sharpbox.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Notification.Strategy.File\sharpbox.Notification.Strategy.File.csproj">
+      <Project>{43837322-2fdb-45d9-92d5-22400c54d908}</Project>
+      <Name>sharpbox.Notification.Strategy.File</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
+      <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>
+      <Name>sharpbox.Notification</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
+      <Project>{15b019a3-9142-4220-b6de-a75515b5e288}</Project>
+      <Name>sharpbox.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox\sharpbox.csproj">
+      <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>
+      <Name>sharpbox</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

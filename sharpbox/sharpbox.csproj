@@ -46,7 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mediator.cs" />
+    <Compile Include="BaseCommandNames.cs" />
+    <Compile Include="BaseEventNames.cs" />
+    <Compile Include="BaseMediator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +68,17 @@
       <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
       <Name>sharpbox.Io</Name>
     </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Localization\sharpbox.Localization.csproj">
+      <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
+      <Name>sharpbox.Localization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
       <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>
       <Name>sharpbox.Notification</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
+      <Project>{15B019A3-9142-4220-B6DE-A75515B5E288}</Project>
+      <Name>sharpbox.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

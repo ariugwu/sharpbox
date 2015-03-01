@@ -57,7 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Domain\Sharpbox\ExampleMediator.cs" />
-    <Compile Include="Model\Domain\Dispatch\EventNamesExt.cs" />
     <Compile Include="Model\Domain\Localization\ResourceNamesExt.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

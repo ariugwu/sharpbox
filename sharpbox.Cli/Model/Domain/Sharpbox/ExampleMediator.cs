@@ -2,9 +2,9 @@
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 
-namespace sharpbox.Cli.Model.Domain.AppContext
+namespace sharpbox.Cli.Model.Domain.Sharpbox
 {
-    public class ExampleMediator : Mediator
+    public class ExampleMediator : BaseMediator
     {
         /// <summary>
         /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
