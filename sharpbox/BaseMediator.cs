@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Mail;
 using sharpbox.Dispatch;
 using sharpbox.Dispatch.Model;
@@ -54,15 +55,31 @@ namespace sharpbox
 
         #region Email Call(s)
 
-        public Response SendEmail(Request request) { }
+        public Response SendEmail(Request request)
+        {
+            var mail = (MailMessage) request.Entity;
+            Email.Send(mail);
+            return new Response(request, "Mail sent.", ResponseTypes.Success);
+        }
 
         #endregion
 
         #region IO Call(s)
 
-        public Response WriteFile(Request request) { }
-        public Response ReadFile(Request request) { }
-        public Response DeleteFile(Request request) { }
+        public Response WriteFile(Request request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response ReadFile(Request request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Response DeleteFile(Request request)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
 

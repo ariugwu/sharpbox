@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.Serialization;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Dispatch
@@ -93,10 +92,11 @@ namespace sharpbox.Dispatch
         /// Ensure the key exists. Fire off the actio associated with this request's command.
         /// @SEE: For the apparoch to catch Target Invocation exceptions -> http://csharptest.net/350/throw-innerexception-without-the-loosing-stack-trace/
         /// </summary>
-        /// <param name="request"></param>
         /// <exception cref=""></exception>
-        public Response Process(Request request)
+        public Response Process<T>(CommandNames commandName, string message, T entity)
         {
+            var request = Request.Create(commandName, message, entity);
+
             try
             {
                 // Get the response from the registered action.
@@ -127,7 +127,9 @@ namespace sharpbox.Dispatch
 
                 Broadcast(exResponse);
 
-                return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}", request.CommandName, exResponse.ResponseId), ResponseTypes.Error);
+                var dumpResponse = Process(CommandNames.BroadcastCommandStream, "Broading command stream as a result of an exception in RequestId:" + request.RequestId, CommandStream);
+
+                return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}. CommandStream dump requested. See RequestId: {2}", request.CommandName, exResponse.ResponseId, dumpResponse.RequestId), ResponseTypes.Error);
             }
         }
 

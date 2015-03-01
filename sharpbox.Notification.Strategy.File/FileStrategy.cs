@@ -39,7 +39,7 @@ namespace sharpbox.Notification.Strategy.File
         {
             var bli = (BackLogItem) request.Entity;
 
-            _emailClient.Send(bli.To, bli.From, bli.Subject, bli.Message, bli.Cc ?? new List<string>(1), bli.Bcc ?? new List<string>(1), new Dictionary<string, byte[]>(1));
+            _emailClient.Send(bli.To, bli.From, bli.Subject, bli.Message);
 
             bli.WasSent = true;
             bli.SentDate = DateTime.Now;

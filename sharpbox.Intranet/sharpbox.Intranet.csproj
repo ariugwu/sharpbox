@@ -144,7 +144,6 @@
     <Compile Include="App_Start\ReactConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Core\Domain\Dispatch\BaseMediator.cs" />
     <Compile Include="Core\Domain\Notification\Mediator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,6 +190,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Core\Domain\Audit\" />
+    <Folder Include="Core\Domain\Dispatch\" />
     <Folder Include="Core\Domain\Localization\" />
     <Folder Include="Helpers\" />
     <Folder Include="Models\" />

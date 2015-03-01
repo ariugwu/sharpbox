@@ -22,8 +22,6 @@ namespace sharpbox.Notification.Model
 
         public List<string> To { get; set; }
         public string From { get; set; }
-        public List<string> Cc { get; set; }
-        public List<string> Bcc { get; set; }
 
         public string Subject { get; set; }
 

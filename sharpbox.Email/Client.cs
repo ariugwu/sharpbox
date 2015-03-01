@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
-using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Email
 {
@@ -15,7 +13,26 @@ namespace sharpbox.Email
             _smtpClient = smtpClient;
         }
 
-        public void Send(List<string> to, string from, string subject, string body, List<string> cc, List<string> bcc, Dictionary<string, byte[]> attachments, bool isBodyHtml = true)
+        public void Send(MailMessage mail)
+        {
+
+            _smtpClient.Send(mail);
+        }
+
+        public void Send(List<string> to, string from, string subject, string body)
+        {
+            Send(CreateMailMessage(to, from, subject, body, new List<string>(), new List<string>(),
+                new Dictionary<string, byte[]>()));
+        }
+
+        public static MailMessage CreateMailMessage(List<string> to, string from, string subject, string body)
+        {
+            return CreateMailMessage(to, from, subject, body, new List<string>(), new List<string>(),
+                new Dictionary<string, byte[]>());
+        }
+
+        public static MailMessage CreateMailMessage(List<string> to, string from, string subject, string body,
+            List<string> cc, List<string> bcc, Dictionary<string, byte[]> attachments, bool isBodyHtml = true)
         {
             var mail = new MailMessage(from, string.Join(";", to))
             {
@@ -40,13 +57,8 @@ namespace sharpbox.Email
                 mail.Attachments.Add(new Attachment(new MemoryStream(a.Value), a.Key));
             }
 
-            _smtpClient.Send(mail);
-        }
+            return mail;
 
-        public void Send(List<string> to, string from, string subject, string body)
-        {
-            Send(to, from, subject, body, new List<string>(), new List<string>(), new Dictionary<string, byte[]>());
         }
-
     }
 }

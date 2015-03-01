@@ -7,33 +7,30 @@ namespace sharpbox
     {
         public static List<CommandNames> BaseCommandList()
         {
-            return new List<CommandNames>()
+            var extendedList = CommandList();
+            extendedList.AddRange(new List<CommandNames>()
             {
-                ChangeUser,
                 BroadcastCommandStream,
                 BroadcastEventStream,
                 SendNotification,
-                ProcessEmail,
+                SendEmail,
                 FileCreate,
                 FileAccess,
                 FileDelete,
                 AddNotificationSubscriber
-            };
-        }
+            });
 
-        public static readonly CommandNames BroadcastCommandStream = new CommandNames("BroadcastCommandStream");
-        public static readonly CommandNames BroadcastEventStream = new CommandNames("BroadcastEventStream");
+            return extendedList;
+        }
 
         public static readonly CommandNames SendNotification = new CommandNames("SendNotification");
         public static readonly CommandNames AddNotificationSubscriber = new CommandNames("AddNotificationSubscriber");
 
-        public static readonly CommandNames ProcessEmail = new CommandNames("ProcessEmail");
+        public static readonly CommandNames SendEmail = new CommandNames("SendEmail");
 
         public static readonly CommandNames FileCreate = new CommandNames("FileCreate");
         public static readonly CommandNames FileDelete = new CommandNames("FileDelete");
         public static readonly CommandNames FileAccess = new CommandNames("FileAccess");
-
-        public static readonly CommandNames ChangeUser = new CommandNames("ChangeUser");
 
     }
 }

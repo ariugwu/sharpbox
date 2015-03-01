@@ -15,6 +15,7 @@ namespace sharpbox
                 OnEmailSend,
                 OnAuditRecord,
                 OnNotificationNotify,
+                OnNotificationAddSubScriber,
                 OnBroadcastCommandStream,
                 OnBroadcastEventStream,
                 OnException
@@ -39,7 +40,7 @@ namespace sharpbox
         public static readonly EventNames OnDataGetAll = new EventNames("OnDataGetAll");
 
         public static readonly EventNames OnNotificationNotify = new EventNames("OnNotificationNotify");
-
-        public static readonly EventNames OnException = new EventNames("OnException");
+        public static readonly EventNames OnNotificationAddSubScriber = new EventNames("OnNotificationAddSubScriber");
+        
     }
 }

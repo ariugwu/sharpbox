@@ -10,7 +10,7 @@ namespace sharpbox.Dispatch.Model
     public class EventNames : EnumPattern
     {
 
-
+        public static readonly EventNames OnException = new EventNames("OnException");
 
         public EventNames(string value) : base(value)
         {

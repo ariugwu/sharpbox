@@ -41,10 +41,13 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
         public string UserId { get; set; }
 
-        public Notification.Client Notification { get; set; } // A dispatch friendly notification system.
-        public Email.Client Email { get; set; } // A dispatch friendly email client
-        public Audit.Client Audit { get; set; } // A dispatch friendly Auditor
-        public Io.Client File { get; set; } // A dispatch friendly file client
+        #region Domain Specific Event(s)
+        public static readonly EventNames OnUserChange = new EventNames("OnUserChange");
+        #endregion
+
+        #region Domain Specific Commands(s)
+        public static readonly CommandNames UserChange = new CommandNames("ChangeUser");
+        #endregion
 
         public Response ChangeUser(Request request)
         {

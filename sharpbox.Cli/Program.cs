@@ -17,55 +17,34 @@ namespace sharpbox.Cli
             // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event. We use basic since we're using xml and want to prevent event reflection. Audit saves file -> file generates audit message -> Audit saves file.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
-            var example = new ExampleMediator("ugwua", EventNamesExtension.ExtendedPubList, smtpClient);
+
+            // In a hacky way we're going to extend the event list. Normally I think you'd want to do this by making a class that extends.
+            var possibleEvents = BaseEventNames.BaseEventList();
+                possibleEvents.Add(ExampleMediator.OnUserChange);
+
+            var example = new ExampleMediator("ugwua", possibleEvents, smtpClient);
 
             example = WireUpEvents(example); // Wire the commands, and listeners.
 
             //Create a response object we can repopulate after each request.
             Response response = null;
 
+            // Give the notification a subscriber.
+            response = example.Dispatch.Process(BaseCommandNames.AddNotificationSubscriber, "Adding a subcriber to OnException", new Subscriber(ExampleMediator.OnUserChange, "ugwua"));
+
             // Next we're going to try the user change command we registered earlier.
             Debug.WriteLine("Current UserId: " + example.UserId);
-            response = example.Dispatch.Process(new Request { RequestId = Guid.NewGuid(), CommandName = CommandNames.ChangeUser, Message = "Changing the userid to lyleb", Entity = "lyleb", Type = null });
+            response = example.Dispatch.Process(ExampleMediator.UserChange, "Changing the userid to lyleb", "lyleb");
             Debug.WriteLine("Current UserId: " + example.UserId);
-
-
-            // ########################
-            // NOTE: For the next two calls we're calling them directly instead of using the pub/sub system so we're responsible for catching and broadcasting errors. To keep it brif this has only been done for the first call.
-            // Email: Test Email:
-            try
-            {
-                // We know this will fail because the smtp client isn't fully configured and the emails are bad
-                example.Email.Send(new List<string> { "test@testy.com" }, "foo.bar@gmail.com", "This is a test email from my framework", "Testing is good for you.");
-            }
-            catch (Exception ex)
-            {
-                // Basic test of the dispatch. This says: To anyone listen to 'OnLogException', here is a response. Typically this might be Audit, Logging, and Notification
-                example.Dispatch.Broadcast(new Response { ResponseId = Guid.NewGuid(), Entity = ex, Message = ex.Message, EventName = BaseEventNames.OnException });
-            }
 
             // Io: Test file operations. We pass in the dispatcher so everything threads back.
             example.File.Write("Test.xml", example.Notification.BackLog);
 
             // Request a broadcast of the command stream to test usefulness.
-            response = example.Dispatch.Process(new Request
-                {
-                    RequestId = Guid.NewGuid(),
-                    CommandName = BaseCommandNames.BroadcastCommandStream,
-                    Message = "Request to broadcast command stream",
-                    Entity = null,
-                    Type = null
-                });
+            response = example.Dispatch.Process(BaseCommandNames.BroadcastCommandStream,"Request to broadcast command stream","No entity!");
 
             // Notification
-            response = example.Dispatch.Process(new Request
-                {
-                    Entity = example.Notification.BackLog.First(),
-                    Type = typeof(BackLogItem),
-                    CommandName = BaseCommandNames.SendNotification,
-                    Message = "Sending out backlogitem",
-                    RequestId = Guid.NewGuid()
-                });
+            response = example.Dispatch.Process(BaseCommandNames.SendNotification,"Sending out backlogitem",example.Notification.BackLog.First());
 
             // Notification
             Debug.WriteLine("###Notification Info####");
@@ -87,22 +66,20 @@ namespace sharpbox.Cli
         public static ExampleMediator WireUpEvents(ExampleMediator example)
         {
             // Setup what a command should do and who it should broadcast to when it's done
-            example.Dispatch.Register(BaseCommandNames.ChangeUser, example.ChangeUser, EventNamesExtension.OnUserChange);
-            example.Dispatch.Register(BaseCommandNames.BroadcastCommandStream, example.BroadCastEventStream, BaseEventNames.OnBroadcastCommandStream);
+            example.Dispatch.Register(ExampleMediator.UserChange, example.ChangeUser, ExampleMediator.OnUserChange);
+            example.Dispatch.Register(CommandNames.BroadcastCommandStream, example.BroadCastEventStream, BaseEventNames.OnBroadcastCommandStream);
             example.Dispatch.Register(BaseCommandNames.SendNotification, example.Notification.Notify, BaseEventNames.OnNotificationNotify);
+            example.Dispatch.Register(BaseCommandNames.AddNotificationSubscriber, example.Notification.AddSub, BaseEventNames.OnNotificationAddSubScriber);
+            example.Dispatch.Register(BaseCommandNames.SendEmail, example.SendEmail, BaseEventNames.OnEmailSend);
 
             // Add some listeners to those broadcasts. NOTE: This is a queue so things will be fired in FIFO order.
-            example.Dispatch.Listen(EventNamesExtension.OnUserChange, ExampleListener);
             example.Dispatch.Listen(BaseEventNames.OnBroadcastCommandStream, OutPutCommandStream);
             // Listen to an 'under the covers' system event
-            example.Dispatch.Listen(BaseEventNames.OnException, ExampleListener);
-
-            // Give the notification a subscriber.
-            example.Notification.AddSub(EventNamesExtension.OnUserChange, "ugwua");
+            example.Dispatch.Listen(EventNames.OnException, ExampleListener);
 
             // All of our internal stuff uses the broadcast system so we'll listen on exception and rethrow.
             // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
-            example.Dispatch.Listen(BaseEventNames.OnException, FireOnException);
+            example.Dispatch.Listen(EventNames.OnException, FireOnException);
 
             return example;
         }
