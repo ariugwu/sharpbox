@@ -106,10 +106,6 @@
       <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
       <Name>sharpbox.Localization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Log\sharpbox.Log.csproj">
-      <Project>{351f3a6b-9a94-43ea-aaa8-739cc02b529a}</Project>
-      <Name>sharpbox.Log</Name>
-    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Notification.Strategy.File\sharpbox.Notification.Strategy.File.csproj">
       <Project>{43837322-2fdb-45d9-92d5-22400c54d908}</Project>
       <Name>sharpbox.Notification.Strategy.File</Name>
