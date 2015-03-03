@@ -25,10 +25,9 @@ namespace sharpbox.Audit
             
         }
 
-        public Response Record(Response response)
+        public void Record(Response response)
         {
             Trail.Add(response);
-            return response;;
         }
 
         private void ConfigureAuditLevel(Dispatch.Client dispatcher, IEnumerable<EventNames> availableEvents, AuditLevel auditLevel = AuditLevel.Basic)

@@ -11,7 +11,6 @@ namespace sharpbox
             extendedList.AddRange(new List<CommandNames>()
             {
                 BroadcastCommandStream,
-                BroadcastEventStream,
                 SendNotification,
                 SendEmail,
                 FileCreate,

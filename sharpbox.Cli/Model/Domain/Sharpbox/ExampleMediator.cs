@@ -38,20 +38,17 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
         public static readonly CommandNames UserChange = new CommandNames("ChangeUser");
         #endregion
 
-        public Response ChangeUser(Request request)
+        public string ChangeUser(string userId)
         {
-            var entity = (string)request.Entity;
-            UserId = entity;
             
-            return new Response(request, "User changed in the ExampleMediator",ResponseTypes.Success);
+            UserId = userId;
+
+          return UserId;
         }
 
-        public Response BroadCastEventStream(Request request)
+        public Queue<CommandStreamItem> HandleBroadCastCommandStream(Queue<CommandStreamItem> stream)
         {
-            // Example of being able to bend the rules a little bit and simply use the system to kick off a response, as apposed to deliverying something to be processed.
-            request.Entity = Dispatch.CommandStream;
-            request.Type = typeof (Queue<CommandStreamItem>);
-            return new Response(request, "Broadcasting current command stream.", ResponseTypes.Success);
+          return stream;
         }
 
     }
