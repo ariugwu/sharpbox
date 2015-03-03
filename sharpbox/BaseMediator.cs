@@ -23,6 +23,10 @@ namespace sharpbox
 
             // Setup Notification
             Notification = new Notification.Client(ref dispatcher, Email, eventNames);
+
+            RegisterCommands();
+            MapListeners();
+            
         }
 
         protected BaseMediator()
