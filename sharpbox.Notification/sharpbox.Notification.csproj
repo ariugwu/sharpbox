@@ -43,8 +43,6 @@
     <Compile Include="Model\BackLogItem.cs" />
     <Compile Include="Model\Subscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategy\InMemoryStrategy.cs" />
-    <Compile Include="Strategy\IStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\sharpbox.Data\sharpbox.Data.csproj">

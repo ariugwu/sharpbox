@@ -80,7 +80,8 @@ namespace sharpbox.Dispatch
                         EventName = EventNames.OnException,
                         Message = "Dispatch process failed to broadcast Request Id:" + response.RequestId + " on channel: " + response.EventName,
                         RequestId = response.RequestId,
-                        ResponseId = Guid.NewGuid()
+                        ResponseId = Guid.NewGuid(),
+                        ResponseType = ResponseTypes.Error
                     };
 
                     Broadcast(exResponse);
@@ -120,14 +121,15 @@ namespace sharpbox.Dispatch
                     EventName = EventNames.OnException,
                     Message = "Dispatch process failed for Request Id:" + request.RequestId,
                     RequestId = request.RequestId,
-                    ResponseId = Guid.NewGuid()
+                    ResponseId = Guid.NewGuid(),
+                    ResponseType = ResponseTypes.Error
                 };
 
                 CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Request = request, Response = exResponse });
 
                 Broadcast(exResponse);
 
-                var dumpResponse = Process(CommandNames.BroadcastCommandStream, "Broading command stream as a result of an exception in RequestId:" + request.RequestId, CommandStream);
+                var dumpResponse = Process(CommandNames.BroadcastCommandStreamAfterError, "Broading command stream as a result of an exception in RequestId:" + request.RequestId, CommandStream);
 
                 return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}. CommandStream dump requested. See RequestId: {2}", request.CommandName, exResponse.ResponseId, dumpResponse.RequestId), ResponseTypes.Error);
             }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using sharpbox.Audit.Model;
-using sharpbox.Audit.Strategy;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit
@@ -9,16 +8,15 @@ namespace sharpbox.Audit
     public class Client
     {
 
-        private IStrategy _strategy;
+        private List<Response> _trail; 
 
         /// <summary>
         /// The Event Stream from all users
         /// </summary>
-        public List<Response> Trail { get { return _strategy.Trail; } } 
+        public List<Response> Trail { get { return _trail ?? (_trail = new List<Response>()); } } 
 
-        public Client(ref Dispatch.Client dispatcher,IEnumerable<EventNames> availableEvents, IStrategy strategy, AuditLevel auditLevel = AuditLevel.Basic)
+        public Client(ref Dispatch.Client dispatcher,IEnumerable<EventNames> availableEvents, AuditLevel auditLevel = AuditLevel.Basic)
         {
-            _strategy = strategy; //?? new BaseStrategy<T>(dispatcher, props ?? new Dictionary<string, object> { { "xmlPath", "AuditXmlRepository.xml" } });
             ConfigureAuditLevel(dispatcher, availableEvents, auditLevel);
         }
 
@@ -27,9 +25,10 @@ namespace sharpbox.Audit
             
         }
 
-        public void Record(Response response)
+        public Response Record(Response response)
         {
-            _strategy.Record(response);
+            Trail.Add(response);
+            return response;;
         }
 
         private void ConfigureAuditLevel(Dispatch.Client dispatcher, IEnumerable<EventNames> availableEvents, AuditLevel auditLevel = AuditLevel.Basic)
@@ -42,7 +41,7 @@ namespace sharpbox.Audit
                     list = availableEvents.Where(x => !x.ToString().ToLower().Contains("onaudit") && !x.ToString().ToLower().Contains("ondata") && !x.ToString().ToLower().Contains("onfile")).ToList();
                     foreach (var p in list)
                     {
-                        dispatcher.Listen(p, _strategy.Record);
+                        dispatcher.Listen(p, Record);
                     }
                     break;
                 case AuditLevel.All:
@@ -50,7 +49,7 @@ namespace sharpbox.Audit
                     list = availableEvents.Where(x => !x.ToString().ToLower().Contains("onaudit")).ToList();
                     foreach (var p in list)
                     {
-                        dispatcher.Listen(p, _strategy.Record);
+                        dispatcher.Listen(p, Record);
                     }
                     break;
                 case AuditLevel.None:

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using sharpbox.Dispatch.Model;
 using sharpbox.Notification.Model;
-using sharpbox.Notification.Strategy;
 
 namespace sharpbox.Notification
 {
@@ -11,9 +10,9 @@ namespace sharpbox.Notification
     {
         #region Constructor(s)
 
-        public Client(ref Dispatch.Client dispatcher,List<EventNames> availableEvents, IStrategy strategy)
+        public Client(ref Dispatch.Client dispatcher, Email.Client emailClient, List<EventNames> availableEvents)
         {
-            _strategy = strategy;
+            _emailClient = emailClient;
             ConfigureNotification(dispatcher, availableEvents);
         }
 
@@ -25,14 +24,17 @@ namespace sharpbox.Notification
 
         #region Field(s)
 
-        private IStrategy _strategy;
+        private Email.Client _emailClient;
+        private Dictionary<EventNames, List<string>> _subscribers;
+        private List<BackLogItem> _backLog;
 
         #endregion
 
         #region Properties
 
-        public Dictionary<EventNames, List<string>> Subscribers { get { return _strategy.Subscribers;  } set{ _strategy.Subscribers = value;} }
-        public List<BackLogItem> BackLog { get { return _strategy.BackLog; } }
+        public Dictionary<EventNames, List<string>> Subscribers { get { return _subscribers ?? (_subscribers = new Dictionary<EventNames, List<string>>()); } set { _subscribers = value; } }
+
+        public List<BackLogItem> BackLog { get { return _backLog ?? (_backLog = new List<BackLogItem>()); } set { _backLog = value; } }
 
         #endregion
 
@@ -75,14 +77,38 @@ namespace sharpbox.Notification
                     Message = response.Message
                 };
 
-                _strategy.ProcessBackLogItem(bli);  
+                _backLog.Add(bli);
             }
             
         }
 
         public Response Notify(Request request)
         {
-            return _strategy.Notify(request);
+            var bli = (BackLogItem)request.Entity;
+
+            _emailClient.Send(bli.To, bli.From, bli.Subject, bli.Message);
+
+            bli.WasSent = true;
+            bli.SentDate = DateTime.Now;
+
+            // If this doesn't exist then add it. If it does then update it.
+            if (!_backLog.Exists(x => x.BackLogItemId.Equals(bli.BackLogItemId)))
+            {
+                _backLog.Add(bli);
+            }
+            else
+            {
+                // update the item in our backlog
+                for (var i = 0; i < _backLog.Count; i++)
+                {
+                    if (_backLog[i].BackLogItemId != bli.BackLogItemId) continue;
+
+                    _backLog[i] = bli;
+                    break;
+                }
+            }
+
+            return new Response(request, String.Format("Email sent to {0}. With Subject: {1}", String.Join(";", bli.To, bli.Subject)), ResponseTypes.Success);
         }
 
 
@@ -90,11 +116,12 @@ namespace sharpbox.Notification
         {
             var sub = (Subscriber) request.Entity;
 
-            if (!_strategy.Subscribers.ContainsKey(sub.EventName)) _strategy.Subscribers.Add(sub.EventName, new List<string>());
-            _strategy.Subscribers[sub.EventName].Add(sub.UserId);
+            if (!Subscribers.ContainsKey(sub.EventName)) Subscribers.Add(sub.EventName, new List<string>());
+            Subscribers[sub.EventName].Add(sub.UserId);
 
             return new Response(request, String.Format("Added the following user '{0}' to the subscription for: {1}", sub.UserId, sub.EventName), ResponseTypes.Success);
         }
+
         #endregion
     }
 }

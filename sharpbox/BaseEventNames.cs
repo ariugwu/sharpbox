@@ -17,13 +17,13 @@ namespace sharpbox
                 OnNotificationNotify,
                 OnNotificationAddSubScriber,
                 OnBroadcastCommandStream,
-                OnBroadcastEventStream,
+                OnBroadcastCommandStreamAfterError,
                 OnException
             };
         }
 
         public static readonly EventNames OnBroadcastCommandStream = new EventNames("OnBroadcastCommandStream");
-        public static readonly EventNames OnBroadcastEventStream = new EventNames("OnBroadcastEventStream");
+        public static readonly EventNames OnBroadcastCommandStreamAfterError = new EventNames("OnBroadcastCommandStreamAfterError");
 
         public static readonly EventNames OnAuditRecord = new EventNames("OnAuditRecord");
 

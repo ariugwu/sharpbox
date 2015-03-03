@@ -24,16 +24,13 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
             var dispatcher = Dispatch;
 
             // Setup auditing
-
-            var filename = "AuditLog.dat";
             var persistenceStrategy = new Io.Strategy.Binary.BinaryStrategy();
 
-            var auditStrategy = new Audit.Strategy.File.FileStrategy(dispatcher, persistenceStrategy, new Dictionary<string, object> {{"filePath", filename}});
+            var auditStrategy = new Audit.Strategy.File.FileStrategy(persistenceStrategy, "AuditLog.dat");
             Audit = new Audit.Client(ref dispatcher, eventNames, auditStrategy); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
         
             // Setup Notification
-            filename = "NotificationLog.dat";
-            var notificationStrategy = new Notification.Strategy.File.FileStrategy(persistenceStrategy,Email, new Dictionary<string, object> { { "filePath", filename } });
+            var notificationStrategy = new Notification.Strategy.File.FileStrategy(persistenceStrategy,Email, "NotificationLog.dat");
             Notification = new Notification.Client(ref dispatcher, eventNames, notificationStrategy);
             
 

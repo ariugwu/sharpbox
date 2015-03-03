@@ -23,7 +23,7 @@ namespace sharpbox.Dispatch.Model
         public object Entity { get; set; }
         public Type Type { get; set; }
 
-        ResponseTypes ResponseType { get; set; }
+        public ResponseTypes ResponseType { get; set; }
 
         public Guid RequestId { get; set; }
     }

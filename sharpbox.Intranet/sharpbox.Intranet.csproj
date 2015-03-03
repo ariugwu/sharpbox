@@ -203,10 +203,6 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\sharpbox.Audit.Strategy.File\sharpbox.Audit.Strategy.File.csproj">
-      <Project>{a9fe2778-c66a-4bdc-a938-cb3823be6188}</Project>
-      <Name>sharpbox.Audit.Strategy.File</Name>
-    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
       <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
       <Name>sharpbox.Audit</Name>
@@ -230,10 +226,6 @@
     <ProjectReference Include="..\sharpbox.Localization\sharpbox.Localization.csproj">
       <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
       <Name>sharpbox.Localization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Notification.Strategy.File\sharpbox.Notification.Strategy.File.csproj">
-      <Project>{43837322-2fdb-45d9-92d5-22400c54d908}</Project>
-      <Name>sharpbox.Notification.Strategy.File</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
       <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>

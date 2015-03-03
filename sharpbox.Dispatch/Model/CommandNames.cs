@@ -9,9 +9,11 @@ namespace sharpbox.Dispatch.Model
     {
 
         public static readonly CommandNames BroadcastCommandStream = new CommandNames("BroadcastCommandStream");
-        public static readonly CommandNames BroadcastEventStream = new CommandNames("BroadcastEventStream");
 
-        public CommandNames(string value) : base(value)
+        public static readonly CommandNames BroadcastCommandStreamAfterError = new CommandNames("BroadcastCommandStreamAfterError");
+
+        public CommandNames(string value)
+            : base(value)
         {
         }
 
@@ -22,7 +24,7 @@ namespace sharpbox.Dispatch.Model
             return new List<CommandNames>()
             {
                 BroadcastCommandStream,
-                BroadcastEventStream
+                BroadcastCommandStreamAfterError
             };
         }
 

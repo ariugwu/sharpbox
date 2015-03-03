@@ -29,7 +29,7 @@ namespace sharpbox.Cli
             //Create a response object we can repopulate after each request.
             Response response = null;
 
-            // Give the notification a subscriber.
+            // Give the notification a subscriber. Now whenever this then is broadcast a backlog message will be created for me.
             response = example.Dispatch.Process(BaseCommandNames.AddNotificationSubscriber, "Adding a subcriber to OnException", new Subscriber(ExampleMediator.OnUserChange, "ugwua"));
 
             // Next we're going to try the user change command we registered earlier.
@@ -41,7 +41,7 @@ namespace sharpbox.Cli
             example.File.Write("Test.xml", example.Notification.BackLog);
 
             // Request a broadcast of the command stream to test usefulness.
-            response = example.Dispatch.Process(BaseCommandNames.BroadcastCommandStream,"Request to broadcast command stream","No entity!");
+            response = example.Dispatch.Process(CommandNames.BroadcastCommandStream,"Request to broadcast command stream","No entity!");
 
             // Notification
             response = example.Dispatch.Process(BaseCommandNames.SendNotification,"Sending out backlogitem",example.Notification.BackLog.First());
@@ -74,6 +74,7 @@ namespace sharpbox.Cli
 
             // Add some listeners to those broadcasts. NOTE: This is a queue so things will be fired in FIFO order.
             example.Dispatch.Listen(BaseEventNames.OnBroadcastCommandStream, OutPutCommandStream);
+
             // Listen to an 'under the covers' system event
             example.Dispatch.Listen(EventNames.OnException, ExampleListener);
 
@@ -103,6 +104,5 @@ namespace sharpbox.Cli
                 Debug.WriteLine("Command:{0} | Request Msg: {1} | Response Msg: '{2}' | Response Channel: {3}", e.Command, e.Request.Message, e.Response.Message, e.Response.EventName);
             }
         }
-
     }
 }

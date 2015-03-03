@@ -6,16 +6,14 @@ namespace sharpbox.Audit.Strategy.File
     public class FileStrategy : IStrategy
     {
         private Io.Client _file;
-        private Dictionary<string, object> _props;
+        private string _filePath;
 
-        public FileStrategy(Dispatch.Client dispatcher, Io.Strategy.IStrategy persistenceStrategy,
-            Dictionary<string, object> props)
+        public FileStrategy(Io.Strategy.IStrategy persistenceStrategy, string filePath)
         {
             _file = new Io.Client(persistenceStrategy);
-            _props = props;
+            _filePath = filePath;
 
-            var filePath = _props["filePath"].ToString();
-            if (!_file.Exists(filePath)) _file.Write(filePath, new List<Response>());
+            if (!_file.Exists(_filePath)) _file.Write(filePath, new List<Response>());
             Trail = _file.Read<List<Response>>(filePath);
         }
 
@@ -24,7 +22,7 @@ namespace sharpbox.Audit.Strategy.File
         public void Record(Response response)
         {
             Trail.Add(response);
-            _file.Write(_props["filePath"].ToString(), Trail);
+            _file.Write(_filePath, Trail);
         }
 
     }

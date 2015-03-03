@@ -8,12 +8,12 @@ namespace sharpbox.Notification.Strategy.File
     public class FileStrategy : IStrategy
     {
         private Io.Client _file;
-        private Dictionary<string, object> _props;
+        private string _filePath;
 
-        public FileStrategy(Io.Strategy.IStrategy persistenceStrategy,Email.Client emailClient, Dictionary<string, object> props)
+        public FileStrategy(Io.Strategy.IStrategy persistenceStrategy, Email.Client emailClient, string filePath)
         {
             _file = new Io.Client(persistenceStrategy);
-            _props = props;
+            _filePath = filePath;
 
             _emailClient = emailClient;
 
@@ -68,14 +68,13 @@ namespace sharpbox.Notification.Strategy.File
 
         public void LoadBacklog()
         {
-            var filePath = _props["filePath"].ToString();
-            if (!_file.Exists(filePath)) _file.Write(filePath, new List<BackLogItem>());
-            BackLog = _file.Read<List<BackLogItem>>(_props["filePath"].ToString());
+            if (!_file.Exists(_filePath)) _file.Write(_filePath, new List<BackLogItem>());
+            BackLog = _file.Read<List<BackLogItem>>(_filePath);
         }
 
         public void SaveBackLog()
         {
-            _file.Write(_props["filePath"].ToString(), BackLog);
+            _file.Write(_filePath, BackLog);
             LoadBacklog();
         }
 
