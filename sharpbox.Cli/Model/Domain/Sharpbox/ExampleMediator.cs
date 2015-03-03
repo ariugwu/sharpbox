@@ -23,17 +23,9 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
             // The following modules require persistence
             var dispatcher = Dispatch;
 
-            // Setup auditing
-            var persistenceStrategy = new Io.Strategy.Binary.BinaryStrategy();
-
-            var auditStrategy = new Audit.Strategy.File.FileStrategy(persistenceStrategy, "AuditLog.dat");
-            Audit = new Audit.Client(ref dispatcher, eventNames, auditStrategy); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
+            Audit = new Audit.Client(ref dispatcher, eventNames); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
         
-            // Setup Notification
-            var notificationStrategy = new Notification.Strategy.File.FileStrategy(persistenceStrategy,Email, "NotificationLog.dat");
-            Notification = new Notification.Client(ref dispatcher, eventNames, notificationStrategy);
-            
-
+            Notification = new Notification.Client(ref dispatcher, Email, eventNames);
         }
 
         public string UserId { get; set; }
