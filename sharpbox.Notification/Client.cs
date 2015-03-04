@@ -70,7 +70,7 @@ namespace sharpbox.Notification
           BackLogItemId = Guid.NewGuid(),
           NextAttempTime = null,
           RequestId = response.RequestId,
-          ResponseId = response.ResponseId,
+          ResponseId = response.ResponseUniqueKey,
           SentDate = null,
           UserId = s,
           WasSent = false,

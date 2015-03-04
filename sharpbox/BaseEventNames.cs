@@ -13,8 +13,9 @@ namespace sharpbox
                 OnFileDelete,
                 OnFileAccess,
                 OnEmailSend,
-                OnAuditRecord,
+                OnAuditTrailPersisted,
                 OnNotificationNotify,
+                OnNotificationBacklogPersisted,
                 OnNotificationAddSubScriber,
                 OnBroadcastCommandStream,
                 OnBroadcastCommandStreamAfterError,
@@ -25,7 +26,7 @@ namespace sharpbox
         public static readonly EventNames OnBroadcastCommandStream = new EventNames("OnBroadcastCommandStream");
         public static readonly EventNames OnBroadcastCommandStreamAfterError = new EventNames("OnBroadcastCommandStreamAfterError");
 
-        public static readonly EventNames OnAuditRecord = new EventNames("OnAuditRecord");
+        public static readonly EventNames OnAuditTrailPersisted = new EventNames("OnAuditTrailPersisted");
 
         public static readonly EventNames OnEmailSend = new EventNames("OnEmailSend");
 
@@ -39,6 +40,7 @@ namespace sharpbox
         public static readonly EventNames OnDataGetById = new EventNames("OnDataGetById");
         public static readonly EventNames OnDataGetAll = new EventNames("OnDataGetAll");
 
+        public static readonly EventNames OnNotificationBacklogPersisted = new EventNames("OnNotificationBacklogPersisted");
         public static readonly EventNames OnNotificationNotify = new EventNames("OnNotificationNotify");
         public static readonly EventNames OnNotificationAddSubScriber = new EventNames("OnNotificationAddSubScriber");
         

@@ -12,6 +12,10 @@ namespace sharpbox.Dispatch.Model
 
         public static readonly CommandNames BroadcastCommandStreamAfterError = new CommandNames("BroadcastCommandStreamAfterError");
 
+        public static readonly CommandNames PersistAuditTrail = new CommandNames("PersistAuditTrail");
+
+        public static readonly CommandNames PersistNotificationBackLog = new CommandNames("PersistNotificationBackLog");
+
         public CommandNames(string value)
             : base(value)
         {
@@ -24,7 +28,9 @@ namespace sharpbox.Dispatch.Model
             return new List<CommandNames>()
             {
                 BroadcastCommandStream,
-                BroadcastCommandStreamAfterError
+                BroadcastCommandStreamAfterError,
+                PersistAuditTrail,
+                PersistNotificationBackLog
             };
         }
 

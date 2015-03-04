@@ -53,7 +53,7 @@ namespace sharpbox.Dispatch
       }
       catch (Exception ex)
       {
-        Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = "Dispatch failed to register the action", ResponseId = Guid.NewGuid() });
+        Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = "Dispatch failed to register the action", ResponseUniqueKey = Guid.NewGuid() });
       }
     }
 
@@ -81,7 +81,7 @@ namespace sharpbox.Dispatch
             EventName = EventNames.OnException,
             Message = "Dispatch process failed to broadcast Request Id:" + response.RequestId + " on channel: " + response.EventName,
             RequestId = response.RequestId,
-            ResponseId = Guid.NewGuid(),
+            ResponseUniqueKey = Guid.NewGuid(),
             ResponseType = ResponseTypes.Error
           };
 
@@ -134,7 +134,7 @@ namespace sharpbox.Dispatch
           EventName = EventNames.OnException,
           Message = "Dispatch process failed for Request Id:" + request.RequestId,
           RequestId = request.RequestId,
-          ResponseId = Guid.NewGuid(),
+          ResponseUniqueKey = Guid.NewGuid(),
           ResponseType = ResponseTypes.Error
         };
 
@@ -144,7 +144,7 @@ namespace sharpbox.Dispatch
 
         var dumpResponse = Process<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, "Broading command stream as a result of an exception in RequestId:" + request.RequestId, new object[] { CommandStream });
 
-        return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}. CommandStream dump requested. See RequestId: {2}", request.CommandName, exResponse.ResponseId, dumpResponse.RequestId), ResponseTypes.Error);
+        return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}. CommandStream dump requested. See RequestId: {2}", request.CommandName, exResponse.ResponseUniqueKey, dumpResponse.RequestId), ResponseTypes.Error);
       }
     }
 

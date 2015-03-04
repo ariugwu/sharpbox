@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Sharpbox;
+using sharpbox.EfCodeFirst.Audit;
 using sharpbox.Notification.Model;
 
 namespace sharpbox.Cli
@@ -17,6 +19,7 @@ namespace sharpbox.Cli
       // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event. We use basic since we're using xml and want to prevent event reflection. Audit saves file -> file generates audit message -> Audit saves file.
       // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
       var smtpClient = new SmtpClient("smtp.google.com", 587);
+      AuditContext auditDb = new AuditContext();
 
       // In a hacky way we're going to extend the event list. Normally I think you'd want to do this by making a class that extends.
       var possibleEvents = BaseEventNames.BaseEventList();
@@ -71,6 +74,7 @@ namespace sharpbox.Cli
       example.Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, example.HandleBroadCastCommandStream, BaseEventNames.OnBroadcastCommandStreamAfterError);
       example.Dispatch.Register<BackLogItem>(BaseCommandNames.SendNotification, example.Notification.Notify, BaseEventNames.OnNotificationNotify);
       example.Dispatch.Register<Subscriber>(BaseCommandNames.AddNotificationSubscriber, example.Notification.AddSub, BaseEventNames.OnNotificationAddSubScriber);
+
       example.Dispatch.Register<MailMessage>(BaseCommandNames.SendEmail, example.SendEmail, BaseEventNames.OnEmailSend);
 
       // Add some listeners to those broadcasts. NOTE: This is a queue so things will be fired in FIFO order.

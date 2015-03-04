@@ -13,7 +13,7 @@ namespace sharpbox.Audit
         /// <summary>
         /// The Event Stream from all users
         /// </summary>
-        public List<Response> Trail { get { return _trail ?? (_trail = new List<Response>()); } } 
+        public List<Response> Trail { get { return _trail ?? (_trail = new List<Response>()); } set { _trail = value; } } 
 
         public Client(ref Dispatch.Client dispatcher,IEnumerable<EventNames> availableEvents, AuditLevel auditLevel = AuditLevel.Basic)
         {
