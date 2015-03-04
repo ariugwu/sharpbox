@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace sharpbox.Dispatch.Model
 {
@@ -29,17 +29,44 @@ namespace sharpbox.Dispatch.Model
 
         public EventNames EventName { get; set; }
 
-        [NotMapped]
         public object Entity { get; set; }
-        [NotMapped]
+
         public Type Type { get; set; }
 
         public ResponseTypes ResponseType { get; set; }
 
         /// <summary>
-        /// Used only for EF
+        /// Used only for EF. @SEE: http://stackoverflow.com/a/14785553
         /// </summary>
-        private string Status { get { return ResponseType.ToString(); }}
+        public string SerializedEntity
+        {
+            get { return JsonConvert.SerializeObject(Entity); }
+
+            set
+            {
+                if(string.IsNullOrEmpty(value)) return;
+                var entity = JsonConvert.DeserializeObject<object>(value);
+                Entity = entity;
+            }
+        }
+
+        /// <summary>
+        /// Used only for EF. @SEE: http://stackoverflow.com/a/14785553
+        /// </summary>
+        public string SerializeEntityType
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(this.Type);
+            }
+
+            set
+            {
+                if (string.IsNullOrEmpty(value)) return;
+                var type = JsonConvert.DeserializeObject<System.Type>(value);
+                Type = type;
+            }
+        }
 
         public Guid RequestId { get; set; }
         

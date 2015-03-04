@@ -67,7 +67,7 @@ namespace sharpbox.Notification
         var bli = new BackLogItem
         {
           AttempNumber = 0,
-          BackLogItemId = Guid.NewGuid(),
+          BackLogItemUniqueId = Guid.NewGuid(),
           NextAttempTime = null,
           RequestId = response.RequestId,
           ResponseId = response.ResponseUniqueKey,
@@ -90,7 +90,7 @@ namespace sharpbox.Notification
       bli.SentDate = DateTime.Now;
 
       // If this doesn't exist then add it. If it does then update it.
-      if (!_backLog.Exists(x => x.BackLogItemId.Equals(bli.BackLogItemId)))
+      if (!_backLog.Exists(x => x.BackLogItemUniqueId.Equals(bli.BackLogItemUniqueId)))
       {
         _backLog.Add(bli);
       }
@@ -99,7 +99,7 @@ namespace sharpbox.Notification
         // update the item in our backlog
         for (var i = 0; i < _backLog.Count; i++)
         {
-          if (_backLog[i].BackLogItemId != bli.BackLogItemId) continue;
+          if (_backLog[i].BackLogItemUniqueId != bli.BackLogItemUniqueId) continue;
 
           _backLog[i] = bli;
           break;

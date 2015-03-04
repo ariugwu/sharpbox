@@ -8,7 +8,9 @@ namespace sharpbox.Notification.Model
     {
         public BackLogItem() { }
 
-        public Guid BackLogItemId { get; set; }
+        public int BackLogItemId { get; set; }
+
+        public Guid BackLogItemUniqueId { get; set; }
         public Guid RequestId { get; set; }
         public Guid ResponseId { get; set; }
 
