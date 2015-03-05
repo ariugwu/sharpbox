@@ -3,7 +3,7 @@
 namespace sharpbox.Dispatch.Model
 {
     [Serializable]
-    public class Request
+    public class Request : BasePackage
     {
         public Request()
         {
@@ -14,10 +14,9 @@ namespace sharpbox.Dispatch.Model
         public Guid RequestUniqueKey { get; set; }
         
         public string Message { get; set; }
+        public int CommandNameId { get; set; }
         public CommandNames CommandName { get; set; }
         public Delegate Action { get; set; }
-        public object Entity { get; set; }
-        public Type Type { get; set; }
 
         public static Request Create<T>(CommandNames commandName, string message, T entity)
         {

@@ -25,7 +25,7 @@ namespace sharpbox.Audit
             
         }
 
-        public void Record(Response response)
+        public void Record(Dispatch.Client dispatcher, Response response)
         {
             Trail.Add(response);
         }

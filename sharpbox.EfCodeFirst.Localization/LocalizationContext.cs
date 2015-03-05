@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using sharpbox.Localization.Model;
 
 namespace sharpbox.EfCodeFirst.Localization
@@ -16,6 +17,10 @@ namespace sharpbox.EfCodeFirst.Localization
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Resource>().HasKey(p => p.ResourceId);
+            modelBuilder.Entity<Resource>().Property(x => x.ResourceId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<ResourceNames>().HasKey(x => x.ResourceNamesId);
+            modelBuilder.Entity<ResourceNames>().Property(x => x.ResourceNamesId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<Resource>().ToTable("Resource", schemaName: "Localization");
             modelBuilder.Entity<ResourceNames>().ToTable("ResourceNames", schemaName: "Localization");
         }

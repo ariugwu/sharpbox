@@ -56,7 +56,7 @@ namespace sharpbox.Notification
     /// Whenever the dispatcher publishes an event we create a message for it and stick it on the queue. Then we see if anyone is requesting notification and we create a backlog entry for them to be processed at a later date. Likely by a scheduled task or explict request.
     /// </summary>
     /// <param name="response"></param>
-    public void ProcessEvent(Response response)
+    public void ProcessEvent(Dispatch.Client dispatcher, Response response)
     {
       if (!Subscribers.ContainsKey(response.EventName)) return; // Bail early if there are no subscribers.
 

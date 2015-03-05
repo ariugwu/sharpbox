@@ -57,7 +57,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
           return stream;
         }
 
-        public static void SaveResponseToAuditDatabase(Response response)
+        public static void SaveResponseToAuditDatabase(Dispatch.Client dispatcher, Response response)
         {
             using (var db = new AuditContext())
             {

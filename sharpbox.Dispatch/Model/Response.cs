@@ -1,10 +1,9 @@
 ﻿using System;
-using Newtonsoft.Json;
 
 namespace sharpbox.Dispatch.Model
 {
     [Serializable]
-    public class Response
+    public class Response : BasePackage
     {
         public Response(Request request, string message, ResponseTypes responseType)
         {
@@ -28,45 +27,6 @@ namespace sharpbox.Dispatch.Model
         public int EventNameId { get; set; }
 
         public EventNames EventName { get; set; }
-
-        public object Entity { get; set; }
-
-        public Type Type { get; set; }
-
-        public ResponseTypes ResponseType { get; set; }
-
-        /// <summary>
-        /// Used only for EF. @SEE: http://stackoverflow.com/a/14785553
-        /// </summary>
-        public string SerializedEntity
-        {
-            get { return JsonConvert.SerializeObject(Entity); }
-
-            set
-            {
-                if(string.IsNullOrEmpty(value)) return;
-                var entity = JsonConvert.DeserializeObject<object>(value);
-                Entity = entity;
-            }
-        }
-
-        /// <summary>
-        /// Used only for EF. @SEE: http://stackoverflow.com/a/14785553
-        /// </summary>
-        public string SerializeEntityType
-        {
-            get
-            {
-                return JsonConvert.SerializeObject(this.Type);
-            }
-
-            set
-            {
-                if (string.IsNullOrEmpty(value)) return;
-                var type = JsonConvert.DeserializeObject<System.Type>(value);
-                Type = type;
-            }
-        }
 
         public int RequestId { get; set; }
         public Guid RequestUniqueKey { get; set; }

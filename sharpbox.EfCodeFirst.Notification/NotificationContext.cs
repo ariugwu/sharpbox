@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using sharpbox.Notification.Model;
 
 namespace sharpbox.EfCodeFirst.Notification
@@ -21,6 +22,8 @@ namespace sharpbox.EfCodeFirst.Notification
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<BackLogItem>().HasKey(p => p.BackLogItemId);
+            modelBuilder.Entity<BackLogItem>().Property(x => x.BackLogItemId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<BackLogItem>().ToTable("BackLogItem", schemaName: "Notification");
         }
     }

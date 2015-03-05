@@ -18,6 +18,6 @@ namespace sharpbox.Dispatch.Model
 
         public EventNames() { }
 
-        public int EventNamesId { get; set; }
+        public int EventNameId { get; set; }
     }
 }

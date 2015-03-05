@@ -4,9 +4,13 @@ using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
+using sharpbox.Cli.Model.Domain.Localization;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Sharpbox;
 using sharpbox.EfCodeFirst.Audit;
+using sharpbox.EfCodeFirst.Localization;
+using sharpbox.EfCodeFirst.Notification;
+using sharpbox.Localization.Model;
 using sharpbox.Notification.Model;
 
 namespace sharpbox.Cli
@@ -21,6 +25,9 @@ namespace sharpbox.Cli
       var smtpClient = new SmtpClient("smtp.google.com", 587);
 
       AuditContext auditDb = new AuditContext();
+      LocalizationContext localizationDb = new LocalizationContext();
+      NotificationContext notificationDb = new NotificationContext();
+
 
       // We need to create a list of events we want the auditor and notification to listen for.
       var possibleEvents = new List<EventNames>()
@@ -59,7 +66,16 @@ namespace sharpbox.Cli
 
       // Notification
       response = example.Dispatch.Process<List<BackLogItem>>(ExtendedCommandNames.SendNotification, "Sending out backlogitem", new object[] { example.Notification.BackLog.First() });
+                localizationDb.Resources.AddOrUpdate(new Resource
+        {
+            CreatedDate = DateTime.Now,
+            Value = "Sharpbox Kitchen Sink",
+            CultureCode = "en-us",
+            Name = ResourceNamesExt.ProjectTitle,
+            LastModifiedDateTime = DateTime.Now
+        });
 
+        notificationDb.BackLogItems.AddOrUpdate(example.Notification.BackLog.First());
       // Notification
       Debug.WriteLine("###Notification Info####");
       Debug.WriteLine("Total subscribers: " + example.Notification.Subscribers.Count);
@@ -102,18 +118,18 @@ namespace sharpbox.Cli
       return example;
     }
 
-    public static void ExampleListener(Response response)
+    public static void ExampleListener(Dispatch.Client dispatcher, Response response)
     {
       Debug.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
     }
 
-    public static void FireOnException(Response response)
+    public static void FireOnException(Dispatch.Client dispatcher, Response response)
     {
       var exception = response.Entity as Exception;
       if (exception != null) Debug.WriteLine("The dispatch is designed to catch all exceptions. You can listen for them and do what you need with the exception itself. Ex Message:" + exception.Message);
     }
 
-    public static void OutPutCommandStream(Response response)
+    public static void OutPutCommandStream(Dispatch.Client dispatcher,Response response)
     {
       Debug.WriteLine("### Event Stream Dump ###");
       foreach (var e in (Queue<CommandStreamItem>)response.Entity)

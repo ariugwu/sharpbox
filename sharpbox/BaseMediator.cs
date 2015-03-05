@@ -138,17 +138,17 @@ namespace sharpbox
       throw new NotImplementedException();
     }
 
-    public virtual void OnBroadcastCommandStream(Response response)
+    public virtual void OnBroadcastCommandStream(Dispatch.Client dispatcher, Response response)
     {
       throw new NotImplementedException();
     }
 
-    public virtual void OnBroadcastCommandStreamAfterError(Response response)
+    public virtual void OnBroadcastCommandStreamAfterError(Dispatch.Client dispatcher, Response response)
     {
       throw new NotImplementedException();
     }
 
-    public virtual void OnException(Response response)
+    public virtual void OnException(Dispatch.Client dispatcher, Response response)
     {
       throw new NotImplementedException();
     }

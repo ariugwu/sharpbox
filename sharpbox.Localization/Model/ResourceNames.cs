@@ -6,5 +6,7 @@ namespace sharpbox.Localization.Model
     public class ResourceNames : EnumPattern
     {
         public ResourceNames(string value) : base(value) { }
+
+        public int ResourceNamesId { get; set; }
     }
 }

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Model\BasePackage.cs" />
     <Compile Include="Model\CommandHubItem.cs" />
     <Compile Include="Model\CommandNames.cs" />
     <Compile Include="Model\CommandStreamItem.cs" />

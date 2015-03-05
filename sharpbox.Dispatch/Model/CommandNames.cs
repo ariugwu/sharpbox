@@ -22,5 +22,6 @@ namespace sharpbox.Dispatch.Model
 
         public CommandNames() { }
 
+        public int CommandNameId { get; set; }
     }
 }

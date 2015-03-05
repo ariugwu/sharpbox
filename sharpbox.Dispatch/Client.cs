@@ -17,11 +17,11 @@ namespace sharpbox.Dispatch
     public Client()
     {
       _commandHub = new Dictionary<CommandNames, CommandHubItem>();
-      _eventSubscribers = new Dictionary<EventNames, Queue<Action<Response>>>();
+      _eventSubscribers = new Dictionary<EventNames, Queue<Action<Dispatch.Client, Response>>>();
       CommandStream = new Queue<CommandStreamItem>();
     }
 
-    private Dictionary<EventNames, Queue<Action<Response>>> _eventSubscribers;
+    private Dictionary<EventNames, Queue<Action<Dispatch.Client, Response>>> _eventSubscribers;
 
     private Dictionary<CommandNames, CommandHubItem> _commandHub;
 
@@ -32,7 +32,7 @@ namespace sharpbox.Dispatch
     /// </summary>
     /// <param name="publisherName"></param>
     /// <param name="method"></param>
-    public void Listen(EventNames publisherName, Action<Response> method)
+    public void Listen(EventNames publisherName, Action<Dispatch.Client,Response> method)
     {
       EnsureEventSubscriberKey(publisherName);
 
@@ -70,7 +70,7 @@ namespace sharpbox.Dispatch
       {
         try
         {
-          p.Invoke(response);
+          p.Invoke(this,response);
         }
         catch (TargetInvocationException ex)
         {
@@ -152,7 +152,7 @@ namespace sharpbox.Dispatch
 
     private void EnsureEventSubscriberKey(EventNames eventName)
     {
-      if (!_eventSubscribers.ContainsKey(eventName)) _eventSubscribers.Add(eventName, new Queue<Action<Response>>());
+        if (!_eventSubscribers.ContainsKey(eventName)) _eventSubscribers.Add(eventName, new Queue<Action<Dispatch.Client, Response>>());
     }
 
     #region Helper Methods

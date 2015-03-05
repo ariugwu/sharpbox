@@ -86,6 +86,14 @@
       <Project>{5fcd76ef-5ca2-4d7c-bf0a-32fb6456ef7c}</Project>
       <Name>sharpbox.EfCodeFirst.Audit</Name>
     </ProjectReference>
+    <ProjectReference Include="..\sharpbox.EfCodeFirst.Localization\sharpbox.EfCodeFirst.Localization.csproj">
+      <Project>{c279e7a9-bfc7-4a86-95c1-c367dbfa3b3c}</Project>
+      <Name>sharpbox.EfCodeFirst.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.EfCodeFirst.Notification\sharpbox.EfCodeFirst.Notification.csproj">
+      <Project>{748974b9-c7a6-4b9e-a83c-f433ba1cdfbf}</Project>
+      <Name>sharpbox.EfCodeFirst.Notification</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Email\sharpbox.Email.csproj">
       <Project>{793637e7-810e-44b7-820e-9e8577a79d4b}</Project>
       <Name>sharpbox.Email</Name>
