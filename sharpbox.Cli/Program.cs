@@ -66,16 +66,7 @@ namespace sharpbox.Cli
 
       // Notification
       response = example.Dispatch.Process<List<BackLogItem>>(ExtendedCommandNames.SendNotification, "Sending out backlogitem", new object[] { example.Notification.BackLog.First() });
-                localizationDb.Resources.AddOrUpdate(new Resource
-        {
-            CreatedDate = DateTime.Now,
-            Value = "Sharpbox Kitchen Sink",
-            CultureCode = "en-us",
-            Name = ResourceNamesExt.ProjectTitle,
-            LastModifiedDateTime = DateTime.Now
-        });
-
-        notificationDb.BackLogItems.AddOrUpdate(example.Notification.BackLog.First());
+ 
       // Notification
       Debug.WriteLine("###Notification Info####");
       Debug.WriteLine("Total subscribers: " + example.Notification.Subscribers.Count);

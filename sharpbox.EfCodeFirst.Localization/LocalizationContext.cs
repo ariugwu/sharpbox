@@ -12,6 +12,12 @@ namespace sharpbox.EfCodeFirst.Localization
             
         }
 
+        public LocalizationContext()
+            : base()
+        {
+
+        }
+
         public DbSet<Resource> Resources { get; set; }
         public DbSet<ResourceNames> ResourceNames { get; set; }
 

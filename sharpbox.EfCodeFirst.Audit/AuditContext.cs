@@ -33,7 +33,7 @@ namespace sharpbox.EfCodeFirst.Audit
             modelBuilder.Entity<Request>().Property(p => p.SerializeEntityType).HasColumnName("Type");
             modelBuilder.Entity<Request>().Ignore(p => p.Type);
             modelBuilder.Entity<Request>().Ignore(p => p.Action);
-            modelBuilder.Entity<Response>().ToTable("Request", schemaName: "Audit");
+            modelBuilder.Entity<Request>().ToTable("Request", schemaName: "Audit");
 
             modelBuilder.Entity<Response>().HasKey(p => p.ResponseId);
             modelBuilder.Entity<Response>().Property(x => x.ResponseId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

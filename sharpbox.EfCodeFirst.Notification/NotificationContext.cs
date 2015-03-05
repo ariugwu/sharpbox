@@ -18,6 +18,12 @@ namespace sharpbox.EfCodeFirst.Notification
             
         }
 
+        public NotificationContext()
+            : base()
+        {
+
+        }
+
         public DbSet<BackLogItem> BackLogItems { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
