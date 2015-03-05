@@ -12,6 +12,8 @@ namespace sharpbox.Dispatch.Model
             Message = message;
             ResponseUniqueKey = Guid.NewGuid();
             RequestId = request.RequestId;
+            RequestUniqueKey = request.RequestUniqueKey;
+            Request = request;
             ResponseType = responseType;
         }
 
@@ -66,7 +68,8 @@ namespace sharpbox.Dispatch.Model
             }
         }
 
-        public Guid RequestId { get; set; }
-        
+        public int RequestId { get; set; }
+        public Guid RequestUniqueKey { get; set; }
+        public Request Request { get; set; }
     }
 }

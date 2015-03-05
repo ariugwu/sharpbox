@@ -6,7 +6,6 @@ namespace sharpbox.Dispatch.Model
     public class CommandStreamItem
     {
         public CommandNames Command { get; set; }
-        public Request Request { get; set; }
         public Response Response { get; set; }
     }
 }

@@ -118,7 +118,7 @@ namespace sharpbox.Dispatch
         response.EventName = _commandHub[request.CommandName].EventName; // Set the event name.
 
         // Add The incoming request and out going response to the command stream.
-        CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Request = request, Response = response });
+        CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Response = response });
 
         // Broadcase the response to all listeners.
         Broadcast(response);
@@ -132,19 +132,21 @@ namespace sharpbox.Dispatch
           Entity = ex,
           Type = ex.GetType(),
           EventName = EventNames.OnException,
-          Message = "Dispatch process failed for Request Id:" + request.RequestId,
+          Message = "Dispatch process failed for Request Id:" + request.RequestUniqueKey,
           RequestId = request.RequestId,
+          RequestUniqueKey = request.RequestUniqueKey,
+          Request = request,
           ResponseUniqueKey = Guid.NewGuid(),
           ResponseType = ResponseTypes.Error
         };
 
-        CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Request = request, Response = exResponse });
+        CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Response = exResponse });
 
         Broadcast(exResponse);
 
-        var dumpResponse = Process<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, "Broading command stream as a result of an exception in RequestId:" + request.RequestId, new object[] { CommandStream });
+        var dumpResponse = Process<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, "Broading command stream as a result of an exception in RequestUniqueKey:" + request.RequestUniqueKey, new object[] { CommandStream });
 
-        return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}. CommandStream dump requested. See RequestId: {2}", request.CommandName, exResponse.ResponseUniqueKey, dumpResponse.RequestId), ResponseTypes.Error);
+        return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}. CommandStream dump requested. See RequestUniqueKey: {2}", request.CommandName, exResponse.ResponseUniqueKey, dumpResponse.RequestId), ResponseTypes.Error);
       }
     }
 

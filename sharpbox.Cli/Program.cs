@@ -118,7 +118,7 @@ namespace sharpbox.Cli
       Debug.WriteLine("### Event Stream Dump ###");
       foreach (var e in (Queue<CommandStreamItem>)response.Entity)
       {
-        Debug.WriteLine("Command:{0} | Request Msg: {1} | Response Msg: '{2}' | Response Channel: {3}", e.Command, e.Request.Message, e.Response.Message, e.Response.EventName);
+        Debug.WriteLine("Command:{0} | Request Msg: {1} | Response Msg: '{2}' | Response Channel: {3}", e.Command, e.Response.Request.Message, e.Response.Message, e.Response.EventName);
       }
     }
   }

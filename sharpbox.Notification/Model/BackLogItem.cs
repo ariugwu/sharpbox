@@ -11,9 +11,10 @@ namespace sharpbox.Notification.Model
         public int BackLogItemId { get; set; }
 
         public Guid BackLogItemUniqueId { get; set; }
-        public Guid RequestId { get; set; }
-        public Guid ResponseId { get; set; }
-
+        public int RequestId { get; set; }
+        public Guid RequestUniqueKey { get; set; }
+        public int ResponseId { get; set; }
+        public Guid ResponseUniqueKey { get; set; }
         public string UserId { get; set; }
 
         public bool WasSent { get; set; }

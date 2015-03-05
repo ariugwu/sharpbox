@@ -9,8 +9,10 @@ namespace sharpbox.Dispatch.Model
         {
             
         }
-        public Guid RequestId { get; set; }
-        public int RequestClusteringKey { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
+
+        public int RequestId { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
+        public Guid RequestUniqueKey { get; set; }
+        
         public string Message { get; set; }
         public CommandNames CommandName { get; set; }
         public Delegate Action { get; set; }
@@ -21,7 +23,7 @@ namespace sharpbox.Dispatch.Model
         {
             return new Request()
             {
-                RequestId = Guid.NewGuid(),
+                RequestUniqueKey = Guid.NewGuid(),
                 CommandName = commandName,
                 Message = message,
                 Entity = entity,
