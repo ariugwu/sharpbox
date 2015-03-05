@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace sharpbox.Dispatch.Model
@@ -18,7 +17,6 @@ namespace sharpbox.Dispatch.Model
 
         public Response() { }
 
-        [Key]
         public int ResponseId { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
 
         public Guid ResponseUniqueKey { get; set; }

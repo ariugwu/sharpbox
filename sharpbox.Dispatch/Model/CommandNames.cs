@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using sharpbox.Util.Enum;
 
 namespace sharpbox.Dispatch.Model
@@ -22,17 +21,6 @@ namespace sharpbox.Dispatch.Model
         }
 
         public CommandNames() { }
-
-        public static List<CommandNames> CommandList()
-        {
-            return new List<CommandNames>()
-            {
-                BroadcastCommandStream,
-                BroadcastCommandStreamAfterError,
-                PersistAuditTrail,
-                PersistNotificationBackLog
-            };
-        }
 
     }
 }

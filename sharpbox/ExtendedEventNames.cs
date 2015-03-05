@@ -1,28 +1,9 @@
-﻿using System.Collections.Generic;
-using sharpbox.Dispatch.Model;
+﻿using sharpbox.Dispatch.Model;
 
 namespace sharpbox
 {
-    public class BaseEventNames : EventNames
+    public class ExtendedEventNames : EventNames
     {
-        public static List<EventNames> BaseEventList()
-        {
-            return new List<EventNames>()
-            {
-                OnFileCreate,
-                OnFileDelete,
-                OnFileAccess,
-                OnEmailSend,
-                OnAuditTrailPersisted,
-                OnNotificationNotify,
-                OnNotificationBacklogPersisted,
-                OnNotificationAddSubScriber,
-                OnBroadcastCommandStream,
-                OnBroadcastCommandStreamAfterError,
-                OnException
-            };
-        }
-
         public static readonly EventNames OnBroadcastCommandStream = new EventNames("OnBroadcastCommandStream");
         public static readonly EventNames OnBroadcastCommandStreamAfterError = new EventNames("OnBroadcastCommandStreamAfterError");
 

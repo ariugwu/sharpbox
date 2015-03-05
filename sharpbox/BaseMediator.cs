@@ -49,26 +49,26 @@ namespace sharpbox
     public void RegisterCommands()
     {
       // Dispatch
-      Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStream, BroadCastCommandStream, BaseEventNames.OnBroadcastCommandStream);
-      Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, BroadCastCommandStream, BaseEventNames.OnBroadcastCommandStream);
+      Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStream, BroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
+      Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, BroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
 
       // Email
-      Dispatch.Register<MailMessage>(BaseCommandNames.SendEmail, SendEmail, BaseEventNames.OnEmailSend);
+      Dispatch.Register<MailMessage>(ExtendedCommandNames.SendEmail, SendEmail, ExtendedEventNames.OnEmailSend);
 
       // IO
-      //Dispatch.Register(BaseCommandNames.FileCreate, WriteFile, BaseEventNames.OnFileCreate);
+      //Dispatch.Register(ExtendedCommandNames.FileCreate, WriteFile, ExtendedEventNames.OnFileCreate);
 
       // Notification
-      Dispatch.Register<BackLogItem>(BaseCommandNames.SendNotification, Notification.Notify, BaseEventNames.OnNotificationNotify);
-      Dispatch.Register<Subscriber>(BaseCommandNames.AddNotificationSubscriber, Notification.AddSub, BaseEventNames.OnNotificationAddSubScriber);
+      Dispatch.Register<BackLogItem>(ExtendedCommandNames.SendNotification, Notification.Notify, ExtendedEventNames.OnNotificationNotify);
+      Dispatch.Register<Subscriber>(ExtendedCommandNames.AddNotificationSubscriber, Notification.AddSub, ExtendedEventNames.OnNotificationAddSubScriber);
 
     }
 
     public void MapListeners()
     {
       // Dispatch
-      Dispatch.Listen(BaseEventNames.OnBroadcastCommandStream, OnBroadcastCommandStream);
-      Dispatch.Listen(BaseEventNames.OnBroadcastCommandStreamAfterError, OnBroadcastCommandStreamAfterError);
+      Dispatch.Listen(ExtendedEventNames.OnBroadcastCommandStream, OnBroadcastCommandStream);
+      Dispatch.Listen(ExtendedEventNames.OnBroadcastCommandStreamAfterError, OnBroadcastCommandStreamAfterError);
       Dispatch.Listen(EventNames.OnException, OnException);
     }
 
@@ -78,10 +78,19 @@ namespace sharpbox
       return mail;
     }
 
-    public virtual Response WriteFile(Request request)
+    public virtual T CreateFile<T>(T entity, string filePath,bool append = false) where T : new()
     {
-      throw new NotImplementedException();
+        File.Write(filePath, entity, append);
+
+        return entity;
     }
+
+      public virtual List<Response> PersistAuditTrail(List<Response> responses)
+      {
+          File.Write("Audit.dat", responses, false);
+
+          return responses;
+      } 
 
     public virtual Response ReadFile(Request request)
     {

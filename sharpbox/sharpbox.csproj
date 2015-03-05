@@ -46,8 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseCommandNames.cs" />
-    <Compile Include="BaseEventNames.cs" />
+    <Compile Include="ExtendedCommandNames.cs" />
+    <Compile Include="ExtendedEventNames.cs" />
     <Compile Include="BaseMediator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,27 +1,9 @@
-﻿using System.Collections.Generic;
-using sharpbox.Dispatch.Model;
+﻿using sharpbox.Dispatch.Model;
 
 namespace sharpbox
 {
-    public class BaseCommandNames : CommandNames
+    public class ExtendedCommandNames : CommandNames
     {
-        public static List<CommandNames> BaseCommandList()
-        {
-            var extendedList = CommandList();
-            extendedList.AddRange(new List<CommandNames>()
-            {
-                BroadcastCommandStream,
-                SendNotification,
-                SendEmail,
-                FileCreate,
-                FileAccess,
-                FileDelete,
-                AddNotificationSubscriber
-            });
-
-            return extendedList;
-        }
-
         public static readonly CommandNames SendNotification = new CommandNames("SendNotification");
         public static readonly CommandNames AddNotificationSubscriber = new CommandNames("AddNotificationSubscriber");
 

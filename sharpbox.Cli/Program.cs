@@ -19,11 +19,22 @@ namespace sharpbox.Cli
       // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event. We use basic since we're using xml and want to prevent event reflection. Audit saves file -> file generates audit message -> Audit saves file.
       // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
       var smtpClient = new SmtpClient("smtp.google.com", 587);
+
       AuditContext auditDb = new AuditContext();
 
-      // In a hacky way we're going to extend the event list. Normally I think you'd want to do this by making a class that extends.
-      var possibleEvents = BaseEventNames.BaseEventList();
-      possibleEvents.Add(ExampleMediator.OnUserChange);
+      // We need to create a list of events we want the auditor and notification to listen for.
+      var possibleEvents = new List<EventNames>()
+            {
+                ExtendedEventNames.OnFileCreate,
+                ExtendedEventNames.OnFileDelete,
+                ExtendedEventNames.OnFileAccess,
+                ExtendedEventNames.OnEmailSend,
+                ExtendedEventNames.OnNotificationNotify,
+                ExtendedEventNames.OnNotificationBacklogPersisted,
+                ExtendedEventNames.OnNotificationAddSubScriber,
+                EventNames.OnException,
+                ExampleMediator.OnUserChange
+            };
 
       var example = new ExampleMediator("ugwua", possibleEvents, smtpClient);
 
@@ -33,7 +44,7 @@ namespace sharpbox.Cli
       Response response = null;
 
       // Give the notification a subscriber. Now whenever this then is broadcast a backlog message will be created for me.
-      response = example.Dispatch.Process<Subscriber>(BaseCommandNames.AddNotificationSubscriber, "Adding a subcriber to OnException", new object[] { new Subscriber(ExampleMediator.OnUserChange, "ugwua") });
+      response = example.Dispatch.Process<Subscriber>(ExtendedCommandNames.AddNotificationSubscriber, "Adding a subcriber to OnException", new object[] { new Subscriber(ExampleMediator.OnUserChange, "ugwua") });
 
       // Next we're going to try the user change command we registered earlier.
       Debug.WriteLine("Current UserId: " + example.UserId);
@@ -47,7 +58,7 @@ namespace sharpbox.Cli
       response = example.Dispatch.Process<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStream, "Request to broadcast command stream", new object[] { example.Dispatch.CommandStream});
 
       // Notification
-      response = example.Dispatch.Process<List<BackLogItem>>(BaseCommandNames.SendNotification, "Sending out backlogitem", new object[] { example.Notification.BackLog.First() });
+      response = example.Dispatch.Process<List<BackLogItem>>(ExtendedCommandNames.SendNotification, "Sending out backlogitem", new object[] { example.Notification.BackLog.First() });
 
       // Notification
       Debug.WriteLine("###Notification Info####");
@@ -70,19 +81,20 @@ namespace sharpbox.Cli
     {
       // Setup what a command should do and who it should broadcast to when it's done
       example.Dispatch.Register<String>(ExampleMediator.UserChange, example.ChangeUser, ExampleMediator.OnUserChange);
-      example.Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStream, example.HandleBroadCastCommandStream, BaseEventNames.OnBroadcastCommandStream);
-      example.Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, example.HandleBroadCastCommandStream, BaseEventNames.OnBroadcastCommandStreamAfterError);
-      example.Dispatch.Register<BackLogItem>(BaseCommandNames.SendNotification, example.Notification.Notify, BaseEventNames.OnNotificationNotify);
-      example.Dispatch.Register<Subscriber>(BaseCommandNames.AddNotificationSubscriber, example.Notification.AddSub, BaseEventNames.OnNotificationAddSubScriber);
-
-      example.Dispatch.Register<MailMessage>(BaseCommandNames.SendEmail, example.SendEmail, BaseEventNames.OnEmailSend);
+      example.Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStream, example.HandleBroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
+      example.Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, example.HandleBroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStreamAfterError);
+      example.Dispatch.Register<BackLogItem>(ExtendedCommandNames.SendNotification, example.Notification.Notify, ExtendedEventNames.OnNotificationNotify);
+      example.Dispatch.Register<Subscriber>(ExtendedCommandNames.AddNotificationSubscriber, example.Notification.AddSub, ExtendedEventNames.OnNotificationAddSubScriber);
+      example.Dispatch.Register<List<Response>>(CommandNames.PersistAuditTrail, example.PersistAuditTrail, ExtendedEventNames.OnAuditTrailPersisted);
+      example.Dispatch.Register<MailMessage>(ExtendedCommandNames.SendEmail, example.SendEmail, ExtendedEventNames.OnEmailSend);
 
       // Add some listeners to those broadcasts. NOTE: This is a queue so things will be fired in FIFO order.
-      example.Dispatch.Listen(BaseEventNames.OnBroadcastCommandStream, OutPutCommandStream);
+      example.Dispatch.Listen(ExtendedEventNames.OnBroadcastCommandStream, OutPutCommandStream);
 
       // Listen to an 'under the covers' system event
       example.Dispatch.Listen(EventNames.OnException, ExampleListener);
 
+      example.Dispatch.Listen(ExtendedEventNames.OnNotificationAddSubScriber, ExampleMediator.SaveResponseToAuditDatabase);
       // All of our internal stuff uses the broadcast system so we'll listen on exception and rethrow.
       // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
       example.Dispatch.Listen(EventNames.OnException, FireOnException);
