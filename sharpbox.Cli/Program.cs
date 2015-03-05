@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
-using sharpbox.Cli.Model.Domain.Localization;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Sharpbox;
 using sharpbox.EfCodeFirst.Audit;
 using sharpbox.EfCodeFirst.Localization;
 using sharpbox.EfCodeFirst.Notification;
-using sharpbox.Localization.Model;
 using sharpbox.Notification.Model;
 
 namespace sharpbox.Cli
@@ -29,21 +26,7 @@ namespace sharpbox.Cli
       NotificationContext notificationDb = new NotificationContext();
 
 
-      // We need to create a list of events we want the auditor and notification to listen for.
-      var possibleEvents = new List<EventNames>()
-            {
-                ExtendedEventNames.OnFileCreate,
-                ExtendedEventNames.OnFileDelete,
-                ExtendedEventNames.OnFileAccess,
-                ExtendedEventNames.OnEmailSend,
-                ExtendedEventNames.OnNotificationNotify,
-                ExtendedEventNames.OnNotificationBacklogPersisted,
-                ExtendedEventNames.OnNotificationAddSubScriber,
-                EventNames.OnException,
-                ExampleMediator.OnUserChange
-            };
-
-      var example = new ExampleMediator("ugwua", possibleEvents, smtpClient);
+      var example = new ExampleMediator("ugwua", smtpClient);
 
       example = WireUpEvents(example); // Wire the commands, and listeners.
 
@@ -62,7 +45,7 @@ namespace sharpbox.Cli
       example.File.Write("Test.xml", example.Notification.BackLog);
 
       // Request a broadcast of the command stream to test usefulness.
-      response = example.Dispatch.Process<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStream, "Request to broadcast command stream", new object[] { example.Dispatch.CommandStream});
+      response = example.Dispatch.Process<Queue<CommandStreamItem>>(ExtendedCommandNames.BroadcastCommandStream, "Request to broadcast command stream", new object[] { example.Dispatch.CommandStream});
 
       // Notification
       response = example.Dispatch.Process<List<BackLogItem>>(ExtendedCommandNames.SendNotification, "Sending out backlogitem", new object[] { example.Notification.BackLog.First() });
@@ -88,11 +71,11 @@ namespace sharpbox.Cli
     {
       // Setup what a command should do and who it should broadcast to when it's done
       example.Dispatch.Register<String>(ExampleMediator.UserChange, example.ChangeUser, ExampleMediator.OnUserChange);
-      example.Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStream, example.HandleBroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
-      example.Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, example.HandleBroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStreamAfterError);
+      example.Dispatch.Register<Queue<CommandStreamItem>>(ExtendedCommandNames.BroadcastCommandStream, example.HandleBroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
+      example.Dispatch.Register<Queue<CommandStreamItem>>(ExtendedCommandNames.BroadcastCommandStreamAfterError, example.HandleBroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStreamAfterError);
       example.Dispatch.Register<BackLogItem>(ExtendedCommandNames.SendNotification, example.Notification.Notify, ExtendedEventNames.OnNotificationNotify);
       example.Dispatch.Register<Subscriber>(ExtendedCommandNames.AddNotificationSubscriber, example.Notification.AddSub, ExtendedEventNames.OnNotificationAddSubScriber);
-      example.Dispatch.Register<List<Response>>(CommandNames.PersistAuditTrail, example.PersistAuditTrail, ExtendedEventNames.OnAuditTrailPersisted);
+      example.Dispatch.Register<List<Response>>(ExtendedCommandNames.AddAuditResponse, example.PersistAuditTrail, ExtendedEventNames.OnAuditResponseSaved);
       example.Dispatch.Register<MailMessage>(ExtendedCommandNames.SendEmail, example.SendEmail, ExtendedEventNames.OnEmailSend);
 
       // Add some listeners to those broadcasts. NOTE: This is a queue so things will be fired in FIFO order.
@@ -101,26 +84,29 @@ namespace sharpbox.Cli
       // Listen to an 'under the covers' system event
       example.Dispatch.Listen(EventNames.OnException, ExampleListener);
 
-      example.Dispatch.Listen(ExtendedEventNames.OnNotificationAddSubScriber, ExampleMediator.SaveResponseToAuditDatabase);
       // All of our internal stuff uses the broadcast system so we'll listen on exception and rethrow.
       // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
       example.Dispatch.Listen(EventNames.OnException, FireOnException);
 
+      // Look at the concept of 'Echo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
+      example.Dispatch.Echo(example.Notification.ProcessEvent);
+      example.Dispatch.Echo(example.Audit.Record);
+
       return example;
     }
 
-    public static void ExampleListener(Dispatch.Client dispatcher, Response response)
+    public static void ExampleListener(Response response)
     {
       Debug.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
     }
 
-    public static void FireOnException(Dispatch.Client dispatcher, Response response)
+    public static void FireOnException(Response response)
     {
       var exception = response.Entity as Exception;
       if (exception != null) Debug.WriteLine("The dispatch is designed to catch all exceptions. You can listen for them and do what you need with the exception itself. Ex Message:" + exception.Message);
     }
 
-    public static void OutPutCommandStream(Dispatch.Client dispatcher,Response response)
+    public static void OutPutCommandStream(Response response)
     {
       Debug.WriteLine("### Event Stream Dump ###");
       foreach (var e in (Queue<CommandStreamItem>)response.Entity)

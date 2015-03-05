@@ -1,13 +1,14 @@
-﻿using sharpbox.Dispatch.Model;
-
-namespace sharpbox
+﻿namespace sharpbox.Dispatch.Model
 {
     public class ExtendedEventNames : EventNames
     {
+        public static readonly EventNames OnAllEvents = new EventNames("OnAllEvents");
+
         public static readonly EventNames OnBroadcastCommandStream = new EventNames("OnBroadcastCommandStream");
         public static readonly EventNames OnBroadcastCommandStreamAfterError = new EventNames("OnBroadcastCommandStreamAfterError");
 
-        public static readonly EventNames OnAuditTrailPersisted = new EventNames("OnAuditTrailPersisted");
+        public static readonly EventNames OnAuditResponseAdded = new EventNames("OnAuditResponseAdded");
+        public static readonly EventNames OnAuditResponseSaved = new EventNames("OnAuditResponseSaved");
 
         public static readonly EventNames OnEmailSend = new EventNames("OnEmailSend");
 
@@ -15,13 +16,9 @@ namespace sharpbox
         public static readonly EventNames OnFileDelete = new EventNames("OnFileDelete");
         public static readonly EventNames OnFileAccess = new EventNames("OnFileAccess");
 
-        public static readonly EventNames OnDataCreate = new EventNames("OnDataCreate");
-        public static readonly EventNames OnDataUpdate = new EventNames("OnDataUpdate");
-        public static readonly EventNames OnDataDelete = new EventNames("OnDataDelete");
-        public static readonly EventNames OnDataGetById = new EventNames("OnDataGetById");
-        public static readonly EventNames OnDataGetAll = new EventNames("OnDataGetAll");
+        public static readonly EventNames OnNotificationBacklogItemAdded = new EventNames("OnNotificationBacklogItemAdded");
+        public static readonly EventNames OnNotificationBacklogSaved = new EventNames("OnNotificationBacklogSaved");
 
-        public static readonly EventNames OnNotificationBacklogPersisted = new EventNames("OnNotificationBacklogPersisted");
         public static readonly EventNames OnNotificationNotify = new EventNames("OnNotificationNotify");
         public static readonly EventNames OnNotificationAddSubScriber = new EventNames("OnNotificationAddSubScriber");
         

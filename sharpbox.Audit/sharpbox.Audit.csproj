@@ -40,25 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="Model\AuditLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
       <Name>sharpbox.Dispatch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Io.Strategy.Xml\sharpbox.Io.Strategy.Xml.csproj">
-      <Project>{5a8ec892-fb5a-49b5-917e-a9da51fabe4f}</Project>
-      <Name>sharpbox.Io.Strategy.Xml</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Io\sharpbox.Io.csproj">
-      <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
-      <Name>sharpbox.Io</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
-      <Project>{15B019A3-9142-4220-B6DE-A75515B5E288}</Project>
-      <Name>sharpbox.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

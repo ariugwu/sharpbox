@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading.Tasks;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Dispatch
@@ -17,12 +16,14 @@ namespace sharpbox.Dispatch
     public Client()
     {
       _commandHub = new Dictionary<CommandNames, CommandHubItem>();
-      _eventSubscribers = new Dictionary<EventNames, Queue<Action<Dispatch.Client, Response>>>();
+      _eventSubscribers = new Dictionary<EventNames, Queue<Action<Response>>>();
+      _echoSubscribers = new Queue<Action<Response>>();
       CommandStream = new Queue<CommandStreamItem>();
     }
 
-    private Dictionary<EventNames, Queue<Action<Dispatch.Client, Response>>> _eventSubscribers;
+    private Dictionary<EventNames, Queue<Action<Response>>> _eventSubscribers;
 
+    private Queue<Action<Response>> _echoSubscribers;
     private Dictionary<CommandNames, CommandHubItem> _commandHub;
 
     public Queue<CommandStreamItem> CommandStream { get; private set; }
@@ -32,12 +33,21 @@ namespace sharpbox.Dispatch
     /// </summary>
     /// <param name="publisherName"></param>
     /// <param name="method"></param>
-    public void Listen(EventNames publisherName, Action<Dispatch.Client,Response> method)
+    public void Listen(EventNames publisherName, Action<Response> method)
     {
       EnsureEventSubscriberKey(publisherName);
 
       _eventSubscribers[publisherName].Enqueue(method);
     }
+
+      /// <summary>
+      /// Any method here will get called for every event.
+      /// </summary>
+      /// <param name="method"></param>
+      public void Echo(Action<Response> method)
+      {
+          _echoSubscribers.Enqueue(method);
+      }
 
     /// <summary>
     /// While the CommandEvent map is used for creating the 1-to-1 relationship between thier commands name and event. i.e. - UpdateReciepe and OnReceipeUpdate you still need to register what callback you want to run on UpdateReceipe. Same with the event.
@@ -64,13 +74,37 @@ namespace sharpbox.Dispatch
     /// <param name="response"></param>
     public void Broadcast(Response response)
     {
-      EnsureEventSubscriberKey(response.EventName);
 
+      // Go through each method that wants to 'trace' all events in the system
+        foreach (var t in _echoSubscribers)
+        {
+            try
+            {
+                t.Invoke(response);
+            }
+            catch (TargetInvocationException ex)
+            {
+                var exResponse = new Response
+                {
+                    Entity = ex,
+                    Type = ex.GetType(),
+                    EventName = EventNames.OnException,
+                    Message = "Dispatch process failed to trace using the registered method( "+ t.Method.Name + ") Request Id:" + response.RequestId + " for channel: " + response.EventName,
+                    RequestId = response.RequestId,
+                    ResponseUniqueKey = Guid.NewGuid(),
+                    ResponseType = ResponseTypes.Error
+                };
+
+                Broadcast(exResponse);
+            }
+        }
+      EnsureEventSubscriberKey(response.EventName);
+      // Go through each subscriber to this event.
       foreach (var p in _eventSubscribers[response.EventName])
       {
         try
         {
-          p.Invoke(this,response);
+          p.Invoke(response);
         }
         catch (TargetInvocationException ex)
         {
@@ -144,7 +178,7 @@ namespace sharpbox.Dispatch
 
         Broadcast(exResponse);
 
-        var dumpResponse = Process<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, "Broading command stream as a result of an exception in RequestUniqueKey:" + request.RequestUniqueKey, new object[] { CommandStream });
+        var dumpResponse = Process<Queue<CommandStreamItem>>(ExtendedCommandNames.BroadcastCommandStreamAfterError, "Broading command stream as a result of an exception in RequestUniqueKey:" + request.RequestUniqueKey, new object[] { CommandStream });
 
         return new Response(request, String.Format("Command Failed: {0}. See Exception with Response Id: {1}. CommandStream dump requested. See RequestUniqueKey: {2}", request.CommandName, exResponse.ResponseUniqueKey, dumpResponse.RequestId), ResponseTypes.Error);
       }
@@ -152,20 +186,8 @@ namespace sharpbox.Dispatch
 
     private void EnsureEventSubscriberKey(EventNames eventName)
     {
-        if (!_eventSubscribers.ContainsKey(eventName)) _eventSubscribers.Add(eventName, new Queue<Action<Dispatch.Client, Response>>());
+        if (!_eventSubscribers.ContainsKey(eventName)) _eventSubscribers.Add(eventName, new Queue<Action<Response>>());
     }
 
-    #region Helper Methods
-
-    private Task<T> WrapTask<T>(Delegate action, object[] args)
-    {
-      Task<T> result = null;
-
-      result = ((Task<T>)action.DynamicInvoke(args));
-
-      return result;
-    }
-
-    #endregion
   }
 }

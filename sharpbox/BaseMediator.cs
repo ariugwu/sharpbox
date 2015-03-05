@@ -10,20 +10,17 @@ namespace sharpbox
 {
   public abstract class BaseMediator
   {
-    protected BaseMediator(List<EventNames> eventNames, SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy)
+    protected BaseMediator(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy)
     {
       Dispatch = new Client();
       Email = new Email.Client(smtpClient);
       File = new Io.Client(ioStrategy);
 
-      // The following modules require persistence
-      var dispatcher = Dispatch;
-
       // Setup auditing
-      Audit = new Audit.Client(ref dispatcher, eventNames); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
+      Audit = new Audit.Client(); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
 
       // Setup Notification
-      Notification = new Notification.Client(ref dispatcher, Email, eventNames);
+      Notification = new Notification.Client(Email);
 
       RegisterCommands();
       MapListeners();
@@ -49,8 +46,8 @@ namespace sharpbox
     public void RegisterCommands()
     {
       // Dispatch
-      Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStream, BroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
-      Dispatch.Register<Queue<CommandStreamItem>>(CommandNames.BroadcastCommandStreamAfterError, BroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
+      Dispatch.Register<Queue<CommandStreamItem>>(ExtendedCommandNames.BroadcastCommandStream, BroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
+      Dispatch.Register<Queue<CommandStreamItem>>(ExtendedCommandNames.BroadcastCommandStreamAfterError, BroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
 
       // Email
       Dispatch.Register<MailMessage>(ExtendedCommandNames.SendEmail, SendEmail, ExtendedEventNames.OnEmailSend);
@@ -70,6 +67,10 @@ namespace sharpbox
       Dispatch.Listen(ExtendedEventNames.OnBroadcastCommandStream, OnBroadcastCommandStream);
       Dispatch.Listen(ExtendedEventNames.OnBroadcastCommandStreamAfterError, OnBroadcastCommandStreamAfterError);
       Dispatch.Listen(EventNames.OnException, OnException);
+
+      // Look at the concept of 'Echo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
+      Dispatch.Echo(Notification.ProcessEvent);
+      Dispatch.Echo(Audit.Record);
     }
 
     public virtual MailMessage SendEmail(MailMessage mail)
@@ -138,17 +139,17 @@ namespace sharpbox
       throw new NotImplementedException();
     }
 
-    public virtual void OnBroadcastCommandStream(Dispatch.Client dispatcher, Response response)
+    public virtual void OnBroadcastCommandStream(Response response)
     {
       throw new NotImplementedException();
     }
 
-    public virtual void OnBroadcastCommandStreamAfterError(Dispatch.Client dispatcher, Response response)
+    public virtual void OnBroadcastCommandStreamAfterError(Response response)
     {
       throw new NotImplementedException();
     }
 
-    public virtual void OnException(Dispatch.Client dispatcher, Response response)
+    public virtual void OnException(Response response)
     {
       throw new NotImplementedException();
     }

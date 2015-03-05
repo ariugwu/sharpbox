@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net.Mail;
@@ -15,9 +16,8 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
         /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
         /// </summary>
         /// <param name="userIdentity">Example of something you might want encapulated and updated.</param>
-        /// <param name="eventNames">Used to bootstrap Dispatch. this way things like Audit wire into whatever events are in a derived system as well as the default list. If not provided then at empty list is used.</param>
         /// <param name="smtpClient">Powers the email client.</param>
-        public ExampleMediator(string userIdentity, List<EventNames> eventNames, SmtpClient smtpClient)
+        public ExampleMediator(string userIdentity, SmtpClient smtpClient)
             : base()
         {
             UserId = userIdentity;
@@ -28,10 +28,10 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
             // The following modules require persistence
             var dispatcher = Dispatch;
 
-            Audit = new Audit.Client(ref dispatcher, eventNames); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
+            Audit = new Audit.Client(); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
 
             Audit.Trail = auditDb.Responses.ToList();
-            Notification = new Notification.Client(ref dispatcher, Email, eventNames);
+            Notification = new Notification.Client(Email);
         }
 
         public string UserId { get; set; }
@@ -57,7 +57,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
           return stream;
         }
 
-        public static void SaveResponseToAuditDatabase(Dispatch.Client dispatcher, Response response)
+        public void SaveResponseToAuditDatabase(Response response)
         {
             using (var db = new AuditContext())
             {
@@ -65,6 +65,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
                 db.SaveChanges();
             }
 
+            Dispatch.Broadcast(new Response(){ Message = "Audit record saved to databse. See request object for trigger", RequestUniqueKey = response.RequestUniqueKey, Entity = null, EventName = ExtendedEventNames.OnAuditResponseSaved, ResponseUniqueKey = Guid.NewGuid(), ResponseType = ResponseTypes.Success});
         }
 
     }
