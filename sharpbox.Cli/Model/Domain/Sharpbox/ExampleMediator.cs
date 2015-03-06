@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Migrations;
-using System.Linq;
+﻿using System.Data.Entity.Migrations;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 using sharpbox.EfCodeFirst.Audit;
+using sharpbox.EfCodeFirst.Notification;
 
 namespace sharpbox.Cli.Model.Domain.Sharpbox
 {
@@ -25,12 +23,8 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
             Email = new Email.Client(smtpClient);
             File = new Io.Client(new Io.Strategy.Binary.BinaryStrategy());
 
-            // The following modules require persistence
-            var dispatcher = Dispatch;
-
             Audit = new Audit.Client(); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
 
-            Audit.Trail = auditDb.Responses.ToList();
             Notification = new Notification.Client(Email);
         }
 
@@ -38,6 +32,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
         #region Domain Specific Event(s)
         public static readonly EventNames OnUserChange = new EventNames("OnUserChange");
+        public static readonly EventNames Write = new EventNames("OnUserChange");
         #endregion
 
         #region Domain Specific Commands(s)
@@ -52,20 +47,45 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
           return UserId;
         }
 
-        public Queue<CommandStreamItem> HandleBroadCastCommandStream(Queue<CommandStreamItem> stream)
+        public string ChangeUserStep2(string userId)
         {
-          return stream;
+
+            UserId = userId + "-We changed this through the routine's Second Step";
+
+            return UserId;
         }
 
-        public void SaveResponseToAuditDatabase(Response response)
+        public string ChangeUserStep3(string userId)
+        {
+
+            UserId = userId + "-We changed this through the routine's Third Step.";
+
+            return UserId;
+        }
+
+        public void Final(Response response)
+        {
+            Final();
+        }
+
+        public void Final()
         {
             using (var db = new AuditContext())
             {
-                db.Responses.AddOrUpdate(response);
-                db.SaveChanges();
+                foreach (var a in Audit.Trail)
+                {
+                    db.Responses.AddOrUpdate(a);
+                    db.SaveChanges();
+                }
             }
 
-            Dispatch.Broadcast(new Response(){ Message = "Audit record saved to databse. See request object for trigger", RequestUniqueKey = response.RequestUniqueKey, Entity = null, EventName = ExtendedEventNames.OnAuditResponseSaved, ResponseUniqueKey = Guid.NewGuid(), ResponseType = ResponseTypes.Success});
+            using (var db = new NotificationContext())
+            {
+                foreach (var b in Notification.BackLog)
+                {
+                    db.BackLogItems.AddOrUpdate(b);
+                }
+            }
         }
 
     }

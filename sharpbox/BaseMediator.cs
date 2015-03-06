@@ -46,8 +46,6 @@ namespace sharpbox
     public void RegisterCommands()
     {
       // Dispatch
-      Dispatch.Register<Queue<CommandStreamItem>>(ExtendedCommandNames.BroadcastCommandStream, BroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
-      Dispatch.Register<Queue<CommandStreamItem>>(ExtendedCommandNames.BroadcastCommandStreamAfterError, BroadCastCommandStream, ExtendedEventNames.OnBroadcastCommandStream);
 
       // Email
       Dispatch.Register<MailMessage>(ExtendedCommandNames.SendEmail, SendEmail, ExtendedEventNames.OnEmailSend);
@@ -64,11 +62,9 @@ namespace sharpbox
     public void MapListeners()
     {
       // Dispatch
-      Dispatch.Listen(ExtendedEventNames.OnBroadcastCommandStream, OnBroadcastCommandStream);
-      Dispatch.Listen(ExtendedEventNames.OnBroadcastCommandStreamAfterError, OnBroadcastCommandStreamAfterError);
       Dispatch.Listen(EventNames.OnException, OnException);
 
-      // Look at the concept of 'Echo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
+      // Look at the concept of 'EchoAllEventsTo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
       Dispatch.Echo(Notification.ProcessEvent);
       Dispatch.Echo(Audit.Record);
     }
@@ -79,84 +75,11 @@ namespace sharpbox
       return mail;
     }
 
-    public virtual T CreateFile<T>(T entity, string filePath,bool append = false) where T : new()
-    {
-        File.Write(filePath, entity, append);
-
-        return entity;
-    }
-
-      public virtual List<Response> PersistAuditTrail(List<Response> responses)
-      {
-          File.Write("Audit.dat", responses, false);
-
-          return responses;
-      } 
-
-    public virtual Response ReadFile(Request request)
-    {
-      throw new NotImplementedException();
-    }
-
-    public virtual Response DeleteFile(Request request)
-    {
-      throw new NotImplementedException();
-    }
-
-    public Queue<CommandStreamItem> BroadCastCommandStream(object gottaPassSomething)
-    {
-      // Example of being able to bend the rules a little bit and simply use the system to kick off a response, as apposed to deliverying something to be processed.
-      return Dispatch.CommandStream;
-    }
-
-    public virtual void OnFileCreate(Response response)
-    {
-      throw new NotImplementedException();
-    }
-
-    public virtual void OnFileRead(Response response)
-    {
-      throw new NotImplementedException();
-    }
-
-    public virtual void OnFileDelete(Response response)
-    {
-      throw new NotImplementedException();
-    }
-
-    public virtual void OnNotificationSent(Response response)
-    {
-      throw new NotImplementedException();
-    }
-
-    public virtual void OnNotificationSubscriberAdded(Response response)
-    {
-      throw new NotImplementedException();
-    }
-
-    public virtual void OnEmailSent(Response response)
-    {
-      throw new NotImplementedException();
-    }
-
-    public virtual void OnBroadcastCommandStream(Response response)
-    {
-      throw new NotImplementedException();
-    }
-
-    public virtual void OnBroadcastCommandStreamAfterError(Response response)
-    {
-      throw new NotImplementedException();
-    }
 
     public virtual void OnException(Response response)
     {
       throw new NotImplementedException();
     }
 
-    public virtual void OnAuditRecord(Response response)
-    {
-      throw new NotImplementedException();
-    }
   }
 }

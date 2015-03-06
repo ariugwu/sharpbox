@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using sharpbox.Io.Model;
 using sharpbox.Io.Strategy;
 
 namespace sharpbox.Io
@@ -13,7 +14,12 @@ namespace sharpbox.Io
         }
 
         private IStrategy _strategy;
- 
+
+        public void Write(FileDetail fileDetail)
+        {
+            File.WriteAllBytes(fileDetail.FilePath, fileDetail.Data);
+        }
+
         public void Write<T>(string filePath, T objectToWrite, bool append = false)
             where T : new()
         {

@@ -50,10 +50,13 @@
     <Compile Include="Model\CommandStreamItem.cs" />
     <Compile Include="Model\ExtendedCommandNames.cs" />
     <Compile Include="Model\ExtendedEventNames.cs" />
+    <Compile Include="Model\ExtendedRoutineNames.cs" />
     <Compile Include="Model\Response.cs" />
     <Compile Include="Model\EventNames.cs" />
     <Compile Include="Model\Request.cs" />
     <Compile Include="Model\ResponseTypes.cs" />
+    <Compile Include="Model\RoutineItem.cs" />
+    <Compile Include="Model\RoutineNames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
