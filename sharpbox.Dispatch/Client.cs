@@ -324,7 +324,7 @@ namespace sharpbox.Dispatch
                 Entity = ex,
                 Type = ex.GetType(),
                 EventName = EventNames.OnException,
-                Message = "Dispatch process failed for Request Id:" + request.RequestUniqueKey,
+                Message = ex.Message + " [Request Id:" + request.RequestUniqueKey + "]",
                 RequestId = request.RequestId,
                 RequestUniqueKey = request.RequestUniqueKey,
                 Request = request,

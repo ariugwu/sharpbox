@@ -1,15 +1,17 @@
-﻿using System.Data.Entity.Migrations;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Migrations;
+using System.Diagnostics;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 using sharpbox.EfCodeFirst.Audit;
 using sharpbox.EfCodeFirst.Notification;
+using sharpbox.Notification.Model;
 
 namespace sharpbox.Cli.Model.Domain.Sharpbox
 {
     public class ExampleMediator : BaseMediator
     {
-        private AuditContext auditDb = new AuditContext();
-
         /// <summary>
         /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
         /// </summary>
@@ -26,6 +28,8 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
             Audit = new Audit.Client(); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
 
             Notification = new Notification.Client(Email);
+
+            WireUpEvents();
         }
 
         public string UserId { get; set; }
@@ -87,6 +91,50 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
                 }
             }
         }
+        public void WireUpEvents()
+        {
+            // Setup what a command should do and who it should broadcast to when it's done
+            Dispatch.Register<String>(ExampleMediator.UserChange, ChangeUser, ExampleMediator.OnUserChange);
+            Dispatch.Register<BackLogItem>(ExtendedCommandNames.SendNotification, Notification.Notify, ExtendedEventNames.OnNotificationNotify);
+            Dispatch.Register<Subscriber>(ExtendedCommandNames.AddNotificationSubscriber, Notification.AddSub, ExtendedEventNames.OnNotificationAddSubScriber);
+            Dispatch.Register<MailMessage>(ExtendedCommandNames.SendEmail, SendEmail, ExtendedEventNames.OnEmailSend);
 
+            // Listen to an 'under the covers' system event
+            Dispatch.Listen(EventNames.OnException, ExampleListener);
+
+            // All of our internal stuff uses the broadcast system so we'll listen on exception and rethrow.
+            // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
+            Dispatch.Listen(EventNames.OnException, FireOnException);
+
+            // Let's try a routine
+            // Our first routine item will feed a string argument to the UserChange method, broadcast the event through the OnUserChange channel
+            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUser, null, null);
+            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUserStep2, null, null);
+            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUserStep3, null, null);
+
+            // Look at the concept of 'Echo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
+            Dispatch.Echo(Notification.ProcessEvent);
+            Dispatch.Echo(Audit.Record);
+        }
+
+        public static void ExampleListener(Response response)
+        {
+            Debug.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
+        }
+
+        public static void FireOnException(Response response)
+        {
+            var exception = response.Entity as Exception;
+            if (exception != null) Debug.WriteLine("The dispatch is designed to catch all exceptions. You can listen for them and do what you need with the exception itself. Ex Message:" + exception.Message);
+        }
+
+        public static void OutPutCommandStream(Response response)
+        {
+            Debug.WriteLine("### Event Stream Dump ###");
+            foreach (var e in (Queue<CommandStreamItem>)response.Entity)
+            {
+                Debug.WriteLine("Command:{0} | Request Msg: {1} | Response Msg: '{2}' | Response Channel: {3}", e.Command, e.Response.Request.Message, e.Response.Message, e.Response.EventName);
+            }
+        }
     }
 }

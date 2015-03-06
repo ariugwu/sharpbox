@@ -53,7 +53,7 @@ namespace sharpbox.Notification
           Message = response.Message
         };
 
-        _backLog.Add(bli);
+        BackLog.Add(bli);
       }
 
     }
@@ -66,18 +66,18 @@ namespace sharpbox.Notification
       bli.SentDate = DateTime.Now;
 
       // If this doesn't exist then add it. If it does then update it.
-      if (!_backLog.Exists(x => x.BackLogItemUniqueId.Equals(bli.BackLogItemUniqueId)))
+      if (!BackLog.Exists(x => x.BackLogItemUniqueId.Equals(bli.BackLogItemUniqueId)))
       {
-        _backLog.Add(bli);
+        BackLog.Add(bli);
       }
       else
       {
         // update the item in our backlog
-        for (var i = 0; i < _backLog.Count; i++)
+        for (var i = 0; i < BackLog.Count; i++)
         {
-          if (_backLog[i].BackLogItemUniqueId != bli.BackLogItemUniqueId) continue;
+          if (BackLog[i].BackLogItemUniqueId != bli.BackLogItemUniqueId) continue;
 
-          _backLog[i] = bli;
+          BackLog[i] = bli;
           break;
         }
       }
