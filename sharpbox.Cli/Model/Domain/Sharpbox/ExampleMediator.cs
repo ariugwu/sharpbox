@@ -73,21 +73,23 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
         public static void ExampleListener(Response response)
         {
-            Debug.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
+            Console.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
         }
 
         public static void FireOnException(Response response)
         {
             var exception = response.Entity as Exception;
-            if (exception != null) Debug.WriteLine("The dispatch is designed to catch all exceptions. You can listen for them and do what you need with the exception itself. Ex Message:" + exception.Message);
+            if (exception != null) Console.WriteLine("The dispatch is designed to catch all exceptions. You can listen for them and do what you need with the exception itself. Ex Message:" + exception.Message);
         }
 
-        public static void OutPutCommandStream(Response response)
+        public void OutPutCommandStream()
         {
-            Debug.WriteLine("### Event Stream Dump ###");
-            foreach (var e in (Queue<CommandStreamItem>)response.Entity)
+            Console.WriteLine("### Event Stream Dump ###");
+            foreach (var e in Dispatch.CommandStream)
             {
-                Debug.WriteLine("Command:{0} | Request Msg: {1} | Response Msg: '{2}' | Response Channel: {3}", e.Command, e.Response.Request.Message, e.Response.Message, e.Response.EventName);
+                Console.WriteLine("Command: " + e.Command + "");
+                Console.WriteLine("     Request : " + e.Response.Request.Message);
+                Console.WriteLine("     Response: " + e.Response.Message);
             }
         }
 

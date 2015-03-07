@@ -21,10 +21,10 @@ namespace sharpbox.Dispatch.Model
         public static Request Create<T>(CommandNames commandName, string message, T entity)
         {
             return new Request()
-            {
+            {  
                 RequestUniqueKey = Guid.NewGuid(),
                 CommandName = commandName,
-                Message = message,
+                Message = String.Format("[Invoke Command: {0}] [Message: {1}]",commandName, message),
                 Entity = entity,
                 Type = entity != null? entity.GetType() : null
             };

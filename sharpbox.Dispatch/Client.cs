@@ -22,6 +22,8 @@ namespace sharpbox.Dispatch
             CommandStream = new Queue<CommandStreamItem>();
         }
 
+        private const string ResponseMessage = "[Broadcast Event: {0}] [For Command: {1}] [Method: {2}] [Entity: {3}] [Request Id: {4}] [Response Id: {5}] [Message: {6}]";
+
         private Dictionary<EventNames, Queue<Action<Response>>> _eventSubscribers;
 
         private Queue<Action<Response>> _echoSubscribers;
@@ -70,7 +72,8 @@ namespace sharpbox.Dispatch
             }
             catch (Exception ex)
             {
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = "Dispatch failed to register the action", ResponseUniqueKey = Guid.NewGuid() });
+                var msg = String.Format(ResponseMessage, eventName, commandName, action.Method.Name, null, "N/A","N/A", "Registration failed with msg: " + ex.Message);
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
             }
         }
 
@@ -93,7 +96,8 @@ namespace sharpbox.Dispatch
             }
             catch (Exception ex)
             {
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = "Dispatch failed to register the routine", ResponseUniqueKey = Guid.NewGuid() });
+                var msg = String.Format(ResponseMessage, eventName, commandName, action.Method.Name, null, "N/A", "N/A", "Registration failed with msg: " + ex.Message);
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
             }
         }
 
@@ -114,20 +118,10 @@ namespace sharpbox.Dispatch
                 }
                 catch (TargetInvocationException ex)
                 {
-                    var exResponse = new Response
-                    {
-                        Entity = ex,
-                        Type = ex.GetType(),
-                        EventName = EventNames.OnException,
-                        Message = "Dispatch process failed to trace using the registered method( " + t.Method.Name + ") Request Id:" + response.RequestId + " for channel: " + response.EventName,
-                        RequestId = response.RequestId,
-                        ResponseUniqueKey = Guid.NewGuid(),
-                        ResponseType = ResponseTypes.Error
-                    };
-
-                    Broadcast(exResponse);
+                    BroadCastExceptionResponse(ex, response.Request);
                 }
             }
+
             EnsureEventSubscriberKey(response.EventName);
             // Go through each subscriber to this event.
             foreach (var p in _eventSubscribers[response.EventName])
@@ -138,18 +132,7 @@ namespace sharpbox.Dispatch
                 }
                 catch (TargetInvocationException ex)
                 {
-                    var exResponse = new Response
-                    {
-                        Entity = ex,
-                        Type = ex.GetType(),
-                        EventName = EventNames.OnException,
-                        Message = "Dispatch process failed to broadcast Request Id:" + response.RequestId + " on channel: " + response.EventName,
-                        RequestId = response.RequestId,
-                        ResponseUniqueKey = Guid.NewGuid(),
-                        ResponseType = ResponseTypes.Error
-                    };
-
-                    Broadcast(exResponse);
+                    BroadCastExceptionResponse(ex, response.Request);
                 }
             }
         }
@@ -176,6 +159,7 @@ namespace sharpbox.Dispatch
                 {
                     try
                     {
+                        // If we have a fail over action then try it. If it also fails or doesn't exist then try for a roll back.
                         if (r.FailOver != null)
                         {
                             
@@ -210,7 +194,7 @@ namespace sharpbox.Dispatch
                     catch (Exception deepEx)
                     {
                         var request = Request.Create(r.CommandName, "All is lost. The action failed, then both failover, rollover, and all error handling failed.", args);
-                        var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
+                        BroadCastExceptionResponse(deepEx, request);
                     }
                 }
             }
@@ -263,10 +247,11 @@ namespace sharpbox.Dispatch
         }
 
         /// <summary>
-        /// A factored out helper for anytime an exception needs to be broadcsat.
+        /// A factored out helper for anytime an exception needs to be broadcsat. Used in methods that have a request available.
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="request"></param>
+        /// <param name="message"></param>
         /// <returns></returns>
         private Guid BroadCastExceptionResponse(Exception ex, Request request)
         {
@@ -275,7 +260,7 @@ namespace sharpbox.Dispatch
                 Entity = ex,
                 Type = ex.GetType(),
                 EventName = EventNames.OnException,
-                Message = ex.Message + " [Request Id:" + request.RequestUniqueKey + "]",
+                Message = string.Format("{0} [Request Id: {1} ] - '{2}'", ex.Message,request.RequestUniqueKey, request.Message),
                 RequestId = request.RequestId,
                 RequestUniqueKey = request.RequestUniqueKey,
                 Request = request,
@@ -313,7 +298,7 @@ namespace sharpbox.Dispatch
         {
             var request = Request.Create(r.CommandName, r.BroadCastMessage, args);
             var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
-            var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Exception Response Key: + " + exResponseUniqueKey + " [Executing Failover Method: " + r.FailOver.Method.Name + "]", ResponseTypes.Success);
+            var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Exception Response Key: + " + exResponseUniqueKey + "] [Executing Failover Method: " + r.FailOver.Method.Name + "]", ResponseTypes.Success);
 
             var result = (T)r.FailOver.DynamicInvoke(args);
             response.Entity = result;
@@ -336,14 +321,14 @@ namespace sharpbox.Dispatch
             var result = default(T);
             var request = Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName + "]", args);
             var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
-
-            var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Executing Rollback Method: " + r.Rollback.Method.Name + "]", ResponseTypes.Success);
+            
+            var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Exception Response Key: + " + exResponseUniqueKey + " ] [Executing Rollback Method: " + r.Rollback.Method.Name + "]", ResponseTypes.Success);
+                response.EventName = r.EventName;
 
             try
             {
                 result = (T)r.Rollback.DynamicInvoke(args);
                 response.Entity = result;
-                response.EventName = r.EventName;
 
                 // Broadcase the response to all listeners.
                 Broadcast(response);
@@ -352,8 +337,9 @@ namespace sharpbox.Dispatch
             {
                 exResponseUniqueKey = BroadCastExceptionResponse(rollbackException, request);
 
+                response.Message = "[All is lost. RollBack method failed]" + response.Message;
                 response.ResponseType = ResponseTypes.Error;
-                response.EventName = r.EventName;
+
                 CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
 
                 // Broadcase the response to all listeners.
