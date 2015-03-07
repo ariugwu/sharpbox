@@ -30,37 +30,38 @@ namespace sharpbox.Dispatch
 
         private Dictionary<RoutineNames, Queue<RoutineItem>> _routineHub;
 
+        /// <summary>
+        /// The list of all commands processed by the Dispatcher.
+        /// </summary>
         public Queue<CommandStreamItem> CommandStream { get; private set; }
-
-
 
         /// <summary>
         /// This method will take the action and append it to the list for the given publisher name. Whenever publish is called for that publisherName the associated methods will be invoked.
         /// </summary>
-        /// <param name="publisherName"></param>
-        /// <param name="method"></param>
-        public void Listen(EventNames publisherName, Action<Response> method)
+        /// <param name="eventName">The event you would like to subscribe to</param>
+        /// <param name="method">The callback method to target when that event is fired.</param>
+        public void Listen(EventNames eventName, Action<Response> method)
         {
-            EnsureEventSubscriberKey(publisherName);
+            EnsureEventSubscriberKey(eventName);
 
-            _eventSubscribers[publisherName].Enqueue(method);
+            _eventSubscribers[eventName].Enqueue(method);
         }
 
         /// <summary>
         /// Any method here will get called for every event.
         /// </summary>
-        /// <param name="method"></param>
+        /// <param name="method">The callback method to target when an event is fired.</param>
         public void Echo(Action<Response> method)
         {
             _echoSubscribers.Enqueue(method);
         }
 
         /// <summary>
-        /// While the CommandEvent map is used for creating the 1-to-1 relationship between thier commands name and event. i.e. - UpdateReciepe and OnReceipeUpdate you still need to register what callback you want to run on UpdateReceipe. Same with the event.
+        /// Register with the command hub, which is used for creating the 1-to-1 relationship between thier commands name and event. i.e. - UpdateReciepe and OnReceipeUpdate you still need to register what callback you want to run on UpdateReceipe. Same with the event.
         /// </summary>
-        /// <param name="commandName"></param>
-        /// <param name="action"></param>
-        /// <param name="eventName"></param>
+        /// <param name="commandName">The command to register</param>
+        /// <param name="action">The action to invoke.</param>
+        /// <param name="eventName">The channel to broadcast the response on.</param>
         public void Register<T>(CommandNames commandName, Func<T, T> action, EventNames eventName)
         {
             try
@@ -73,6 +74,16 @@ namespace sharpbox.Dispatch
             }
         }
 
+        /// <summary>
+        /// Register with the routine hub, which is used to chain command actions and provide failover and rollback options
+        /// </summary>
+        /// <typeparam name="T">The type of the parameter which will be passed between actions.</typeparam>
+        /// <param name="routineName"></param>
+        /// <param name="commandName"></param>
+        /// <param name="eventName"></param>
+        /// <param name="action">Called as the primary/preferred target</param>
+        /// <param name="failOver">Optional. Will be called on error of the 'action'</param>
+        /// <param name="rollBack">Optional. In the advent of an error that can't be solved by action or failover. Once this level is reached the command queue will stop processing.</param>
         public void Register<T>(RoutineNames routineName, CommandNames commandName, EventNames eventName, Func<T, T> action, Func<T, T> failOver, Func<T, T> rollBack)
         {
             try
@@ -90,7 +101,7 @@ namespace sharpbox.Dispatch
         /// Ensure the key exists, add the response to the Event stream. Cycle through all the subscribers and fire off the associated action.
         /// @SEE: For the apparoch to catch Target Invocation exceptions -> http://csharptest.net/350/throw-innerexception-without-the-loosing-stack-trace/
         /// </summary>
-        /// <param name="response"></param>
+        /// <param name="response">The changed object, the original request, and other useful data is packaged in this object for easy sharing.</param>
         public void Broadcast(Response response)
         {
 
@@ -143,87 +154,40 @@ namespace sharpbox.Dispatch
             }
         }
 
+        /// <summary>
+        /// Fires off the queue for the given routine in order. The argument should be the parameters for all registered actions since each target takes in and returns the same type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="routineName"></param>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public T Process<T>(RoutineNames routineName, string message, object[] args)
         {
             var result = default(T);
-            Request request;
-            Response response;
 
             foreach (var r in _routineHub[routineName])
             {
                 try
                 {
-                    r.BroadCastMessage = message; // Se the broadcast message. Other values are set during registration.
-
-                    request = Request.Create(r.CommandName, r.BroadCastMessage, args);
-                    response = new Response(request, request.Message + "[Routine: " + routineName + "]", ResponseTypes.Success);
-
-                    result = (T)r.Action.DynamicInvoke(args);
-                    response.Entity = result;
-                    response.EventName = r.EventName;
-                    CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
-
-                    // Broadcase the response to all listeners.
-                    Broadcast(response);
+                    result = ProcessRoutineAction<T>(routineName, r, message, args);
                 }
                 catch (Exception ex)
                 {
-                    request = Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName+ "]", args);
-                    var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
-
                     try
                     {
                         if (r.FailOver != null)
                         {
-                            response = new Response(request, request.Message + "[Routine: " + routineName + "] [Exception Response Key: + " + exResponseUniqueKey + " [Executing Failover Method: " + r.FailOver.Method.Name+"]", ResponseTypes.Success);
-
+                            
                             try
                             {
-
-                                result = (T)r.FailOver.DynamicInvoke(args);
-                                response.Entity = result;
-                                response.EventName = r.EventName;
-
-                                CommandStream.Enqueue(new CommandStreamItem()
-                                {
-                                    Command = r.CommandName,
-                                    Response = response
-                                });
-
-                                // Broadcase the response to all listeners.
-                                Broadcast(response);
-
+                                result = ProcessFailOver<T>(ex, routineName, r, args);
                             }
                             catch (Exception failOverException)
                             {
-                                request = Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName + "]", args);
-                                exResponseUniqueKey = BroadCastExceptionResponse(failOverException, request);
-
                                 if (r.Rollback != null)
                                 {
-                                    response = new Response(request,
-                                        request.Message + "[Routine: " + routineName + "] [Executing Rollback Method: " +
-                                        r.Rollback.Method.Name + "]", ResponseTypes.Success);
-
-                                    try
-                                    {
-                                        result = (T)r.Rollback.DynamicInvoke(args);
-                                        response.Entity = result;
-                                        response.EventName = r.EventName;
-
-                                        // Broadcase the response to all listeners.
-                                        Broadcast(response);
-                                    }
-                                    catch (Exception rollbackException)
-                                    {
-                                        exResponseUniqueKey = BroadCastExceptionResponse(rollbackException, request);
-                                        response.ResponseType = ResponseTypes.Error;
-                                        response.EventName = r.EventName;
-                                        CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
-
-                                        // Broadcase the response to all listeners.
-                                        Broadcast(response);
-                                    }
+                                    result = ProcessRollBack<T>(failOverException, routineName, r, args);
                                 }
 
                                 // You've failed the action, and failOver, and executed a rollback if available. Break out of the routine.
@@ -232,30 +196,10 @@ namespace sharpbox.Dispatch
                         }
                         else if (r.Rollback != null)
                         {
-                            response = new Response(request, request.Message + "[Routine: " + routineName + "] [Executing Rollback Method: " + r.Rollback.Method.Name + "]", ResponseTypes.Success);
-                            try
-                            {
-                                result = (T)r.Rollback.DynamicInvoke(args);
-                                response.Entity = result;
-                                response.EventName = r.EventName;
-
-                                // Broadcase the response to all listeners.
-                                Broadcast(response);
-                            }
-                            catch (Exception rollbackException)
-                            {
-                                exResponseUniqueKey = BroadCastExceptionResponse(rollbackException, request);
-                                response.ResponseType = ResponseTypes.Error;
-                                response.EventName = r.EventName;
-                                CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
-
-                                // Broadcase the response to all listeners.
-                                Broadcast(response);
-                            }
+                            result = ProcessRollBack<T>(ex, routineName, r, args);
 
                             //We've failed the action, there's no failOver and we've executed a rollback if available. Break out of the routine
                             break;
-
                         }
                         else
                         {
@@ -265,7 +209,8 @@ namespace sharpbox.Dispatch
                     }
                     catch (Exception deepEx)
                     {
-
+                        var request = Request.Create(r.CommandName, "All is lost. The action failed, then both failover, rollover, and all error handling failed.", args);
+                        var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
                     }
                 }
             }
@@ -274,7 +219,7 @@ namespace sharpbox.Dispatch
         }
 
         /// <summary>
-        /// Ensure the key exists. Fire off the actio associated with this request's command.
+        /// Ensure the key exists. Fire off the action associated with this request's command.
         /// @SEE: For the apparoch to catch Target Invocation exceptions -> http://csharptest.net/350/throw-innerexception-without-the-loosing-stack-trace/
         /// </summary>
         /// <exception cref="KeyNotFoundException"></exception>
@@ -317,6 +262,12 @@ namespace sharpbox.Dispatch
             }
         }
 
+        /// <summary>
+        /// A factored out helper for anytime an exception needs to be broadcsat.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         private Guid BroadCastExceptionResponse(Exception ex, Request request)
         {
             var exResponse = new Response
@@ -339,6 +290,79 @@ namespace sharpbox.Dispatch
             return exResponse.RequestUniqueKey;
 
         }
+
+        private T ProcessRoutineAction<T>(RoutineNames routineName, RoutineItem r, string message, object[] args)
+        {
+            r.BroadCastMessage = message; // Set the broadcast message. Other values are set during registration.
+
+            var request = Request.Create(r.CommandName, r.BroadCastMessage, args);
+            var response = new Response(request, request.Message + "[Routine: " + routineName + "]", ResponseTypes.Success);
+
+            var result = (T)r.Action.DynamicInvoke(args);
+            response.Entity = result;
+            response.EventName = r.EventName;
+            CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
+
+            // Broadcase the response to all listeners.
+            Broadcast(response);
+
+            return result;
+        }
+
+        private T ProcessFailOver<T>(Exception ex, RoutineNames routineName, RoutineItem r, object[] args)
+        {
+            var request = Request.Create(r.CommandName, r.BroadCastMessage, args);
+            var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
+            var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Exception Response Key: + " + exResponseUniqueKey + " [Executing Failover Method: " + r.FailOver.Method.Name + "]", ResponseTypes.Success);
+
+            var result = (T)r.FailOver.DynamicInvoke(args);
+            response.Entity = result;
+            response.EventName = r.EventName;
+
+            CommandStream.Enqueue(new CommandStreamItem()
+            {
+                Command = r.CommandName,
+                Response = response
+            });
+
+            // Broadcase the response to all listeners.
+            Broadcast(response);
+
+            return result;
+        }
+
+        private T ProcessRollBack<T>(Exception ex, RoutineNames routineName, RoutineItem r, object[] args)
+        {
+            var result = default(T);
+            var request = Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName + "]", args);
+            var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
+
+            var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Executing Rollback Method: " + r.Rollback.Method.Name + "]", ResponseTypes.Success);
+
+            try
+            {
+                result = (T)r.Rollback.DynamicInvoke(args);
+                response.Entity = result;
+                response.EventName = r.EventName;
+
+                // Broadcase the response to all listeners.
+                Broadcast(response);
+            }
+            catch (Exception rollbackException)
+            {
+                exResponseUniqueKey = BroadCastExceptionResponse(rollbackException, request);
+
+                response.ResponseType = ResponseTypes.Error;
+                response.EventName = r.EventName;
+                CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
+
+                // Broadcase the response to all listeners.
+                Broadcast(response);
+            }
+
+            return result;
+        }
+
         private void EnsureEventSubscriberKey(EventNames eventName)
         {
             if (!_eventSubscribers.ContainsKey(eventName)) _eventSubscribers.Add(eventName, new Queue<Action<Response>>());
