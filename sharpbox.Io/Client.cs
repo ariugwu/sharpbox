@@ -5,6 +5,7 @@ using sharpbox.Io.Strategy;
 
 namespace sharpbox.Io
 {
+    [Serializable]
     public class Client
     {
 
@@ -59,7 +60,7 @@ namespace sharpbox.Io
         public bool Exists(string filename)
         {
 
-          return System.IO.File.Exists(filename);
+            return System.IO.File.Exists(filename);
 
         }
 

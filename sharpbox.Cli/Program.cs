@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Sharpbox;
+using sharpbox.Io.Model;
 using sharpbox.Notification.Model;
 
 namespace sharpbox.Cli
@@ -18,13 +19,13 @@ namespace sharpbox.Cli
 
       var example = new ExampleMediator("ugwua", smtpClient);
 
-      //Create a response object we can repopulate after each request.
+      // Create a response object we can repopulate after each request.
       Response response = null;
 
-      // Give the notification a subscriber. Now whenever this then is broadcast a backlog message will be created for me.
+      // Give the notification a subscriber. Now whenever this event is broadcast a backlog message will be created for me.
       response = example.Dispatch.Process<Subscriber>(ExtendedCommandNames.AddNotificationSubscriber, "Adding a subcriber to OnException", new object[] { new Subscriber(ExampleMediator.OnUserChange, "ugwua") });
-      
-      // Next we're going to try the user change command we registered earlier.
+
+      // Next we're going to try the user change command we registered in the mediator.
       Console.WriteLine("Current UserId: " + example.UserId);
       Console.WriteLine("Please input a new User Id: ");
 
@@ -32,10 +33,10 @@ namespace sharpbox.Cli
 
       response = example.Dispatch.Process<String>(ExampleMediator.UserChange, "Changing the userid to lyleb", new object[] { newUserId });
 
-      Console.WriteLine("Current UserId changed to: " + example.UserId);
+      Console.WriteLine("Please input a string to save to a file named 'foo.txt': ");
 
-      // Io: Test file operations. We pass in the dispatcher so everything threads back.
-      example.File.Write("Test.xml", example.Notification.BackLog);
+      var randomText = Console.ReadLine();
+      example.Dispatch.Process<FileDetail>(ExampleMediator.WriteARandomFile, "Example from the CLI project of writing a file.", new object[]{ new FileDetail(){FilePath = "Random.txt", Data = System.Text.Encoding.UTF8.GetBytes(randomText)}});
 
       // Notification: Fails and this is intentional as their isn't a proper email client, but shows us what happens when a command fails.
       // response = example.Dispatch.Process<List<BackLogItem>>(ExtendedCommandNames.SendNotification, "Sending out backlogitem", new object[] { example.Notification.BackLog.First() });
@@ -47,18 +48,26 @@ namespace sharpbox.Cli
 
       example.OutPutCommandStream();
 
+        var trail = new List<Response>();
+            trail.AddRange(example.Audit.Trail);
+      example.Dispatch.Process<List<Response>>(ExampleMediator.WriteAuditTrailToDisk, "Writing the current audit trail to a binary file", new object[]{ trail});
+
       // Audit: See the results in the audit trail
       Console.WriteLine("Audit Trail Count: " + example.Audit.Trail.Count);
+        Console.WriteLine("Press any key to continue....");
         Console.ReadKey();
 
         // Process a routine
+       Console.WriteLine("Now we're going to process a routine. This is a chain of events that will run from start to finish syncronously. After which we'll out put the command stream again.");
        var finalVersionOfUserId = example.Dispatch.Process<string>(RoutineNames.Example, "Changing the name using a routine.", new object[] {"johnsont"});
+
        example.OutPutCommandStream();
        Console.WriteLine("Audit Trail Count: " + example.Audit.Trail.Count);
+
       // Recommend using a 'Final command' to call at the end of each session as well as on exception.
       // This is so you can decide what to do with the backlog messages and audit trail you've collected.
       //example.Final();
-       Console.ReadKey();
+
       // The end result of this demo should be the following:
       // Wired and functional: Logging, Email, and IO
       // Dispatch: A functional pub/sub system for broadcasting events and data changes.

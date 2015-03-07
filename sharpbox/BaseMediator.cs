@@ -8,6 +8,7 @@ using sharpbox.Notification.Model;
 
 namespace sharpbox
 {
+    [Serializable]
   public abstract class BaseMediator
   {
     protected BaseMediator(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy)

@@ -1,5 +1,8 @@
-﻿namespace sharpbox.Io.Model
+﻿using System;
+
+namespace sharpbox.Io.Model
 {
+    [Serializable]
     public class FileDetail
     {
         public string FilePath { get; set; }

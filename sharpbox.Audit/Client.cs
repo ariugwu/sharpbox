@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Audit
 {
+    [Serializable]
     public class Client
     {
         private List<Response> _trail; 

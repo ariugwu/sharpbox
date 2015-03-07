@@ -6,10 +6,12 @@ using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 using sharpbox.EfCodeFirst.Audit;
 using sharpbox.EfCodeFirst.Notification;
+using sharpbox.Io.Model;
 using sharpbox.Notification.Model;
 
 namespace sharpbox.Cli.Model.Domain.Sharpbox
 {
+    [Serializable]
     public class ExampleMediator : BaseMediator
     {
         /// <summary>
@@ -37,10 +39,14 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
         #region Domain Specific Event(s)
         public static readonly EventNames OnUserChange = new EventNames("OnUserChange");
         public static readonly EventNames Write = new EventNames("OnUserChange");
+        public static readonly EventNames OnRandomFileWritten = new EventNames("OnRandomFileWritten");
+        public static readonly EventNames OnWriteAuditTrailToDisk = new EventNames("OnWriteAuditTrailToDisk");
         #endregion
 
         #region Domain Specific Commands(s)
         public static readonly CommandNames UserChange = new CommandNames("ChangeUser");
+        public static readonly CommandNames WriteARandomFile = new CommandNames("WriteARandomFile");
+        public static readonly CommandNames WriteAuditTrailToDisk = new CommandNames("WriteAuditTrailToDisk");
         #endregion
                 
         public void WireUpEvents()
@@ -50,13 +56,17 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
             Dispatch.Register<BackLogItem>(ExtendedCommandNames.SendNotification, Notification.Notify, ExtendedEventNames.OnNotificationNotify);
             Dispatch.Register<Subscriber>(ExtendedCommandNames.AddNotificationSubscriber, Notification.AddSub, ExtendedEventNames.OnNotificationAddSubScriber);
             Dispatch.Register<MailMessage>(ExtendedCommandNames.SendEmail, SendEmail, ExtendedEventNames.OnEmailSend);
-
+            Dispatch.Register<FileDetail>(WriteARandomFile, WriteRandomTxtFile, OnRandomFileWritten);
+            Dispatch.Register<List<Response>>(WriteAuditTrailToDisk, StoreAuditTrailAsBinary, OnWriteAuditTrailToDisk);
             // Listen to an 'under the covers' system event
             Dispatch.Listen(EventNames.OnException, ExampleListener);
 
             // All of our internal stuff uses the broadcast system so we'll listen on exception and rethrow.
             // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
             Dispatch.Listen(EventNames.OnException, FireOnException);
+
+            Dispatch.Listen(ExtendedEventNames.OnNotificationAddSubScriber, ExampleListener);
+            Dispatch.Listen(OnWriteAuditTrailToDisk, ExampleListener);
 
             // Let's try a routine
             // Our first routine item will feed a string argument to the UserChange method, broadcast the event through the OnUserChange channel
@@ -93,6 +103,19 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
             }
         }
 
+        public List<Response> StoreAuditTrailAsBinary(List<Response> trail)
+        {
+            File.Write("AuditTrail.dat", trail);
+
+            return trail;
+        } 
+
+        public FileDetail WriteRandomTxtFile(FileDetail fileDetail)
+        {
+            File.Write(fileDetail);
+
+            return fileDetail;
+        }
         public string ChangeUser(string userId)
         {
 

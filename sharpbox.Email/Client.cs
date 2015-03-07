@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
 
 namespace sharpbox.Email
 {
+    [Serializable]
     public class Client
     {
+        [NonSerialized] 
         private SmtpClient _smtpClient;
 
         public Client(SmtpClient smtpClient)

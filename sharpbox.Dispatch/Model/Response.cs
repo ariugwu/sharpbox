@@ -5,6 +5,8 @@ namespace sharpbox.Dispatch.Model
     [Serializable]
     public class Response : BasePackage
     {
+        private string _message;
+
         public Response(Request request, string message, ResponseTypes responseType)
         {
             Entity = request.Entity;
@@ -21,8 +23,12 @@ namespace sharpbox.Dispatch.Model
         public int ResponseId { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
 
         public Guid ResponseUniqueKey { get; set; }
-        
-        public string Message { get; set; }
+
+        public string Message
+        {
+            get { return _message + " [Status: " + ResponseType + "]"; }
+            set { _message = value; }
+        }
 
         public int EventNameId { get; set; }
 

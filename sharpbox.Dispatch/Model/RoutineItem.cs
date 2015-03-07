@@ -2,6 +2,7 @@
 
 namespace sharpbox.Dispatch.Model
 {
+    [Serializable]
     public class RoutineItem
     {
         public CommandNames CommandName { get; set; }

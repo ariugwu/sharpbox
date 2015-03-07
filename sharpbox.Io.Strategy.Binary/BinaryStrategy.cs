@@ -3,6 +3,7 @@ using System.IO;
 
 namespace sharpbox.Io.Strategy.Binary
 {
+    [Serializable]
     public class BinaryStrategy : IStrategy
     {
         public void Write<T>(string filePath, T objectToWrite, bool append = false) where T : new()
