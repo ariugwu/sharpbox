@@ -225,6 +225,7 @@ namespace sharpbox.Dispatch
                     var result = (T)request.Action.DynamicInvoke(args);
                     response.Entity = result;
                     response.Type = result.GetType();
+                    response.Message = String.Format(ResponseMessage, _commandHub[request.CommandName].EventName, commandName, request.Action.Method.Name, response.Type.Name, response.ResponseUniqueKey, response.ResponseUniqueKey, "N/A");
                 }
 
                 response.EventName = _commandHub[request.CommandName].EventName; // Set the event name.
@@ -285,7 +286,10 @@ namespace sharpbox.Dispatch
 
             var result = (T)r.Action.DynamicInvoke(args);
             response.Entity = result;
+            response.Type = result.GetType();
             response.EventName = r.EventName;
+            response.Message = String.Format(ResponseMessage, r.EventName, r.CommandName, r.Action.Method.Name, response.Type.Name, response.ResponseUniqueKey, response.ResponseUniqueKey, "N/A");
+            
             CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
 
             // Broadcase the response to all listeners.

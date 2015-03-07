@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
-using System.Diagnostics;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 using sharpbox.EfCodeFirst.Audit;
