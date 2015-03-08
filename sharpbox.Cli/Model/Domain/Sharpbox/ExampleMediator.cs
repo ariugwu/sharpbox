@@ -93,7 +93,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
         public void OutPutCommandStream()
         {
-            Console.WriteLine("### Event Stream Dump ###");
+            Console.WriteLine("### Command Stream Dump ###");
             foreach (var e in Dispatch.CommandStream)
             {
                 Console.WriteLine("Command: " + e.Command + "");
