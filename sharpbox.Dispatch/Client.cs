@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using sharpbox.Dispatch.Model;
 
@@ -138,6 +140,62 @@ namespace sharpbox.Dispatch
         }
 
         /// <summary>
+        /// User beware. You can rollback an entire routine *if* you have rollback methods assigned to each RoutineItem in the queue. This method will reverse the queue and start with the last method and loop through roll backs. Passing the modified T to each in turn.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="routineName"></param>
+        /// <param name="message"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">If there is no routine found with the supplied name</exception>
+        /// <exception cref="InvalidDataException">If there is a RoutineItem in the queue without a registered Rollback method.</exception>
+        public T RollBack<T>(RoutineNames routineName, string message, object[] args)
+        {
+
+            if(!_routineHub.ContainsKey(routineName)) throw new ArgumentException("There is no routine by this name registered.");
+
+            if(_routineHub[routineName].FirstOrDefault(x => x.Rollback == null) != null) throw new InvalidDataException("There is a method in this routine without a RollBack function assigned. This routine is not eligable for RollBack.");
+            
+            var result = default(T);
+
+            var reverse = _routineHub[routineName].Reverse();
+
+            foreach (var r in reverse)
+            {
+                var request = Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName + "]", args);
+
+                var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Executing Rollback Method: " + r.Rollback.Method.Name + "]", ResponseTypes.Success);
+                response.EventName = r.EventName;
+
+                try
+                {
+                    result = (T)r.Rollback.DynamicInvoke(args);
+                    response.Entity = result;
+
+                    // Broadcase the response to all listeners.
+                    Broadcast(response);
+                }
+                catch (Exception rollbackException)
+                {
+                    BroadCastExceptionResponse(rollbackException, request);
+
+                    response.Message = "[All is lost. RollBack method failed]" + response.Message;
+                    response.ResponseType = ResponseTypes.Error;
+
+                    CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
+
+                    // Broadcase the response to all listeners.
+                    Broadcast(response);
+
+                    break;
+                }
+
+                return result;
+            }
+
+            return result;
+        }
+        /// <summary>
         /// Fires off the queue for the given routine in order. The argument should be the parameters for all registered actions since each target takes in and returns the same type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -171,7 +229,7 @@ namespace sharpbox.Dispatch
                             {
                                 if (r.Rollback != null)
                                 {
-                                    result = ProcessRollBack<T>(failOverException, routineName, r, args);
+                                    result = ProcessRollBackOnException<T>(failOverException, routineName, r, args);
                                 }
 
                                 // You've failed the action, and failOver, and executed a rollback if available. Break out of the routine.
@@ -180,7 +238,7 @@ namespace sharpbox.Dispatch
                         }
                         else if (r.Rollback != null)
                         {
-                            result = ProcessRollBack<T>(ex, routineName, r, args);
+                            result = ProcessRollBackOnException<T>(ex, routineName, r, args);
 
                             //We've failed the action, there's no failOver and we've executed a rollback if available. Break out of the routine
                             break;
@@ -320,7 +378,7 @@ namespace sharpbox.Dispatch
             return result;
         }
 
-        private T ProcessRollBack<T>(Exception ex, RoutineNames routineName, RoutineItem r, object[] args)
+        private T ProcessRollBackOnException<T>(Exception ex, RoutineNames routineName, RoutineItem r, object[] args)
         {
             var result = default(T);
             var request = Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName + "]", args);

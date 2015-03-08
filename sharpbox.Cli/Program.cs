@@ -54,6 +54,7 @@ namespace sharpbox.Cli
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
             example.OutPutCommandStream();
+
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
 
