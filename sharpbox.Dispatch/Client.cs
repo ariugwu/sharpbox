@@ -74,7 +74,7 @@ namespace sharpbox.Dispatch
             }
             catch (Exception ex)
             {
-                var msg = String.Format(ResponseMessage, eventName, commandName, action.Method.Name, null, "N/A","N/A", "Registration failed with msg: " + ex.Message);
+                var msg = String.Format(ResponseMessage, eventName, commandName, action.Method.Name, null, "N/A", "N/A", "Registration failed with msg: " + ex.Message);
                 Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
             }
         }
@@ -94,7 +94,7 @@ namespace sharpbox.Dispatch
             try
             {
                 EnsureCommandHubKey(routineName);
-                _routineHub[routineName].Enqueue(new RoutineItem {CommandName = commandName, EventName = eventName, Action = action, FailOver = failOver, Rollback = rollBack }); // wireup the action associated with this command, and the event channel to broadcast to when this command is processed.
+                _routineHub[routineName].Enqueue(new RoutineItem { CommandName = commandName, EventName = eventName, Action = action, FailOver = failOver, Rollback = rollBack }); // wireup the action associated with this command, and the event channel to broadcast to when this command is processed.
             }
             catch (Exception ex)
             {
@@ -152,10 +152,10 @@ namespace sharpbox.Dispatch
         public T RollBack<T>(RoutineNames routineName, string message, object[] args)
         {
 
-            if(!_routineHub.ContainsKey(routineName)) throw new ArgumentException("There is no routine by this name registered.");
+            if (!_routineHub.ContainsKey(routineName)) throw new ArgumentException("There is no routine by this name registered.");
 
-            if(_routineHub[routineName].FirstOrDefault(x => x.Rollback == null) != null) throw new InvalidDataException("There is a method in this routine without a RollBack function assigned. This routine is not eligable for RollBack.");
-            
+            if (_routineHub[routineName].FirstOrDefault(x => x.Rollback == null) != null) throw new InvalidDataException("There is a method in this routine without a RollBack function assigned. This routine is not eligable for RollBack.");
+
             var result = default(T);
 
             var reverse = _routineHub[routineName].Reverse();
@@ -215,44 +215,34 @@ namespace sharpbox.Dispatch
                 }
                 catch (Exception ex)
                 {
+                    var request= Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName + "]", args);
+                    var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
+
                     try
                     {
-                        // If we have a fail over action then try it. If it also fails or doesn't exist then try for a roll back.
+                        // If we have a fail over action then try it.
                         if (r.FailOver != null)
                         {
-                            
+
                             try
                             {
-                                result = ProcessFailOver<T>(ex, routineName, r, args);
+                                result = ProcessFailOver<T>(routineName, request, exResponseUniqueKey, r, args);
                             }
                             catch (Exception failOverException)
                             {
-                                if (r.Rollback != null)
-                                {
-                                    result = ProcessRollBackOnException<T>(failOverException, routineName, r, args);
-                                }
-
-                                // You've failed the action, and failOver, and executed a rollback if available. Break out of the routine.
-                                break;
+                                BroadCastExceptionResponse(failOverException, request);
+                                throw;
                             }
-                        }
-                        else if (r.Rollback != null)
-                        {
-                            result = ProcessRollBackOnException<T>(ex, routineName, r, args);
-
-                            //We've failed the action, there's no failOver and we've executed a rollback if available. Break out of the routine
-                            break;
                         }
                         else
                         {
-                            // Break out of the routine
-                            break;
+                            throw;
                         }
                     }
                     catch (Exception deepEx)
                     {
-                        var request = Request.Create(r.CommandName, "All is lost. The action failed, then both failover, rollover, and all error handling failed.", args);
                         BroadCastExceptionResponse(deepEx, request);
+                        throw;
                     }
                 }
             }
@@ -319,7 +309,7 @@ namespace sharpbox.Dispatch
                 Entity = ex,
                 Type = ex.GetType(),
                 EventName = EventNames.OnException,
-                Message = string.Format("{0} [Request Id: {1} ] - '{2}'", ex.Message,request.RequestUniqueKey, request.Message),
+                Message = string.Format("{0} [Request Id: {1} ] - '{2}'", ex.Message, request.RequestUniqueKey, request.Message),
                 RequestId = request.RequestId,
                 RequestUniqueKey = request.RequestUniqueKey,
                 Request = request,
@@ -347,7 +337,7 @@ namespace sharpbox.Dispatch
             response.Type = result.GetType();
             response.EventName = r.EventName;
             response.Message = String.Format(ResponseMessage, r.EventName, r.CommandName, r.Action.Method.Name, response.Type.Name, response.ResponseUniqueKey, response.ResponseUniqueKey, "N/A");
-            
+
             CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
 
             // Broadcase the response to all listeners.
@@ -356,10 +346,9 @@ namespace sharpbox.Dispatch
             return result;
         }
 
-        private T ProcessFailOver<T>(Exception ex, RoutineNames routineName, RoutineItem r, object[] args)
+        private T ProcessFailOver<T>(RoutineNames routineName, Request request, Guid exResponseUniqueKey, RoutineItem r, object[] args)
         {
-            var request = Request.Create(r.CommandName, r.BroadCastMessage, args);
-            var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
+
             var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Exception Response Key: + " + exResponseUniqueKey + "] [Executing Failover Method: " + r.FailOver.Method.Name + "]", ResponseTypes.Success);
 
             var result = (T)r.FailOver.DynamicInvoke(args);
@@ -378,38 +367,6 @@ namespace sharpbox.Dispatch
             return result;
         }
 
-        private T ProcessRollBackOnException<T>(Exception ex, RoutineNames routineName, RoutineItem r, object[] args)
-        {
-            var result = default(T);
-            var request = Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName + "]", args);
-            var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
-            
-            var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Exception Response Key: + " + exResponseUniqueKey + " ] [Executing Rollback Method: " + r.Rollback.Method.Name + "]", ResponseTypes.Success);
-                response.EventName = r.EventName;
-
-            try
-            {
-                result = (T)r.Rollback.DynamicInvoke(args);
-                response.Entity = result;
-
-                // Broadcase the response to all listeners.
-                Broadcast(response);
-            }
-            catch (Exception rollbackException)
-            {
-                exResponseUniqueKey = BroadCastExceptionResponse(rollbackException, request);
-
-                response.Message = "[All is lost. RollBack method failed]" + response.Message;
-                response.ResponseType = ResponseTypes.Error;
-
-                CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
-
-                // Broadcase the response to all listeners.
-                Broadcast(response);
-            }
-
-            return result;
-        }
 
         private void EnsureEventSubscriberKey(EventNames eventName)
         {
@@ -417,9 +374,9 @@ namespace sharpbox.Dispatch
         }
 
         private void EnsureCommandHubKey(RoutineNames routineName)
-    {
-        if (!_routineHub.ContainsKey(routineName)) _routineHub.Add(routineName, new Queue<RoutineItem>());
-    }
+        {
+            if (!_routineHub.ContainsKey(routineName)) _routineHub.Add(routineName, new Queue<RoutineItem>());
+        }
 
     }
 }

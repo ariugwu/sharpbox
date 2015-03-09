@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="Domain\Dispatch\NotificationCommands.cs" />
+    <Compile Include="Domain\Dispatch\NotificationEvents.cs" />
     <Compile Include="Model\BackLogItem.cs" />
     <Compile Include="Model\Subscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

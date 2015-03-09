@@ -30,7 +30,9 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
             Notification = new Notification.Client(Email);
 
-            WireUpEvents();
+            WireUpListeners();
+            WireUpRoutines();
+            WireUpCommandHubItems();
         }
 
         public string UserId { get; set; }
@@ -48,15 +50,29 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
         public static readonly CommandNames WriteAuditTrailToDisk = new CommandNames("WriteAuditTrailToDisk");
         #endregion
                 
-        public void WireUpEvents()
+        public void WireUpCommandHubItems()
         {
             // Setup what a command should do and who it should broadcast to when it's done
             Dispatch.Register<String>(ExampleMediator.UserChange, ChangeUser, ExampleMediator.OnUserChange);
-            Dispatch.Register<BackLogItem>(ExtendedCommandNames.SendNotification, Notification.Notify, ExtendedEventNames.OnNotificationNotify);
-            Dispatch.Register<Subscriber>(ExtendedCommandNames.AddNotificationSubscriber, Notification.AddSub, ExtendedEventNames.OnNotificationAddSubScriber);
-            Dispatch.Register<MailMessage>(ExtendedCommandNames.SendEmail, SendEmail, ExtendedEventNames.OnEmailSend);
+            Dispatch.Register<BackLogItem>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.SendNotification, Notification.Notify, sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationNotify);
+            Dispatch.Register<Subscriber>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, Notification.AddSub, sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationAddSubScriber);
+            Dispatch.Register<MailMessage>(sharpbox.Email.Domain.Dispatch.EmailCommands.SendEmail, SendEmail, sharpbox.Email.Domain.Dispatch.EmailEvents.OnEmailSend);
             Dispatch.Register<FileDetail>(WriteARandomFile, WriteRandomTxtFile, OnRandomFileWritten);
             Dispatch.Register<List<Response>>(WriteAuditTrailToDisk, StoreAuditTrailAsBinary, OnWriteAuditTrailToDisk);
+
+        }
+
+        public void WireUpRoutines()
+        {
+            // Let's try a routine
+            // Our first routine item will feed a string argument to the UserChange method, broadcast the event through the OnUserChange channel
+            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUser, null, null);
+            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUserStep2, ChangeUserStep2FailOver, null);
+            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUserStep3, null, null);
+        }
+
+        public void WireUpListeners()
+        {
             // Listen to an 'under the covers' system event
             Dispatch.Listen(EventNames.OnException, ExampleListener);
 
@@ -64,14 +80,8 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
             // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
             Dispatch.Listen(EventNames.OnException, FireOnException);
 
-            Dispatch.Listen(ExtendedEventNames.OnNotificationAddSubScriber, ExampleListener);
+            Dispatch.Listen(sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationAddSubScriber, ExampleListener);
             Dispatch.Listen(OnWriteAuditTrailToDisk, ExampleListener);
-
-            // Let's try a routine
-            // Our first routine item will feed a string argument to the UserChange method, broadcast the event through the OnUserChange channel
-            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUser, null, null);
-            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUserStep2,ChangeUserStep2FailOver, null);
-            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUserStep3, null, null);
 
             // Look at the concept of 'Echo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
             Dispatch.Echo(Notification.ProcessEvent);

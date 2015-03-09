@@ -22,45 +22,82 @@ namespace sharpbox.Cli
             // Create a response object we can repopulate after each request.
             Response response = null;
 
-            // Give the notification a subscriber. Now whenever this event is broadcast a backlog message will be created for me.
-            response = example.Dispatch.Process<Subscriber>(ExtendedCommandNames.AddNotificationSubscriber, "Adding a subcriber to OnUserChange.", new object[] { new Subscriber(ExampleMediator.OnUserChange, "ugwua") });
+            Console.WriteLine("Our first task will be to add a listener to the 'OnUserChange' event. This means that whenver the user is changed within the system our subscriber will get a message added to the backlog.");
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine("Press any key to continue....");
+            Console.ReadKey();
+            Console.Clear();
 
+            // Give the notification a subscriber. Now whenever this event is broadcast a backlog message will be created for me.
+            Console.WriteLine("In our configuration we added a listener to the 'AddNotificationSubscriber' event. So we're able to have Notification listen to all events, but also add other listers to specific Notification events:");
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            response = example.Dispatch.Process<Subscriber>(Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, "Adding a subcriber to OnUserChange.", new object[] { new Subscriber(ExampleMediator.OnUserChange, "ugwua") });
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine("Press any key to continue....");
+            Console.ReadKey();
+            Console.Clear();
+
+            Console.WriteLine("Now let's change the user id");
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             // Next we're going to try the user change command we registered in the mediator.
             Console.WriteLine("Current UserId: " + example.UserId);
             Console.WriteLine("Please input a new User Id: ");
 
             var newUserId = Console.ReadLine();
+            Console.WriteLine(); 
+            response = example.Dispatch.Process<String>(ExampleMediator.UserChange, "Changing the userid", new object[] { newUserId });
+            
+            Console.WriteLine("Current UserId is now.: " + example.UserId);
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine("Press any key to continue....");
+            Console.ReadKey();
+            Console.Clear();
 
-            response = example.Dispatch.Process<String>(ExampleMediator.UserChange, "Changing the userid to lyleb", new object[] { newUserId });
-
+            Console.WriteLine("Next will test out writing some text to a file. ");
             Console.WriteLine("Please input a string to save to a file named 'foo.txt': ");
 
             var randomText = Console.ReadLine();
-            example.Dispatch.Process<FileDetail>(ExampleMediator.WriteARandomFile, "Example from the CLI project of writing a file.", new object[] { new FileDetail() { FilePath = "Random.txt", Data = System.Text.Encoding.UTF8.GetBytes(randomText) } });
+            Console.WriteLine(); Console.WriteLine();
+
+            response = example.Dispatch.Process<FileDetail>(ExampleMediator.WriteARandomFile, "Example from the CLI project of writing a file.", new object[] { new FileDetail() { FilePath = "Random.txt", Data = System.Text.Encoding.UTF8.GetBytes(randomText) } });
 
             // Notification: Fails and this is intentional as their isn't a proper email client, but shows us what happens when a command fails.
             // response = example.Dispatch.Process<List<BackLogItem>>(ExtendedCommandNames.SendNotification, "Sending out backlogitem", new object[] { example.Notification.BackLog.First() });
+            Console.WriteLine("The input was saved to a text file. We received a 'response' object back so we can get all the info needd to look up the action details in the audit log.");
+            Console.WriteLine("[Status:{0}] [Request Id: {1}] [ResponseId: {2}]", response.ResponseType, response.RequestUniqueKey, response.ResponseUniqueKey);
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine("Press any key to continue....");
+            Console.ReadKey();
+            Console.Clear();
 
             Console.WriteLine("Example of writing an object to a file. We should see a broad cast anouncement below:");
+            Console.WriteLine(); Console.WriteLine();
+
             var trail = new List<Response>();
             trail.AddRange(example.Audit.Trail);
             example.Dispatch.Process<List<Response>>(ExampleMediator.WriteAuditTrailToDisk, "Writing the current audit trail to a binary file", new object[] { trail });
-
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
-
             Console.Clear();
+
             Console.WriteLine("Okay. Now let's output the command stream and see how it what it looks like.");
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
+            Console.Clear();
             example.OutPutCommandStream();
 
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
+            Console.Clear();
 
             Console.WriteLine("Next we'll take a look at what notification/audit information we've collected. Remember that subscriber we added earlier to OnUserChange?");
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
+            Console.Clear();
+
             // Notification
             Console.WriteLine("###Notification Info####");
             Console.WriteLine("Total subscribers: " + example.Notification.Subscribers.Count);
@@ -68,20 +105,31 @@ namespace sharpbox.Cli
             // Audit: See the results in the audit trail
             Console.WriteLine("###Audit Info####");
             Console.WriteLine("Audit Trail Count: " + example.Audit.Trail.Count);
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
-
             Console.Clear();
+
             // Process a routine
             Console.WriteLine("Now we're going to process a routine. This is a chain of events that will run from start to finish syncronously. After which we'll out put the command stream again.");
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
+            Console.Clear();
 
+            Console.WriteLine("Note: We baked in an exception on purpose to test the ability register and automatically call failover methods. The exceptio should display below:");
+            Console.WriteLine(); Console.WriteLine();
             var finalVersionOfUserId = example.Dispatch.Process<string>(RoutineNames.Example, "Changing the name using a routine.", new object[] { "johnsont" });
+            Console.WriteLine(); Console.WriteLine();
+
+            Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("We chose to pass a user name through 3 different changes. One of them had an error and a failover method was executed.");
+            Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("The final value returned is : {0} which should equal the current value in the Example class: '{1}'", finalVersionOfUserId, example.UserId);
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to see the new command stream. NOTE: Audit carries the same information in a different composition. The difference is the command stream is always avaialble regardless of audit implementation.");
             Console.ReadKey();
+            Console.Clear();
 
             example.OutPutCommandStream();
 
