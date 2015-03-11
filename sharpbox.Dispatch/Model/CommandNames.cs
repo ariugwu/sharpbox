@@ -9,11 +9,12 @@ namespace sharpbox.Dispatch.Model
         public CommandNames(string value)
             : base(value)
         {
+            Name = value;
         }
 
         public CommandNames() { }
 
         public int CommandNameId { get; set; }
-        public string Value { get { return _value; } }
+        public string Name { get; set; }
     }
 }

@@ -14,11 +14,12 @@ namespace sharpbox.Dispatch.Model
 
         public EventNames(string value) : base(value)
         {
+            Name = value;
         }
 
         public EventNames() { }
 
         public int EventNameId { get; set; }
-        public string Value { get { return _value; } }
+        public string Name { get; set; }
     }
 }

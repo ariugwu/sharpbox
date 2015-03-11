@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Sharpbox;
+using sharpbox.EfCodeFirst.Audit;
 using sharpbox.Io.Model;
 using sharpbox.Notification.Model;
 
@@ -12,6 +13,7 @@ namespace sharpbox.Cli
     {
         static void Main(string[] args)
         {
+
             // The benefit of the dispatcher is being able to see all subscribed events in one place at one time.
             // This centeralization is put to use with the Audit component which, when set to AuditLevel = All, will make a entry for *every* registered system event. We use basic since we're using xml and want to prevent event reflection. Audit saves file -> file generates audit message -> Audit saves file.
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
@@ -133,9 +135,9 @@ namespace sharpbox.Cli
 
             example.OutPutCommandStream();
 
-            // Recommend using a 'Final command' to call at the end of each session as well as on exception.
+            // Recommend using a 'Final command' to call at the end of each session.
             // This is so you can decide what to do with the backlog messages and audit trail you've collected.
-            //example.Final();
+           example.Final();
 
             // The end result of this demo should be the following:
             // Wired and functional: Logging, Email, and IO

@@ -24,7 +24,7 @@ namespace sharpbox.Dispatch
             CommandStream = new Queue<CommandStreamItem>();
         }
 
-        private const string ResponseMessage = "[Broadcast Event: {0}] [For Command: {1}] [Method: {2}] [Entity: {3}] [Request Id: {4}] [Response Id: {5}] [Message: {6}]";
+        private const string ResponseMessage = "[Message: {0}] [Method: {1}] [Entity: {2}] ";
 
         private Dictionary<EventNames, Queue<Action<Response>>> _eventSubscribers;
 
@@ -74,7 +74,7 @@ namespace sharpbox.Dispatch
             }
             catch (Exception ex)
             {
-                var msg = String.Format(ResponseMessage, eventName, commandName, action.Method.Name, null, "N/A", "N/A", "Registration failed with msg: " + ex.Message);
+                var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
                 Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
             }
         }
@@ -98,7 +98,7 @@ namespace sharpbox.Dispatch
             }
             catch (Exception ex)
             {
-                var msg = String.Format(ResponseMessage, eventName, commandName, action.Method.Name, null, "N/A", "N/A", "Registration failed with msg: " + ex.Message);
+                var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
                 Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
             }
         }
@@ -273,7 +273,7 @@ namespace sharpbox.Dispatch
                     var result = (T)request.Action.DynamicInvoke(args);
                     response.Entity = result;
                     response.Type = result.GetType();
-                    response.Message = String.Format(ResponseMessage, _commandHub[request.CommandName].EventName, commandName, request.Action.Method.Name, response.Type.Name, response.ResponseUniqueKey, response.ResponseUniqueKey, "N/A");
+                    response.Message = String.Format(ResponseMessage, "N/A", request.Action.Method.Name, response.Type.Name);
                 }
 
                 response.EventName = _commandHub[request.CommandName].EventName; // Set the event name.
@@ -336,7 +336,7 @@ namespace sharpbox.Dispatch
             response.Entity = result;
             response.Type = result.GetType();
             response.EventName = r.EventName;
-            response.Message = String.Format(ResponseMessage, r.EventName, r.CommandName, r.Action.Method.Name, response.Type.Name, response.ResponseUniqueKey, response.ResponseUniqueKey, "N/A");
+            response.Message = String.Format(ResponseMessage, "N/A", r.Action.Method.Name, response.Type.Name);
 
             CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
 

@@ -37,5 +37,6 @@ namespace sharpbox.Dispatch.Model
         public int RequestId { get; set; }
         public Guid RequestUniqueKey { get; set; }
         public Request Request { get; set; }
+        public string UserId { get; set;}
     }
 }
