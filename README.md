@@ -41,7 +41,7 @@ static void Main(string[] args){
 #### Into this
 
 ```c#
-public static T SomeUnitOfWork(Dispatcher dispatch, T someObject){
+public static T SomeUnitOfWork(T someObject){
     // Do Stuff to Object
     someObject.DoStuffExtension();
     return someObject;
