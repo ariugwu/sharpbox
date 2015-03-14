@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using sharpbox.Dispatch.Model;
 using sharpbox.Notification.Model;
 
 namespace sharpbox.EfCodeFirst.Notification
@@ -25,12 +26,22 @@ namespace sharpbox.EfCodeFirst.Notification
         }
 
         public DbSet<BackLogItem> BackLogItems { get; set; }
+        public DbSet<Subscriber> Subscribers { get; set; }
+        public DbSet<EventNames> EventNames { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BackLogItem>().HasKey(p => p.BackLogItemId);
             modelBuilder.Entity<BackLogItem>().Property(x => x.BackLogItemId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<BackLogItem>().ToTable("BackLogItem", schemaName: "Notification");
+
+            modelBuilder.Entity<Subscriber>().HasKey(p => p.SubscriberId);
+            modelBuilder.Entity<Subscriber>().Property(x => x.SubscriberId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Subscriber>().ToTable("Subscriber", schemaName: "Notification");
+
+            modelBuilder.Entity<EventNames>().HasKey(p => p.EventNameId);
+            modelBuilder.Entity<EventNames>().Property(x => x.EventNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<EventNames>().ToTable("EventName", schemaName: "App");
         }
     }
 }

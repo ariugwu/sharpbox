@@ -45,11 +45,11 @@ namespace sharpbox.EfCodeFirst.Audit
 
             modelBuilder.Entity<EventNames>().HasKey(p => p.EventNameId);
             modelBuilder.Entity<EventNames>().Property(x => x.EventNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<EventNames>().ToTable("EventName", schemaName: "Audit");
+            modelBuilder.Entity<EventNames>().ToTable("EventName", schemaName: "App");
 
             modelBuilder.Entity<CommandNames>().HasKey(p => p.CommandNameId);
             modelBuilder.Entity<CommandNames>().Property(x => x.CommandNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<CommandNames>().ToTable("CommandName", schemaName: "Audit");
+            modelBuilder.Entity<CommandNames>().ToTable("CommandName", schemaName: "App");
         }
     }
 }
