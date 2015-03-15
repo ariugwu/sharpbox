@@ -137,7 +137,7 @@ namespace sharpbox.Cli
 
             // Recommend using a 'Final command' to call at the end of each session.
             // This is so you can decide what to do with the backlog messages and audit trail you've collected.
-           example.Final();
+           //example.Final();
 
             // The end result of this demo should be the following:
             // Wired and functional: Logging, Email, and IO

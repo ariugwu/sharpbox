@@ -158,18 +158,18 @@ namespace sharpbox.Dispatch
 
             var result = default(T);
 
-            var reverse = _routineHub[routineName].Reverse();
+            var reverse = _routineHub[routineName].Reverse().ToList();
 
-            foreach (var r in reverse)
+            for (var i = (reverse.Count() - 1); i >= 0; i--)
             {
-                var request = Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName + "]", args);
+                var request = Request.Create(reverse[i].CommandName, reverse[i].BroadCastMessage + "[Rolling Back Routine: " + routineName + "][" + (i - 1) + "/" + reverse.Count() + "]", args);
 
-                var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Executing Rollback Method: " + r.Rollback.Method.Name + "]", ResponseTypes.Success);
-                response.EventName = r.EventName;
+                var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Executing Rollback Method: " + reverse[i].Rollback.Method.Name + "]", ResponseTypes.Success);
+                response.EventName = reverse[i].EventName;
 
                 try
                 {
-                    result = (T)r.Rollback.DynamicInvoke(args);
+                    result = (T)reverse[i].Rollback.DynamicInvoke(args);
                     response.Entity = result;
 
                     // Broadcase the response to all listeners.
@@ -182,7 +182,7 @@ namespace sharpbox.Dispatch
                     response.Message = "[All is lost. RollBack method failed]" + response.Message;
                     response.ResponseType = ResponseTypes.Error;
 
-                    CommandStream.Enqueue(new CommandStreamItem() { Command = r.CommandName, Response = response });
+                    CommandStream.Enqueue(new CommandStreamItem() { Command = reverse[i].CommandName, Response = response });
 
                     // Broadcase the response to all listeners.
                     Broadcast(response);
@@ -206,27 +206,28 @@ namespace sharpbox.Dispatch
         public T Process<T>(RoutineNames routineName, string message, object[] args)
         {
             var result = default(T);
-
-            foreach (var r in _routineHub[routineName])
+            var routine = _routineHub[routineName].ToList();
+            
+            for (var i = 0; i < routine.Count; i++)
             {
                 try
                 {
-                    result = ProcessRoutineAction<T>(routineName, r, message, args);
+                    result = ProcessRoutineAction<T>(routineName, routine[i], message + "(Routine: " + routineName + ")(" + (i + 1) + "/" + routine.Count + ")", args);
                 }
                 catch (Exception ex)
                 {
-                    var request= Request.Create(r.CommandName, r.BroadCastMessage + "[Routine: " + routineName + "]", args);
+                    var request = Request.Create(routine[i].CommandName, routine[i].BroadCastMessage, args);
                     var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
 
                     try
                     {
                         // If we have a fail over action then try it.
-                        if (r.FailOver != null)
+                        if (routine[i].FailOver != null)
                         {
 
                             try
                             {
-                                result = ProcessFailOver<T>(routineName, request, exResponseUniqueKey, r, args);
+                                result = ProcessFailOver<T>(routineName, request, exResponseUniqueKey, routine[i], args);
                             }
                             catch (Exception failOverException)
                             {
@@ -348,7 +349,7 @@ namespace sharpbox.Dispatch
 
         private T ProcessFailOver<T>(RoutineNames routineName, Request request, Guid exResponseUniqueKey, RoutineItem r, object[] args)
         {
-
+            request.Message = request.Message + "(Failed)";
             var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Exception Response Key: + " + exResponseUniqueKey + "] [Executing Failover Method: " + r.FailOver.Method.Name + "]", ResponseTypes.Success);
 
             var result = (T)r.FailOver.DynamicInvoke(args);
