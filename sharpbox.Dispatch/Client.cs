@@ -175,7 +175,7 @@ namespace sharpbox.Dispatch
                     // Broadcase the response to all listeners.
                     Broadcast(response);
                 }
-                catch (Exception rollbackException)
+                catch (TargetInvocationException rollbackException)
                 {
                     BroadCastExceptionResponse(rollbackException, request);
 
@@ -297,11 +297,10 @@ namespace sharpbox.Dispatch
         }
 
         /// <summary>
-        /// A factored out helper for anytime an exception needs to be broadcsat. Used in methods that have a request available.
+        /// A factored out helper for anytime an exception needs to be broadcsat. Also adds the failed request/response to the command stream.
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="request"></param>
-        /// <param name="message"></param>
         /// <returns></returns>
         private Guid BroadCastExceptionResponse(Exception ex, Request request)
         {
@@ -310,7 +309,7 @@ namespace sharpbox.Dispatch
                 Entity = ex,
                 Type = ex.GetType(),
                 EventName = EventNames.OnException,
-                Message = string.Format("{0} [Request Id: {1} ] - '{2}'", ex.Message, request.RequestUniqueKey, request.Message),
+                Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null)? ex.Message : ex.InnerException.Message, request.RequestUniqueKey),
                 RequestId = request.RequestId,
                 RequestUniqueKey = request.RequestUniqueKey,
                 Request = request,
@@ -349,12 +348,14 @@ namespace sharpbox.Dispatch
 
         private T ProcessFailOver<T>(RoutineNames routineName, Request request, Guid exResponseUniqueKey, RoutineItem r, object[] args)
         {
-            request.Message = request.Message + "(Failed)";
-            var response = new Response(request, request.Message + "[Routine: " + routineName + "] [Exception Response Key: + " + exResponseUniqueKey + "] [Executing Failover Method: " + r.FailOver.Method.Name + "]", ResponseTypes.Success);
+            request.Message = request.Message; 
+            var response = new Response(request, "", ResponseTypes.Success);
 
             var result = (T)r.FailOver.DynamicInvoke(args);
             response.Entity = result;
+            response.Type = result.GetType();
             response.EventName = r.EventName;
+            response.Message = "[Executing Failover Method: " + r.FailOver.Method.Name + "]" + String.Format(ResponseMessage, "N/A", r.Action.Method.Name, response.Type.Name);
 
             CommandStream.Enqueue(new CommandStreamItem()
             {
