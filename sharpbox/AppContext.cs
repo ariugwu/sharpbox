@@ -9,9 +9,9 @@ using sharpbox.Notification.Model;
 namespace sharpbox
 {
     [Serializable]
-  public abstract class BaseMediator
+  public abstract class AppContext
   {
-    protected BaseMediator(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy)
+    protected AppContext(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy)
     {
       Dispatch = new Client();
       Email = new Email.Client(smtpClient);
@@ -28,7 +28,7 @@ namespace sharpbox
 
     }
 
-    protected BaseMediator()
+    protected AppContext()
     {
       Dispatch = new Client();
     }

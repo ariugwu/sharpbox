@@ -19,10 +19,13 @@ namespace sharpbox.Notification
         }
 
         private Email.Client _emailClient;
-        private Dictionary<EventNames, List<string>> _subscribers;
+        private Dictionary<string, List<string>> _subscribers;
         private List<BackLogItem> _backLog;
 
-        public Dictionary<EventNames, List<string>> Subscribers { get { return _subscribers ?? (_subscribers = new Dictionary<EventNames, List<string>>()); } set { _subscribers = value; } }
+        /// <summary>
+        /// Use the string value of the EventName as the key. The object is to complicated to ensure comparing against values easy. Specifically code first. (e.g - If the Id is set in one and not the other there's no match)
+        /// </summary>
+        public Dictionary<string, List<string>> Subscribers { get { return _subscribers ?? (_subscribers = new Dictionary<string, List<string>>()); } set { _subscribers = value; } }
 
         public List<BackLogItem> BackLog { get { return _backLog ?? (_backLog = new List<BackLogItem>()); } set { _backLog = value; } }
 
@@ -33,10 +36,10 @@ namespace sharpbox.Notification
         /// <param name="response"></param>
         public void ProcessEvent(Response response)
         {
-            if (!Subscribers.ContainsKey(response.EventName)) return; // Bail early if there are no subscribers.
+            if (!Subscribers.ContainsKey(response.EventName.Name)) return; // Bail early if there are no subscribers.
 
             // Run through all of the subscribers for this publisher and generate a backlog item for them.
-            foreach (var s in Subscribers[response.EventName])
+            foreach (var s in Subscribers[response.EventName.Name])
             {
                 // Add the backlog item
                 var bli = new BackLogItem
@@ -89,8 +92,8 @@ namespace sharpbox.Notification
 
         public Subscriber AddSub(Subscriber subscriber)
         {
-            if (!Subscribers.ContainsKey(subscriber.EventName)) Subscribers.Add(subscriber.EventName, new List<string>());
-            Subscribers[subscriber.EventName].Add(subscriber.UserId);
+            if (!Subscribers.ContainsKey(subscriber.EventName.Name)) Subscribers.Add(subscriber.EventName.Name, new List<string>());
+            Subscribers[subscriber.EventName.Name].Add(subscriber.UserId);
 
             return subscriber;
         }

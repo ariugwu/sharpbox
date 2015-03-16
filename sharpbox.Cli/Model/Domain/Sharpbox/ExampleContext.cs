@@ -11,14 +11,14 @@ using sharpbox.Notification.Model;
 namespace sharpbox.Cli.Model.Domain.Sharpbox
 {
     [Serializable]
-    public class ExampleMediator : BaseMediator
+    public class ExampleContext : AppContext
     {
         /// <summary>
         /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
         /// </summary>
         /// <param name="userIdentity">Example of something you might want encapulated and updated.</param>
         /// <param name="smtpClient">Powers the email client.</param>
-        public ExampleMediator(string userIdentity, SmtpClient smtpClient)
+        public ExampleContext(string userIdentity, SmtpClient smtpClient)
             : base()
         {
             UserId = userIdentity;
@@ -53,7 +53,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
         public void WireUpCommandHubItems()
         {
             // Setup what a command should do and who it should broadcast to when it's done
-            Dispatch.Register<String>(ExampleMediator.UserChange, ChangeUser, ExampleMediator.OnUserChange);
+            Dispatch.Register<String>(ExampleContext.UserChange, ChangeUser, ExampleContext.OnUserChange);
             Dispatch.Register<BackLogItem>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.SendNotification, Notification.Notify, sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationNotify);
             Dispatch.Register<Subscriber>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, Notification.AddSub, sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationAddSubScriber);
             Dispatch.Register<MailMessage>(sharpbox.Email.Domain.Dispatch.EmailCommands.SendEmail, SendEmail, sharpbox.Email.Domain.Dispatch.EmailEvents.OnEmailSend);
@@ -66,9 +66,9 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
         {
             // Let's try a routine
             // Our first routine item will feed a string argument to the UserChange method, broadcast the event through the OnUserChange channel
-            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUser, null, null);
-            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUserStep2, ChangeUserStep2FailOver, null);
-            Dispatch.Register<string>(RoutineNames.Example, ExampleMediator.UserChange, ExampleMediator.OnUserChange, ChangeUserStep3, null, null);
+            Dispatch.Register<string>(RoutineNames.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUser, null, null);
+            Dispatch.Register<string>(RoutineNames.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep2, ChangeUserStep2FailOver, null);
+            Dispatch.Register<string>(RoutineNames.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep3, null, null);
         }
 
         public void WireUpListeners()

@@ -19,7 +19,7 @@ namespace sharpbox.Cli
             // In this case we'll be using our extended list (defined in this project) and show how that can naturally hook into whatever events you want to register.
             var smtpClient = new SmtpClient("smtp.google.com", 587);
 
-            var example = new ExampleMediator("ugwua", smtpClient);
+            var example = new ExampleContext("ugwua", smtpClient);
 
             // Create a response object we can repopulate after each request.
             Response response = null;
@@ -33,7 +33,7 @@ namespace sharpbox.Cli
             // Give the notification a subscriber. Now whenever this event is broadcast a backlog message will be created for me.
             Console.WriteLine("In our configuration we added a listener to the 'AddNotificationSubscriber' event. So we're able to have Notification listen to all events, but also add other listers to specific Notification events:");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
-            response = example.Dispatch.Process<Subscriber>(Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, "Adding a subcriber to OnUserChange.", new object[] { new Subscriber(ExampleMediator.OnUserChange, "ugwua") });
+            response = example.Dispatch.Process<Subscriber>(Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, "Adding a subcriber to OnUserChange.", new object[] { new Subscriber(ExampleContext.OnUserChange, "ugwua") });
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
@@ -47,7 +47,7 @@ namespace sharpbox.Cli
 
             var newUserId = Console.ReadLine();
             Console.WriteLine(); 
-            response = example.Dispatch.Process<String>(ExampleMediator.UserChange, "Changing the userid", new object[] { newUserId });
+            response = example.Dispatch.Process<String>(ExampleContext.UserChange, "Changing the userid", new object[] { newUserId });
             
             Console.WriteLine("Current UserId is now.: " + example.UserId);
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
@@ -61,7 +61,7 @@ namespace sharpbox.Cli
             var randomText = Console.ReadLine();
             Console.WriteLine(); Console.WriteLine();
 
-            response = example.Dispatch.Process<FileDetail>(ExampleMediator.WriteARandomFile, "Example from the CLI project of writing a file.", new object[] { new FileDetail() { FilePath = "Random.txt", Data = System.Text.Encoding.UTF8.GetBytes(randomText) } });
+            response = example.Dispatch.Process<FileDetail>(ExampleContext.WriteARandomFile, "Example from the CLI project of writing a file.", new object[] { new FileDetail() { FilePath = "Random.txt", Data = System.Text.Encoding.UTF8.GetBytes(randomText) } });
 
             // Notification: Fails and this is intentional as their isn't a proper email client, but shows us what happens when a command fails.
             // response = example.Dispatch.Process<List<BackLogItem>>(ExtendedCommandNames.SendNotification, "Sending out backlogitem", new object[] { example.Notification.BackLog.First() });
@@ -77,7 +77,7 @@ namespace sharpbox.Cli
 
             var trail = new List<Response>();
             trail.AddRange(example.Audit.Trail);
-            example.Dispatch.Process<List<Response>>(ExampleMediator.WriteAuditTrailToDisk, "Writing the current audit trail to a binary file", new object[] { trail });
+            example.Dispatch.Process<List<Response>>(ExampleContext.WriteAuditTrailToDisk, "Writing the current audit trail to a binary file", new object[] { trail });
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
