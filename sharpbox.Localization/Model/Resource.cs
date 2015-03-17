@@ -16,5 +16,7 @@ namespace sharpbox.Localization.Model
         /// @SEE: http://www.csharp-examples.net/culture-names/
         /// </summary>
         public string CultureCode { get; set; }
+
+        public int ResourceNameId { get; set; }
     }
 }

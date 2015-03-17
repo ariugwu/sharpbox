@@ -25,9 +25,13 @@ namespace sharpbox.EfCodeFirst.Localization
         {
             modelBuilder.Entity<Resource>().HasKey(p => p.ResourceId);
             modelBuilder.Entity<Resource>().Property(x => x.ResourceId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Resource>().Property(x => x.ResourceId).HasColumnOrder(0);
+            modelBuilder.Entity<Resource>().HasKey(p => p.ResourceNameId);
+            modelBuilder.Entity<Resource>().Property(x => x.ResourceNameId).HasColumnOrder(1);
+            modelBuilder.Entity<Resource>().ToTable("Resource", schemaName: "Localization");
+
             modelBuilder.Entity<ResourceNames>().HasKey(x => x.ResourceNamesId);
             modelBuilder.Entity<ResourceNames>().Property(x => x.ResourceNamesId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<Resource>().ToTable("Resource", schemaName: "Localization");
             modelBuilder.Entity<ResourceNames>().ToTable("ResourceNames", schemaName: "Localization");
         }
     }

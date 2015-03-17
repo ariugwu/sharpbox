@@ -6,8 +6,12 @@ namespace sharpbox.Localization.Model
     [Serializable]
     public class ResourceNames : EnumPattern
     {
-        public ResourceNames(string value) : base(value) { }
+        public ResourceNames(string value) : base(value)
+        {
+            Name = value;
+        }
 
         public int ResourceNamesId { get; set; }
+        public string Name { get; set; }
     }
 }
