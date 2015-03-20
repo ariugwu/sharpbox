@@ -4,8 +4,10 @@ namespace sharpbox.Localization.Model
     [Serializable]
     public class Resource
     {
+        public Resource() { }
+
         public int ResourceId { get; set; }
-        public ResourceNames Name { get; set; }
+        public ResourceName ResourceName { get; set; }
         public string Value { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDateTime { get; set; }
@@ -17,6 +19,5 @@ namespace sharpbox.Localization.Model
         /// </summary>
         public string CultureCode { get; set; }
 
-        public int ResourceNameId { get; set; }
     }
 }

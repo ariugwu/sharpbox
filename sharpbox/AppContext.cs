@@ -33,7 +33,7 @@ namespace sharpbox
       Dispatch = new Client();
     }
 
-    public Dictionary<ResourceNames, string> Resources { get; set; }
+    public Dictionary<ResourceName, string> Resources { get; set; }
 
     public Client Dispatch { get; set; }
     public Notification.Client Notification { get; set; } // A dispatch friendly notification system.
