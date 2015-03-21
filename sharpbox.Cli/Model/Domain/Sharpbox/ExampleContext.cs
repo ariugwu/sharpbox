@@ -42,18 +42,24 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
         public static readonly EventNames Write = new EventNames("OnUserChange");
         public static readonly EventNames OnRandomFileWritten = new EventNames("OnRandomFileWritten");
         public static readonly EventNames OnWriteAuditTrailToDisk = new EventNames("OnWriteAuditTrailToDisk");
+        public static readonly EventNames OnDummyPassThroughCommand = new EventNames("OnDummyPassThroughCommand");
         #endregion
 
         #region Domain Specific Commands(s)
         public static readonly CommandNames UserChange = new CommandNames("ChangeUser");
         public static readonly CommandNames WriteARandomFile = new CommandNames("WriteARandomFile");
         public static readonly CommandNames WriteAuditTrailToDisk = new CommandNames("WriteAuditTrailToDisk");
+        public static readonly CommandNames DummyPassThroughCommand = new CommandNames("DummyPassThroughCommand");
         #endregion
                 
         public void WireUpCommandHubItems()
         {
             // Setup what a command should do and who it should broadcast to when it's done
             Dispatch.Register<String>(ExampleContext.UserChange, ChangeUser, ExampleContext.OnUserChange);
+
+            // We use this command to showcase how you can wire up existing code that you want audited, or otherwise a part of the command stream but not necessarily processed.
+            Dispatch.Register<String>(ExampleContext.DummyPassThroughCommand, (value) => value, ExampleContext.OnDummyPassThroughCommand);
+
             Dispatch.Register<BackLogItem>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.SendNotification, Notification.Notify, sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationNotify);
             Dispatch.Register<Subscriber>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, Notification.AddSub, sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationAddSubScriber);
             Dispatch.Register<MailMessage>(sharpbox.Email.Domain.Dispatch.EmailCommands.SendEmail, SendEmail, sharpbox.Email.Domain.Dispatch.EmailEvents.OnEmailSend);

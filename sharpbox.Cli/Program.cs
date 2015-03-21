@@ -30,8 +30,24 @@ namespace sharpbox.Cli
             Console.ReadKey();
             Console.Clear();
 
+            Console.WriteLine("Example 1: let's change the user id");
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            // Next we're going to try the user change command we registered in the mediator.
+            Console.WriteLine("Current UserId: " + example.UserId);
+            Console.WriteLine("Please input a new User Id: ");
+
+            var newUserId = Console.ReadLine();
+            Console.WriteLine();
+            response = example.Dispatch.Process<String>(ExampleContext.UserChange, "Changing the userid", new object[] { newUserId });
+
+            Console.WriteLine("Current UserId is now.: " + example.UserId);
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine("Press any key to continue....");
+            Console.ReadKey();
+            Console.Clear();
+
             // Give the notification a subscriber. Now whenever this event is broadcast a backlog message will be created for me.
-            Console.WriteLine("In our configuration we added a listener to the 'AddNotificationSubscriber' event. So we're able to have Notification listen to all events, but also add other listers to specific Notification events:");
+            Console.WriteLine("Example 2: In our configuration we added a listener to the 'AddNotificationSubscriber' event. So we're able to have Notification listen to all events, but also add other listers to specific Notification events:");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             response = example.Dispatch.Process<Subscriber>(Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, "Adding a subcriber to OnUserChange.", new object[] { new Subscriber(ExampleContext.OnUserChange, "ugwua") });
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
@@ -39,23 +55,7 @@ namespace sharpbox.Cli
             Console.ReadKey();
             Console.Clear();
 
-            Console.WriteLine("Now let's change the user id");
-            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
-            // Next we're going to try the user change command we registered in the mediator.
-            Console.WriteLine("Current UserId: " + example.UserId);
-            Console.WriteLine("Please input a new User Id: ");
-
-            var newUserId = Console.ReadLine();
-            Console.WriteLine(); 
-            response = example.Dispatch.Process<String>(ExampleContext.UserChange, "Changing the userid", new object[] { newUserId });
-            
-            Console.WriteLine("Current UserId is now.: " + example.UserId);
-            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
-            Console.WriteLine("Press any key to continue....");
-            Console.ReadKey();
-            Console.Clear();
-
-            Console.WriteLine("Next will test out writing some text to a file. ");
+            Console.WriteLine("Example 3: Next will test out writing some text to a file. ");
             Console.WriteLine("Please input a string to save to a file named 'foo.txt': ");
 
             var randomText = Console.ReadLine();
@@ -72,7 +72,7 @@ namespace sharpbox.Cli
             Console.ReadKey();
             Console.Clear();
 
-            Console.WriteLine("Example of writing an object to a file. We should see a broad cast anouncement below:");
+            Console.WriteLine("Example 4: Example of writing an object to a file. In this case we've decided to persist our current audit trail. We should see a broad cast anouncement below:");
             Console.WriteLine(); Console.WriteLine();
 
             var trail = new List<Response>();
@@ -83,7 +83,7 @@ namespace sharpbox.Cli
             Console.ReadKey();
             Console.Clear();
 
-            Console.WriteLine("Okay. Now let's output the command stream and see how it what it looks like.");
+            Console.WriteLine("Example 5: Okay. Now let's output the command stream and see how it what it looks like.");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
@@ -94,7 +94,7 @@ namespace sharpbox.Cli
             Console.ReadKey();
             Console.Clear();
 
-            Console.WriteLine("Next we'll take a look at what notification/audit information we've collected. Remember that subscriber we added earlier to OnUserChange?");
+            Console.WriteLine("Example 6: Next we'll take a look at what notification/audit information we've collected. Remember that subscriber we added earlier to OnUserChange?");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
@@ -113,7 +113,7 @@ namespace sharpbox.Cli
             Console.Clear();
 
             // Process a routine
-            Console.WriteLine("Now we're going to process a routine. This is a chain of events that will run from start to finish syncronously. After which we'll out put the command stream again.");
+            Console.WriteLine("Example 7: Now we're going to process a routine. This is a chain of events that will run from start to finish syncronously. After which we'll out put the command stream again.");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
@@ -129,6 +129,12 @@ namespace sharpbox.Cli
             Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("The final value returned is : {0} which should equal the current value in the Example class: '{1}'", finalVersionOfUserId, example.UserId);
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+
+            Console.WriteLine("Example 8: You also have the option to use a built in stub method for legacy code. This allows you to pass values through the dispatcher solely to record them. In this case we're just passing a string:");
+            Console.WriteLine(); Console.WriteLine();
+            response = example.Dispatch.Process<string>(ExampleContext.DummyPassThroughCommand, "Just passing a value I want recorded in context of the command/event stream", new object[] { "Some text" });
+            Console.WriteLine(); Console.WriteLine();
+
             Console.WriteLine("Press any key to see the new command stream. NOTE: Audit carries the same information in a different composition. The difference is the command stream is always avaialble regardless of audit implementation.");
             Console.ReadKey();
             Console.Clear();
