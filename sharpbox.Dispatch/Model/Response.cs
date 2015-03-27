@@ -16,9 +16,13 @@ namespace sharpbox.Dispatch.Model
             RequestUniqueKey = request.RequestUniqueKey;
             Request = request;
             ResponseType = responseType;
+            CreatedDate = DateTime.Now;
         }
 
-        public Response() { }
+        public Response() 
+        {
+            CreatedDate = DateTime.Now;        
+        }
 
         public int ResponseId { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
 
@@ -38,5 +42,7 @@ namespace sharpbox.Dispatch.Model
         public Guid RequestUniqueKey { get; set; }
         public Request Request { get; set; }
         public string UserId { get; set;}
+
+        public DateTime CreatedDate { get; set; }
     }
 }

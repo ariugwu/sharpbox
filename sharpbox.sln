@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{528C028D-4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{FD958131-0183-4EAD-9B55-AD1607B4B829}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StarterProjects", "StarterProjects", "{D6D43F3D-E1D4-41B6-A60B-499C3BD96F7E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Cli", "sharpbox.Cli\sharpbox.Cli.csproj", "{E02A267E-2E9F-4BD0-A3DE-4C2859896BB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Intranet", "sharpbox.Intranet\sharpbox.Intranet.csproj", "{A397CEE4-E7AE-46B5-86E9-191A1C6DB2A3}"
