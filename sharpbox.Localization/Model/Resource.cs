@@ -20,5 +20,6 @@ namespace sharpbox.Localization.Model
         /// </summary>
         public string CultureCode { get; set; }
 
+        public Guid ApplicationId { get; set; }
     }
 }
