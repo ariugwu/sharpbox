@@ -45,6 +45,6 @@ namespace sharpbox.Dispatch.Model
 
         public DateTime CreatedDate { get; set; }
 
-        public Guid ApplicationId { get; set; }
+        public Guid? ApplicationId { get; set; }
     }
 }

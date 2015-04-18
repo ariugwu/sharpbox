@@ -21,6 +21,6 @@ namespace sharpbox.Notification.Model
         public EventNames EventName { get; set; }
         public string UserId { get; set; }
 
-        public Guid ApplicationId { get; set; }
+        public Guid? ApplicationId { get; set; }
     }
 }

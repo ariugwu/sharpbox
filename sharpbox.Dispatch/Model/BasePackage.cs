@@ -10,6 +10,8 @@ namespace sharpbox.Dispatch.Model
     [Serializable]
     public abstract class BasePackage
     {
+        private string _serializedType;
+        private string _serializedEntity;
 
         public object Entity { get; set; }
 
@@ -22,13 +24,14 @@ namespace sharpbox.Dispatch.Model
         /// </summary>
         public string SerializedEntity
         {
-            get { return JsonConvert.SerializeObject(Entity); }
+            get
+            {
+                return _serializedEntity ?? (_serializedEntity = JsonConvert.SerializeObject(Entity));
+            }
 
             set
             {
-                if (string.IsNullOrEmpty(value)) return;
-                var entity = JsonConvert.DeserializeObject<object>(value);
-                Entity = entity;
+                _serializedEntity = value;
             }
         }
 
@@ -39,15 +42,29 @@ namespace sharpbox.Dispatch.Model
         {
             get
             {
-                return JsonConvert.SerializeObject(this.Type);
+                return _serializedType ?? (_serializedType = JsonConvert.SerializeObject(this.Type));
             }
 
             set
             {
-                if (string.IsNullOrEmpty(value)) return;
-                var type = JsonConvert.DeserializeObject<System.Type>(value);
-                Type = type;
+                _serializedType = value;
             }
         }
+
+        public void DeserializeEntity()
+        {
+            if (string.IsNullOrEmpty(_serializedEntity)) return;
+            var entity = JsonConvert.DeserializeObject<object>(_serializedEntity);
+            Entity = entity;
+        }
+
+        public void DeserializeEntityType()
+        {
+            if (string.IsNullOrEmpty(_serializedType)) return;
+            var type = JsonConvert.DeserializeObject<System.Type>(_serializedType);
+            Type = type;
+        }
+
+
     }
 }

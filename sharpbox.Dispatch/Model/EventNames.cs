@@ -22,6 +22,6 @@ namespace sharpbox.Dispatch.Model
         public int EventNameId { get; set; }
         public string Name { get; set; }
 
-        public Guid ApplicationId { get; set; }
+        public Guid? ApplicationId { get; set; }
     }
 }

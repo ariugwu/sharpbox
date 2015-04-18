@@ -30,7 +30,7 @@ namespace sharpbox.Notification.Model
 
         public string Message { get; set; }
 
-        public Guid ApplicationId { get; set; }
+        public Guid? ApplicationId { get; set; }
 
     }
 }

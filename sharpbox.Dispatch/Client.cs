@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Dispatch
@@ -104,11 +105,11 @@ namespace sharpbox.Dispatch
         }
 
         /// <summary>
-        /// Ensure the key exists, add the response to the Event stream. Cycle through all the subscribers and fire off the associated action.
+        /// Async method. Will await the registered method so the call returns immediately. Ensure the key exists, add the response to the Event stream. Cycle through all the subscribers and fire off the associated action.
         /// @SEE: For the apparoch to catch Target Invocation exceptions -> http://csharptest.net/350/throw-innerexception-without-the-loosing-stack-trace/
         /// </summary>
         /// <param name="response">The changed object, the original request, and other useful data is packaged in this object for easy sharing.</param>
-        public void Broadcast(Response response)
+        public async void Broadcast(Response response)
         {
 
             // Go through each method that wants to 'trace' all events in the system
@@ -116,7 +117,11 @@ namespace sharpbox.Dispatch
             {
                 try
                 {
-                    t.Invoke(response);
+                    var t1 = t;
+                    await new Task(() =>
+                    {
+                        t1.Invoke(response);
+                    });
                 }
                 catch (TargetInvocationException ex)
                 {
@@ -207,7 +212,7 @@ namespace sharpbox.Dispatch
         {
             var result = default(T);
             var routine = _routineHub[routineName].ToList();
-            
+
             for (var i = 0; i < routine.Count; i++)
             {
                 try
@@ -251,11 +256,6 @@ namespace sharpbox.Dispatch
             return result;
         }
 
-        /// <summary>
-        /// Ensure the key exists. Fire off the action associated with this request's command.
-        /// @SEE: For the apparoch to catch Target Invocation exceptions -> http://csharptest.net/350/throw-innerexception-without-the-loosing-stack-trace/
-        /// </summary>
-        /// <exception cref="KeyNotFoundException"></exception>
         public Response Process<T>(CommandNames commandName, string message, object[] args)
         {
             var request = Request.Create(commandName, message, args);
@@ -297,19 +297,37 @@ namespace sharpbox.Dispatch
         }
 
         /// <summary>
-        /// A factored out helper for anytime an exception needs to be broadcsat. Also adds the failed request/response to the command stream.
+        /// This method is for users calling methods outside of the dispatcher but still want to listen in the command stack and audits. The caller given a response and is responsible for error handling.
+        /// </summary>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public Response ProcessForCommandStreamONly<T>(CommandNames commandName, string message, object[] args)
+        {
+            var request = Request.Create(commandName, message, args);
+            var response = new Response(request, request.Message, ResponseTypes.Success);
+
+            request.Action = _commandHub[request.CommandName].Action;
+
+            // Add The incoming request and out going response to the command stream.
+            CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Response = response });
+
+            return response;
+
+        }
+
+        /// <summary>
+        /// A factored out helper for anytime an exception needs to be broadcsat. Also adds the failed request/response to the command stream. NOTE: Should also be used PostProcess calls outside of the dispatcher to log and broadcast errors.
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        private Guid BroadCastExceptionResponse(Exception ex, Request request)
+        public Guid BroadCastExceptionResponse(Exception ex, Request request)
         {
             var exResponse = new Response
             {
                 Entity = ex,
                 Type = ex.GetType(),
                 EventName = EventNames.OnException,
-                Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null)? ex.Message : ex.InnerException.Message, request.RequestUniqueKey),
+                Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null) ? ex.Message : ex.InnerException.Message, request.RequestUniqueKey),
                 RequestId = request.RequestId,
                 RequestUniqueKey = request.RequestUniqueKey,
                 Request = request,
@@ -348,7 +366,7 @@ namespace sharpbox.Dispatch
 
         private T ProcessFailOver<T>(RoutineNames routineName, Request request, Guid exResponseUniqueKey, RoutineItem r, object[] args)
         {
-            request.Message = request.Message; 
+            request.Message = request.Message;
             var response = new Response(request, "", ResponseTypes.Success);
 
             var result = (T)r.FailOver.DynamicInvoke(args);
