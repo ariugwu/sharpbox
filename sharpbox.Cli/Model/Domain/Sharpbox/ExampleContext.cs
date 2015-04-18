@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Net.Mail;
+using sharpbox.Dispatch;
 using sharpbox.Dispatch.Model;
 using sharpbox.EfCodeFirst.Audit;
 using sharpbox.EfCodeFirst.Notification;
@@ -21,6 +22,9 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
         public ExampleContext(string userIdentity, SmtpClient smtpClient)
             : base()
         {
+
+            Dispatch = new Client();
+
             UserId = userIdentity;
 
             Email = new Email.Client(smtpClient);

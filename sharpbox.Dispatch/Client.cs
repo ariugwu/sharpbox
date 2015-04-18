@@ -80,6 +80,19 @@ namespace sharpbox.Dispatch
             }
         }
 
+        public void Register<T>(CommandNames commandName, Delegate action, EventNames eventName)
+        {
+            try
+            {
+                _commandHub.Add(commandName, new CommandHubItem { Action = action, EventName = eventName }); // wireup the action associated with this command, and the event channel to broadcast to when this command is processed.
+            }
+            catch (Exception ex)
+            {
+                var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
+            }
+        }
+
         /// <summary>
         /// Register with the routine hub, which is used to chain command actions and provide failover and rollback options
         /// </summary>
@@ -297,24 +310,6 @@ namespace sharpbox.Dispatch
         }
 
         /// <summary>
-        /// This method is for users calling methods outside of the dispatcher but still want to listen in the command stack and audits. The caller given a response and is responsible for error handling.
-        /// </summary>
-        /// <exception cref="KeyNotFoundException"></exception>
-        public Response ProcessForCommandStreamONly<T>(CommandNames commandName, string message, object[] args)
-        {
-            var request = Request.Create(commandName, message, args);
-            var response = new Response(request, request.Message, ResponseTypes.Success);
-
-            request.Action = _commandHub[request.CommandName].Action;
-
-            // Add The incoming request and out going response to the command stream.
-            CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Response = response });
-
-            return response;
-
-        }
-
-        /// <summary>
         /// A factored out helper for anytime an exception needs to be broadcsat. Also adds the failed request/response to the command stream. NOTE: Should also be used PostProcess calls outside of the dispatcher to log and broadcast errors.
         /// </summary>
         /// <param name="ex"></param>
@@ -397,6 +392,5 @@ namespace sharpbox.Dispatch
         {
             if (!_routineHub.ContainsKey(routineName)) _routineHub.Add(routineName, new Queue<RoutineItem>());
         }
-
     }
 }

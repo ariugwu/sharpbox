@@ -24,6 +24,10 @@ namespace sharpbox.Cli
             // Create a response object we can repopulate after each request.
             Response response = null;
 
+            var commandname = new CommandNames("SomethignInLine");
+            example.Dispatch.Register<string>(commandname, new Func<int, string, string, string>(TestOfDelegateRegistration), new EventNames("OnSomethingInLine"));
+            response = example.Dispatch.Process<string>(commandname, "TEST", new object[] {1, "adfajd", "adfjsadl"});
+            
             Console.WriteLine("Our first task will be to add a listener to the 'OnUserChange' event. This means that whenver the user is changed within the system our subscriber will get a message added to the backlog.");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
@@ -153,6 +157,10 @@ namespace sharpbox.Cli
             Console.ReadLine();
         }
 
+        public static string TestOfDelegateRegistration(int foo, string bar, string booya)
+        {
+            return String.Format("{0}-{1}-{2}", foo, bar, booya);
+        }
 
     }
 }
