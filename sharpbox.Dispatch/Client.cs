@@ -269,6 +269,14 @@ namespace sharpbox.Dispatch
             return result;
         }
 
+        /// <summary>
+        /// Fires off the action associated with this command. T is the returning type. You can register your command with a Func that takes and returns T, or an inline func that takes any number of parameters to be passed in here. However, the return time must match T (always).
+        /// </summary>
+        /// <typeparam name="T">The return type and possibly also the sole parameter.</typeparam>
+        /// <param name="commandName">The command name is look up the registered delegate/func/action with.</param>
+        /// <param name="message">The message you would like associated with this requested and stored in the audit log.</param>
+        /// <param name="args">The arguments to pass to your registered delegate/func/action.</param>
+        /// <returns></returns>
         public Response Process<T>(CommandNames commandName, string message, object[] args)
         {
             var request = Request.Create(commandName, message, args);

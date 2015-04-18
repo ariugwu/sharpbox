@@ -23,10 +23,6 @@ namespace sharpbox.Cli
 
             // Create a response object we can repopulate after each request.
             Response response = null;
-
-            var commandname = new CommandNames("SomethignInLine");
-            example.Dispatch.Register<string>(commandname, new Func<int, string, string, string>(TestOfDelegateRegistration), new EventNames("OnSomethingInLine"));
-            response = example.Dispatch.Process<string>(commandname, "TEST", new object[] {1, "adfajd", "adfjsadl"});
             
             Console.WriteLine("Our first task will be to add a listener to the 'OnUserChange' event. This means that whenver the user is changed within the system our subscriber will get a message added to the backlog.");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
@@ -138,6 +134,14 @@ namespace sharpbox.Cli
             Console.WriteLine(); Console.WriteLine();
             response = example.Dispatch.Process<string>(ExampleContext.DummyPassThroughCommand, "Just passing a value I want recorded in context of the command/event stream", new object[] { "Some text" });
             Console.WriteLine(); Console.WriteLine();
+            Console.ReadKey();
+            Console.Clear();
+
+            Console.WriteLine("Example 9: You can register any method by passing in a func. However, The return type must always be specificed and can only be a single object.");
+            Console.WriteLine(); Console.WriteLine();
+            var commandname = new CommandNames("SomethignInLine");
+            example.Dispatch.Register<string>(commandname, new Func<int, string, string, string>(TestOfDelegateRegistration), new EventNames("OnSomethingInLine"));
+            response = example.Dispatch.Process<string>(commandname, "TEST", new object[] { 1, "adfajd", "adfjsadl" });
 
             Console.WriteLine("Press any key to see the new command stream. NOTE: Audit carries the same information in a different composition. The difference is the command stream is always avaialble regardless of audit implementation.");
             Console.ReadKey();
