@@ -118,11 +118,11 @@ namespace sharpbox.Dispatch
         }
 
         /// <summary>
-        /// Async method. Will await the registered method so the call returns immediately. Ensure the key exists, add the response to the Event stream. Cycle through all the subscribers and fire off the associated action.
+        /// Will await the registered method so the call returns immediately. Ensure the key exists, add the response to the Event stream. Cycle through all the subscribers and fire off the associated action.
         /// @SEE: For the apparoch to catch Target Invocation exceptions -> http://csharptest.net/350/throw-innerexception-without-the-loosing-stack-trace/
         /// </summary>
         /// <param name="response">The changed object, the original request, and other useful data is packaged in this object for easy sharing.</param>
-        public async void Broadcast(Response response)
+        public void Broadcast(Response response)
         {
 
             // Go through each method that wants to 'trace' all events in the system
@@ -130,11 +130,7 @@ namespace sharpbox.Dispatch
             {
                 try
                 {
-                    var t1 = t;
-                    await new Task(() =>
-                    {
-                        t1.Invoke(response);
-                    });
+                    t.Invoke(response);
                 }
                 catch (TargetInvocationException ex)
                 {

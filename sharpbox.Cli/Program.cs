@@ -122,18 +122,18 @@ namespace sharpbox.Cli
             Console.WriteLine("Note: We baked in an exception on purpose to test the ability register and automatically call failover methods. The exceptio should display below:");
             Console.WriteLine(); Console.WriteLine();
             var finalVersionOfUserId = example.Dispatch.Process<string>(RoutineNames.Example, "Changing the name using a routine.", new object[] { "johnsont" });
-            Console.WriteLine(); Console.WriteLine();
-
-            Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("We chose to pass a user name through 3 different changes. One of them had an error and a failover method was executed.");
-            Console.WriteLine(); Console.WriteLine();
-            Console.WriteLine("The final value returned is : {0} which should equal the current value in the Example class: '{1}'", finalVersionOfUserId, example.UserId);
+            Console.WriteLine("The final value returned is : \"{0}\" which should equal the current value in the Example class: \"{1}\"", finalVersionOfUserId, example.UserId);
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine("Press any key to continue....");
+            Console.ReadKey();
+            Console.Clear();
 
-            Console.WriteLine("Example 8: You also have the option to use a built in stub method for legacy code. This allows you to pass values through the dispatcher solely to record them. In this case we're just passing a string:");
+            Console.WriteLine("Example 8: You also have the option to use an anonymous delegate. This allows you to pass values through the dispatcher solely to record them. In this case we're just passing a string:");
             Console.WriteLine(); Console.WriteLine();
             response = example.Dispatch.Process<string>(ExampleContext.DummyPassThroughCommand, "Just passing a value I want recorded in context of the command/event stream", new object[] { "Some text" });
-            Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
             Console.Clear();
 
@@ -142,6 +142,10 @@ namespace sharpbox.Cli
             var commandname = new CommandNames("SomethignInLine");
             example.Dispatch.Register<string>(commandname, new Func<int, string, string, string>(TestOfDelegateRegistration), new EventNames("OnSomethingInLine"));
             response = example.Dispatch.Process<string>(commandname, "TEST", new object[] { 1, "adfajd", "adfjsadl" });
+            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
+            Console.WriteLine("Press any key to continue....");
+            Console.ReadKey();
+            Console.Clear();
 
             Console.WriteLine("Press any key to see the new command stream. NOTE: Audit carries the same information in a different composition. The difference is the command stream is always avaialble regardless of audit implementation.");
             Console.ReadKey();
