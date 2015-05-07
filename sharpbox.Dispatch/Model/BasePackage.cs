@@ -26,7 +26,8 @@ namespace sharpbox.Dispatch.Model
         {
             get
             {
-                return _serializedEntity ?? (_serializedEntity = JsonConvert.SerializeObject(Entity));
+                var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects}; // Prevent circular reference errors with EF objects and other one-to-many relationships
+                return _serializedEntity ?? (_serializedEntity = JsonConvert.SerializeObject(Entity,serializerSettings));
             }
 
             set
@@ -42,7 +43,8 @@ namespace sharpbox.Dispatch.Model
         {
             get
             {
-                return _serializedType ?? (_serializedType = JsonConvert.SerializeObject(this.Type));
+                var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects }; // Prevent circular reference errors with EF objects and other one-to-many relationships
+                return _serializedType ?? (_serializedType = JsonConvert.SerializeObject(this.Type,serializerSettings));
             }
 
             set

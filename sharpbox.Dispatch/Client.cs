@@ -227,6 +227,10 @@ namespace sharpbox.Dispatch
                 try
                 {
                     result = ProcessRoutineAction<T>(routineName, routine[i], message + "(Routine: " + routineName + ")(" + (i + 1) + "/" + routine.Count + ")", args);
+
+                    //Replace whatever T was that was passed in.
+                    args[Array.FindIndex(args, x => x.GetType() == typeof(T))] = result;
+    
                 }
                 catch (Exception ex)
                 {
