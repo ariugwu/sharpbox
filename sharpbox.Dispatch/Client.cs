@@ -125,26 +125,69 @@ namespace sharpbox.Dispatch
         public void Broadcast(Response response)
         {
 
-            // Go through each method that wants to 'trace' all events in the system
-            foreach (var t in _echoSubscribers)
+            // For the command response we want to loop through the echo subscribers first.
+            // Go through each method that wants to 'trace' all events in the system.
+            FireOffToEchoSubs(response);
+
+            EnsureEventSubscriberKey(response.EventName);
+
+            // Go through each subscriber to this event.
+            // We'll also want to send this to all echo subscribers since technically it's tracable.
+            foreach (var p in _eventSubscribers[response.EventName])
             {
                 try
                 {
-                    t.Invoke(response);
+                    p.Invoke(response);
+                    var eventResponse = new Response(response.Request,
+                        String.Format("{0} Broadcast to method: {1}", response.EventName, p.Method.Name),
+                        ResponseTypes.Info) { EventName = response.EventName};
+
+                    FireOffToEchoSubs(eventResponse);
                 }
                 catch (TargetInvocationException ex)
                 {
                     BroadCastExceptionResponse(ex, response.Request);
                 }
             }
+        }
 
-            EnsureEventSubscriberKey(response.EventName);
-            // Go through each subscriber to this event.
-            foreach (var p in _eventSubscribers[response.EventName])
+        /// <summary>
+        /// A factored out helper for anytime an exception needs to be broadcsat. Also adds the failed request/response to the command stream. NOTE: Should also be used PostProcess calls outside of the dispatcher to log and broadcast errors.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Guid BroadCastExceptionResponse(Exception ex, Request request)
+        {
+            var exResponse = new Response
+            {
+                Entity = ex,
+                Type = ex.GetType(),
+                EventName = EventNames.OnException,
+                Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null) ? ex.Message : ex.InnerException.Message, request.RequestUniqueKey),
+                RequestId = request.RequestId,
+                RequestUniqueKey = request.RequestUniqueKey,
+                Request = request,
+                ResponseUniqueKey = Guid.NewGuid(),
+                ResponseType = ResponseTypes.Error
+            };
+
+            CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Response = exResponse });
+
+            Broadcast(exResponse);
+
+            return exResponse.RequestUniqueKey;
+
+        }
+
+        private void FireOffToEchoSubs(Response response)
+        {
+            // Go through each method that wants to 'trace' all events in the system
+            foreach (var t in _echoSubscribers)
             {
                 try
                 {
-                    p.Invoke(response);
+                    t.Invoke(response);
                 }
                 catch (TargetInvocationException ex)
                 {
@@ -295,7 +338,7 @@ namespace sharpbox.Dispatch
                     var result = (T)request.Action.DynamicInvoke(args);
                     response.Entity = result;
                     response.Type = result.GetType();
-                    response.Message = String.Format(ResponseMessage, "N/A", request.Action.Method.Name, response.Type.Name);
+                    response.Message = String.Format(ResponseMessage, "N/A", request.Action.Method.Name, response.Type.Name); 
                 }
 
                 response.EventName = _commandHub[request.CommandName].EventName; // Set the event name.
@@ -315,35 +358,6 @@ namespace sharpbox.Dispatch
 
                 return new Response(request, String.Format("Command Failed: {0}. See Exception with Response (Unique) Key: {1}.", request.CommandName, exResponseUniqueKey), ResponseTypes.Error);
             }
-        }
-
-        /// <summary>
-        /// A factored out helper for anytime an exception needs to be broadcsat. Also adds the failed request/response to the command stream. NOTE: Should also be used PostProcess calls outside of the dispatcher to log and broadcast errors.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public Guid BroadCastExceptionResponse(Exception ex, Request request)
-        {
-            var exResponse = new Response
-            {
-                Entity = ex,
-                Type = ex.GetType(),
-                EventName = EventNames.OnException,
-                Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null) ? ex.Message : ex.InnerException.Message, request.RequestUniqueKey),
-                RequestId = request.RequestId,
-                RequestUniqueKey = request.RequestUniqueKey,
-                Request = request,
-                ResponseUniqueKey = Guid.NewGuid(),
-                ResponseType = ResponseTypes.Error
-            };
-
-            CommandStream.Enqueue(new CommandStreamItem() { Command = request.CommandName, Response = exResponse });
-
-            Broadcast(exResponse);
-
-            return exResponse.RequestUniqueKey;
-
         }
 
         private T ProcessRoutineAction<T>(RoutineNames routineName, RoutineItem r, string message, object[] args)
