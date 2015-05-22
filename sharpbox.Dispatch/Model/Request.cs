@@ -27,7 +27,7 @@ namespace sharpbox.Dispatch.Model
             {  
                 RequestUniqueKey = Guid.NewGuid(),
                 CommandName = commandName,
-                Message = String.Format("[Invoke Command: {0}] [Message: {1}]",commandName, message),
+                Message = message,
                 Entity = entity,
                 Type = entity != null? entity.GetType() : null,
                 CreatedDate = DateTime.Now
