@@ -37,7 +37,7 @@ namespace sharpbox.Email
         public static MailMessage CreateMailMessage(List<string> to, string from, string subject, string body,
             List<string> cc, List<string> bcc, Dictionary<string, byte[]> attachments, bool isBodyHtml = true)
         {
-            var mail = new MailMessage(from, string.Join(";", to))
+            var mail = new MailMessage(from, string.Join(",", to))
             {
                 IsBodyHtml = true,
                 Subject = subject,
