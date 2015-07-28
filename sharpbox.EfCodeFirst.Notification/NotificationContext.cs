@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using sharpbox.Dispatch.Model;
-using sharpbox.Notification.Model;
+using sharpbox.Notification.Domain.Notification.Model;
 
 namespace sharpbox.EfCodeFirst.Notification
 {

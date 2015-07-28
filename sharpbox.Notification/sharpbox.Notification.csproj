@@ -42,8 +42,9 @@
     <Compile Include="Client.cs" />
     <Compile Include="Domain\Dispatch\NotificationCommands.cs" />
     <Compile Include="Domain\Dispatch\NotificationEvents.cs" />
-    <Compile Include="Model\BackLogItem.cs" />
-    <Compile Include="Model\Subscriber.cs" />
+    <Compile Include="Domain\Localization\EmailTemplate.cs" />
+    <Compile Include="Domain\Notification\Model\BackLogItem.cs" />
+    <Compile Include="Domain\Notification\Model\Subscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +59,14 @@
     <ProjectReference Include="..\sharpbox.Io\sharpbox.Io.csproj">
       <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
       <Name>sharpbox.Io</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Localization\sharpbox.Localization.csproj">
+      <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
+      <Name>sharpbox.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Membership\sharpbox.Membership.csproj">
+      <Project>{5cdedd58-84c8-4716-a6c1-9a89a927ffd1}</Project>
+      <Name>sharpbox.Membership</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
       <Project>{15B019A3-9142-4220-B6DE-A75515B5E288}</Project>

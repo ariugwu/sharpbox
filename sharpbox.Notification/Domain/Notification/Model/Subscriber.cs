@@ -1,7 +1,7 @@
 ﻿using System;
 using sharpbox.Dispatch.Model;
 
-namespace sharpbox.Notification.Model
+namespace sharpbox.Notification.Domain.Notification.Model
 {
     [Serializable]
     public class Subscriber

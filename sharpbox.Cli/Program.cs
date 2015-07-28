@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Sharpbox;
-using sharpbox.EfCodeFirst.Audit;
 using sharpbox.Io.Model;
-using sharpbox.Notification.Model;
+using sharpbox.Notification.Domain.Notification.Model;
 
 namespace sharpbox.Cli
 {

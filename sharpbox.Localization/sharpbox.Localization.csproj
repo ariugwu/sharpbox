@@ -40,7 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Resource.cs" />
+    <Compile Include="Model\ResourceFormatTemplate.cs" />
     <Compile Include="Model\ResourceName.cs" />
+    <Compile Include="Model\ResourceType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

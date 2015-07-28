@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using sharpbox.Dispatch.Model;
 
-namespace sharpbox.Notification.Model
+namespace sharpbox.Notification.Domain.Notification.Model
 {
     [Serializable]
     public class BackLogItem
@@ -20,6 +21,7 @@ namespace sharpbox.Notification.Model
         public bool WasSent { get; set; }
         public DateTime? SentDate { get; set; }
         public int AttempNumber { get; set; }
+        public string AttemptMessage { get; set; }
         public DateTime? PreviousAttempTime { get; set; }
         public DateTime? NextAttempTime { get; set; }
 

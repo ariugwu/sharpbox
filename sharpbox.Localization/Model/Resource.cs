@@ -8,7 +8,7 @@ namespace sharpbox.Localization.Model
 
         public int ResourceId { get; set; }
         public ResourceName ResourceName { get; set; }
-
+        public ResourceType ResourceType { get; set; }
         public string Value { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDateTime { get; set; }

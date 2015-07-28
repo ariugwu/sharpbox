@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Domain\Sharpbox\ExampleContext.cs" />
+    <Compile Include="Model\Domain\Sharpbox\ExampleEmailTemplate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

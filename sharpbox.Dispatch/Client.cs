@@ -25,6 +25,9 @@ namespace sharpbox.Dispatch
             CommandStream = new Queue<CommandStreamItem>();
         }
 
+        #region Field(s)
+
+
         private const string ResponseMessage = "[Message: {0}] [Method: {1}] [Entity: {2}] ";
 
         private Dictionary<EventNames, Queue<Action<Response>>> _eventSubscribers;
@@ -34,6 +37,8 @@ namespace sharpbox.Dispatch
         private Dictionary<CommandNames, CommandHubItem> _commandHub;
 
         private Dictionary<RoutineNames, Queue<RoutineItem>> _routineHub;
+      
+        #endregion
 
         /// <summary>
         /// The list of all commands processed by the Dispatcher.
