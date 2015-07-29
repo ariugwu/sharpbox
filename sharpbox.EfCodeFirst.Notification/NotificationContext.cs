@@ -37,6 +37,8 @@ namespace sharpbox.EfCodeFirst.Notification
 
             modelBuilder.Entity<Subscriber>().HasKey(p => p.SubscriberId);
             modelBuilder.Entity<Subscriber>().Property(x => x.SubscriberId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Subscriber>().Property(p => p.SerializeEntityType).HasColumnName("Type");
+            modelBuilder.Entity<Subscriber>().Ignore(p => p.Type);
             modelBuilder.Entity<Subscriber>().ToTable("Subscriber", schemaName: "Notification");
 
             modelBuilder.Entity<EventNames>().HasKey(p => p.EventNameId);

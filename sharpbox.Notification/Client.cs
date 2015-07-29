@@ -127,10 +127,13 @@ namespace sharpbox.Notification
       return bli;
     }
 
-    public Subscriber AddSub(Subscriber subscriber)
+    public Subscriber AddSub(Subscriber subscriber, Type type)
     {
-      if (!Subscribers.ContainsKey(subscriber.EventName.Name)) Subscribers.Add(subscriber.EventName.Name, new List<string>());
-      Subscribers[subscriber.EventName.Name].Add(subscriber.UserId);
+      if (!Subscribers.ContainsKey(subscriber.EventName.Name)) Subscribers.Add(subscriber.EventName.Name, new Dictionary<Type, List<string>>());
+
+      if(!Subscribers[subscriber.EventName.Name].ContainsKey(type)) Subscribers[subscriber.EventName.Name].Add(type, new List<string>());
+
+      Subscribers[subscriber.EventName.Name][type].Add(subscriber.UserId);
 
       return subscriber;
     }
