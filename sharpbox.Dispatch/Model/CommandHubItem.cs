@@ -6,6 +6,6 @@ namespace sharpbox.Dispatch.Model
     public class CommandHubItem
     {
         public Delegate Action { get; set; }
-        public EventNames EventName { get; set; }
+        public EventName EventName { get; set; }
     }
 }

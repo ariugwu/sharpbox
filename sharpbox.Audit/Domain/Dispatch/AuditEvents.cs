@@ -2,8 +2,8 @@
 
 namespace sharpbox.Audit.Domain.Dispatch
 {
-    public class AuditEvents : EventNames
+    public class AuditEvents : EventName
     {
-        public static readonly EventNames OnAuditResponseAdded = new EventNames("OnAuditResponseAdded");
+        public static readonly EventName OnAuditResponseAdded = new EventName("OnAuditResponseAdded");
     }
 }

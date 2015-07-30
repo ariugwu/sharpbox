@@ -20,9 +20,32 @@ namespace sharpbox.Cli
 
       var example = new ExampleContext("ugwua", smtpClient);
 
-      Console.ReadLine();
+      // Cycle through the classes we've marked with the 'ITemplateType' interface
+      Console.WriteLine("We have access to these type names which implement the ITemplateType Interface. We will use these in the creation of email templates.");
+      var templateTypes = Util.Domain.Notification.TemplateTypeLoader.GetTypesByITemplateTypeUsage();
+      foreach (var t in templateTypes)
+      {
+        Console.WriteLine(t.FullName);
+      }
+      Console.WriteLine("Press any key to continue....");
+      Console.ReadKey();
+      Console.Clear();
+
+      // Cycle through the classes we've marked with the 'EmailTemplateAttribute
+      Console.WriteLine("Alternatively we can find the classes with the 'EmailTemplateAttribute'. We will use these in the creation of email templates.");
+      templateTypes = Util.Domain.Notification.TemplateTypeLoader.GetTypesWithEmailTemplateAttribute();
+      foreach (var t in templateTypes)
+      {
+        Console.WriteLine(t.FullName);
+      }
+      Console.WriteLine("Press any key to continue....");
+      Console.ReadKey();
+      Console.Clear();
+
       // Create a response object we can repopulate after each request.
       Response response = null;
+
+
 
       Console.WriteLine("Our first task will be to add a listener to the 'OnUserChange' event. This means that whenver the user is changed within the system our subscriber will get a message added to the backlog.");
       Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
@@ -121,7 +144,7 @@ namespace sharpbox.Cli
 
       Console.WriteLine("Note: We baked in an exception on purpose to test the ability register and automatically call failover methods. The exceptio should display below:");
       Console.WriteLine(); Console.WriteLine();
-      var finalVersionOfUserId = example.Dispatch.Process<string>(RoutineNames.Example, "Changing the name using a routine.", new object[] { "johnsont" });
+      var finalVersionOfUserId = example.Dispatch.Process<string>(RoutineName.Example, "Changing the name using a routine.", new object[] { "johnsont" });
       Console.WriteLine("We chose to pass a user name through 3 different changes. One of them had an error and a failover method was executed.");
       Console.WriteLine("The final value returned is : \"{0}\" which should equal the current value in the Example class: \"{1}\"", finalVersionOfUserId, example.UserId);
       Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
@@ -139,8 +162,8 @@ namespace sharpbox.Cli
 
       Console.WriteLine("Example 9: You can register any method by passing in a func. However, The return type must always be specificed and can only be a single object.");
       Console.WriteLine(); Console.WriteLine();
-      var commandname = new CommandNames("SomethignInLine");
-      example.Dispatch.Register<string>(commandname, new Func<int, string, string, string>(TestOfDelegateRegistration), new EventNames("OnSomethingInLine"));
+      var commandname = new CommandName("SomethignInLine");
+      example.Dispatch.Register<string>(commandname, new Func<int, string, string, string>(TestOfDelegateRegistration), new EventName("OnSomethingInLine"));
       response = example.Dispatch.Process<string>(commandname, "TEST", new object[] { 1, "adfajd", "adfjsadl" });
       Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
       Console.WriteLine("Press any key to continue....");

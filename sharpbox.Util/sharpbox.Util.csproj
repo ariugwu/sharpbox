@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\Notification\EmailTemplateAttribute.cs" />
     <Compile Include="Domain\Notification\ITemplateType.cs" />
     <Compile Include="Domain\Notification\TemplateTypeLoader.cs" />
     <Compile Include="Enum\EnumPattern.cs" />

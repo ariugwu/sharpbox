@@ -5,8 +5,8 @@ namespace sharpbox.Dispatch.Model
     [Serializable]
     public class RoutineItem
     {
-        public CommandNames CommandName { get; set; }
-        public EventNames EventName { get; set; }
+        public CommandName CommandName { get; set; }
+        public EventName EventName { get; set; }
         public Delegate Action { get; set; }
         public Delegate FailOver { get; set; }
         public Delegate Rollback { get; set; }

@@ -20,8 +20,8 @@ namespace sharpbox.EfCodeFirst.Audit
 
         public DbSet<Response> Responses { get; set; }
         public DbSet<Request> Requests { get; set; }
-        public DbSet<EventNames> EventNames { get; set; }
-        public DbSet<CommandNames> CommandNames { get; set; }
+        public DbSet<EventName> EventNames { get; set; }
+        public DbSet<CommandName> CommandNames { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -43,13 +43,13 @@ namespace sharpbox.EfCodeFirst.Audit
             modelBuilder.Entity<Response>().Ignore(p => p.Type);
             modelBuilder.Entity<Response>().ToTable("Response", schemaName: "Audit");
 
-            modelBuilder.Entity<EventNames>().HasKey(p => p.EventNameId);
-            modelBuilder.Entity<EventNames>().Property(x => x.EventNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<EventNames>().ToTable("EventName", schemaName: "App");
+            modelBuilder.Entity<EventName>().HasKey(p => p.EventNameId);
+            modelBuilder.Entity<EventName>().Property(x => x.EventNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<EventName>().ToTable("EventName", schemaName: "App");
 
-            modelBuilder.Entity<CommandNames>().HasKey(p => p.CommandNameId);
-            modelBuilder.Entity<CommandNames>().Property(x => x.CommandNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<CommandNames>().ToTable("CommandName", schemaName: "App");
+            modelBuilder.Entity<CommandName>().HasKey(p => p.CommandNameId);
+            modelBuilder.Entity<CommandName>().Property(x => x.CommandNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<CommandName>().ToTable("CommandName", schemaName: "App");
         }
     }
 }

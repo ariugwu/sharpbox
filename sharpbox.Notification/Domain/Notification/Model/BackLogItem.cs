@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using sharpbox.Dispatch.Model;
+using sharpbox.Util.Domain.Notification;
 
 namespace sharpbox.Notification.Domain.Notification.Model
 {
     [Serializable]
+    [EmailTemplate]
     public class BackLogItem
     {
         public BackLogItem() { }

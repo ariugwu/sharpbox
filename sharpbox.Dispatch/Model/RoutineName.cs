@@ -4,18 +4,18 @@ using sharpbox.Util.Enum;
 namespace sharpbox.Dispatch.Model
 {
     [Serializable]
-    public class RoutineNames : EnumPattern
+    public class RoutineName : EnumPattern
     {
 
-        public static readonly RoutineNames Example = new RoutineNames("Example");
+        public static readonly RoutineName Example = new RoutineName("Example");
 
-        public RoutineNames(string value)
+        public RoutineName(string value)
             : base(value)
         {
             Name = value;
         }
 
-        public RoutineNames() { }
+        public RoutineName() { }
 
         public int EventNameId { get; set; }
         public string Name { get; set; }

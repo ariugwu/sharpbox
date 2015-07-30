@@ -4,15 +4,15 @@ using sharpbox.Util.Enum;
 namespace sharpbox.Dispatch.Model
 {
     [Serializable]
-    public class CommandNames : EnumPattern
+    public class CommandName : EnumPattern
     {
-        public CommandNames(string value)
+        public CommandName(string value)
             : base(value)
         {
             Name = value;
         }
 
-        public CommandNames() { }
+        public CommandName() { }
 
         public int CommandNameId { get; set; }
         public string Name { get; set; }

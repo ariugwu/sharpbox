@@ -27,7 +27,7 @@ namespace sharpbox.EfCodeFirst.Notification
 
         public DbSet<BackLogItem> BackLogItems { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
-        public DbSet<EventNames> EventNames { get; set; }
+        public DbSet<EventName> EventNames { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -41,9 +41,9 @@ namespace sharpbox.EfCodeFirst.Notification
             modelBuilder.Entity<Subscriber>().Ignore(p => p.Type);
             modelBuilder.Entity<Subscriber>().ToTable("Subscriber", schemaName: "Notification");
 
-            modelBuilder.Entity<EventNames>().HasKey(p => p.EventNameId);
-            modelBuilder.Entity<EventNames>().Property(x => x.EventNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<EventNames>().ToTable("EventName", schemaName: "App");
+            modelBuilder.Entity<EventName>().HasKey(p => p.EventNameId);
+            modelBuilder.Entity<EventName>().Property(x => x.EventNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<EventName>().ToTable("EventName", schemaName: "App");
         }
     }
 }

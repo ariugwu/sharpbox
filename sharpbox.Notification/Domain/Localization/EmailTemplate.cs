@@ -20,7 +20,7 @@ namespace sharpbox.Notification.Domain.Localization
     private Resource _bodyResource;
     private Type _entityType;
 
-    public Dictionary<EventNames, Dictionary<Type, UserRoleType>> SubscribedRoles { get; set; }
+    public Dictionary<EventName, Dictionary<Type, UserRoleType>> SubscribedRoles { get; set; }
 
     public Type EntityType { get { return _entityType; } }
 

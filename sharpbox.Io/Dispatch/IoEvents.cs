@@ -4,8 +4,8 @@ namespace sharpbox.Io.Dispatch
 {
     public class IoEvents
     {
-        public static readonly EventNames OnFileCreate = new EventNames("OnFileCreate");
-        public static readonly EventNames OnFileDelete = new EventNames("OnFileDelete");
-        public static readonly EventNames OnFileAccess = new EventNames("OnFileAccess"); 
+        public static readonly EventName OnFileCreate = new EventName("OnFileCreate");
+        public static readonly EventName OnFileDelete = new EventName("OnFileDelete");
+        public static readonly EventName OnFileAccess = new EventName("OnFileAccess"); 
     }
 }

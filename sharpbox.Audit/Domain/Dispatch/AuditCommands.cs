@@ -4,6 +4,6 @@ namespace sharpbox.Audit.Domain.Dispatch
 {
     public class AuditCommands
     {
-        public static readonly CommandNames AddAuditResponse = new CommandNames("AddAuditResponse");
+        public static readonly CommandName AddAuditResponse = new CommandName("AddAuditResponse");
     }
 }

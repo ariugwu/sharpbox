@@ -15,13 +15,13 @@ namespace sharpbox.Dispatch.Model
         
         public string Message { get; set; }
         public int CommandNameId { get; set; }
-        public CommandNames CommandName { get; set; }
+        public CommandName CommandName { get; set; }
         public Delegate Action { get; set; }
         public DateTime CreatedDate { get; set; }
 
         public Guid? ApplicationId { get; set; }
 
-        public static Request Create<T>(CommandNames commandName, string message, T entity)
+        public static Request Create<T>(CommandName commandName, string message, T entity)
         {
             return new Request()
             {  

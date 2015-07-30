@@ -75,7 +75,7 @@ namespace sharpbox
     public void MapListeners()
     {
       // Dispatch
-      Dispatch.Listen(EventNames.OnException, OnException);
+      Dispatch.Listen(EventName.OnException, OnException);
 
       // Look at the concept of 'EchoAllEventsTo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
       Dispatch.Echo(Notification.ProcessEvent);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using sharpbox.Dispatch.Model;
 using sharpbox.Notification.Domain.Localization;
 using sharpbox.Notification.Domain.Notification.Model;
@@ -50,15 +51,15 @@ namespace sharpbox.Notification
       if (!Subscribers.ContainsKey(response.EventName.Name)) return; // Bail early if there are no subscribers.
 
       // Run through all of the subscribers for this publisher and generate a backlog item for them.
-      foreach (var s in Subscribers[response.EventName.Name][response.GetType()])
+      foreach (var s in Subscribers[response.EventName.Name][response.Type])
       {
         string subject;
         string body;
 
-        if (EmailTemplateLookup.ContainsKey(response.EventName.Name) &&
-            EmailTemplateLookup[response.EventName.Name].ContainsKey(response.Request.Entity.GetType()))
+        if (EmailTemplateLookup.ContainsKey(response.EventName.ToString()) &&
+            EmailTemplateLookup[response.EventName.ToString()].ContainsKey(response.Request.Entity.GetType()))
         {
-          var temp = EmailTemplateLookup[response.EventName.Name][response.Request.Entity.GetType()];
+          var temp = EmailTemplateLookup[response.EventName.ToString()][response.Request.Entity.GetType()];
           subject = temp.GetSubject(response.Entity);
           body = temp.GetBody(response.Entity);
         }
@@ -129,8 +130,9 @@ namespace sharpbox.Notification
 
     public Subscriber AddSub(Subscriber subscriber, Type type)
     {
+      // Ensure the key is present
       if (!Subscribers.ContainsKey(subscriber.EventName.Name)) Subscribers.Add(subscriber.EventName.Name, new Dictionary<Type, List<string>>());
-
+      // Ensure the key is present
       if(!Subscribers[subscriber.EventName.Name].ContainsKey(type)) Subscribers[subscriber.EventName.Name].Add(type, new List<string>());
 
       Subscribers[subscriber.EventName.Name][type].Add(subscriber.UserId);
@@ -138,5 +140,21 @@ namespace sharpbox.Notification
       return subscriber;
     }
 
+    public EmailTemplate AddEmailTemplate(EventName eventName, EmailTemplate emailTemplate)
+    {
+      // Ensure the key is present
+      if (!EmailTemplateLookup.ContainsKey(eventName.ToString())) EmailTemplateLookup.Add(eventName.ToString(), new Dictionary<Type, EmailTemplate>());
+      // Ensure the key is present
+      if (!EmailTemplateLookup[eventName.ToString()].ContainsKey(emailTemplate.EntityType))
+      {
+        EmailTemplateLookup[eventName.ToString()].Add(emailTemplate.EntityType, emailTemplate);
+      }
+      else
+      {
+        throw new DuplicateNameException("This dictionary already contains a template for this EventName + Type!");
+      }
+
+      return emailTemplate;
+    }
   }
 }

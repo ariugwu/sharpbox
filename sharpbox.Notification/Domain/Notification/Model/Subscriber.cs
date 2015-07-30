@@ -7,7 +7,7 @@ namespace sharpbox.Notification.Domain.Notification.Model
     [Serializable]
     public class Subscriber
     {
-        public Subscriber(EventNames eventName, string userId)
+        public Subscriber(EventName eventName, string userId)
         {
             EventName = eventName;
             UserId = userId;
@@ -21,7 +21,7 @@ namespace sharpbox.Notification.Domain.Notification.Model
         private string _serializedType;
 
         public int SubscriberId { get; set; }
-        public EventNames EventName { get; set; }
+        public EventName EventName { get; set; }
         public Type Type { get; set; }
         public string UserId { get; set; }
 

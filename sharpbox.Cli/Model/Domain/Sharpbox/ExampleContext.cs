@@ -40,9 +40,8 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
       var bodyResource = new Resource { Value = "Example Body: {0}", ResourceType = ResourceType.EmailBody};
 
       var emailTemplate = new ExampleEmailTemplate(typeof(object[]), subjectResource, bodyResource);
-      var tempdict = new Dictionary<Type, EmailTemplate> { { typeof(object[]), emailTemplate } };
 
-      Notification.EmailTemplateLookup.Add(ExampleContext.OnUserChange.Name, tempdict);
+      Notification.AddEmailTemplate(ExampleContext.OnUserChange, emailTemplate);
 
       WireUpListeners();
       WireUpRoutines();
@@ -53,18 +52,18 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
     public string UserId { get; set; }
 
     #region Domain Specific Event(s)
-    public static readonly EventNames OnUserChange = new EventNames("OnUserChange");
-    public static readonly EventNames Write = new EventNames("OnUserChange");
-    public static readonly EventNames OnRandomFileWritten = new EventNames("OnRandomFileWritten");
-    public static readonly EventNames OnWriteAuditTrailToDisk = new EventNames("OnWriteAuditTrailToDisk");
-    public static readonly EventNames OnDummyPassThroughCommand = new EventNames("OnDummyPassThroughCommand");
+    public static readonly EventName OnUserChange = new EventName("OnUserChange");
+    public static readonly EventName Write = new EventName("OnUserChange");
+    public static readonly EventName OnRandomFileWritten = new EventName("OnRandomFileWritten");
+    public static readonly EventName OnWriteAuditTrailToDisk = new EventName("OnWriteAuditTrailToDisk");
+    public static readonly EventName OnDummyPassThroughCommand = new EventName("OnDummyPassThroughCommand");
     #endregion
 
     #region Domain Specific Commands(s)
-    public static readonly CommandNames UserChange = new CommandNames("ChangeUser");
-    public static readonly CommandNames WriteARandomFile = new CommandNames("WriteARandomFile");
-    public static readonly CommandNames WriteAuditTrailToDisk = new CommandNames("WriteAuditTrailToDisk");
-    public static readonly CommandNames DummyPassThroughCommand = new CommandNames("DummyPassThroughCommand");
+    public static readonly CommandName UserChange = new CommandName("ChangeUser");
+    public static readonly CommandName WriteARandomFile = new CommandName("WriteARandomFile");
+    public static readonly CommandName WriteAuditTrailToDisk = new CommandName("WriteAuditTrailToDisk");
+    public static readonly CommandName DummyPassThroughCommand = new CommandName("DummyPassThroughCommand");
     #endregion
 
     public void WireUpCommandHubItems()
@@ -87,19 +86,19 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
     {
       // Let's try a routine
       // Our first routine item will feed a string argument to the UserChange method, broadcast the event through the OnUserChange channel
-      Dispatch.Register<string>(RoutineNames.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUser, null, null);
-      Dispatch.Register<string>(RoutineNames.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep2, ChangeUserStep2FailOver, null);
-      Dispatch.Register<string>(RoutineNames.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep3, null, null);
+      Dispatch.Register<string>(RoutineName.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUser, null, null);
+      Dispatch.Register<string>(RoutineName.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep2, ChangeUserStep2FailOver, null);
+      Dispatch.Register<string>(RoutineName.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep3, null, null);
     }
 
     public void WireUpListeners()
     {
       // Listen to an 'under the covers' system event
-      Dispatch.Listen(EventNames.OnException, ExampleListener);
+      Dispatch.Listen(EventName.OnException, ExampleListener);
 
       // All of our internal stuff uses the broadcast system so we'll listen on exception and rethrow.
       // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
-      Dispatch.Listen(EventNames.OnException, FireOnException);
+      Dispatch.Listen(EventName.OnException, FireOnException);
 
       Dispatch.Listen(sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationAddSubScriber, ExampleListener);
       Dispatch.Listen(OnWriteAuditTrailToDisk, ExampleListener);

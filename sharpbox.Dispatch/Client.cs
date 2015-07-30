@@ -18,10 +18,10 @@ namespace sharpbox.Dispatch
   {
     public Client()
     {
-      _commandHub = new Dictionary<CommandNames, CommandHubItem>();
-      _eventSubscribers = new Dictionary<EventNames, Queue<Action<Response>>>();
+      _commandHub = new Dictionary<CommandName, CommandHubItem>();
+      _eventSubscribers = new Dictionary<EventName, Queue<Action<Response>>>();
       _echoSubscribers = new Queue<Action<Response>>();
-      _routineHub = new Dictionary<RoutineNames, Queue<RoutineItem>>();
+      _routineHub = new Dictionary<RoutineName, Queue<RoutineItem>>();
       CommandStream = new Queue<CommandStreamItem>();
     }
 
@@ -30,13 +30,13 @@ namespace sharpbox.Dispatch
 
     private const string ResponseMessage = "[Message: {0}] [Method: {1}] [Entity: {2}] ";
 
-    private Dictionary<EventNames, Queue<Action<Response>>> _eventSubscribers;
+    private Dictionary<EventName, Queue<Action<Response>>> _eventSubscribers;
 
     private Queue<Action<Response>> _echoSubscribers;
 
-    private Dictionary<CommandNames, CommandHubItem> _commandHub;
+    private Dictionary<CommandName, CommandHubItem> _commandHub;
 
-    private Dictionary<RoutineNames, Queue<RoutineItem>> _routineHub;
+    private Dictionary<RoutineName, Queue<RoutineItem>> _routineHub;
 
     #endregion
 
@@ -50,7 +50,7 @@ namespace sharpbox.Dispatch
     /// </summary>
     /// <param name="eventName">The event you would like to subscribe to</param>
     /// <param name="method">The callback method to target when that event is fired.</param>
-    public void Listen(EventNames eventName, Action<Response> method)
+    public void Listen(EventName eventName, Action<Response> method)
     {
       EnsureEventSubscriberKey(eventName);
 
@@ -72,7 +72,7 @@ namespace sharpbox.Dispatch
     /// <param name="commandName">The command to register</param>
     /// <param name="action">The action to invoke.</param>
     /// <param name="eventName">The channel to broadcast the response on.</param>
-    public void Register<T>(CommandNames commandName, Func<T, T> action, EventNames eventName)
+    public void Register<T>(CommandName commandName, Func<T, T> action, EventName eventName)
     {
       try
       {
@@ -81,11 +81,11 @@ namespace sharpbox.Dispatch
       catch (Exception ex)
       {
         var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-        Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
+        Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
       }
     }
 
-    public void Register<T>(CommandNames commandName, Delegate action, EventNames eventName)
+    public void Register<T>(CommandName commandName, Delegate action, EventName eventName)
     {
       try
       {
@@ -94,7 +94,7 @@ namespace sharpbox.Dispatch
       catch (Exception ex)
       {
         var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-        Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
+        Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
       }
     }
 
@@ -108,7 +108,7 @@ namespace sharpbox.Dispatch
     /// <param name="action">Called as the primary/preferred target</param>
     /// <param name="failOver">Optional. Will be called on error of the 'action'</param>
     /// <param name="rollBack">Optional. In the advent of an error that can't be solved by action or failover. Once this level is reached the command queue will stop processing.</param>
-    public void Register<T>(RoutineNames routineName, CommandNames commandName, EventNames eventName, Func<T, T> action, Func<T, T> failOver, Func<T, T> rollBack)
+    public void Register<T>(RoutineName routineName, CommandName commandName, EventName eventName, Func<T, T> action, Func<T, T> failOver, Func<T, T> rollBack)
     {
       try
       {
@@ -118,7 +118,7 @@ namespace sharpbox.Dispatch
       catch (Exception ex)
       {
         var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-        Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventNames.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
+        Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
       }
     }
 
@@ -168,7 +168,7 @@ namespace sharpbox.Dispatch
       {
         Entity = ex,
         Type = ex.GetType(),
-        EventName = EventNames.OnException,
+        EventName = EventName.OnException,
         Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null) ? ex.Message : ex.InnerException.Message, request.RequestUniqueKey),
         RequestId = request.RequestId,
         RequestUniqueKey = request.RequestUniqueKey,
@@ -211,7 +211,7 @@ namespace sharpbox.Dispatch
     /// <returns></returns>
     /// <exception cref="ArgumentException">If there is no routine found with the supplied name</exception>
     /// <exception cref="InvalidDataException">If there is a RoutineItem in the queue without a registered Rollback method.</exception>
-    public T RollBack<T>(RoutineNames routineName, string message, object[] args)
+    public T RollBack<T>(RoutineName routineName, string message, object[] args)
     {
 
       if (!_routineHub.ContainsKey(routineName)) throw new ArgumentException("There is no routine by this name registered.");
@@ -265,7 +265,7 @@ namespace sharpbox.Dispatch
     /// <param name="message"></param>
     /// <param name="args"></param>
     /// <returns></returns>
-    public T Process<T>(RoutineNames routineName, string message, object[] args)
+    public T Process<T>(RoutineName routineName, string message, object[] args)
     {
       var result = default(T);
       var routine = _routineHub[routineName].ToList();
@@ -325,7 +325,7 @@ namespace sharpbox.Dispatch
     /// <param name="message">The message you would like associated with this requested and stored in the audit log.</param>
     /// <param name="args">The arguments to pass to your registered delegate/func/action.</param>
     /// <returns></returns>
-    public Response Process<T>(CommandNames commandName, string message, object[] args)
+    public Response Process<T>(CommandName commandName, string message, object[] args)
     {
       var request = Request.Create(commandName, message, args);
       var response = new Response(request, request.Message, ResponseTypes.Success);
@@ -366,7 +366,7 @@ namespace sharpbox.Dispatch
       }
     }
 
-    private T ProcessRoutineAction<T>(RoutineNames routineName, RoutineItem r, string message, object[] args)
+    private T ProcessRoutineAction<T>(RoutineName routineName, RoutineItem r, string message, object[] args)
     {
       r.BroadCastMessage = message; // Set the broadcast message. Other values are set during registration.
 
@@ -387,7 +387,7 @@ namespace sharpbox.Dispatch
       return result;
     }
 
-    private T ProcessFailOver<T>(RoutineNames routineName, Request request, Guid exResponseUniqueKey, RoutineItem r, object[] args)
+    private T ProcessFailOver<T>(RoutineName routineName, Request request, Guid exResponseUniqueKey, RoutineItem r, object[] args)
     {
       request.Message = request.Message;
       var response = new Response(request, "", ResponseTypes.Success);
@@ -411,12 +411,12 @@ namespace sharpbox.Dispatch
     }
 
 
-    private void EnsureEventSubscriberKey(EventNames eventName)
+    private void EnsureEventSubscriberKey(EventName eventName)
     {
       if (!_eventSubscribers.ContainsKey(eventName)) _eventSubscribers.Add(eventName, new Queue<Action<Response>>());
     }
 
-    private void EnsureCommandHubKey(RoutineNames routineName)
+    private void EnsureCommandHubKey(RoutineName routineName)
     {
       if (!_routineHub.ContainsKey(routineName)) _routineHub.Add(routineName, new Queue<RoutineItem>());
     }
