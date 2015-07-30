@@ -53,6 +53,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.EfCodeFirst.Audit"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Membership", "sharpbox.Membership\sharpbox.Membership.csproj", "{5CDEDD58-84C8-4716-A6C1-9A89A927FFD1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Soultion Items", "Soultion Items", "{EAAF590B-05DC-4E53-9953-0C535E5F3447}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
