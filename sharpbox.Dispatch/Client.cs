@@ -45,6 +45,8 @@ namespace sharpbox.Dispatch
     /// </summary>
     public Queue<CommandStreamItem> CommandStream { get; private set; }
 
+    public Dictionary<CommandName, CommandHubItem> CommandHub { get { return _commandHub; } }
+
     /// <summary>
     /// This method will take the action and append it to the list for the given publisher name. Whenever publish is called for that publisherName the associated methods will be invoked.
     /// </summary>
@@ -222,7 +224,7 @@ namespace sharpbox.Dispatch
 
       var reverse = _routineHub[routineName].Reverse().ToList();
 
-      for (var i = (reverse.Count() - 1); i >= 0; i--)
+      for (var i = (reverse.Count - 1); i >= 0; i--)
       {
         var request = Request.Create(reverse[i].CommandName, reverse[i].BroadCastMessage + "[Rolling Back Routine: " + routineName + "][" + (i - 1) + "/" + reverse.Count() + "]", args);
 
@@ -251,12 +253,10 @@ namespace sharpbox.Dispatch
 
           break;
         }
-
-        return result;
       }
-
       return result;
     }
+
     /// <summary>
     /// Fires off the queue for the given routine in order. The argument should be the parameters for all registered actions since each target takes in and returns the same type.
     /// </summary>
