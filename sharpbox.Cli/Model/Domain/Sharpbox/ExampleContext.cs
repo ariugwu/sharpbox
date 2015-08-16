@@ -19,15 +19,15 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
     /// <summary>
     /// Extension of the AppContext which contains the dispatcher. All we've done is throw in some dispatcher friendly components.
     /// </summary>
-    /// <param name="userIdentity">Example of something you might want encapulated and updated.</param>
+    /// <param name="LogOn">Example of something you might want encapulated and updated.</param>
     /// <param name="smtpClient">Powers the email client.</param>
-    public ExampleContext(string userIdentity, SmtpClient smtpClient)
+    public ExampleContext(string LogOn, SmtpClient smtpClient)
       : base()
     {
 
       Dispatch = new Client();
 
-      UserId = userIdentity;
+      this.LogOn = LogOn;
 
       Email = new Email.Client(smtpClient);
       File = new Io.Client(new Io.Strategy.Binary.BinaryStrategy());
@@ -49,7 +49,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
     }
 
-    public string UserId { get; set; }
+    public string LogOn { get; set; }
 
     #region Domain Specific Event(s)
     public static readonly EventName OnUserChange = new EventName("OnUserChange");
@@ -148,9 +148,9 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
     public string ChangeUser(string userId)
     {
 
-      UserId = userId;
+      LogOn = userId;
 
-      return UserId;
+      return LogOn;
     }
 
     public string ChangeUserStep2(string userId)
@@ -162,17 +162,17 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
     public string ChangeUserStep2FailOver(string userId)
     {
 
-      UserId = userId + "-We changed this through the routine's Second (Failover) Step.";
+      LogOn = userId + "-We changed this through the routine's Second (Failover) Step.";
 
-      return UserId;
+      return LogOn;
     }
 
     public string ChangeUserStep3(string userId)
     {
 
-      UserId = userId + "-We changed this through the routine's Third Step.";
+      LogOn = userId + "-We changed this through the routine's Third Step.";
 
-      return UserId;
+      return LogOn;
     }
 
     public void Final(Response response)

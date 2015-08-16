@@ -11,20 +11,19 @@ namespace sharpbox.Notification.Domain.Localization
   {
     protected EmailTemplate(Type entityType, Resource subjectResource, Resource bodyResource)
     {
-      _entityType = entityType;
+      EntityType = entityType;
       _subjectResource = subjectResource;
       _bodyResource = bodyResource;
     }
 
-    private Resource _subjectResource;
-    private Resource _bodyResource;
-    private Type _entityType;
+    private readonly Resource _subjectResource;
+    private readonly Resource _bodyResource;
 
-    public Dictionary<EventName, Dictionary<Type, UserRoleType>> SubscribedRoles { get; set; }
+      public Dictionary<EventName, Dictionary<Type, UserRoleType>> SubscribedRoles { get; set; }
 
-    public Type EntityType { get { return _entityType; } }
+    public Type EntityType { get; }
 
-    public string GetSubject(object entity)
+      public string GetSubject(object entity)
     {
       return FormatResource(_subjectResource, entity); 
     }

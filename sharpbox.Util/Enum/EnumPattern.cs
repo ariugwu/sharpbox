@@ -16,16 +16,17 @@ namespace sharpbox.Util.Enum
 
     public override string ToString()
     {
-      return Value;
+      return this.Value;
     }
 
     public override bool Equals(object obj)
     {
-      return obj.ToString().ToLower().Trim() == Value.ToLower().Trim();
+      return obj.ToString().ToLower().Trim() == this.Value.ToLower().Trim();
     }
+
     public override int GetHashCode()
     {
-      return (Value != null ? Value.GetHashCode() : 0);
+      return this.Value != null ? this.Value.GetHashCode() : 0;
     }
 
   }
