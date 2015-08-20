@@ -34,5 +34,10 @@ namespace sharpbox.TestHarness
             //TODO: When data is output the (when) command (then) event should also show the (then) listeners.
             //TODO: Incorporate this ability to run the test against any previous frame. Since we know what the start and end should be could parse old data and reconstruct based on that alone.
         }
+
+      public byte[] GenerateExcelBddFile(Dispatch.Client dispatcher)
+      {
+        throw new NotImplementedException();
+      }
     }
 }

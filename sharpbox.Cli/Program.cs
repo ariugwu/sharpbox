@@ -196,7 +196,7 @@ namespace sharpbox.Cli
 
         public static string TestOfDelegateRegistration(int foo, string bar, string booya)
         {
-            return $"{foo}-{bar}-{booya}";
+          return string.Format("{0}-{1}-{2}", foo, bar, booya);
         }
 
     }

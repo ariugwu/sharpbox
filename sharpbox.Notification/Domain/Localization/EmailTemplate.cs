@@ -21,7 +21,7 @@ namespace sharpbox.Notification.Domain.Localization
 
       public Dictionary<EventName, Dictionary<Type, UserRoleType>> SubscribedRoles { get; set; }
 
-    public Type EntityType { get; }
+    public Type EntityType { get; private set; }
 
       public string GetSubject(object entity)
     {
