@@ -13,6 +13,14 @@ namespace sharpbox.Localization.Model
     public static ResourceType Feedback = new ResourceType("Feedback");
     public static ResourceType EmailSubject = new ResourceType("EmailSubject");
     public static ResourceType EmailBody = new ResourceType("EmailBody");
-    public ResourceType(string value): base(value){}
+
+    public ResourceType(string value) : base(value)
+    {
+      Name = value;
+    }
+
+    public int ResourceTypeId { get; set; }
+
+    public string Name { get; set; }
   }
 }
