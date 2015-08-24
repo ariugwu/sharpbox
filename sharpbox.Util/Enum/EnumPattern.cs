@@ -21,7 +21,7 @@ namespace sharpbox.Util.Enum
 
     public override bool Equals(object obj)
     {
-      return obj.ToString().ToLower().Trim() == this.Value.ToLower().Trim();
+      return this.Value != null &&  (obj.ToString().ToLower().Trim() == this.Value.ToLower().Trim());
     }
 
     public override int GetHashCode()

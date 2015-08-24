@@ -18,6 +18,10 @@ namespace sharpbox.Localization.Model
     {
       Name = value;
     }
+    public ResourceType()
+    {
+
+    }
 
     public int ResourceTypeId { get; set; }
 
