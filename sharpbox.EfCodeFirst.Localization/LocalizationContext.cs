@@ -21,7 +21,6 @@ namespace sharpbox.EfCodeFirst.Localization
 
     public DbSet<Resource> Resources { get; set; }
     public DbSet<ResourceName> ResourceNames { get; set; }
-    public DbSet<ResourceType> ResourceTypes { get; set; }
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
       modelBuilder.Entity<Resource>().HasKey(p => p.ResourceId);
@@ -31,10 +30,6 @@ namespace sharpbox.EfCodeFirst.Localization
       modelBuilder.Entity<ResourceName>().HasKey(x => x.ResourceNameId);
       modelBuilder.Entity<ResourceName>().Property(x => x.ResourceNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
       modelBuilder.Entity<ResourceName>().ToTable("ResourceNames", schemaName: "Localization");
-
-      modelBuilder.Entity<ResourceType>().HasKey(x => x.ResourceTypeId);
-      modelBuilder.Entity<ResourceType>().Property(x => x.ResourceTypeId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-      modelBuilder.Entity<ResourceType>().ToTable("ResourceTypes", schemaName: "Localization");
 
     }
   }
