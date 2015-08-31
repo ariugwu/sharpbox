@@ -8,7 +8,6 @@ using sharpbox.EfCodeFirst.Audit;
 using sharpbox.EfCodeFirst.Notification;
 using sharpbox.Io.Model;
 using sharpbox.Localization.Model;
-using sharpbox.Notification.Domain.Localization;
 using sharpbox.Notification.Domain.Notification.Model;
 
 namespace sharpbox.Cli.Model.Domain.Sharpbox

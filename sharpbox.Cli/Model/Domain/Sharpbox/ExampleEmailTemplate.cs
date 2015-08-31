@@ -1,6 +1,5 @@
 ﻿using System;
 using sharpbox.Localization.Model;
-using sharpbox.Notification.Domain.Localization;
 
 namespace sharpbox.Cli.Model.Domain.Sharpbox
 {

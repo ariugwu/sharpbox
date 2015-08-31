@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\EmailTemplate.cs" />
     <Compile Include="Model\Resource.cs" />
     <Compile Include="Model\ResourceFormatTemplate.cs" />
     <Compile Include="Model\ResourceName.cs" />
@@ -47,6 +48,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
+      <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
+      <Name>sharpbox.Dispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Membership\sharpbox.Membership.csproj">
+      <Project>{5cdedd58-84c8-4716-a6c1-9a89a927ffd1}</Project>
+      <Name>sharpbox.Membership</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
       <Project>{15b019a3-9142-4220-b6de-a75515b5e288}</Project>
       <Name>sharpbox.Util</Name>

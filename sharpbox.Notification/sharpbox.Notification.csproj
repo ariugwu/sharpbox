@@ -46,7 +46,6 @@
     <Compile Include="Client.cs" />
     <Compile Include="Domain\Dispatch\NotificationCommands.cs" />
     <Compile Include="Domain\Dispatch\NotificationEvents.cs" />
-    <Compile Include="Domain\Localization\EmailTemplate.cs" />
     <Compile Include="Domain\Notification\Model\BackLogItem.cs" />
     <Compile Include="Domain\Notification\Model\Subscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

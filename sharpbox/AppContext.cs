@@ -4,7 +4,6 @@ using System.Net.Mail;
 using sharpbox.Dispatch;
 using sharpbox.Dispatch.Model;
 using sharpbox.Localization.Model;
-using sharpbox.Notification.Domain.Localization;
 using sharpbox.Notification.Domain.Notification.Model;
 
 namespace sharpbox

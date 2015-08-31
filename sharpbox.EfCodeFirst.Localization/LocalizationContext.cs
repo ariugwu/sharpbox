@@ -31,6 +31,10 @@ namespace sharpbox.EfCodeFirst.Localization
       modelBuilder.Entity<ResourceName>().Property(x => x.ResourceNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
       modelBuilder.Entity<ResourceName>().ToTable("ResourceNames", schemaName: "Localization");
 
+      modelBuilder.Entity<EmailTemplate>().HasKey(x => x.EmailTemplateId);
+      modelBuilder.Entity<EmailTemplate>().Property(x => x.EmailTemplateId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+      modelBuilder.Entity<EmailTemplate>().ToTable("EmailTemplate", schemaName: "Localization");
+
     }
   }
 }
