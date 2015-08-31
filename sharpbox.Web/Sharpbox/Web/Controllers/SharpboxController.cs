@@ -9,6 +9,7 @@ using sharpbox;
 namespace sharpbox.Web.Sharpbox.Web.Controllers
 {
     using System;
+    using System.Linq;
 
     using FluentValidation;
     using FluentValidation.Results;
@@ -102,33 +103,36 @@ namespace sharpbox.Web.Sharpbox.Web.Controllers
         [NonAction]
         public void Process(T instance, UiAction uiAction)
         {
-            Validator = LoadValidatorByUiAction(uiAction);
+            this.Validator = this.LoadValidatorByUiAction(uiAction);
 
             var command = this.ActionCommandMap.GetCommandByAction(this.AppContext, uiAction);
 
-            if (!Validate())
+            if (!this.Validate())
             {
-
+                foreach (var e in this.ValidationResult.Errors)
+                {
+                  this.ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
+                }
             }
             else
             {
                 try
                 {
-                    var response = AppContext.Dispatch.Process<T>(command, "hmm", new object[] { this.Instance });
+                    var response = this.AppContext.Dispatch.Process<T>(command, ActionMessageMap.Map[uiAction], new object[] { this.Instance });
 
-                    Instance = (T)response.Entity;
+                    this.Instance = (T)response.Entity;
 
                 }
                 catch (Exception ex)
                 {
-
+                    this.ModelState.AddModelError("Exception", ex.Message);
                 }
             }
         }
 
         public JsonResult GetJsonModel()
         {
-            return Json(Instance);
+            return this.Json(this.Instance);
         }
     }
 }

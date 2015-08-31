@@ -15,7 +15,9 @@
     "Microsoft.Framework.Logging.Console": "1.0.0-beta5",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta5",
     "FluentValidation": "5.6.2",
-    "sharpbox-kitchenSink-superAlpha": "0.0.32"
+    "sharpbox-kitchenSink-superAlpha": "0.0.32",
+    "Pechkin.Synchronized": "0.5.8.1",
+    "EPPlus": "4.0.4"
   },
 
   "commands": {

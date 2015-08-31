@@ -3,6 +3,22 @@
   "version": -9996,
   "targets": {
     "DNX,Version=v4.5.2": {
+      "Common.Logging/2.1.1": {
+        "compile": {
+          "lib/net40/Common.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Common.Logging.dll": {}
+        }
+      },
+      "EPPlus/4.0.4": {
+        "compile": {
+          "lib/net20/EPPlus.dll": {}
+        },
+        "runtime": {
+          "lib/net20/EPPlus.dll": {}
+        }
+      },
       "FluentValidation/5.6.2.0": {
         "compile": {
           "lib/Net45/FluentValidation.dll": {}
@@ -1205,6 +1221,29 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
+      "Pechkin/0.5.8.1": {
+        "dependencies": {
+          "Common.Logging": "2.1.1"
+        },
+        "compile": {
+          "lib/net40/Pechkin.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Pechkin.dll": {}
+        }
+      },
+      "Pechkin.Synchronized/0.5.8.1": {
+        "dependencies": {
+          "Pechkin": "0.5.8.1",
+          "Common.Logging": "2.1.1"
+        },
+        "compile": {
+          "lib/net40/Pechkin.Synchronized.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Pechkin.Synchronized.dll": {}
+        }
+      },
       "sharpbox-kitchenSink-superAlpha/0.0.32": {
         "compile": {
           "lib/sharpbox.Audit.dll": {},
@@ -1259,6 +1298,27 @@
     }
   },
   "libraries": {
+    "Common.Logging/2.1.1": {
+      "sha512": "H0inS2nL8v6V2fT9lpBoXftvTx/0qqo1cewXqaaHkVXe4G5MQaGj6Mb6HdJsv2Qy+q7p+BEr7t/nTzqNuTFSUw==",
+      "files": [
+        "Common.Logging.2.1.1.nupkg",
+        "Common.Logging.2.1.1.nupkg.sha512",
+        "Common.Logging.nuspec",
+        "lib/net35/Common.Logging.dll",
+        "lib/net40/Common.Logging.dll"
+      ]
+    },
+    "EPPlus/4.0.4": {
+      "sha512": "O8LP3wUpJZ9Th0BBAKHbR0hdlnWZw4HEeDtNGTs1cvqGsdywC/L5kBxliJRStKV4K8eMZUjFE5Mov/LU01+OZg==",
+      "files": [
+        "EPPlus.4.0.4.nupkg",
+        "EPPlus.4.0.4.nupkg.sha512",
+        "EPPlus.nuspec",
+        "lib/readme.txt",
+        "lib/net20/EPPlus.dll",
+        "lib/net20/EPPlus.XML"
+      ]
+    },
     "FluentValidation/5.6.2.0": {
       "sha512": "xnwMRptvlZrEEzeGGse3etRffQxsMVrF+jb4V4uYD/PpPV9LnTtVJNSYvhVo0txKvRulDCSVXHIyr6ogjJaULQ==",
       "files": [
@@ -2239,6 +2299,31 @@
         "tools/install.ps1"
       ]
     },
+    "Pechkin/0.5.8.1": {
+      "sha512": "WRwcK0UZ1Tho/nJ3mFtINoxk93EED24ccbecefx/BAF/PpVzjif/3ozy0uh0aaymlLIuSL0LEhzDXdNG149tZw==",
+      "files": [
+        "Pechkin.0.5.8.1.nupkg",
+        "Pechkin.0.5.8.1.nupkg.sha512",
+        "Pechkin.nuspec",
+        "content/libeay32.dll",
+        "content/libgcc_s_dw2-1.dll",
+        "content/mingwm10.dll",
+        "content/ssleay32.dll",
+        "content/wkhtmltox0.dll",
+        "lib/net40/Pechkin.dll",
+        "tools/install.ps1",
+        "tools/net40/install.ps1"
+      ]
+    },
+    "Pechkin.Synchronized/0.5.8.1": {
+      "sha512": "H+JlgpGPxOsdUj2OeTrLdBOEfunyFZfQ3yMR96oYGbWjUTTMqEjJLGUk4UJngPYtEiOrJa9g50PhyVnK7Nlgww==",
+      "files": [
+        "Pechkin.Synchronized.0.5.8.1.nupkg",
+        "Pechkin.Synchronized.0.5.8.1.nupkg.sha512",
+        "Pechkin.Synchronized.nuspec",
+        "lib/net40/Pechkin.Synchronized.dll"
+      ]
+    },
     "sharpbox-kitchenSink-superAlpha/0.0.32": {
       "sha512": "iYTKMc87GMC5OUilYQ4GlyqpcTZhcVDKakxP6KQAAhZhi4RIXt1ZUF+t1RmINRZZkwJXFTjShlqOXWtpikmiDw==",
       "files": [
@@ -2312,7 +2397,9 @@
       "Microsoft.Framework.Logging.Console >= 1.0.0-beta5",
       "Microsoft.VisualStudio.Web.BrowserLink.Loader >= 14.0.0-beta5",
       "FluentValidation >= 5.6.2",
-      "sharpbox-kitchenSink-superAlpha >= 0.0.32"
+      "sharpbox-kitchenSink-superAlpha >= 0.0.32",
+      "Pechkin.Synchronized >= 0.5.8.1",
+      "EPPlus >= 4.0.4"
     ],
     "DNX,Version=v4.5.2": []
   }
