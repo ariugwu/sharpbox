@@ -7,9 +7,13 @@
     "jquery": "2.1.4",
     "jquery-validation": "1.11.1",
     "jquery-validation-unobtrusive": "3.2.2",
-    "knockout": "^3.3.0",
     "typeahead.js": "^0.11.1",
     "typeahead.js-bootstrap.css": "*",
-    "backbone": "^1.2.2"
+    "backbone": "1.2.2",
+    "react": "latest",
+    "lodash": "latest",
+    "underscore.string": "latest",
+    "font-awesome": "latest",
+    "toastr": "2.1.2"
   }
 }

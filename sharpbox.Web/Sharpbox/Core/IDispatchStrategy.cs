@@ -12,7 +12,7 @@ namespace sharpbox.Web.Sharpbox.Core
     {
         IUnitOfWork<T> UnitOfWork { get; set; }
 
-        T Process(AppContext appContext, T instance, CommandNames commandName);
+        Feedback<T> Process(AppContext appContext, T instance, CommandNames commandName);
 
         void RegisterCommands(AppContext appContext);
 

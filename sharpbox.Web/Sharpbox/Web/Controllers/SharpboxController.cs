@@ -71,6 +71,8 @@ namespace sharpbox.Web.Sharpbox.Web.Controllers
 
         public IMediator<T> Mediator { get; set; }
 
+        public Feedback<T> Feedback { get; set; }
+
         public ActionCommandMap ActionCommandMap { get; set; }
 
         public ValidationResult ValidationResult { get; set; }
@@ -95,8 +97,25 @@ namespace sharpbox.Web.Sharpbox.Web.Controllers
 
         #endregion
 
+        #region Action(s)
+
         public IActionResult Execute(T instance, UiAction uiAction)
         {
+            this.Process(instance, uiAction);
+
+            // Do temp stuff here.
+            // 1. If the ModelState is invalid OR the feedback is error then return the view
+            if (!this.ModelState.IsValid || this.Feedback.FeedbackType == FeedbackType.Error)
+            {
+
+            }
+            else
+            {
+                // 2. If the ModelState and Feedback are good then redirect back to the requestor.
+            }
+
+            //TODO: Test and finalize
+
             throw new NotImplementedException();
         }
 
@@ -118,10 +137,7 @@ namespace sharpbox.Web.Sharpbox.Web.Controllers
             {
                 try
                 {
-                    var response = this.AppContext.Dispatch.Process<T>(command, ActionMessageMap.Map[uiAction], new object[] { this.Instance });
-
-                    this.Instance = (T)response.Entity;
-
+                    this.Feedback = this.Mediator.Process(this.AppContext, this.Instance, command);
                 }
                 catch (Exception ex)
                 {
@@ -130,9 +146,16 @@ namespace sharpbox.Web.Sharpbox.Web.Controllers
             }
         }
 
+        public void GeneratePdf(string url)
+        {
+            
+        }
+
         public JsonResult GetJsonModel()
         {
             return this.Json(this.Instance);
         }
+
+        #endregion
     }
 }
