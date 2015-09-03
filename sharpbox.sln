@@ -64,6 +64,11 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "sharpbox.Web", "sharpbox.We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.EfCodeFirst.Membership", "sharpbox.EfCodeFirst.Membership\sharpbox.EfCodeFirst.Membership.csproj", "{C257E500-6403-4685-A1FB-276CF997E30C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{3959B60F-8BC6-41F5-9EE6-EC4E0DE4D4BB}"
+	ProjectSection(SolutionItems) = preProject
+		Base.dgml = Base.dgml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
