@@ -14,6 +14,7 @@ namespace sharpbox.Web.Sharpbox.Web.Controllers
     using FluentValidation;
     using FluentValidation.Results;
 
+    using sharpbox.Dispatch.Model;
     using sharpbox.Web.Sharpbox.Web.Helpers;
 
     using AppContext = sharpbox.AppContext;
@@ -103,11 +104,12 @@ namespace sharpbox.Web.Sharpbox.Web.Controllers
         {
             this.Process(instance, uiAction);
 
-            // Do temp stuff here.
-            // 1. If the ModelState is invalid OR the feedback is error then return the view
-            if (!this.ModelState.IsValid || this.Feedback.FeedbackType == FeedbackType.Error)
+            //TODO: temp stuff here: Store feedback in session and pull it out as part of the CoR
+
+            if (!this.ModelState.IsValid || this.Feedback.ResponseType == ResponseTypes.Error)
             {
 
+                // 1. If the ModelState is invalid OR the feedback is error then return the view
             }
             else
             {
@@ -122,33 +124,39 @@ namespace sharpbox.Web.Sharpbox.Web.Controllers
         [NonAction]
         public void Process(T instance, UiAction uiAction)
         {
-            this.Validator = this.LoadValidatorByUiAction(uiAction);
-
-            var command = this.ActionCommandMap.GetCommandByAction(this.AppContext, uiAction);
-
-            if (!this.Validate())
+            try
             {
-                foreach (var e in this.ValidationResult.Errors)
+                this.Validator = this.LoadValidatorByUiAction(uiAction);
+
+                var command = this.ActionCommandMap.GetCommandByAction(this.AppContext, uiAction);
+
+                if (!this.Validate())
                 {
-                  this.ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
+                    foreach (var e in this.ValidationResult.Errors)
+                    {
+                        this.ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
+                    }
                 }
-            }
-            else
-            {
-                try
+                else
                 {
                     this.Feedback = this.Mediator.Process(this.AppContext, this.Instance, command);
+
+                    if (this.Feedback.ResponseType == ResponseTypes.Error)
+                    {
+                        this.ModelState.AddModelError("Processing Error", this.Feedback.Message);
+                    }
+
                 }
-                catch (Exception ex)
-                {
-                    this.ModelState.AddModelError("Exception", ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError("Exception", ex.Message);
             }
         }
 
         public void GeneratePdf(string url)
         {
-            
+
         }
 
         public JsonResult GetJsonModel()

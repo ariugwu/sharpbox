@@ -10,6 +10,8 @@ namespace sharpbox.Web.Sharpbox.Core
 
     public interface IDispatchStrategy<T>
     {
+        Dictionary<CommandNames, Dictionary<ResponseTypes, string>> CommandResponseMessageMap { get; set; }
+
         IUnitOfWork<T> UnitOfWork { get; set; }
 
         Feedback<T> Process(AppContext appContext, T instance, CommandNames commandName);
@@ -17,5 +19,7 @@ namespace sharpbox.Web.Sharpbox.Core
         void RegisterCommands(AppContext appContext);
 
         void RegisterListeners(AppContext appContext);
+
+        void PopulateResponseMessageMap();
     }
 }
