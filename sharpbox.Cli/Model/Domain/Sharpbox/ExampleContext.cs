@@ -200,10 +200,5 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
     }
 
     #endregion
-
-    public override Dictionary<string, Dictionary<Type, EmailTemplate>> LoadEmailTemplates()
-    {
-      return new Dictionary<string, Dictionary<Type, EmailTemplate>>();
-    }
   }
 }

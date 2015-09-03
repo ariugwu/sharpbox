@@ -9,14 +9,14 @@ using sharpbox.Notification.Domain.Notification.Model;
 namespace sharpbox
 {
   [Serializable]
-  public abstract class AppContext
+  public class AppContext
   {
     /// <summary>
     /// A bit of a kitchen sink. Will instantiate Dispatch, Email, File, Audit, Notification, and map default commands and listeners.
     /// </summary>
     /// <param name="smtpClient"></param>
     /// <param name="ioStrategy"></param>
-    protected AppContext(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy)
+    public AppContext(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy)
     {
       Dispatch = new Client();
       Email = new Email.Client(smtpClient);
@@ -30,14 +30,12 @@ namespace sharpbox
 
       RegisterCommands();
       MapListeners();
-
-      Notification.EmailTemplateLookup = PopulateEmailTemplates();
     }
 
     /// <summary>
     /// Do all the wiring yourself
     /// </summary>
-    protected AppContext()
+    public AppContext()
     {
     }
 
@@ -91,13 +89,6 @@ namespace sharpbox
     public virtual void OnException(Response response)
     {
       throw new NotImplementedException();
-    }
-
-    public abstract Dictionary<string, Dictionary<Type, EmailTemplate>> LoadEmailTemplates();
-
-    public Dictionary<string, Dictionary<Type, EmailTemplate>> PopulateEmailTemplates()
-    {
-      return LoadEmailTemplates();
     }
 
   }
