@@ -49,7 +49,7 @@ namespace sharpbox.Notification
     /// <param name="response"></param>
     public void ProcessEvent(Response response)
     {
-      if (!Subscribers.ContainsKey(response.EventName.Name) && !Subscribers[response.EventName.Name].ContainsKey(response.Type)) return; // Bail early if there are no subscribers.
+      if (!Subscribers.ContainsKey(response.EventName.Name) || !Subscribers[response.EventName.Name].ContainsKey(response.Type)) return; // Bail early if there are no subscribers.
 
       // Run through all of the subscribers for this publisher and generate a backlog item for them.
       foreach (var s in Subscribers[response.EventName.Name][response.Type])
