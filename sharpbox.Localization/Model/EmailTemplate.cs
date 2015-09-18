@@ -1,10 +1,11 @@
-﻿namespace sharpbox.Localization.Model
-{
-    using System;
-    using System.Collections.Generic;
+﻿using sharpbox.Membership.Model;
+using System;
+using System.Collections.Generic;
+using sharpbox.Dispatch.Model;
 
-    using sharpbox.Dispatch.Model;
-    using sharpbox.Membership.Domain.Membership.Model;
+namespace sharpbox.Localization.Model
+{
+
 
     [Serializable]
   public abstract class EmailTemplate : ResourceFormatTemplate
@@ -21,7 +22,7 @@
 
     public int EmailTemplateId { get; set; }
 
-    public Dictionary<EventName, Dictionary<Type, UserRoleType>> SubscribedRoles { get; set; }
+    public Dictionary<EventName, Dictionary<Type, UserRoleName>> SubscribedRoles { get; set; }
 
     public Type EntityType { get; private set; }
 

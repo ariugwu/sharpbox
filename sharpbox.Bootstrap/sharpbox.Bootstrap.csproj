@@ -182,6 +182,7 @@
     <Compile Include="Package\Core\LifecycleHandler.cs" />
     <Compile Include="Package\Core\IDispatchStrategy.cs" />
     <Compile Include="Package\Core\IMediator.cs" />
+    <Compile Include="Package\Core\Strategies\BaseDispatchStrategy.cs" />
     <Compile Include="Package\Core\WebContext.cs" />
     <Compile Include="Package\Core\WebRequest.cs" />
     <Compile Include="Package\Core\Strategies\DefaultDispatchStrategy.cs" />

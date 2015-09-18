@@ -45,14 +45,14 @@ namespace sharpbox.WebLibrary.Web.Controllers
     protected SharpboxController(IUnitOfWork<T> unitOfWork)
     {
       WebContext = new WebContext<T>();
-      WebContext.Mediator = new DefaultMediator<T>(WebContext, new DefaultDispatchStrategy<T>(unitOfWork));
+      WebContext.Mediator = new DefaultMediator<T>(WebContext, new DefaultDispatchStrategy<T>(WebContext, unitOfWork));
       ActionCommandMap = new ActionCommandMap(useOneToOneMap: true);
     }
 
     protected SharpboxController()
     {
       WebContext = new WebContext<T>();
-      WebContext.Mediator = new DefaultMediator<T>(WebContext, new DefaultDispatchStrategy<T>(new DefaultUnitOfWork<T>()));
+      WebContext.Mediator = new DefaultMediator<T>(WebContext, new DefaultDispatchStrategy<T>(WebContext, new DefaultUnitOfWork<T>()));
       ActionCommandMap = new ActionCommandMap(useOneToOneMap: true);
     }
 

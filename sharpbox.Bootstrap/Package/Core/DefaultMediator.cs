@@ -1,4 +1,5 @@
 ﻿using sharpbox.WebLibrary.Core.Strategies;
+using sharpbox.WebLibrary.Data;
 
 namespace sharpbox.WebLibrary.Core
 {
@@ -9,16 +10,22 @@ namespace sharpbox.WebLibrary.Core
       public DefaultMediator(WebContext<T> webContext, IDispatchStrategy<T> dispatchStrategy)
         {
             this.DispatchStrategy = dispatchStrategy;
+            this.DispatchStrategy.RegisterCommands(webContext);
+            this.DispatchStrategy.RegisterCommands(webContext);
 
-            RegisterCommands(webContext);
-            RegisterListeners(webContext);
         }
 
       public DefaultMediator(WebContext<T> webContext)
-            : this(webContext, new DefaultDispatchStrategy<T>())
+            : this(webContext, new DefaultDispatchStrategy<T>(webContext))
         {
             
         }
+
+      public DefaultMediator(WebContext<T> webContext, IUnitOfWork<T> unitOfwork)
+        : this(webContext, new DefaultDispatchStrategy<T>(webContext, unitOfwork))
+      {
+        
+      } 
          
         #endregion
 
@@ -28,19 +35,6 @@ namespace sharpbox.WebLibrary.Core
 
         #endregion
 
-        #region Interface Methods
-
-        public void RegisterCommands(WebContext<T> webContext)
-        {
-            this.DispatchStrategy.RegisterCommands(webContext);
-        }
-
-        public void RegisterListeners(WebContext<T> webContext)
-        {
-            this.DispatchStrategy.RegisterCommands(webContext);
-        }
-
-        #endregion
 
     }
 }

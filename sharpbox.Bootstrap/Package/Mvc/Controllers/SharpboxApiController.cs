@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
-using System.Web.Http.OData.Routing;
 using sharpbox.Dispatch.Model;
 using sharpbox.EfCodeFirst.Audit;
+using sharpbox.WebLibrary.Core;
 
 namespace sharpbox.Bootstrap.Package.Mvc.Controllers
 {
@@ -41,55 +36,60 @@ namespace sharpbox.Bootstrap.Package.Mvc.Controllers
         [Queryable]
         public SingleResult<T> Get([FromODataUri] int key)
         {
-            return SingleResult.Create(db.Responses.Where(response => response.ResponseId == key));
+          throw new NotImplementedException();
+            //return SingleResult.Create(db.Responses.Where(response => response.ResponseId == key));
         }
 
         // PUT odata/SharpboxApi(5)
-        public IHttpActionResult Put([FromODataUri] int key, T instance)
+        public IHttpActionResult Put([FromODataUri] WebRequest<T> webRequest)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+          
+            //if (key != response.ResponseId)
+            //{
+            //    return BadRequest();
+            //}
 
-            if (key != response.ResponseId)
-            {
-                return BadRequest();
-            }
+            //db.Entry(response).State = EntityState.Modified;
 
-            db.Entry(response).State = EntityState.Modified;
+            //try
+            //{
+            //    db.SaveChanges();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!ResponseExists(key))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ResponseExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //return Updated(response);
 
-            return Updated(response);
+            throw new NotImplementedException();
         }
 
         // POST odata/SharpboxApi
-        public IHttpActionResult Post(Response response)
+        public IHttpActionResult Post(WebRequest<T> webRequest)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
-            db.Responses.Add(response);
-            db.SaveChanges();
+            //db.Responses.Add(response);
+            //db.SaveChanges();
 
-            return Created(response);
+            //return Created(response);
+
+            throw new NotImplementedException();
         }
 
         // PATCH odata/SharpboxApi(5)
