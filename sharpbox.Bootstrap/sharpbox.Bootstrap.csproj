@@ -176,16 +176,14 @@
     <Compile Include="Package\Core\App\Info\Model\SupportTicket.cs" />
     <Compile Include="Package\Core\App\Info\Model\TechSheet.cs" />
     <Compile Include="Package\Core\App\Info\Model\TfsConfig.cs" />
-    <Compile Include="Package\Core\DefaultMediator.cs" />
     <Compile Include="Package\Core\EmptyAppContext.cs" />
     <Compile Include="Package\Core\EnvironmentType.cs" />
     <Compile Include="Package\Core\LifecycleHandler.cs" />
-    <Compile Include="Package\Core\IDispatchStrategy.cs" />
     <Compile Include="Package\Core\IMediator.cs" />
-    <Compile Include="Package\Core\Strategies\BaseDispatchStrategy.cs" />
+    <Compile Include="Package\Core\Strategies\BaseMediator.cs" />
     <Compile Include="Package\Core\WebContext.cs" />
     <Compile Include="Package\Core\WebRequest.cs" />
-    <Compile Include="Package\Core\Strategies\DefaultDispatchStrategy.cs" />
+    <Compile Include="Package\Core\Strategies\DefaultMediator.cs" />
     <Compile Include="Package\Data\DefaultRepository.cs" />
     <Compile Include="Package\Data\DefaultUnitOfWork.cs" />
     <Compile Include="Package\Data\IRepository.cs" />
@@ -206,8 +204,7 @@
     <Compile Include="Package\Mvc\Helpers\Handler\ExecuteHandler.cs" />
     <Compile Include="Package\Mvc\Helpers\Handler\FinalizeHandler.cs" />
     <Compile Include="Package\Mvc\Helpers\Handler\LoadContextHandler.cs" />
-    <Compile Include="Package\Mvc\Helpers\Handler\PostValidationHandler.cs" />
-    <Compile Include="Package\Mvc\Helpers\Handler\PreValidationHandler.cs" />
+    <Compile Include="Package\Mvc\Helpers\Handler\ValidationHandler.cs" />
     <Compile Include="Package\Mvc\Helpers\UiAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -220,6 +217,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Package\Mvc\Views\_Layout.cshtml" />
+    <Content Include="Package\Mvc\Views\Error.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

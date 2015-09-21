@@ -3,6 +3,8 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.WebLibrary.Web.Helpers
 {
+    using System.Linq;
+
     public class ActionCommandMap
     {
         public ActionCommandMap(Dictionary<UiAction, CommandName> map)
@@ -21,7 +23,7 @@ namespace sharpbox.WebLibrary.Web.Helpers
 
         public CommandName GetCommandByAction(AppContext appContext, UiAction uiAction)
         {
-            return this.UseOneToOneMap ? new CommandName(uiAction.ToString()) : _map[uiAction];
+            return this.UseOneToOneMap ? appContext.Dispatch.CommandHub.First(x => x.Key.Name.Equals(uiAction.Name)).Key : _map[uiAction];
         }
     }
 }

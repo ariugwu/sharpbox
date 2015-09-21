@@ -11,135 +11,102 @@ using sharpbox.WebLibrary.Web.Helpers;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
-  public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
-  {
+    using System.Linq;
 
-    #region Properties
-    public WebContext<T> WebContext { get; set; }
-
-    public ActionCommandMap ActionCommandMap { get; set; }
-    #endregion
-
-    #region Constructor(s)
-    protected SharpboxController(IMediator<T> mediator, ActionCommandMap actionCommandMap)
-    {
-      WebContext = new WebContext<T> {Mediator = mediator};
-      ActionCommandMap = actionCommandMap;
-
-    }
-
-    protected SharpboxController(IDispatchStrategy<T> dispatchStrategy, ActionCommandMap actionCommandMap)
-    {
-      WebContext = new WebContext<T>();
-      WebContext.Mediator = new DefaultMediator<T>(WebContext, dispatchStrategy);
-      ActionCommandMap = actionCommandMap;
-    }
-
-    protected SharpboxController(IDispatchStrategy<T> dispatchStrategy)
-    {
-      WebContext = new WebContext<T>();
-      WebContext.Mediator = new DefaultMediator<T>(WebContext, dispatchStrategy);
-      ActionCommandMap = new ActionCommandMap(useOneToOneMap: true);
-    }
-
-    protected SharpboxController(IUnitOfWork<T> unitOfWork)
-    {
-      WebContext = new WebContext<T>();
-      WebContext.Mediator = new DefaultMediator<T>(WebContext, new DefaultDispatchStrategy<T>(WebContext, unitOfWork));
-      ActionCommandMap = new ActionCommandMap(useOneToOneMap: true);
-    }
-
-    protected SharpboxController()
-    {
-      WebContext = new WebContext<T>();
-      WebContext.Mediator = new DefaultMediator<T>(WebContext, new DefaultDispatchStrategy<T>(WebContext, new DefaultUnitOfWork<T>()));
-      ActionCommandMap = new ActionCommandMap(useOneToOneMap: true);
-    }
-
-    #endregion
-
-    #region Validation
-
-    public void SetValidator(UiAction uiAction)
-    {
-      WebContext.Validator = this.LoadValidatorByUiAction(uiAction);
-    }
-
-    public abstract AbstractValidator<T> LoadValidatorByUiAction(UiAction uiAction);
-    #endregion
-
-    #region Action(s)
-
-    public ActionResult Execute(T instance, UiAction uiAction)
+    public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
     {
 
-      SetValidator(uiAction);
+        #region Override(s)
+        #endregion
 
-      if (!this.ModelState.IsValid)
-      {
+        #region Properties
+        public WebContext<T> WebContext { get; set; }
 
-        //TODO: temp stuff here: Store feedback in session and pull it out as part of the CoR
+        public ActionCommandMap ActionCommandMap { get; set; }
+        #endregion
 
-      }
-
-      this.Process(instance, uiAction);
-
-      if (!this.ModelState.IsValid)
-      {
-
-        //TODO: We check the model state to see if trying to process threw an error.
-
-      }
-      //TODO: Test and finalize
-
-      throw new NotImplementedException();
-    }
-
-    [NonAction]
-    public void Process(T instance, UiAction uiAction)
-    {
-      try
-      {
-        WebContext.Instance = instance;
-
-        WebContext.Validator = this.LoadValidatorByUiAction(uiAction);
-
-        if (!WebContext.Validate())
+        #region Constructor(s)
+        protected SharpboxController(AppContext appContext, IMediator<T> mediator)
         {
-          foreach (var e in WebContext.ValidationResult.Errors)
-          {
-            this.ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
-          }
+            if (this.TempData["WebContext"] == null)
+            {
+                this.WebContext = new WebContext<T> { AppContext = appContext, Mediator = mediator };
+            }
+            else
+            {
+                this.WebContext = (WebContext<T>)TempData["WebContext"];
+            }
+            
         }
-        else
+
+        protected SharpboxController(AppContext appContext, IUnitOfWork<T> unitOfWork)
+            : this(appContext, new DefaultMediator<T>(appContext, unitOfWork))
         {
-          var webRequest = new WebRequest<T>() { Instance = WebContext.Instance, CommandName = this.ActionCommandMap.GetCommandByAction(WebContext.AppContext, uiAction) };
-
-          WebContext.ProcessRequest();
-
-          if (WebContext.Response.ResponseType == ResponseTypes.Error)
-          {
-            this.ModelState.AddModelError("Processing Error", WebContext.Response.Message);
-          }
         }
-      }
-      catch (Exception ex)
-      {
-        WebContext.Response = new Response() { Entity = WebContext.Instance, Message = ex.Message };
-        this.ModelState.AddModelError("Exception", ex.Message);
-      }
+
+        protected SharpboxController(AppContext appContext)
+            : this(appContext, new DefaultMediator<T>(appContext, new DefaultUnitOfWork<T>()))
+        {
+        }
+
+        #endregion
+
+        #region Validation
+
+        public void SetValidator(UiAction uiAction)
+        {
+            this.WebContext.Validator = this.LoadValidatorByUiAction(uiAction); // Abstract method to be set by implementing class
+        }
+
+        public abstract AbstractValidator<T> LoadValidatorByUiAction(UiAction uiAction);
+
+        #endregion
+
+        #region CommandActionMapping 
+
+        public void SetCommandActionMap()
+        {
+            this.ActionCommandMap = this.LoadCommandActionMap();
+        }
+
+        public abstract ActionCommandMap LoadCommandActionMap();
+
+        #endregion
+
+        #region Action(s)
+
+        [HttpPost]
+        public ActionResult Execute(T instance, UiAction uiAction)
+        {
+            try
+            {
+                this.WebContext.Instance = instance;
+                this.SetValidator(uiAction);
+                this.SetCommandActionMap();
+                this.WebContext.WebRequest = new WebRequest<T>() { Instance = this.WebContext.Instance, CommandName = this.ActionCommandMap.GetCommandByAction(this.WebContext.AppContext, uiAction) };
+                this.WebContext.ProcessRequest(this); // Pass the current controller
+            }
+            catch (Exception ex)
+            {
+                this.WebContext.Response = new Response() { Entity = this.WebContext.Instance, Message = ex.Message };
+                this.ModelState.AddModelError("Exception", ex.Message);
+            }
+
+            this.TempData["WebContext"] = this.WebContext;
+
+            return this.Redirect(this.ControllerContext.HttpContext.Request.UrlReferrer.ToString());
+        }
+
+        public void GeneratePdf(string url)
+        {
+
+        }
+
+        public JsonResult GetJsonModel()
+        {
+            return this.Json(this.WebContext.Instance);
+        }
+
+        #endregion
     }
-
-    public void GeneratePdf(string url)
-    {
-
-    }
-
-    public JsonResult GetJsonModel()
-    {
-      return this.Json(WebContext.Instance);
-    }
-
-    #endregion
-  }
 }
