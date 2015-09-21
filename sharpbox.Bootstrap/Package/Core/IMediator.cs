@@ -5,7 +5,7 @@ using sharpbox.WebLibrary.Data;
 namespace sharpbox.WebLibrary.Core
 {
 
-    public interface IMediator<T>
+    public interface IMediator<T> where T : new()
     {
         Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandResponseMessageMap { get; set; }
 

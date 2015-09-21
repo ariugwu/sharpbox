@@ -5,7 +5,7 @@ using sharpbox.WebLibrary.Core;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
-  public interface ISharpboxController<T>
+  public interface ISharpboxController<T> where T : new()
   {
 
     #region Properties

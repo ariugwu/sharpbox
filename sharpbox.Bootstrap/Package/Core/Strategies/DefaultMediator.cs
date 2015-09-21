@@ -4,7 +4,7 @@ using sharpbox.WebLibrary.Data;
 namespace sharpbox.WebLibrary.Core.Strategies
 {
 
-  public class DefaultMediator<T> : BaseMediator<T>
+  public class DefaultMediator<T> : BaseMediator<T> where T : new()
   {
 
     public DefaultMediator(AppContext appContext, IUnitOfWork<T> unitOfWork) : base(appContext, unitOfWork)

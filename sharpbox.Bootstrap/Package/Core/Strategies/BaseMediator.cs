@@ -5,7 +5,7 @@ using sharpbox.WebLibrary.Data;
 
 namespace sharpbox.Bootstrap.Package.Core.Strategies
 {
-    public abstract class BaseMediator<T> : IMediator<T>
+    public abstract class BaseMediator<T> : IMediator<T> where T : new()
     {
 
         protected BaseMediator(AppContext appContext, IUnitOfWork<T> unitOfWork)
@@ -55,7 +55,7 @@ namespace sharpbox.Bootstrap.Package.Core.Strategies
 
             //Register Listener(s)
 
-            //Populate Command Response Map
+            //Populate Command DispatchResponse Map
             this.CommandResponseMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
 
             this.CommandResponseMessageMap.Add(this.Insert, new Dictionary<ResponseTypes, string>());

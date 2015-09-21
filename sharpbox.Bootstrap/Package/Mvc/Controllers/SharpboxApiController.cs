@@ -16,7 +16,7 @@ namespace sharpbox.Bootstrap.Package.Mvc.Controllers
     using System.Web.Http.OData.Builder;
     using sharpbox.Dispatch.Model;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<Response>("SharpboxApi");
+    builder.EntitySet<DispatchResponse>("SharpboxApi");
     builder.EntitySet<EventName>("EventNames"); 
     builder.EntitySet<Request>("Requests"); 
     config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());

@@ -12,7 +12,7 @@ using sharpbox.WebLibrary.Web.Helpers;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
-  public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
+  public abstract class SharpboxController<T> : Controller, ISharpboxController<T> where T : new()
   {
 
     #region Override(s)
@@ -33,8 +33,17 @@ namespace sharpbox.WebLibrary.Web.Controllers
       else
       {
         this.WebContext = (WebContext<T>)TempData["WebContext"];
+        if (this.WebContext.WebResponse != null && !this.WebContext.WebResponse.IsValid)
+        {
+          foreach (var e in this.WebContext.WebResponse.ModelErrors)
+          {
+            foreach (var me in e.Value)
+            {
+              this.ModelState.AddModelError(e.Key, me.ErrorMessage);
+            }
+          }
+        }
       }
-
     }
 
     protected SharpboxController(AppContext appContext, IUnitOfWork<T> unitOfWork)
@@ -68,10 +77,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
       }
       catch (Exception ex)
       {
-        if(WebContext.WebResponse == null) WebContext.WebResponse = new WebResponse<T>(){ ModelErrors = new Stack<ModelError>()};
+        if (WebContext.WebResponse == null) WebContext.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };
 
-        this.ModelState.AddModelError("Execution Error", ex.Message);
-        this.WebContext.WebResponse.ModelErrors.Push(new ModelError(ex.Message));
+        LifecycleHandler<T>.AddModelStateError(this.WebContext, this, "ExecutionError", new ModelError(ex, ex.Message));
       }
 
       this.TempData["WebContext"] = this.WebContext;
@@ -86,7 +94,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
     public JsonResult GetJsonModel()
     {
-      return this.Json(this.WebContext.WebRequest.Instance);
+      return this.Json(new T());
     }
 
     #endregion

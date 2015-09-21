@@ -7,7 +7,7 @@ using sharpbox.WebLibrary.Web.Controllers;
 
 namespace sharpbox.WebLibrary.Mvc.Helpers.Handler
 {
-  public class ValidationHandler<T> : LifecycleHandler<T>
+  public class ValidationHandler<T> : LifecycleHandler<T> where T : new()
   {
     public ValidationResult ValidationResult { get; set; }
 
@@ -17,9 +17,15 @@ namespace sharpbox.WebLibrary.Mvc.Helpers.Handler
     {
       if (!controller.ModelState.IsValid)
       {
-        foreach (var e in controller.ModelState.Values.SelectMany(x => x.Errors))
+        foreach (var v in controller.ModelState.Values)
         {
-          webContext.WebResponse.ModelErrors.Push(e);
+          if (v.Errors.Count <= 0) continue;
+
+          foreach (var me in v.Errors)
+          {
+            AddModelStateError(webContext, v.ToString(), new ModelError(me.ErrorMessage));
+          }
+
         }
         return;
       }
@@ -30,8 +36,7 @@ namespace sharpbox.WebLibrary.Mvc.Helpers.Handler
       {
         foreach (var e in this.ValidationResult.Errors)
         {
-          controller.ModelState.AddModelError(e.PropertyName, e.ErrorMessage);
-          webContext.WebResponse.ModelErrors.Push(new ModelError(e.ErrorMessage));
+          AddModelStateError(webContext, controller, e.PropertyName, new ModelError(e.ErrorMessage));
         }
       }
     }

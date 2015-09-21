@@ -5,7 +5,7 @@ using sharpbox.WebLibrary.Web.Controllers;
 
 namespace sharpbox.WebLibrary.Core
 {
-  public class WebContext<T>
+  public class WebContext<T> where T : new()
   {
 
     #region Constructor(s)

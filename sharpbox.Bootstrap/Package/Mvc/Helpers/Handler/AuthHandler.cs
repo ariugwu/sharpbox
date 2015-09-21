@@ -7,8 +7,8 @@ namespace sharpbox.WebLibrary.Mvc.Helpers.Handler
 {
     using System.Web.Mvc;
 
-    public class AuthHandler<T> : LifecycleHandler<T>
-  {
+    public class AuthHandler<T> : LifecycleHandler<T> where T : new()
+    {
       public override void HandleRequest(WebContext<T> webContext, SharpboxController<T> controller)
     {
 

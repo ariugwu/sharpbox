@@ -1,7 +1,9 @@
-﻿using System;
+﻿
+using System.Diagnostics;
 using System.Net.Mail;
 using System.Web.Mvc;
 using FluentValidation;
+using sharpbox.Bootstrap.Models;
 using sharpbox.Dispatch.Model;
 using sharpbox.Io.Strategy.Binary;
 using sharpbox.WebLibrary.Web.Helpers;
@@ -9,44 +11,46 @@ using sharpbox.WebLibrary.Web.Helpers;
 namespace sharpbox.Bootstrap.Controllers
 {
 
-    public class HomeController : sharpbox.WebLibrary.Web.Controllers.SharpboxController<string>
+  public class HomeController : sharpbox.WebLibrary.Web.Controllers.SharpboxController<ExampleModel>
+  {
+    private CommandName _testCommand = new CommandName("TestCommand");
+    private EventName _testEvent = new EventName("TestEvent");
+
+    public HomeController()
+      : base(new AppContext(new SmtpClient(), new BinaryStrategy()))
     {
-        private CommandName _testCommand = new CommandName("TestCommand");
-        private EventName _testEvent = new EventName("TestEvent");
-
-        public HomeController()
-            : base(new AppContext(new SmtpClient(), new BinaryStrategy()))
-        {
-            this.WebContext.AppContext.Dispatch.Register<string>(this._testCommand, (value) => value + "...I changed this",this._testEvent);
-        }
-
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
-        public override AbstractValidator<string> LoadValidatorByUiAction(UiAction uiAction)
-        {
-            return new InlineValidator<string>();
-        }
-
-        public override ActionCommandMap LoadCommandActionMap()
-        {
-            return new ActionCommandMap(useOneToOneMap: true);
-        }
+      this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._testCommand,ExampleModel.TestTargetMethod,this._testEvent);
+      this.WebContext.AppContext.Dispatch.Listen(_testEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });
     }
+
+    public ActionResult Index()
+    {
+      return View();
+    }
+
+    public ActionResult About()
+    {
+      ViewBag.Message = "Your application description page.";
+
+      return View();
+    }
+
+    public ActionResult Contact()
+    {
+      ViewBag.Message = "Your contact page.";
+
+      return View();
+    }
+
+    public override AbstractValidator<ExampleModel> LoadValidatorByUiAction(UiAction uiAction)
+    {
+      return new InlineValidator<ExampleModel>();
+    }
+
+    public override ActionCommandMap LoadCommandActionMap()
+    {
+      return new ActionCommandMap(useOneToOneMap: true);
+    }
+
+  }
 }

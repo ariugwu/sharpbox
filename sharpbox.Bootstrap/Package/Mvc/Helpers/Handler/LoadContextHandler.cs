@@ -7,7 +7,7 @@ using sharpbox.WebLibrary.Web.Helpers;
 
 namespace sharpbox.WebLibrary.Mvc.Helpers.Handler
 {
-  public class LoadContextHandler<T> : LifecycleHandler<T>
+  public class LoadContextHandler<T> : LifecycleHandler<T> where T : new()
   {
     public ActionCommandMap ActionCommandMap { get; set; }
     public override void HandleRequest(WebContext<T> webContext, SharpboxController<T> controller)
@@ -16,7 +16,7 @@ namespace sharpbox.WebLibrary.Mvc.Helpers.Handler
 
       webContext.WebRequest.CommandName = this.ActionCommandMap.GetCommandByAction(webContext.AppContext, webContext.WebRequest.UiAction);
 
-      webContext.WebResponse = new WebResponse<T>(){ ModelErrors = new Stack<ModelError>()};
+      webContext.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };
     }
   }
 }

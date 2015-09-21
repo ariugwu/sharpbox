@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using sharpbox.Dispatch.Model;
 using sharpbox.WebLibrary.Core;
@@ -12,10 +9,15 @@ namespace sharpbox.Bootstrap.Package.Core
   {
     public T Instance { get; set; }
 
-    public Stack<ModelError> ModelErrors { get; set; }
+    public Dictionary<string,Stack<ModelError>> ModelErrors { get; set; }
 
-    public Response Response { get; set; }
+    public Response DispatchResponse { get; set; }
 
-    public WebRequest<T> WebRequest { get; set; } 
+    public WebRequest<T> WebRequest { get; set; }
+
+    public bool IsValid
+    {
+      get { return ModelErrors == null || ModelErrors.Count == 0; }
+    }
   }
 }
