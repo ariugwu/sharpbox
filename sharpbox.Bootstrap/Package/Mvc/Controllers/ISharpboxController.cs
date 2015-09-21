@@ -11,17 +11,14 @@ namespace sharpbox.WebLibrary.Web.Controllers
     #region Properties
     WebContext<T> WebContext { get; set; }
 
-    ActionCommandMap ActionCommandMap { get; set; }
     #endregion
 
     #region Action(s)
-    ActionResult Execute(T instance, UiAction uiAction);
+    ActionResult Execute(WebRequest<T> webRequest);
 
     #endregion
 
     #region Validation
-
-    void SetValidator(UiAction uiAction);
 
     AbstractValidator<T> LoadValidatorByUiAction(UiAction uiAction);
     #endregion

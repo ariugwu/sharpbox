@@ -2,12 +2,12 @@
 using System.Net.Mail;
 using System.Web.Mvc;
 using FluentValidation;
+using sharpbox.Dispatch.Model;
 using sharpbox.Io.Strategy.Binary;
 using sharpbox.WebLibrary.Web.Helpers;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using sharpbox.Dispatch.Model;
 
     public class HomeController : sharpbox.WebLibrary.Web.Controllers.SharpboxController<string>
     {

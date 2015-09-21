@@ -1,5 +1,6 @@
 ﻿using System;
 using sharpbox.WebLibrary.Core;
+using sharpbox.WebLibrary.Web.Controllers;
 
 namespace sharpbox.Bootstrap.Package.Mvc.Helpers.Handler
 {
@@ -7,7 +8,7 @@ namespace sharpbox.Bootstrap.Package.Mvc.Helpers.Handler
 
     public class FinalizeHandler<T> : LifecycleHandler<T>
   {
-    public override void HandleRequest(WebContext<T> webContext, Controller controller)
+      public override void HandleRequest(WebContext<T> webContext, SharpboxController<T> controller)
     {
     }
   }

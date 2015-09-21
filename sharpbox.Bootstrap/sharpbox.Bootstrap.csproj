@@ -184,6 +184,7 @@
     <Compile Include="Package\Core\WebContext.cs" />
     <Compile Include="Package\Core\WebRequest.cs" />
     <Compile Include="Package\Core\Strategies\DefaultMediator.cs" />
+    <Compile Include="Package\Core\WebResponse.cs" />
     <Compile Include="Package\Data\DefaultRepository.cs" />
     <Compile Include="Package\Data\DefaultUnitOfWork.cs" />
     <Compile Include="Package\Data\IRepository.cs" />

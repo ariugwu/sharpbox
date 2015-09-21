@@ -1,4 +1,6 @@
-﻿namespace sharpbox.WebLibrary.Core
+﻿using sharpbox.WebLibrary.Web.Controllers;
+
+namespace sharpbox.WebLibrary.Core
 {
     using System.Web.Mvc;
 
@@ -17,13 +19,13 @@
             this._successor = successor;
         }
 
-        public void ProcessRequest(WebContext<T> webContext, Controller controller)
+        public void ProcessRequest(WebContext<T> webContext, SharpboxController<T> controller)
         {
             this.HandleRequest(webContext, controller);
 
             if(this._successor != null) { this._successor.ProcessRequest(webContext, controller);} 
         }
 
-        public abstract void HandleRequest(WebContext<T> webContext, Controller controller);
+        public abstract void HandleRequest(WebContext<T> webContext, SharpboxController<T> controller);
     }
 }
