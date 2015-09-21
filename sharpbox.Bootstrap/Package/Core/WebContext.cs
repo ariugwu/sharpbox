@@ -47,12 +47,26 @@ namespace sharpbox.WebLibrary.Core
     #endregion
 
     #endregion
-
     public void ProcessRequest(WebRequest<T> webRequest, SharpboxController<T> controller)
     {
       this.WebRequest = webRequest;
       _handler.ProcessRequest(this, controller);
     }
 
+    public void ProcessTempData(SharpboxController<T> controller)
+    {
+      if (this.WebResponse == null || this.WebResponse.IsValid)
+      {
+        return;
+      }
+
+      foreach (var e in this.WebResponse.ModelErrors)
+      {
+        foreach (var me in e.Value)
+        {
+          controller.ModelState.AddModelError(e.Key, me.ErrorMessage);
+        }
+      }
+    }
   }
 }
