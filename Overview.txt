@@ -1,0 +1,40 @@
+Sharpbox Gives Access to:
+	* Boostraping:
+		- Environment
+		- Membership
+	* Cross cutting concerns:
+		- Email
+		- File IO
+		- Security (Crypto)
+	* RAD Tools:
+		- CQRS and Event Sourcing (Dispatch & Audit Trail)
+		- Notification
+		- Localization
+	* Front End Helpers
+		- Cache
+		- Text Resources
+		- ReactJs Components (Proposed)
+		- PDF Generation (Proposed)
+		- Excel Generation (Proposed)
+
+Integration Steps:
+
+Data:
+* Create your Unit of Work
+* Create a repository
+
+Core:
+* Create your business logic methods
+* Write your validation
+* Wire up a Dispatch Strategy (Commands, Events, Feedback response map)
+
+Web [Backend]:
+* Create Your action command map
+* Create your action message map
+* Create a controller.
+* Wire up a constructor
+* Setup caching
+
+Web [Front End]:
+* Arrange layout and components in views
+* Create custom components as needed.

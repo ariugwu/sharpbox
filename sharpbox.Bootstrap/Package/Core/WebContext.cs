@@ -5,7 +5,9 @@ using sharpbox.WebLibrary.Web.Controllers;
 
 namespace sharpbox.WebLibrary.Core
 {
-  public class WebContext<T> where T : new()
+    using System.Security.Principal;
+
+    public class WebContext<T> where T : new()
   {
 
     #region Constructor(s)
@@ -37,7 +39,9 @@ namespace sharpbox.WebLibrary.Core
 
     public WebRequest<T> WebRequest { get; set; }
 
-    public WebResponse<T> WebResponse { get; set; } 
+    public WebResponse<T> WebResponse { get; set; }
+        
+    public IIdentity User { get; set; } 
 
     #region Chain of Responsibility
 

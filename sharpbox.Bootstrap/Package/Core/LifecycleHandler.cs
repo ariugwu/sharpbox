@@ -24,7 +24,7 @@ namespace sharpbox.WebLibrary.Core
     {
       this.HandleRequest(webContext, controller);
 
-      if (this._successor != null)
+      if (this._successor != null && controller.ModelState.IsValid)
       {
         this._successor.ProcessRequest(webContext, controller);
       }
@@ -35,7 +35,7 @@ namespace sharpbox.WebLibrary.Core
 
     public static void AddModelStateError(WebContext<T> webContext, SharpboxController<T> controller, string key, ModelError modelError)
     {
-      controller.ModelState.AddModelError(key, webContext.WebResponse.DispatchResponse.Message);
+      controller.ModelState.AddModelError(key, modelError.ErrorMessage);
 
       if (!webContext.WebResponse.ModelErrors.ContainsKey(key))
       {

@@ -65,6 +65,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{3959B60F-8BC6-41F5-9EE6-EC4E0DE4D4BB}"
 	ProjectSection(SolutionItems) = preProject
 		Base.dgml = Base.dgml
+		Overview.txt = Overview.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{600B1494-74D2-4E0A-A7ED-A0923B8931F2}"

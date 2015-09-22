@@ -10,47 +10,50 @@ using sharpbox.WebLibrary.Web.Helpers;
 
 namespace sharpbox.Bootstrap.Controllers
 {
+    using sharpbox.Bootstrap.Package.Core;
 
-  public class HomeController : sharpbox.WebLibrary.Web.Controllers.SharpboxController<ExampleModel>
-  {
-    private CommandName _testCommand = new CommandName("TestCommand");
-    private EventName _testEvent = new EventName("TestEvent");
-
-    public HomeController()
-      : base(new AppContext(new SmtpClient(), new BinaryStrategy()))
+    public class HomeController : sharpbox.WebLibrary.Web.Controllers.SharpboxController<ExampleModel>
     {
-      this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._testCommand,ExampleModel.TestTargetMethod,this._testEvent);
-      this.WebContext.AppContext.Dispatch.Listen(_testEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });
+        private CommandName _testCommand = new CommandName("TestCommand");
+        private EventName _testEvent = new EventName("TestEvent");
+
+        public HomeController()
+          : base(new AppContext(new SmtpClient(), new BinaryStrategy()))
+        {
+            this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._testCommand, ExampleModel.TestTargetMethod, this._testEvent);
+            this.WebContext.AppContext.Dispatch.Listen(_testEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });
+        }
+
+        public ActionResult Index()
+        {
+            return this.View(this.WebContext.WebResponse ?? new WebResponse<ExampleModel>());
+        }
+
+        public ActionResult About()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        public override AbstractValidator<ExampleModel> LoadValidatorByUiAction(UiAction uiAction)
+        {
+            var validator = new InlineValidator<ExampleModel>();
+            validator.RuleFor(x => x.Value).Length(10, 30);
+            return validator;
+        }
+
+        public override ActionCommandMap LoadCommandActionMap()
+        {
+            return new ActionCommandMap(useOneToOneMap: true);
+        }
+
     }
-
-    public ActionResult Index()
-    {
-      return View();
-    }
-
-    public ActionResult About()
-    {
-      ViewBag.Message = "Your application description page.";
-
-      return View();
-    }
-
-    public ActionResult Contact()
-    {
-      ViewBag.Message = "Your contact page.";
-
-      return View();
-    }
-
-    public override AbstractValidator<ExampleModel> LoadValidatorByUiAction(UiAction uiAction)
-    {
-      return new InlineValidator<ExampleModel>();
-    }
-
-    public override ActionCommandMap LoadCommandActionMap()
-    {
-      return new ActionCommandMap(useOneToOneMap: true);
-    }
-
-  }
 }
