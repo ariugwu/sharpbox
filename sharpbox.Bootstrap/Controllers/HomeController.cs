@@ -6,12 +6,11 @@ using FluentValidation;
 using sharpbox.Bootstrap.Models;
 using sharpbox.Dispatch.Model;
 using sharpbox.Io.Strategy.Binary;
-using sharpbox.WebLibrary.Web.Helpers;
+using sharpbox.WebLibrary.Core;
+using sharpbox.WebLibrary.Helpers;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using sharpbox.Bootstrap.Package.Core;
-
     public class HomeController : sharpbox.WebLibrary.Web.Controllers.SharpboxController<ExampleModel>
     {
         private CommandName _testCommand = new CommandName("TestCommand");
@@ -26,7 +25,7 @@ namespace sharpbox.Bootstrap.Controllers
 
         public ActionResult Index()
         {
-            return this.View(this.WebContext.WebResponse ?? new WebResponse<ExampleModel>());
+          return this.View(this.WebContext.WebResponse ?? new WebResponse<ExampleModel>());
         }
 
         public ActionResult About()
@@ -48,11 +47,6 @@ namespace sharpbox.Bootstrap.Controllers
             var validator = new InlineValidator<ExampleModel>();
             validator.RuleFor(x => x.Value).Length(10, 30);
             return validator;
-        }
-
-        public override ActionCommandMap LoadCommandActionMap()
-        {
-            return new ActionCommandMap(useOneToOneMap: true);
         }
 
     }

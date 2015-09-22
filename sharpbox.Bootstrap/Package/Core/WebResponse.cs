@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using sharpbox.Dispatch.Model;
-using sharpbox.WebLibrary.Core;
 
-namespace sharpbox.Bootstrap.Package.Core
+namespace sharpbox.WebLibrary.Core
 {
   public class WebResponse<T>
   {

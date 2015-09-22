@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace sharpbox.WebLibrary.Web.Helpers
+namespace sharpbox.WebLibrary.Helpers
 {
     public class UiAction : Util.Enum.EnumPattern
     {

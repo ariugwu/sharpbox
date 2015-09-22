@@ -28,7 +28,6 @@ namespace sharpbox.WebLibrary.Core
       {
         this._successor.ProcessRequest(webContext, controller);
       }
-
     }
 
     public abstract void HandleRequest(WebContext<T> webContext, SharpboxController<T> controller);

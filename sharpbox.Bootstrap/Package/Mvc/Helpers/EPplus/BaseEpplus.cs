@@ -4,7 +4,7 @@ using System.Web;
 using OfficeOpenXml;
 using sharpbox.Dispatch.Model;
 
-namespace Toolbox.Helpers.EPplus
+namespace sharpbox.WebLibrary.Helpers.EPplus
 {
   public abstract class BaseEpplus <T>
   {

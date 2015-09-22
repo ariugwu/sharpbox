@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using sharpbox.Dispatch.Model;
 
-namespace sharpbox.WebLibrary.Web.Helpers
+namespace sharpbox.WebLibrary.Helpers
 {
     using System.Linq;
 

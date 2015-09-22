@@ -16,7 +16,6 @@ namespace sharpbox.WebLibrary.Core.App.Info.Model
     public AuditConfig AuditConfig { get; set; }
     public int NotificationConfigId { get; set; }
     public NotificationConfig NotificationConfig { get; set; }
-
     public Guid? ApplicationId { get; set; }
 
   }

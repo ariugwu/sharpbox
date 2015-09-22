@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Web.Caching;
 
-namespace Toolbox.Helpers
+namespace sharpbox.WebLibrary.Helpers
 {
   public static class GenericCacheCollection<T> where T : class
   {

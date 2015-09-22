@@ -1,32 +1,25 @@
-﻿using sharpbox.Bootstrap.Package.Core;
-using sharpbox.Bootstrap.Package.Mvc.Helpers.Handler;
+﻿using sharpbox.Bootstrap.Package.Mvc.Helpers.Handler;
 using sharpbox.WebLibrary.Mvc.Helpers.Handler;
 using sharpbox.WebLibrary.Web.Controllers;
 
 namespace sharpbox.WebLibrary.Core
 {
-    using System.Security.Principal;
+  using System.Security.Principal;
 
-    public class WebContext<T> where T : new()
+  public class WebContext<T> where T : new()
   {
 
     #region Constructor(s)
 
     public WebContext()
     {
-      var loadContextHandler = new LoadContextHandler<T>();
-      var validationHandler = new ValidationHandler<T>();
-      var executeHandler = new ExecuteHandler<T>();
-      var auditTrailHandler = new AuditTrailHandler<T>();
-      var finalizeHandler = new FinalizeHandler<T>();
-
       _handler = new AuthHandler<T>();
 
-      _handler.SetSuccessor(loadContextHandler);
-      loadContextHandler.SetSuccessor(validationHandler);
-      validationHandler.SetSuccessor(executeHandler);
-      executeHandler.SetSuccessor(auditTrailHandler);
-      auditTrailHandler.SetSuccessor(finalizeHandler);
+      _handler.SetSuccessor(_loadContextHandler);
+      _loadContextHandler.SetSuccessor(_validationHandler);
+      _validationHandler.SetSuccessor(_executeHandler);
+      _executeHandler.SetSuccessor(_auditTrailHandler);
+      _auditTrailHandler.SetSuccessor(_finalizeHandler);
     }
 
     #endregion
@@ -40,14 +33,25 @@ namespace sharpbox.WebLibrary.Core
     public WebRequest<T> WebRequest { get; set; }
 
     public WebResponse<T> WebResponse { get; set; }
-        
-    public IIdentity User { get; set; } 
+
+    public IIdentity User { get; set; }
 
     #region Chain of Responsibility
 
     // The base handler
     public LifecycleHandler<T> _handler;
 
+    private AuditTrailHandler<T> _auditTrailHandler = new AuditTrailHandler<T>();
+    private LoadContextHandler<T> _loadContextHandler = new LoadContextHandler<T>();
+    private ValidationHandler<T> _validationHandler = new ValidationHandler<T>();
+    private ExecuteHandler<T> _executeHandler = new ExecuteHandler<T>();
+    private FinalizeHandler<T> _finalizeHandler = new FinalizeHandler<T>();
+
+    public void SetAuditTrailHandler(LifecycleHandler<T> handler)
+    {
+      _executeHandler.SetSuccessor(handler);
+      handler.SetSuccessor(_finalizeHandler);
+    }
     #endregion
 
     #endregion

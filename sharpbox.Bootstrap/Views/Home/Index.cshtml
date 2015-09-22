@@ -1,5 +1,5 @@
 ﻿@using sharpbox.Bootstrap.Models
-@using sharpbox.Bootstrap.Package.Core;
+@using sharpbox.WebLibrary.Core;.
 @using sharpbox.Dispatch.Model
 
 @model WebResponse<ExampleModel>
@@ -16,7 +16,7 @@
 }
 
 <form action="@Url.Action("Execute", "Home")" method="POST">
-    <input type="hidden" name="WebRequest.Instance.Value" value="What.What" />
+    <input type="text" name="WebRequest.Instance.Value" value="What.What" class="form-control" />
     <input type="hidden" name="WebRequest.UiAction.Name" value="TestCommand" />
-    <input type="submit" value="Holla" />
+    <input type="submit" value="Holla" class="form-control"/>
 </form>

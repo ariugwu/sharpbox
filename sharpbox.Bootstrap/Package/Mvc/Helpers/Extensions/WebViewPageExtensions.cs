@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using sharpbox;
 
-namespace Toolbox.Helpers.Extensions
+namespace sharpbox.WebLibrary.Helpers.Extensions
 {
   public static class WebViewPageExtensions
   {

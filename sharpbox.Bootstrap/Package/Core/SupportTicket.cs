@@ -21,17 +21,12 @@ namespace sharpbox.WebLibrary.Core.App.Info.Model
     public Guid SupportTicketId { get; set; }
     public string Description { get; set; }
     public string ExceptionMessage { get; set; }
-
     public MailMessage Mail { get; set; }
     public string SerializedException { get; set; }
     public bool IsHighPriority { get; set; }
-
     public string SubmittedBy { get; set; }
-
     public DateTime CreatedDate { get; set; }
-
     public Guid ResponseUniqueKey { get; set; }
-
     public Guid? ApplicationId { get; set; }
 
   }

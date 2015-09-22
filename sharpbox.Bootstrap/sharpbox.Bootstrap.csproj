@@ -169,22 +169,21 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ExampleModel.cs" />
-    <Compile Include="Package\Core\App\BrandType.cs" />
-    <Compile Include="Package\Core\App\Info\Model\ApplicationArchitecture.cs" />
-    <Compile Include="Package\Core\App\Info\Model\AuditConfig.cs" />
-    <Compile Include="Package\Core\App\Info\Model\Environment.cs" />
-    <Compile Include="Package\Core\App\Info\Model\NotificationConfig.cs" />
-    <Compile Include="Package\Core\App\Info\Model\SupportTicket.cs" />
-    <Compile Include="Package\Core\App\Info\Model\TechSheet.cs" />
-    <Compile Include="Package\Core\App\Info\Model\TfsConfig.cs" />
+    <Compile Include="Package\Core\BrandType.cs" />
+    <Compile Include="Package\Core\AuditConfig.cs" />
+    <Compile Include="Package\Core\Environment.cs" />
+    <Compile Include="Package\Core\NotificationConfig.cs" />
+    <Compile Include="Package\Core\SupportTicket.cs" />
+    <Compile Include="Package\Core\TechSheet.cs" />
+    <Compile Include="Package\Core\TfsConfig.cs" />
     <Compile Include="Package\Core\EmptyAppContext.cs" />
     <Compile Include="Package\Core\EnvironmentType.cs" />
     <Compile Include="Package\Core\LifecycleHandler.cs" />
     <Compile Include="Package\Core\IMediator.cs" />
-    <Compile Include="Package\Core\Strategies\BaseMediator.cs" />
+    <Compile Include="Package\Core\BaseMediator.cs" />
     <Compile Include="Package\Core\WebContext.cs" />
     <Compile Include="Package\Core\WebRequest.cs" />
-    <Compile Include="Package\Core\Strategies\DefaultMediator.cs" />
+    <Compile Include="Package\Core\DefaultMediator.cs" />
     <Compile Include="Package\Core\WebResponse.cs" />
     <Compile Include="Package\Data\DefaultRepository.cs" />
     <Compile Include="Package\Data\DefaultUnitOfWork.cs" />
