@@ -14,9 +14,13 @@ namespace sharpbox.WebLibrary.Core
 
     public WebRequest<T> WebRequest { get; set; }
 
+    public string CustomMessage { get; set; }
+
+    public bool HasCustomMessage { get { return !string.IsNullOrWhiteSpace(this.CustomMessage); } }
+
     public bool IsValid
     {
-      get { return ModelErrors == null || ModelErrors.Count == 0; }
+      get { return this.ModelErrors == null || this.ModelErrors.Count == 0; }
     }
   }
 }

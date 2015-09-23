@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentValidation;
-using sharpbox.Bootstrap.Package.Core;
+using sharpbox.Dispatch.Model;
 using sharpbox.WebLibrary.Core;
 using sharpbox.WebLibrary.Core.Strategies;
 using sharpbox.WebLibrary.Data;
@@ -57,11 +57,16 @@ namespace sharpbox.WebLibrary.Web.Controllers
     #endregion
 
     #region CommandActionMapping
-
     public virtual ActionCommandMap LoadCommandActionMap()
     {
       return new ActionCommandMap(useOneToOneMap: true);
     }
+
+    public virtual Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<T> webContext)
+    {
+      return WebContext.Mediator.CommandMessageMap;
+    }
+
     #endregion
 
     #region Action(s)

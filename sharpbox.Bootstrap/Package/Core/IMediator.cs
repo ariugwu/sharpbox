@@ -7,7 +7,7 @@ namespace sharpbox.WebLibrary.Core
 
     public interface IMediator<T> where T : new()
     {
-        Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandResponseMessageMap { get; set; }
+        Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; set; }
 
         IUnitOfWork<T> UnitOfWork { get; set; }
 

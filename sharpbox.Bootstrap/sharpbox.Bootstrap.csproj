@@ -193,7 +193,6 @@
     <Compile Include="Package\Mvc\Controllers\SharpboxApiController.cs" />
     <Compile Include="Package\Mvc\Controllers\SharpboxController.cs" />
     <Compile Include="Package\Mvc\Helpers\ActionCommandMap.cs" />
-    <Compile Include="Package\Mvc\Helpers\ActionMessageMap.cs" />
     <Compile Include="Package\Mvc\Helpers\BaseCache.cs" />
     <Compile Include="Package\Mvc\Helpers\BaseCacheNames.cs" />
     <Compile Include="Package\Mvc\Helpers\CacheCollection.cs" />

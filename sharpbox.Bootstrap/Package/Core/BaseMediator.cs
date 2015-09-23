@@ -19,7 +19,7 @@ namespace sharpbox.Bootstrap.Package.Core.Strategies
         {
         }
 
-        public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandResponseMessageMap { get; set; }
+        public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; set; }
 
         public IUnitOfWork<T> UnitOfWork { get; set; }
 
@@ -56,25 +56,25 @@ namespace sharpbox.Bootstrap.Package.Core.Strategies
             //Register Listener(s)
 
             //Populate Command DispatchResponse Map
-            this.CommandResponseMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
+            this.CommandMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
 
-            this.CommandResponseMessageMap.Add(this.Insert, new Dictionary<ResponseTypes, string>());
-            this.CommandResponseMessageMap[this.Insert].Add(ResponseTypes.Error, "");
-            this.CommandResponseMessageMap[this.Insert].Add(ResponseTypes.Info, "");
-            this.CommandResponseMessageMap[this.Insert].Add(ResponseTypes.Warning, "");
-            this.CommandResponseMessageMap[this.Insert].Add(ResponseTypes.Success, "");
+            this.CommandMessageMap.Add(this.Insert, new Dictionary<ResponseTypes, string>());
+            this.CommandMessageMap[this.Insert].Add(ResponseTypes.Error, "Insert failed.");
+            this.CommandMessageMap[this.Insert].Add(ResponseTypes.Info, "");
+            this.CommandMessageMap[this.Insert].Add(ResponseTypes.Warning, "");
+            this.CommandMessageMap[this.Insert].Add(ResponseTypes.Success, "Insert success.");
 
-            this.CommandResponseMessageMap.Add(this.Update, new Dictionary<ResponseTypes, string>());
-            this.CommandResponseMessageMap[this.Update].Add(ResponseTypes.Error, "");
-            this.CommandResponseMessageMap[this.Update].Add(ResponseTypes.Info, "");
-            this.CommandResponseMessageMap[this.Update].Add(ResponseTypes.Warning, "");
-            this.CommandResponseMessageMap[this.Update].Add(ResponseTypes.Success, "");
+            this.CommandMessageMap.Add(this.Update, new Dictionary<ResponseTypes, string>());
+            this.CommandMessageMap[this.Update].Add(ResponseTypes.Error, "Update failed.");
+            this.CommandMessageMap[this.Update].Add(ResponseTypes.Info, "");
+            this.CommandMessageMap[this.Update].Add(ResponseTypes.Warning, "");
+            this.CommandMessageMap[this.Update].Add(ResponseTypes.Success, "Update success.");
 
-            this.CommandResponseMessageMap.Add(this.Delete, new Dictionary<ResponseTypes, string>());
-            this.CommandResponseMessageMap[this.Delete].Add(ResponseTypes.Error, "");
-            this.CommandResponseMessageMap[this.Delete].Add(ResponseTypes.Info, "");
-            this.CommandResponseMessageMap[this.Delete].Add(ResponseTypes.Warning, "");
-            this.CommandResponseMessageMap[this.Delete].Add(ResponseTypes.Success, "");
+            this.CommandMessageMap.Add(this.Delete, new Dictionary<ResponseTypes, string>());
+            this.CommandMessageMap[this.Delete].Add(ResponseTypes.Error, "Update failed.");
+            this.CommandMessageMap[this.Delete].Add(ResponseTypes.Info, "");
+            this.CommandMessageMap[this.Delete].Add(ResponseTypes.Warning, "");
+            this.CommandMessageMap[this.Delete].Add(ResponseTypes.Success, "Update success.");
         }
         #endregion
     }
