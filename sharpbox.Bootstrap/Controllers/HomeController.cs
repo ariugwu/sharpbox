@@ -1,23 +1,21 @@
 ﻿
 using System.Diagnostics;
-using System.Net.Mail;
 using System.Web.Mvc;
 using FluentValidation;
 using sharpbox.Bootstrap.Models;
 using sharpbox.Dispatch.Model;
-using sharpbox.Io.Strategy.Binary;
 using sharpbox.WebLibrary.Core;
 using sharpbox.WebLibrary.Helpers;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    public class HomeController : sharpbox.WebLibrary.Web.Controllers.SharpboxController<ExampleModel>
+    public class HomeController : WebLibrary.Web.Controllers.SharpboxController<ExampleModel>
     {
         private CommandName _testCommand = new CommandName("TestCommand");
         private EventName _testEvent = new EventName("TestEvent");
 
         public HomeController()
-          : base(new AppContext(new SmtpClient(), new BinaryStrategy()))
+          : base(new ExampleAppContext())
         {
             this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._testCommand, ExampleModel.TestTargetMethod, this._testEvent);
             this.WebContext.AppContext.Dispatch.Listen(_testEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });

@@ -9,6 +9,7 @@ Sharpbox Gives Access to:
 	* RAD Tools:
 		- CQRS and Event Sourcing (Dispatch & Audit Trail)
 		- Notification
+      # Proposed System Alerts with start and stop dates, track individual acceptance/dismissal for 'SystemAlertType == Compliance' vs 'SystemAlertType == Maintenance''
 		- Localization
 	* Front End Helpers
 		- Cache

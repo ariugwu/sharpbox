@@ -9,7 +9,8 @@ namespace sharpbox.WebLibrary.Mvc.Helpers.Handler
   {
     public override void HandleRequest(WebContext<T> webContext, SharpboxController<T> controller)
     {
-      webContext.WebResponse.DispatchResponse = webContext.AppContext.Dispatch.Process<T>(webContext.WebRequest.CommandName, webContext.WebRequest.CommandName.Name, new object[] { webContext.WebRequest.Instance });
+      webContext.WebResponse.DispatchResponse = webContext.AppContext.Dispatch.Process<T>(webContext.WebRequest.CommandName, "Default Execution Message", new object[] { webContext.WebRequest.Instance });
+      
       var messageMap = controller.LoadCommandMessageMap(webContext);
       var commandName = webContext.WebRequest.CommandName;
       var responseType = webContext.WebResponse.DispatchResponse.ResponseType;
