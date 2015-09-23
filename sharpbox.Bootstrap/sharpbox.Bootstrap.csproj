@@ -176,7 +176,7 @@
     <Compile Include="Package\Core\SupportTicket.cs" />
     <Compile Include="Package\Core\TechSheet.cs" />
     <Compile Include="Package\Core\TfsConfig.cs" />
-    <Compile Include="Package\Core\EmptyAppContext.cs" />
+    <Compile Include="Models\ExampleAppContext.cs" />
     <Compile Include="Package\Core\EnvironmentType.cs" />
     <Compile Include="Package\Core\LifecycleHandler.cs" />
     <Compile Include="Package\Core\IMediator.cs" />
