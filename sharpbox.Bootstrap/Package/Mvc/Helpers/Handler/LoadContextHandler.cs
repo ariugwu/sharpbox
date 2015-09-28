@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using sharpbox.Bootstrap.Package.Core;
 using sharpbox.WebLibrary.Core;
 using sharpbox.WebLibrary.Helpers;
-using sharpbox.WebLibrary.Web.Controllers;
 
 
 namespace sharpbox.WebLibrary.Mvc.Helpers.Handler
 {
-  public class LoadContextHandler<T> : LifecycleHandler<T> where T : new()
+    using sharpbox.WebLibrary.Mvc.Controllers;
+
+    public class LoadContextHandler<T> : LifecycleHandler<T> where T : new()
   {
     public ActionCommandMap ActionCommandMap { get; set; }
-    public override void HandleRequest(WebContext<T> webContext, SharpboxController<T> controller)
+
+    public override void HandleRequest(WebContext<T> webContext, SharpboxApiController<T> controller)
     {
       this.ActionCommandMap = controller.LoadCommandActionMap();
 

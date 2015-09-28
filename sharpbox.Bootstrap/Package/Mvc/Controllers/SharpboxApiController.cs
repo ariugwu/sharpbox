@@ -1,15 +1,27 @@
 ﻿using System;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
 using System.Web.Http;
 using System.Web.Http.OData;
+using System.Collections.Generic;
+using System.Web.Mvc;
+
 using sharpbox.Dispatch.Model;
 using sharpbox.EfCodeFirst.Audit;
 using sharpbox.WebLibrary.Core;
+using sharpbox.WebLibrary.Core.Strategies;
+using sharpbox.WebLibrary.Data;
+using sharpbox.WebLibrary.Helpers;
 
-namespace sharpbox.Bootstrap.Package.Mvc.Controllers
+using FluentValidation;
+
+namespace sharpbox.WebLibrary.Mvc.Controllers
 {
+    using System.Web.Http.Results;
+
+    using Newtonsoft.Json;
+
+    using sharpbox.Bootstrap.Package.Data;
+
     /*
     To add a route for this controller, merge these statements into the Register method of the WebApiConfig class. Note that OData URLs are case sensitive.
 
@@ -21,154 +33,153 @@ namespace sharpbox.Bootstrap.Package.Mvc.Controllers
     builder.EntitySet<Request>("Requests"); 
     config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
     */
-    public class SharpboxApiController<T> : ODataController
+    public abstract class SharpboxApiController<T> : ApiController
+        where T : new()
     {
-        private AuditContext db = new AuditContext();
+        #region Properties
+        public WebContext<T> WebContext { get; set; }
 
-        // GET odata/SharpboxApi
-        [Queryable]
-        public IQueryable<Response> GetSharpboxApi()
+        public IRepository<T> Repository { get; set; } 
+        #endregion
+
+        #region Constructor(s)
+
+        protected SharpboxApiController(AppContext appContext, IMediator<T> mediator, IRepository<T> repository)
         {
-            return db.Responses;
+            // Only create a new WebContext if one doesn't already exist.
+            this.WebContext = new WebContext<T> { AppContext = appContext, Mediator = mediator, User = this.User };
+            this.Repository = repository;
         }
 
-        // GET odata/SharpboxApi(5)
-        [Queryable]
-        public SingleResult<T> Get([FromODataUri] int key)
+        protected SharpboxApiController(AppContext appContext, IUnitOfWork<T> unitOfWork, IRepository<T> repository)
+          : this(appContext, new DefaultMediator<T>(appContext, unitOfWork), repository)
         {
-          throw new NotImplementedException();
-            //return SingleResult.Create(db.Responses.Where(response => response.ResponseId == key));
+        }
+
+        protected SharpboxApiController(AppContext appContext, IRepository<T> repository)
+          : this(appContext, new DefaultMediator<T>(appContext, new DefaultUnitOfWork<T>(appContext.File)), repository)
+        {
+        }
+
+        protected SharpboxApiController(AppContext appContext)
+          : this(appContext, new DefaultMediator<T>(appContext, new DefaultUnitOfWork<T>(appContext.File)), new DefaultRepository<T>(appContext.File))
+        {
+        }
+
+        #endregion
+
+        [Queryable]
+        public IHttpActionResult GetById(int id)
+        {
+            return this.Ok(this.Repository.Get(id));
+        }
+
+        [Queryable]
+        public IHttpActionResult Get()
+        {
+            return this.Ok(this.Repository.Get());
         }
 
         // PUT odata/SharpboxApi(5)
-        public IHttpActionResult Put([FromODataUri] WebRequest<T> webRequest)
+        public IHttpActionResult Put(WebRequest<T> webRequest)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                this.WebContext.ProcessRequest(webRequest, this);
+                return this.Ok(this.WebContext.WebResponse);
             }
-          
-            //if (key != response.ResponseId)
-            //{
-            //    return BadRequest();
-            //}
-
-            //db.Entry(response).State = EntityState.Modified;
-
-            //try
-            //{
-            //    db.SaveChanges();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!ResponseExists(key))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-
-            //return Updated(response);
-
-            throw new NotImplementedException();
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
         }
 
         // POST odata/SharpboxApi
-        public IHttpActionResult Post(WebRequest<T> webRequest)
+        public JsonResult<WebResponse<T>>  Post(WebRequest<T> webRequest)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-
-            //db.Responses.Add(response);
-            //db.SaveChanges();
-
-            //return Created(response);
-
-            throw new NotImplementedException();
+            try
+            {
+                this.WebContext.ProcessRequest(webRequest, this);
+                return this.Json(this.WebContext.WebResponse);
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
         }
 
         // PATCH odata/SharpboxApi(5)
-        [AcceptVerbs("PATCH", "MERGE")]
-        public IHttpActionResult Patch([FromODataUri] int key, Delta<Response> patch)
+        [System.Web.Http.AcceptVerbs("PATCH", "MERGE")]
+        public IHttpActionResult Patch(int key, WebRequest<T> webRequest)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            Response response = db.Responses.Find(key);
-            if (response == null)
-            {
-                return NotFound();
-            }
-
-            patch.Patch(response);
-
             try
             {
-                db.SaveChanges();
+                this.WebContext.ProcessRequest(webRequest, this);
+                return this.Ok(this.WebContext.WebResponse);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!ResponseExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return this.HandleException(ex);
             }
-
-            return Updated(response);
         }
 
         // DELETE odata/SharpboxApi(5)
-        public IHttpActionResult Delete([FromODataUri] int key)
+        public IHttpActionResult Delete(WebRequest<T> webRequest)
         {
-            Response response = db.Responses.Find(key);
-            if (response == null)
+            try
             {
-                return NotFound();
+                if (webRequest != null && webRequest.UiAction == null)
+                {
+                    webRequest.UiAction = new UiAction("Delete");    
+                }
+
+                this.WebContext.ProcessRequest(webRequest, this);
+                return this.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return this.HandleException(ex);
+            }
+        }
+
+
+        private JsonResult<WebResponse<T>> HandleException(Exception ex)
+        {
+            if (this.WebContext.WebResponse == null)
+            {
+                this.WebContext.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };
             }
 
-            db.Responses.Remove(response);
-            db.SaveChanges();
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // GET odata/SharpboxApi(5)/EventName
-        [Queryable]
-        public SingleResult<EventName> GetEventName([FromODataUri] int key)
-        {
-            return SingleResult.Create(db.Responses.Where(m => m.ResponseId == key).Select(m => m.EventName));
-        }
-
-        // GET odata/SharpboxApi(5)/Request
-        [Queryable]
-        public SingleResult<Request> GetRequest([FromODataUri] int key)
-        {
-            return SingleResult.Create(db.Responses.Where(m => m.ResponseId == key).Select(m => m.Request));
+            LifecycleHandler<T>.AddModelStateError(this.WebContext, this, "ExecutionError", new ModelError(ex, ex.Message));
+            return this.Json(this.WebContext.WebResponse);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool ResponseExists(int key)
+        #region Validation
+        [System.Web.Http.NonAction]
+        public abstract AbstractValidator<T> LoadValidatorByUiAction(UiAction uiAction);
+        #endregion
+
+        #region CommandActionMapping
+        [System.Web.Http.NonAction]
+        public virtual ActionCommandMap LoadCommandActionMap()
         {
-            return db.Responses.Count(e => e.ResponseId == key) > 0;
+            return new ActionCommandMap(useOneToOneMap: true);
         }
+
+        [System.Web.Http.NonAction]
+        public virtual Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<T> webContext)
+        {
+            return this.WebContext.Mediator.CommandMessageMap;
+        }
+
+        #endregion
     }
 }

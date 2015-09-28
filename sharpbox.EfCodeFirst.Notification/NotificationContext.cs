@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using sharpbox.Dispatch.Model;
-using sharpbox.Notification.Domain.Notification.Model;
 
 namespace sharpbox.EfCodeFirst.Notification
 {
+    using sharpbox.Notification.Model;
+
     /// <summary>
     /// @SEE : http://devproconnections.com/entity-framework/working-schema-names-entity-framework-code-first-design
     /// </summary>

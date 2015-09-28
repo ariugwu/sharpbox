@@ -1,13 +1,13 @@
 ﻿using System.Web.Mvc;
-using sharpbox;
+using sharpbox.WebLibrary.Core;
 
 namespace sharpbox.WebLibrary.Helpers.Extensions
 {
-  public static class WebViewPageExtensions
-  {
-    public static AppContext Site(this WebViewPage wvp)
+    public static class WebViewPageExtensions
     {
-      return (AppContext)wvp.Session["Site"];
+        public static WebContext<T> WebContext<T>(this WebViewPage wvp) where T : new()
+        {
+            return (WebContext<T>)wvp.Session["WebContext"];
+        }
     }
-  }
 }

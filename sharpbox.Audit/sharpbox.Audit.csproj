@@ -41,8 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="Domain\Dispatch\AuditCommands.cs" />
-    <Compile Include="Domain\Dispatch\AuditEvents.cs" />
+    <Compile Include="Dispatch\AuditCommands.cs" />
+    <Compile Include="Dispatch\AuditEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

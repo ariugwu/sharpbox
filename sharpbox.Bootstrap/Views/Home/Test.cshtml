@@ -1,0 +1,34 @@
+﻿@using sharpbox.Bootstrap.Models
+@using sharpbox.WebLibrary.Core;.
+@using sharpbox.Dispatch.Model
+
+@model WebResponse<ExampleModel>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@Html.ValidationSummary()
+
+@if (Model.DispatchResponse != null && Model.DispatchResponse.ResponseType == ResponseTypes.Error)
+{
+    <p class="text-danger">@Model.DispatchResponse.Message</p>
+}
+
+@if (Model.DispatchResponse != null)
+{
+    <p>@Model.DispatchResponse.ResponseType.ToString()</p>
+    <p>@Html.Raw(Model.CustomMessage ?? Model.DispatchResponse.Message)</p>
+}
+
+<form action="@Url.Action("Execute", "Home")" method="POST">
+    <input type="text" name="WebRequest.Instance.Value" value="@Html.Raw(Model.Instance == null ? string.Empty : Model.Instance.Value)" class="form-control"/>
+    <input type="hidden" name="WebRequest.UiAction.Name" value="TestCommand"/>
+    <input type="submit" value="Run test command." class="form-control"/>
+</form>
+<hr/>
+<form action="@Url.Action("Execute", "Home")" method="POST">
+    <input type="text" name="WebRequest.Instance.Value" value="@Html.Raw(Model.Instance == null ? string.Empty : Model.Instance.Value)" class="form-control" />
+    <input type="hidden" name="WebRequest.UiAction.Name" value="SaveExampleModel" />
+    <input type="submit" value="Save using unit of work." class="form-control" />
+</form>

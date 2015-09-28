@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using sharpbox.Dispatch;
 using sharpbox.Localization.Model;
-using sharpbox.Notification.Domain.Notification.Model;
 
 namespace sharpbox
 {
-  [Serializable]
+    using sharpbox.Email.Dispatch;
+    using sharpbox.Notification.Dispatch;
+    using sharpbox.Notification.Model;
+
+    [Serializable]
   public class AppContext
   {
     /// <summary>
@@ -52,14 +55,14 @@ namespace sharpbox
       // Dispatch
 
       // Email
-      Dispatch.Register<MailMessage>(sharpbox.Email.Domain.Dispatch.EmailCommands.SendEmail, SendEmail, sharpbox.Email.Domain.Dispatch.EmailEvents.OnEmailSend);
+      Dispatch.Register<MailMessage>(EmailCommands.SendEmail, SendEmail, EmailEvents.OnEmailSend);
 
       // IO
       //Dispatch.Register(ExtendedCommandNames.FileCreate, WriteFile, ExtendedEventNames.OnFileCreate);
 
       // Notification
-      Dispatch.Register<BackLogItem>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.SendNotification, Notification.Notify, sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationNotify);
-      Dispatch.Register<Subscriber>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationAddSubScriber);
+      Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, Notification.Notify, NotificationEvents.OnNotificationNotify);
+      Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
 
     }
 

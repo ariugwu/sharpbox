@@ -41,8 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="Domain\Dispatch\EmailCommands.cs" />
-    <Compile Include="Domain\Dispatch\EmailEvents.cs" />
+    <Compile Include="Dispatch\EmailCommands.cs" />
+    <Compile Include="Dispatch\EmailEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

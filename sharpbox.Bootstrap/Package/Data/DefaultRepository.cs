@@ -3,16 +3,35 @@ using sharpbox.WebLibrary.Data;
 
 namespace sharpbox.Bootstrap.Package.Data
 {
-  public class DefaultRepository<T> : IRepository<T> where T : new()
-  {
-    public T GetById(int id)
-    {
-      return new T();
-    }
+    using System;
 
-    public IEnumerable<T> GetAll()
+    public class DefaultRepository<T> : IRepository<T> where T : new()
     {
-      return new List<T>();
+        public DefaultRepository(Io.Client file)
+        {
+            this.File = file;
+            this._fileName = string.Format("{0}.dat", typeof(T).Name);
+        }
+
+        public Io.Client File { get; set; }
+
+        private string _fileName;
+
+        public T Get(int id)
+        {
+            if (this.File.Exists(this._fileName))
+            {
+                return this.File.Read<T>(this._fileName);
+            }
+            else
+            {
+                return new T();
+            }
+        }
+
+        public IEnumerable<T> Get()
+        {
+            throw new NotImplementedException();
+        }
     }
-  }
 }

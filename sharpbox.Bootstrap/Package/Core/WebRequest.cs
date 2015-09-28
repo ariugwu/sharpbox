@@ -3,6 +3,9 @@ using sharpbox.WebLibrary.Helpers;
 
 namespace sharpbox.WebLibrary.Core
 {
+    using System;
+
+    [Serializable]
     public class WebRequest<T>
     {
         public UiAction UiAction { get; set; }

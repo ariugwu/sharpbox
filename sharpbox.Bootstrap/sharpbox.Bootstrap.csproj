@@ -165,6 +165,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -182,6 +183,7 @@
     <Compile Include="Package\Core\IMediator.cs" />
     <Compile Include="Package\Core\BaseMediator.cs" />
     <Compile Include="Package\Core\WebContext.cs" />
+    <Compile Include="Package\Core\WebContextState.cs" />
     <Compile Include="Package\Core\WebRequest.cs" />
     <Compile Include="Package\Core\DefaultMediator.cs" />
     <Compile Include="Package\Core\WebResponse.cs" />
@@ -189,9 +191,7 @@
     <Compile Include="Package\Data\DefaultUnitOfWork.cs" />
     <Compile Include="Package\Data\IRepository.cs" />
     <Compile Include="Package\Data\IUnitOfWork.cs" />
-    <Compile Include="Package\Mvc\Controllers\ISharpboxController.cs" />
     <Compile Include="Package\Mvc\Controllers\SharpboxApiController.cs" />
-    <Compile Include="Package\Mvc\Controllers\SharpboxController.cs" />
     <Compile Include="Package\Mvc\Helpers\ActionCommandMap.cs" />
     <Compile Include="Package\Mvc\Helpers\BaseCache.cs" />
     <Compile Include="Package\Mvc\Helpers\BaseCacheNames.cs" />
@@ -244,6 +244,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

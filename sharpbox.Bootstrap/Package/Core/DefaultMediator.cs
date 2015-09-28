@@ -12,7 +12,7 @@ namespace sharpbox.WebLibrary.Core.Strategies
     }
 
     public DefaultMediator(AppContext appContext)
-      : this(appContext, new DefaultUnitOfWork<T>())
+      : this(appContext, new DefaultUnitOfWork<T>(appContext.File))
     {
     }
 

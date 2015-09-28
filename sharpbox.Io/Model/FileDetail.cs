@@ -1,8 +1,9 @@
 ﻿using System;
-using sharpbox.Util.Domain.Notification;
 
 namespace sharpbox.Io.Model
 {
+    using sharpbox.Util.Notification;
+
     [Serializable]
     public class FileDetail : ITemplateType
     {

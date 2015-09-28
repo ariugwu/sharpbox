@@ -8,11 +8,14 @@ using sharpbox.EfCodeFirst.Audit;
 using sharpbox.EfCodeFirst.Notification;
 using sharpbox.Io.Model;
 using sharpbox.Localization.Model;
-using sharpbox.Notification.Domain.Notification.Model;
 
 namespace sharpbox.Cli.Model.Domain.Sharpbox
 {
-  [Serializable]
+    using sharpbox.Email.Dispatch;
+    using sharpbox.Notification.Dispatch;
+    using sharpbox.Notification.Model;
+
+    [Serializable]
   public class ExampleContext : AppContext
   {
     /// <summary>
@@ -73,9 +76,9 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
       // We use this command to showcase how you can wire up existing code that you want audited, or otherwise a part of the command stream but not necessarily processed.
       Dispatch.Register<String>(ExampleContext.DummyPassThroughCommand, (value) => value, ExampleContext.OnDummyPassThroughCommand);
 
-      Dispatch.Register<BackLogItem>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.SendNotification, Notification.Notify, sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationNotify);
-      Dispatch.Register<Subscriber>(sharpbox.Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationAddSubScriber);
-      Dispatch.Register<MailMessage>(sharpbox.Email.Domain.Dispatch.EmailCommands.SendEmail, SendEmail, sharpbox.Email.Domain.Dispatch.EmailEvents.OnEmailSend);
+      Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, Notification.Notify, NotificationEvents.OnNotificationNotify);
+      Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
+      Dispatch.Register<MailMessage>(EmailCommands.SendEmail, SendEmail, EmailEvents.OnEmailSend);
       Dispatch.Register<FileDetail>(WriteARandomFile, WriteRandomTxtFile, OnRandomFileWritten);
       Dispatch.Register<List<Response>>(WriteAuditTrailToDisk, StoreAuditTrailAsBinary, OnWriteAuditTrailToDisk);
 
@@ -99,7 +102,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
       // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
       Dispatch.Listen(EventName.OnException, FireOnException);
 
-      Dispatch.Listen(sharpbox.Notification.Domain.Dispatch.NotificationEvents.OnNotificationAddSubScriber, ExampleListener);
+      Dispatch.Listen(NotificationEvents.OnNotificationAddSubScriber, ExampleListener);
       Dispatch.Listen(OnWriteAuditTrailToDisk, ExampleListener);
 
       // Look at the concept of 'Echo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.

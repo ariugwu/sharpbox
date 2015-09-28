@@ -4,10 +4,13 @@ using System.Net.Mail;
 using sharpbox.Dispatch.Model;
 using sharpbox.Cli.Model.Domain.Sharpbox;
 using sharpbox.Io.Model;
-using sharpbox.Notification.Domain.Notification.Model;
 
 namespace sharpbox.Cli
 {
+    using sharpbox.Notification.Dispatch;
+    using sharpbox.Notification.Model;
+    using sharpbox.Util.Notification;
+
     class Program
     {
         static void Main(string[] args)
@@ -23,7 +26,7 @@ namespace sharpbox.Cli
             // Cycle through the classes we've marked with the 'ITemplateType' interface
             Console.WriteLine("We have access to these type names which implement the ITemplateType Interface. We will use these in the creation of email templates.");
 
-            var templateTypes = Util.Domain.Notification.TemplateTypeLoader.GetTypesByITemplateTypeUsage();
+            var templateTypes = TemplateTypeLoader.GetTypesByITemplateTypeUsage();
 
             foreach (var t in templateTypes)
             {
@@ -36,7 +39,7 @@ namespace sharpbox.Cli
 
             // Cycle through the classes we've marked with the 'EmailTemplateAttribute
             Console.WriteLine("Alternatively we can find the classes with the 'EmailTemplateAttribute'. We will use these in the creation of email templates.");
-            templateTypes = Util.Domain.Notification.TemplateTypeLoader.GetTypesWithEmailTemplateAttribute();
+            templateTypes = TemplateTypeLoader.GetTypesWithEmailTemplateAttribute();
             foreach (var t in templateTypes)
             {
                 Console.WriteLine(t.FullName);
@@ -75,7 +78,7 @@ namespace sharpbox.Cli
             // Give the notification a subscriber. Now whenever this event is broadcast a backlog message will be created for me.
             Console.WriteLine("Example 2: We're adding a subscriber to be notified when a user change happens. This is a sub processed handled by the Notification client. The client is informed of all events firing and checks to see if anyone wants to know about it.");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
-            response = example.Dispatch.Process<Subscriber>(Notification.Domain.Dispatch.NotificationCommands.AddNotificationSubscriber, "Adding a subcriber to OnUserChange.", new object[] { new Subscriber(ExampleContext.OnUserChange, "ugwua"), typeof(string) });
+            response = example.Dispatch.Process<Subscriber>(NotificationCommands.AddNotificationSubscriber, "Adding a subcriber to OnUserChange.", new object[] { new Subscriber(ExampleContext.OnUserChange, "ugwua"), typeof(string) });
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();

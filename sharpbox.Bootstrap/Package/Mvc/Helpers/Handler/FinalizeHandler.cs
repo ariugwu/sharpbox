@@ -1,21 +1,16 @@
 ﻿using System;
+using System.Web.Mvc;
+using sharpbox.WebLibrary.Mvc.Controllers;
 using sharpbox.Dispatch.Model;
 using sharpbox.WebLibrary.Core;
-using sharpbox.WebLibrary.Web.Controllers;
 
 namespace sharpbox.Bootstrap.Package.Mvc.Helpers.Handler
 {
-    using System.Web.Mvc;
-
     public class FinalizeHandler<T> : LifecycleHandler<T> where T : new()
     {
-      public override void HandleRequest(WebContext<T> webContext, SharpboxController<T> controller)
-    {
-        if (webContext.WebResponse.DispatchResponse != null &&
-            webContext.WebResponse.DispatchResponse.ResponseType != ResponseTypes.Error)
+        public override void HandleRequest(WebContext<T> webContext, SharpboxApiController<T> controller)
         {
-          webContext.WebResponse.Instance = (T)webContext.WebResponse.DispatchResponse.Entity;
+
         }
     }
-  }
 }

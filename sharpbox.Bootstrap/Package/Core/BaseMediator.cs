@@ -15,7 +15,7 @@ namespace sharpbox.Bootstrap.Package.Core.Strategies
         }
 
         protected BaseMediator(AppContext appContext)
-          : this(appContext, new DefaultUnitOfWork<T>())
+          : this(appContext, new DefaultUnitOfWork<T>(appContext.File))
         {
         }
 

@@ -45,10 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="Domain\Dispatch\NotificationCommands.cs" />
-    <Compile Include="Domain\Dispatch\NotificationEvents.cs" />
-    <Compile Include="Domain\Notification\Model\BackLogItem.cs" />
-    <Compile Include="Domain\Notification\Model\Subscriber.cs" />
+    <Compile Include="Dispatch\NotificationCommands.cs" />
+    <Compile Include="Dispatch\NotificationEvents.cs" />
+    <Compile Include="Model\BackLogItem.cs" />
+    <Compile Include="Model\Subscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
