@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
-using sharpbox.Dispatch.Model;
 
 namespace sharpbox.WebLibrary.Core
 {
-    using System;
-
   [Serializable]
   public class WebResponse<T>
   {

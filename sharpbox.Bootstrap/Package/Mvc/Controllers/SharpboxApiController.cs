@@ -39,7 +39,8 @@ namespace sharpbox.WebLibrary.Mvc.Controllers
         #region Properties
         public WebContext<T> WebContext { get; set; }
 
-        public IRepository<T> Repository { get; set; } 
+        public IRepository<T> Repository { get; set; }
+ 
         #endregion
 
         #region Constructor(s)
