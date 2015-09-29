@@ -1,25 +1,24 @@
 ﻿
-<form action="api/test" method="POST">
+<form action="@Url.Action("Execute", "Test")" method="POST">
     <input type="text" name="Instance.Value" value="" class="form-control" />
     <input type="hidden" name="UiAction.Name" value="TestCommand" />
     <input type="submit" value="Run test command." class="form-control" />
 </form>
 <hr />
-<form action="/api/test" method="POST">
-    <input type="text" name="Instance.Value" value="" class="form-control" />
-    <input type="hidden" name="UiAction.Name" value="SaveExampleModel" />
-    <input type="submit" value="Save using unit of work." class="form-control" />
+<form action="@Url.Action("Execute", "Test")" method="POST">
+  <input type="text" name="Instance.Value" value="" class="form-control" />
+  <input type="hidden" name="UiAction.Name" value="SaveExampleModel" />
+  <input type="submit" value="Save using unit of work." class="form-control" />
 </form>
 
 
 @section scripts {
     <script>
         $(document).ready(function () {
-            $.getJSON("/api/test/4").done(function (data) {
+            $.getJSON("/Home/Test/4").done(function (data) {
                 // On success, 'data' contains a list of products.
                 $.each(data, function (key, item) {
-                    // Add a list item for the product.
-                    $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+                  console.log(item);
                 });
             });
         });

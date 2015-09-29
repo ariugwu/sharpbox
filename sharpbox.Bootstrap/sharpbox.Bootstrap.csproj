@@ -180,12 +180,9 @@
     <Compile Include="Models\ExampleAppContext.cs" />
     <Compile Include="Package\Core\EnvironmentType.cs" />
     <Compile Include="Package\Core\LifecycleHandler.cs" />
-    <Compile Include="Package\Core\IMediator.cs" />
-    <Compile Include="Package\Core\BaseMediator.cs" />
     <Compile Include="Package\Core\WebContext.cs" />
     <Compile Include="Package\Core\WebContextState.cs" />
     <Compile Include="Package\Core\WebRequest.cs" />
-    <Compile Include="Package\Core\DefaultMediator.cs" />
     <Compile Include="Package\Core\WebResponse.cs" />
     <Compile Include="Package\Data\DefaultRepository.cs" />
     <Compile Include="Package\Data\DefaultUnitOfWork.cs" />

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using sharpbox.WebLibrary.Data;
 
-namespace sharpbox.Bootstrap.Package.Data
+namespace sharpbox.WebLibrary.Data
 {
     using System;
 

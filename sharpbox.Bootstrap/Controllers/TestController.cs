@@ -20,9 +20,12 @@ namespace sharpbox.Bootstrap.Controllers
         public TestController()
           : base(new ExampleAppContext())
         {
+            this.BootstrapCrudCommands(this.WebContext.AppContext); // Setup some default crud commands pointed at the default UnitOfWork.
+            
+            // Register some example commands.
             this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._testCommand, ExampleModel.TestTargetMethod, this._testEvent);
             this.WebContext.AppContext.Dispatch.Listen(_testEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });
-            this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._saveExampleModel, this.WebContext.Mediator.UnitOfWork.Insert, _testEvent);
+            this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._saveExampleModel, this.UnitOfWork.Insert, _testEvent);
         }
 
         public override AbstractValidator<ExampleModel> LoadValidatorByUiAction(UiAction uiAction)
@@ -32,5 +35,12 @@ namespace sharpbox.Bootstrap.Controllers
             return validator;
         }
 
+      public override void BootstrapCrudCommands(AppContext appContext)
+      {
+        base.BootstrapCrudCommands(appContext);
+
+        this.CommandMessageMap.Add(_saveExampleModel, new Dictionary<ResponseTypes, string>());
+        this.CommandMessageMap[_saveExampleModel].Add(ResponseTypes.Success, "Saving the example to the file system was successful!");
+      }
     }
 }

@@ -31,8 +31,6 @@ namespace sharpbox.WebLibrary.Core
 
         public AppContext AppContext { get; set; }
 
-        public IMediator<T> Mediator { get; set; }
-
         public WebRequest<T> WebRequest { get; set; }
 
         public Response DispatchResponse { get; set; }
