@@ -45,6 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="DispatchContext.cs" />
+    <Compile Include="Handler\BroadCastHandler.cs" />
+    <Compile Include="Handler\ProcessHandler.cs" />
+    <Compile Include="Handler\ResponseHandler.cs" />
     <Compile Include="Model\BasePackage.cs" />
     <Compile Include="Model\CommandHubItem.cs" />
     <Compile Include="Model\CommandName.cs" />
