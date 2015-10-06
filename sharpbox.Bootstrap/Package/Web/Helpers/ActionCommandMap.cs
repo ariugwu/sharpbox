@@ -7,14 +7,14 @@ namespace sharpbox.WebLibrary.Helpers
 
     public class ActionCommandMap
     {
-        public ActionCommandMap(Dictionary<UiAction, CommandName> map)
+        public ActionCommandMap(Dictionary<UiAction, CommandName> map, bool useOneToOneMap = false)
         {
             this._map = map;
+            UseOneToOneMap = useOneToOneMap;
         }
 
-        public ActionCommandMap(bool useOneToOneMap = true) : this(new Dictionary<UiAction, CommandName>())
+        public ActionCommandMap(bool useOneToOneMap = true) : this(new Dictionary<UiAction, CommandName>(), useOneToOneMap)
         {
-            UseOneToOneMap = useOneToOneMap;
         }
 
         private Dictionary<UiAction, CommandName> _map;
@@ -25,5 +25,6 @@ namespace sharpbox.WebLibrary.Helpers
         {
             return this.UseOneToOneMap ? appContext.Dispatch.CommandHub.First(x => x.Key.Name.Equals(uiAction.Name)).Key : _map[uiAction];
         }
+
     }
 }

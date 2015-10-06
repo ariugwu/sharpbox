@@ -38,6 +38,8 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
       // Bootstrap the notification client.
       Notification = new Notification.Client(Email);
+
+      // Create a email template for type 'object[]'
       var subjectResource = new Resource() { Value = "Example Subject: {0}", ResourceType = ResourceType.EmailSubject};
       var bodyResource = new Resource { Value = "Example Body: {0}", ResourceType = ResourceType.EmailBody};
 
@@ -45,6 +47,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
       Notification.AddEmailTemplate(ExampleContext.OnUserChange, emailTemplate);
 
+      //Wire up the dispatch items
       WireUpListeners();
       WireUpRoutines();
       WireUpCommandHubItems();

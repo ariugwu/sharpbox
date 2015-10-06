@@ -145,6 +145,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="TypeLite">
+      <HintPath>..\packages\TypeLite.1.4.0\lib\net4\TypeLite.dll</HintPath>
+    </Reference>
+    <Reference Include="TypeLite.Net4">
+      <HintPath>..\packages\TypeLite.1.4.0\lib\net4\TypeLite.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -188,21 +194,21 @@
     <Compile Include="Package\Data\DefaultUnitOfWork.cs" />
     <Compile Include="Package\Data\IRepository.cs" />
     <Compile Include="Package\Data\IUnitOfWork.cs" />
-    <Compile Include="Package\Mvc\Controllers\SharpboxApiController.cs" />
-    <Compile Include="Package\Mvc\Helpers\ActionCommandMap.cs" />
-    <Compile Include="Package\Mvc\Helpers\BaseCache.cs" />
-    <Compile Include="Package\Mvc\Helpers\BaseCacheNames.cs" />
-    <Compile Include="Package\Mvc\Helpers\CacheCollection.cs" />
-    <Compile Include="Package\Mvc\Helpers\EPplus\BaseEpplus.cs" />
-    <Compile Include="Package\Mvc\Helpers\Extensions\WebViewPageExtensions.cs" />
-    <Compile Include="Package\Mvc\Helpers\GenericCacheCollection.cs" />
-    <Compile Include="Package\Mvc\Helpers\Handler\AuditTrailHandler.cs" />
-    <Compile Include="Package\Mvc\Helpers\Handler\AuthHandler.cs" />
-    <Compile Include="Package\Mvc\Helpers\Handler\ExecuteHandler.cs" />
-    <Compile Include="Package\Mvc\Helpers\Handler\FinalizeHandler.cs" />
-    <Compile Include="Package\Mvc\Helpers\Handler\LoadContextHandler.cs" />
-    <Compile Include="Package\Mvc\Helpers\Handler\ValidationHandler.cs" />
-    <Compile Include="Package\Mvc\Helpers\UiAction.cs" />
+    <Compile Include="Package\Web\Controllers\SharpboxApiController.cs" />
+    <Compile Include="Package\Web\Helpers\ActionCommandMap.cs" />
+    <Compile Include="Package\Web\Helpers\BaseCache.cs" />
+    <Compile Include="Package\Web\Helpers\BaseCacheNames.cs" />
+    <Compile Include="Package\Web\Helpers\CacheCollection.cs" />
+    <Compile Include="Package\Web\Helpers\EPplus\BaseEpplus.cs" />
+    <Compile Include="Package\Web\Helpers\Extensions\WebViewPageExtensions.cs" />
+    <Compile Include="Package\Web\Helpers\GenericCacheCollection.cs" />
+    <Compile Include="Package\Web\Helpers\Handler\AuditTrailHandler.cs" />
+    <Compile Include="Package\Web\Helpers\Handler\AuthHandler.cs" />
+    <Compile Include="Package\Web\Helpers\Handler\ExecuteHandler.cs" />
+    <Compile Include="Package\Web\Helpers\Handler\FinalizeHandler.cs" />
+    <Compile Include="Package\Web\Helpers\Handler\LoadContextHandler.cs" />
+    <Compile Include="Package\Web\Helpers\Handler\ValidationHandler.cs" />
+    <Compile Include="Package\Web\Helpers\UiAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -212,10 +218,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Package\Web\Scripts\sharpbox.d.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>sharpbox.tt</DependentUpon>
+    </Content>
+    <Content Include="Package\Web\Scripts\sharpbox.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>sharpbox.d.ts</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Package\Mvc\Views\_Layout.cshtml" />
-    <Content Include="Package\Mvc\Views\Error.cshtml" />
+    <Content Include="Package\Web\Views\_Layout.cshtml" />
+    <Content Include="Package\Web\Views\Error.cshtml" />
+    <Content Include="Package\Web\Scripts\Manager.ttinclude" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -227,6 +243,15 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\TypeLite.Net4.d.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TypeLite.Net4.tt</DependentUpon>
+    </Content>
+    <Content Include="Scripts\TypeLite.Net4.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TypeLite.Net4.d.ts</LastGenOutput>
+    </Content>
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -243,6 +268,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Scripts\Manager.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -340,6 +366,9 @@
       <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>
       <Name>sharpbox</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -42,5 +42,6 @@ namespace sharpbox.Bootstrap.Controllers
         this.CommandMessageMap.Add(_saveExampleModel, new Dictionary<ResponseTypes, string>());
         this.CommandMessageMap[_saveExampleModel].Add(ResponseTypes.Success, "Saving the example to the file system was successful!");
       }
+
     }
 }

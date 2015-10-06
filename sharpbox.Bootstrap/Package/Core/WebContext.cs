@@ -46,17 +46,42 @@ namespace sharpbox.WebLibrary.Core
         // The base handler
         public LifecycleHandler<T> _handler;
 
-        private AuditTrailHandler<T> _auditTrailHandler = new AuditTrailHandler<T>();
-        private LoadContextHandler<T> _loadContextHandler = new LoadContextHandler<T>();
-        private ValidationHandler<T> _validationHandler = new ValidationHandler<T>();
-        private ExecuteHandler<T> _executeHandler = new ExecuteHandler<T>();
-        private FinalizeHandler<T> _finalizeHandler = new FinalizeHandler<T>();
+        private LifecycleHandler<T> _loadContextHandler = new LoadContextHandler<T>();
+        private LifecycleHandler<T> _validationHandler = new ValidationHandler<T>();
+        private LifecycleHandler<T> _executeHandler = new ExecuteHandler<T>();
+        private LifecycleHandler<T> _auditTrailHandler = new AuditTrailHandler<T>();
+        private LifecycleHandler<T> _finalizeHandler = new FinalizeHandler<T>();
+
+        public void SetAuthHandler(LifecycleHandler<T> handler)
+        {
+          _handler = handler;
+        }
+
+        public void SetLoadContextHandler(LifecycleHandler<T> handler)
+        {
+          _loadContextHandler = handler;
+        }
+
+        public void SetValidationHandler(LifecycleHandler<T> handler)
+        {
+          _validationHandler = handler;
+        }
+
+        public void SetExecutionHandler(LifecycleHandler<T> handler)
+        {
+          _executeHandler = handler;
+        }
 
         public void SetAuditTrailHandler(LifecycleHandler<T> handler)
         {
-            _executeHandler.SetSuccessor(handler);
-            handler.SetSuccessor(_finalizeHandler);
+          _auditTrailHandler = handler;
         }
+
+        public void SetFianlizeHandler(LifecycleHandler<T> handler)
+        {
+          _finalizeHandler = handler;
+        }
+
         #endregion
         
         #endregion

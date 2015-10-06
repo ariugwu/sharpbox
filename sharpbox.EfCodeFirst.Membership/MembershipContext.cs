@@ -17,14 +17,14 @@ namespace sharpbox.EfCodeFirst.Membership
     {
 
     }
-    public DbSet<UserRoleName> UserRoleNames { get; set; }
+    public DbSet<UserRole> UserRoleNames { get; set; }
     public DbSet<UserUserRole> UserUserRoles { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<UserRoleName>().HasKey(p => p.UserRoleNameId);
-      modelBuilder.Entity<UserRoleName>().Property(x => x.UserRoleNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-      modelBuilder.Entity<UserRoleName>().ToTable("UserRoleName", schemaName: "Membership");
+      modelBuilder.Entity<UserRole>().HasKey(p => p.UserRoleNameId);
+      modelBuilder.Entity<UserRole>().Property(x => x.UserRoleNameId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+      modelBuilder.Entity<UserRole>().ToTable("UserRoleName", schemaName: "Membership");
 
       modelBuilder.Entity<UserUserRole>().HasKey(p => p.UserUserRoleId);
       modelBuilder.Entity<UserUserRole>().Property(x => x.UserUserRoleId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

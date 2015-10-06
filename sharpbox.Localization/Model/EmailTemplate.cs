@@ -7,7 +7,7 @@ namespace sharpbox.Localization.Model
 {
 
 
-    [Serializable]
+  [Serializable]
   public abstract class EmailTemplate : ResourceFormatTemplate
   {
     protected EmailTemplate(Type entityType, Resource subjectResource, Resource bodyResource)
@@ -22,13 +22,13 @@ namespace sharpbox.Localization.Model
 
     public int EmailTemplateId { get; set; }
 
-    public Dictionary<EventName, Dictionary<Type, UserRoleName>> SubscribedRoles { get; set; }
+    public Dictionary<EventName, Dictionary<Type, UserRole>> SubscribedRoles { get; set; }
 
     public Type EntityType { get; private set; }
 
-      public string GetSubject(object entity)
+    public string GetSubject(object entity)
     {
-      return this.FormatResource(this._subjectResource, entity); 
+      return this.FormatResource(this._subjectResource, entity);
     }
 
     public string GetBody(object entity)
@@ -40,11 +40,12 @@ namespace sharpbox.Localization.Model
     {
       if (resource.ResourceType.Equals(ResourceType.EmailSubject)) return this.FormatSubject(resource, entity);
       if (resource.ResourceType.Equals(ResourceType.EmailBody)) return this.FormatBody(resource, entity);
-      
+
       throw new ArgumentException("Resource Type not supported by this template");
     }
 
     protected abstract string FormatSubject(Resource resource, object entity);
     protected abstract string FormatBody(Resource resource, object entity);
+
   }
 }

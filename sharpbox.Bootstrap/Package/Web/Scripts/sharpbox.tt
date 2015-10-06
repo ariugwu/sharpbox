@@ -1,0 +1,44 @@
+﻿<#@ template debug="false" hostspecific="True" language="C#" #>
+<#@ assembly name="$(TargetDir)TypeLite.dll" #>
+<#@ assembly name="$(TargetDir)TypeLite.Net4.dll" #>
+<#@ assembly name="$(TargetDir)$(TargetFileName)" #>
+
+<#@ assembly name="$(TargetDir)sharpbox.Audit.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Dispatch.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Email.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Io.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Localization.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Membership.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Notification.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Util.dll" #>
+
+<#@ import namespace="TypeLite" #> 
+<#@ import namespace="TypeLite.Net4" #> 
+<#@output extension=".d.ts"#>
+
+ <#@include file="Manager.ttinclude"#>
+<# var manager = Manager.Create(Host, GenerationEnvironment); #>
+
+<# var ts = TypeScript.Definitions()
+		.For<sharpbox.Audit.Dispatch.AuditCommands>()
+		.For<sharpbox.Audit.Dispatch.AuditEvents>()
+		.For<sharpbox.Dispatch.Model.Request>()
+		.For<sharpbox.Dispatch.Model.Response>()
+		.For<sharpbox.Email.Dispatch.EmailCommands>()
+		.For<sharpbox.Email.Dispatch.EmailEvents>()
+		.For<sharpbox.Io.Dispatch.IoCommands>()
+		.For<sharpbox.Io.Dispatch.IoEvents>()
+		.For<sharpbox.Io.Model.FileDetail>()
+		.For<sharpbox.Membership.Model.UserRoleName>()
+		.For<sharpbox.Notification.Dispatch.NotificationCommands>()
+		.For<sharpbox.Notification.Dispatch.NotificationEvents>()
+		.For<sharpbox.Notification.Model.BackLogItem>()
+		.For<sharpbox.Notification.Model.Subscriber>()
+		.ForLoadedAssemblies();
+#>
+
+<#= ts.Generate(TsGeneratorOutput.Properties) #>
+
+<#= ts.Generate(TsGeneratorOutput.Enums) #>
+<# manager.EndBlock(); #>
+<# manager.Process(true); #>
