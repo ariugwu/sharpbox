@@ -27,7 +27,17 @@ namespace sharpbox.Dispatch.Model
             get
             {
                 var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects}; // Prevent circular reference errors with EF objects and other one-to-many relationships
-                return _serializedEntity ?? (_serializedEntity = JsonConvert.SerializeObject(Entity,serializerSettings));
+
+                try
+                {
+                    return _serializedEntity ?? (_serializedEntity = JsonConvert.SerializeObject(Entity, serializerSettings));
+                }
+                catch (Exception ex)
+                {
+                    var formatException = new FormatException("The object could not be serialized. See inner exception for details.", ex);
+                    return JsonConvert.SerializeObject(formatException, serializerSettings);
+                }
+                
             }
 
             set
