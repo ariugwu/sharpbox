@@ -12,11 +12,6 @@ namespace sharpbox.WebLibrary.Core.App.Info.Model
     public string Database { get; set; }
     public int TfsConfigId { get; set; }
     public TfsConfig TfsConfig { get; set; }
-    public int AuditConfigId { get; set; }
-    public AuditConfig AuditConfig { get; set; }
-    public int NotificationConfigId { get; set; }
-    public NotificationConfig NotificationConfig { get; set; }
     public Guid? ApplicationId { get; set; }
-
   }
 }

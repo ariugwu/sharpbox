@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using FluentValidation;
 
-namespace sharpbox.WebLibrary.Mvc.Controllers
+namespace sharpbox.WebLibrary.Web.Controllers
 {
-    using FluentValidation;
-
-    using sharpbox.Dispatch.Model;
-    using sharpbox.WebLibrary.Core;
-    using sharpbox.WebLibrary.Data;
-    using sharpbox.WebLibrary.Helpers;
+    using Dispatch.Model;
+    using Core;
+    using Data;
+    using WebLibrary.Helpers;
 
     public interface ISharpboxController<T>
         where T : new()
@@ -41,5 +36,13 @@ namespace sharpbox.WebLibrary.Mvc.Controllers
         Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<T> webContext);
 
         #endregion
+
+      #region .NET Controller Facade
+      void AddErrorToModelState(string key, string modelErrorMessage);
+
+      bool IsModelStateValid();
+      void MigrateModelErrorsToWebContext();
+
+      #endregion
     }
 }

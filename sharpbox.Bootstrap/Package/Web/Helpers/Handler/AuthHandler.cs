@@ -1,15 +1,12 @@
-﻿
-using System;
-using sharpbox.WebLibrary.Core;
+﻿using sharpbox.WebLibrary.Core;
 
-namespace sharpbox.WebLibrary.Mvc.Helpers.Handler
+namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
-    using System.Web.Mvc;
-    using sharpbox.WebLibrary.Mvc.Controllers;
+    using Controllers;
 
     public class AuthHandler<T> : LifecycleHandler<T> where T : new()
     {
-      public override void HandleRequest(WebContext<T> webContext, SharpboxApiController<T> controller)
+      public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
     {
 
     }

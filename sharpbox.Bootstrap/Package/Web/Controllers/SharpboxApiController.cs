@@ -3,17 +3,14 @@ using System.Web.Http;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-using sharpbox.Dispatch.Model;
-using sharpbox.WebLibrary.Core;
-using sharpbox.WebLibrary.Data;
-using sharpbox.WebLibrary.Helpers;
-
 using FluentValidation;
 
-namespace sharpbox.WebLibrary.Mvc.Controllers
+namespace sharpbox.WebLibrary.Web.Controllers
 {
-  using System.Web.Http.Results;
-
+  using Dispatch.Model;
+  using Core;
+  using Data;
+  using WebLibrary.Helpers;
   /*
   To add a route for this controller, merge these statements into the Register method of the WebApiConfig class. Note that OData URLs are case sensitive.
 
@@ -124,6 +121,33 @@ namespace sharpbox.WebLibrary.Mvc.Controllers
     {
       return this.CommandMessageMap;
     }
+
+    #region .NET Controller Facade
+    public void AddErrorToModelState(string key, string modelErrorMessage)
+    {
+      this.ModelState.AddModelError(key, modelErrorMessage);
+    }
+
+    public bool IsModelStateValid()
+    {
+      return this.ModelState.IsValid;
+    }
+
+    public void MigrateModelErrorsToWebContext()
+    {
+      foreach (var v in this.ModelState.Values)
+      {
+        if (v.Errors.Count <= 0) continue;
+
+        foreach (var me in v.Errors)
+        {
+         LifecycleHandler<T>.AddModelStateError(this.WebContext, v.ToString(), new ModelError(me.ErrorMessage));
+        }
+
+      }
+    }
+
+    #endregion
 
     #region Bootstrap methods
 
