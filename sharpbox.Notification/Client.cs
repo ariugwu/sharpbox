@@ -25,6 +25,7 @@ namespace sharpbox.Notification
     private Dictionary<string, Dictionary<Type, List<string>>> _subscribers;
     private List<BackLogItem> _backLog;
     private Dictionary<string, Dictionary<Type, EmailTemplate>> _emailTempalteLookup;
+
     /// <summary>
     /// Use the string value of the EventName as the key. The object is to complicated to ensure comparing against values easy. Specifically code first. (e.g - If the Id is set in one and not the other there's no match)
     /// </summary>
