@@ -194,6 +194,7 @@
     <Compile Include="Package\Data\DefaultUnitOfWork.cs" />
     <Compile Include="Package\Data\IRepository.cs" />
     <Compile Include="Package\Data\IUnitOfWork.cs" />
+    <Compile Include="Package\Web\Controllers\ISharpboxController.cs" />
     <Compile Include="Package\Web\Controllers\SharpboxApiController.cs" />
     <Compile Include="Package\Web\Helpers\ActionCommandMap.cs" />
     <Compile Include="Package\Web\Helpers\BaseCache.cs" />

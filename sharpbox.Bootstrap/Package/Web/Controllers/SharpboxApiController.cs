@@ -25,17 +25,18 @@ namespace sharpbox.WebLibrary.Mvc.Controllers
   builder.EntitySet<Request>("Requests"); 
   config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
   */
-  public abstract class SharpboxApiController<T> : Controller
+  public abstract class SharpboxApiController<T> : Controller, ISharpboxController<T>
       where T : new()
   {
     #region Properties
+
     public WebContext<T> WebContext { get; set; }
 
     public IRepository<T> Repository { get; set; }
 
     public IUnitOfWork<T> UnitOfWork { get; set; }
 
-    public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; private set; }
+    public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; set; }
 
     #endregion
 
