@@ -1,13 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace sharpbox.WebLibrary.Core.App
+﻿namespace sharpbox.WebLibrary.Core
 {
-    public enum BrandType
+  public class BrandType : Util.Enum.EnumPattern
+  {
+    public BrandType(string value)
+      : base(value)
     {
-       DryByDesign = 1
+      Name = value;
     }
+
+    public BrandType()
+    {
+
+    }
+    public int BrandTypeId { get; set; }
+
+    public string Name { get; set; }
+
+  }
 }

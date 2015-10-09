@@ -151,6 +151,10 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
     #region Bootstrap methods
 
+    /// <summary>
+    /// Ideally this will help cut down on some wiring time for apps which only need basic CRUD functionality.
+    /// </summary>
+    /// <param name="appContext"></param>
     public virtual void BootstrapCrudCommands(AppContext appContext)
     {
       //Register Command(s)

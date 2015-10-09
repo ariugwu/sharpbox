@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace sharpbox.WebLibrary.Core.App.Info.Model
+namespace sharpbox.WebLibrary.Core
 {
   public class Environment
   {

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 
 using FluentValidation;
+using sharpbox.WebLibrary.Core;
 
 namespace sharpbox.Bootstrap.Controllers
 {
@@ -43,5 +44,14 @@ namespace sharpbox.Bootstrap.Controllers
       this.CommandMessageMap[_saveExampleModel].Add(ResponseTypes.Success, "Saving the example to the file system was successful!");
     }
 
+    public override ActionCommandMap LoadCommandActionMap()
+    {
+      return base.LoadCommandActionMap();
+    }
+
+    public override Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<ExampleModel> webContext)
+    {
+      return base.LoadCommandMessageMap(webContext);
+    }
   }
 }

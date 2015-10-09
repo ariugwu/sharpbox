@@ -1,14 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace sharpbox.WebLibrary.Core.App.Info.Model
+namespace sharpbox.WebLibrary.Core
 {
-  public class TfsConfig
+  public class SourceControl
   {
     [Key]
-    public int TfsConfigId { get; set; }
+    public int SourceControlId { get; set; }
     [MaxLength(255)]
-    public string Server { get; set; }
+    public string ServerAddress { get; set; }
     [MaxLength(255)]
     public string ProjectName { get; set; }
     public string ProjectSiteUrl { get; set; }
