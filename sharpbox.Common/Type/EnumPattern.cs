@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace sharpbox.Util.Enum
+namespace sharpbox.Common.Type
 {
   [Serializable]
   public abstract class EnumPattern

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox", "sharpbox\sharpbox.csproj", "{5421FF47-83AE-4E05-80F0-368FD912D50A}"
 EndProject
@@ -71,6 +71,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{600B1494-74D2-4E0A-A7ED-A0923B8931F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Bootstrap", "sharpbox.Bootstrap\sharpbox.Bootstrap.csproj", "{57DE2593-B05B-4C35-9783-2916F8BD612A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Common", "sharpbox.Common\sharpbox.Common.csproj", "{BFA599EC-C550-43DD-A4D8-8868204F6896}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -170,6 +172,10 @@ Global
 		{57DE2593-B05B-4C35-9783-2916F8BD612A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57DE2593-B05B-4C35-9783-2916F8BD612A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57DE2593-B05B-4C35-9783-2916F8BD612A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA599EC-C550-43DD-A4D8-8868204F6896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFA599EC-C550-43DD-A4D8-8868204F6896}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFA599EC-C550-43DD-A4D8-8868204F6896}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFA599EC-C550-43DD-A4D8-8868204F6896}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -202,5 +208,6 @@ Global
 		{C257E500-6403-4685-A1FB-276CF997E30C} = {0CD46913-CDA0-4BFD-BECC-E9919B58CBD2}
 		{600B1494-74D2-4E0A-A7ED-A0923B8931F2} = {528C028D-4927-4A8C-9E89-6F7856EEA240}
 		{57DE2593-B05B-4C35-9783-2916F8BD612A} = {FD958131-0183-4EAD-9B55-AD1607B4B829}
+		{BFA599EC-C550-43DD-A4D8-8868204F6896} = {600B1494-74D2-4E0A-A7ED-A0923B8931F2}
 	EndGlobalSection
 EndGlobal

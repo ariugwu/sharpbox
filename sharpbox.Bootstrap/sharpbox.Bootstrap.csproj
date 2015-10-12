@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -25,6 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -193,7 +195,7 @@
     <Compile Include="Package\Data\IRepository.cs" />
     <Compile Include="Package\Data\IUnitOfWork.cs" />
     <Compile Include="Package\Web\Controllers\ISharpboxController.cs" />
-    <Compile Include="Package\Web\Controllers\SharpboxApiController.cs" />
+    <Compile Include="Package\Web\Controllers\SharpboxController.cs" />
     <Compile Include="Package\Web\Helpers\ActionCommandMap.cs" />
     <Compile Include="Package\Web\Helpers\BaseCache.cs" />
     <Compile Include="Package\Web\Helpers\BaseCacheNames.cs" />
@@ -217,20 +219,38 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Package\Web\Scripts\sharpbox.d.ts">
+    <Content Include="Package\Web\Scripts\sharpbox.enum.txt">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>sharpbox.tt</DependentUpon>
+      <DependentUpon>sharpbox.enum.tt</DependentUpon>
     </Content>
-    <Content Include="Package\Web\Scripts\sharpbox.tt">
+    <Content Include="Package\Web\Scripts\sharpbox.poco.d.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>sharpbox.poco.tt</DependentUpon>
+    </Content>
+    <Content Include="Package\Web\Scripts\sharpbox.poco.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>sharpbox.d.ts</LastGenOutput>
+      <LastGenOutput>sharpbox.poco.d.ts</LastGenOutput>
+    </Content>
+    <Content Include="Package\Web\Scripts\sharpbox.resources.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>sharpbox.resources.tt</DependentUpon>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Package\Web\Views\_Layout.cshtml" />
     <Content Include="Package\Web\Views\Error.cshtml" />
     <Content Include="Package\Web\Scripts\Manager.ttinclude" />
+    <Content Include="Package\Web\Scripts\sharpbox.enum.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>sharpbox.enum.txt</LastGenOutput>
+    </Content>
+    <Content Include="Package\Web\Scripts\sharpbox.resources.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>sharpbox.resources.txt</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -284,6 +304,10 @@
     <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
       <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
       <Name>sharpbox.Audit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Common\sharpbox.Common.csproj">
+      <Project>{bfa599ec-c550-43dd-a4d8-8868204f6896}</Project>
+      <Name>sharpbox.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
@@ -374,6 +398,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

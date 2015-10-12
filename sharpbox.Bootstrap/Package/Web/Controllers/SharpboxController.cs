@@ -11,18 +11,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
   using Core;
   using Data;
   using WebLibrary.Helpers;
-  /*
-  To add a route for this controller, merge these statements into the Register method of the WebApiConfig class. Note that OData URLs are case sensitive.
 
-  using System.Web.Http.OData.Builder;
-  using sharpbox.Dispatch.Model;
-  ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-  builder.EntitySet<DispatchResponse>("SharpboxApi");
-  builder.EntitySet<EventName>("EventNames"); 
-  builder.EntitySet<Request>("Requests"); 
-  config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
-  */
-  public abstract class SharpboxApiController<T> : Controller, ISharpboxController<T>
+  public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
       where T : new()
   {
     #region Properties
@@ -39,7 +29,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
     #region Constructor(s)
 
-    protected SharpboxApiController(AppContext appContext, IRepository<T> repository, IUnitOfWork<T> unitOfWork)
+    protected SharpboxController(AppContext appContext, IRepository<T> repository, IUnitOfWork<T> unitOfWork)
     {
       // Only create a new WebContext if one doesn't already exist.
       this.WebContext = new WebContext<T> { AppContext = appContext, User = this.User };
@@ -47,12 +37,12 @@ namespace sharpbox.WebLibrary.Web.Controllers
       this.UnitOfWork = unitOfWork;
     }
 
-    protected SharpboxApiController(AppContext appContext, IRepository<T> repository)
+    protected SharpboxController(AppContext appContext, IRepository<T> repository)
       : this(appContext, repository, new DefaultUnitOfWork<T>(appContext.File))
     {
     }
 
-    protected SharpboxApiController(AppContext appContext)
+    protected SharpboxController(AppContext appContext)
       : this(appContext, new DefaultRepository<T>(appContext.File), new DefaultUnitOfWork<T>(appContext.File))
     {
     }
@@ -143,7 +133,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
         {
          LifecycleHandler<T>.AddModelStateError(this.WebContext, v.ToString(), new ModelError(me.ErrorMessage));
         }
-
       }
     }
 
@@ -178,7 +167,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
       this.CommandMessageMap.Add(this.Remove, new Dictionary<ResponseTypes, string>());
       this.CommandMessageMap[this.Remove].Add(ResponseTypes.Error, "Removal failed.");
       this.CommandMessageMap[this.Remove].Add(ResponseTypes.Success, "Removal success.");
-
     }
 
     #region CRUD Commands and Events

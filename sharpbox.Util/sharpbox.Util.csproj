@@ -40,13 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dispatch\MetaLoader.cs" />
     <Compile Include="Notification\EmailTemplateAttribute.cs" />
     <Compile Include="Notification\ITemplateType.cs" />
     <Compile Include="Notification\TemplateTypeLoader.cs" />
-    <Compile Include="Enum\EnumPattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\sharpbox.Common\sharpbox.Common.csproj">
+      <Project>{bfa599ec-c550-43dd-a4d8-8868204f6896}</Project>
+      <Name>sharpbox.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -79,13 +79,13 @@
 
     #endregion
 
-    public void ProcessRequest(WebRequest<T> webRequest, SharpboxApiController<T> controller)
+    public void ProcessRequest(WebRequest<T> webRequest, SharpboxController<T> controller)
     {
       this.WebRequest = webRequest;
       this._handler.ProcessRequest(this, controller);
     }
 
-    public void ProcessTempData(SharpboxApiController<T> controller)
+    public void ProcessTempData(SharpboxController<T> controller)
     {
       // If there's no response or it's valid (with no errors just bail)
       // The response will be set to null after this request is sent.

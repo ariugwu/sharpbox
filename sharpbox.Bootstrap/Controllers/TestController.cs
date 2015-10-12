@@ -12,7 +12,7 @@ namespace sharpbox.Bootstrap.Controllers
   using Models;
   using Dispatch.Model;
 
-  public class TestController : SharpboxApiController<ExampleModel>
+  public class TestController : SharpboxController<ExampleModel>
   {
     private CommandName _testCommand = new CommandName("TestCommand");
     private EventName _testEvent = new EventName("TestEvent");
