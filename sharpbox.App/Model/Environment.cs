@@ -1,11 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace sharpbox.WebLibrary.Core
+namespace sharpbox.App.Model
 {
   public class Environment
   {
-    [Key]
     public int EnvironmentId { get; set; }
     public string BaseUrl { get; set; }
     public string ApplicationName { get; set; }

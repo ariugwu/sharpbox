@@ -13,7 +13,7 @@ namespace sharpbox.EfCodeFirst.Membership
     }
 
     public MembershipContext()
-      : base()
+      : base("name=MembershipContext")
     {
 
     }

@@ -14,7 +14,7 @@ namespace sharpbox.EfCodeFirst.Localization
     }
 
     public LocalizationContext()
-      : base()
+      : base("name=LocalizationContext")
     {
 
     }

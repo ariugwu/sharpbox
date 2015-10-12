@@ -1,6 +1,8 @@
-﻿namespace sharpbox.Membership.Model
+﻿using sharpbox.Common.Type;
+
+namespace sharpbox.Membership.Model
 {
-  public class EntityState : Util.Enum.EnumPattern
+  public class EntityState : EnumPattern
   {
     public EntityState(string value)
       : base(value)

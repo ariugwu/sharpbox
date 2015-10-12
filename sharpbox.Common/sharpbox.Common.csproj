@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Dispatch\Model\CommandName.cs" />
     <Compile Include="Dispatch\Model\EventName.cs" />
     <Compile Include="Dispatch\Model\RoutineName.cs" />

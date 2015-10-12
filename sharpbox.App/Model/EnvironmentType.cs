@@ -1,6 +1,8 @@
-﻿namespace sharpbox.WebLibrary.Core
+﻿using sharpbox.Common.Type;
+
+namespace sharpbox.App.Model
 {
-  public class EnvironmentType : sharpbox.Util.Enum.EnumPattern
+  public class EnvironmentType : EnumPattern
   {
     public static EnvironmentType Dev = new EnvironmentType("Development");
     public static EnvironmentType Integration = new EnvironmentType("Integration");

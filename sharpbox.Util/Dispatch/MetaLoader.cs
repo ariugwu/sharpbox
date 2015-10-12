@@ -34,10 +34,8 @@ namespace sharpbox.Util.Dispatch
             .SelectMany(s => s.GetTypes())
             .Where(p => type.IsAssignableFrom(p));
 
-            foreach (var t in types)
-            {
-                return t.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly).Select(x => x.Name).ToArray();
-            }
+            return types.SelectMany(x => x.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)).Select(y => y.Name).ToArray();
+
         }
     }
 }

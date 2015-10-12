@@ -13,7 +13,7 @@ namespace sharpbox.EfCodeFirst.Audit
         }
 
         public AuditContext()
-            : base()
+            : base("name=AuditContext")
         {
 
         }

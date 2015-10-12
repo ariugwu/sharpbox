@@ -62,6 +62,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\sharpbox.Common\sharpbox.Common.csproj">
+      <Project>{bfa599ec-c550-43dd-a4d8-8868204f6896}</Project>
+      <Name>sharpbox.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
       <Project>{15b019a3-9142-4220-b6de-a75515b5e288}</Project>
       <Name>sharpbox.Util</Name>

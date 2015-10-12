@@ -1,6 +1,8 @@
-﻿namespace sharpbox.WebLibrary.Core
+﻿using sharpbox.Common.Type;
+
+namespace sharpbox.App.Model
 {
-  public class BrandType : Util.Enum.EnumPattern
+  public class BrandType : EnumPattern
   {
     public BrandType(string value)
       : base(value)

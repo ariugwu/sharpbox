@@ -1,5 +1,5 @@
 ﻿using System;
-using sharpbox.Util.Enum;
+using sharpbox.Common.Type;
 
 namespace sharpbox.Localization.Model
 {

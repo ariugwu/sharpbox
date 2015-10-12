@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using Newtonsoft.Json;
 
-namespace sharpbox.WebLibrary.Core.App.Info.Model
+namespace sharpbox.App.Model
 {
   public class SupportTicket
   {

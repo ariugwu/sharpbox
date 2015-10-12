@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using sharpbox.Common.Type;
 
 namespace sharpbox.WebLibrary.Helpers
 {
-    public class UiAction : Util.Enum.EnumPattern
+    public class UiAction : EnumPattern
     {
         public UiAction() { }
 

@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A24BB122-B3AE-4914-866D-E1D1EE0292D3}</ProjectGuid>
+    <ProjectGuid>{05593411-FBBF-4E14-8AD8-45C1DCE55BA9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>sharpbox.Localization</RootNamespace>
-    <AssemblyName>sharpbox.Localization</AssemblyName>
+    <RootNamespace>sharpbox.App</RootNamespace>
+    <AssemblyName>sharpbox.App</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,31 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\EmailTemplate.cs" />
-    <Compile Include="Model\Resource.cs" />
-    <Compile Include="Model\ResourceFormatTemplate.cs" />
-    <Compile Include="Model\ResourceName.cs" />
-    <Compile Include="Model\ResourceType.cs" />
+    <Compile Include="Model\BrandType.cs" />
+    <Compile Include="Model\Environment.cs" />
+    <Compile Include="Model\EnvironmentType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Model\SourceControl.cs" />
+    <Compile Include="Model\SupportTicket.cs" />
+    <Compile Include="Model\TechSheet.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\sharpbox.Common\sharpbox.Common.csproj">
       <Project>{bfa599ec-c550-43dd-a4d8-8868204f6896}</Project>
       <Name>sharpbox.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
-      <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
-      <Name>sharpbox.Dispatch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Membership\sharpbox.Membership.csproj">
-      <Project>{5cdedd58-84c8-4716-a6c1-9a89a927ffd1}</Project>
-      <Name>sharpbox.Membership</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
-      <Project>{15b019a3-9142-4220-b6de-a75515b5e288}</Project>
-      <Name>sharpbox.Util</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

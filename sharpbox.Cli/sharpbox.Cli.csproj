@@ -82,6 +82,10 @@
       <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
       <Name>sharpbox.Audit</Name>
     </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Common\sharpbox.Common.csproj">
+      <Project>{BFA599EC-C550-43DD-A4D8-8868204F6896}</Project>
+      <Name>sharpbox.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
       <Name>sharpbox.Dispatch</Name>

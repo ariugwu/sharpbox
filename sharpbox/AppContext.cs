@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Mail;
-using sharpbox.Dispatch;
-using sharpbox.Localization.Model;
 
 namespace sharpbox
 {
-    using sharpbox.Email.Dispatch;
-    using sharpbox.Notification.Dispatch;
-    using sharpbox.Notification.Model;
+  using Dispatch;
+  using Email.Dispatch;
+  using Localization.Model;
+  using Notification.Dispatch;
+  using Notification.Model;
 
-    [Serializable]
+  [Serializable]
   public class AppContext
   {
     /// <summary>
@@ -18,13 +18,15 @@ namespace sharpbox
     /// </summary>
     /// <param name="smtpClient"></param>
     /// <param name="ioStrategy"></param>
-    public AppContext(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy)
+    public AppContext(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox")
     {
       Dispatch = new Client();
       Email = new Email.Client(smtpClient);
       File = new Io.Client(ioStrategy);
       Audit = new Audit.Client();
       Notification = new Notification.Client(Email);
+
+      DefaultConnectionStringName = defaultConnectionStringName;
 
       RegisterCommands();
       MapListeners();
@@ -46,6 +48,7 @@ namespace sharpbox
     public Email.Client Email { get; set; } // A dispatch friendly email client
     public Audit.Client Audit { get; set; } // A dispatch friendly Auditor
     public Io.Client File { get; set; } // A dispatch friendly file client
+    public string DefaultConnectionStringName { get; set; }
 
     /// <summary>
     /// Map our actions and listeners to the dispatch

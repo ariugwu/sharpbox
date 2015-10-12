@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentValidation;
+using sharpbox.Common.Data;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {

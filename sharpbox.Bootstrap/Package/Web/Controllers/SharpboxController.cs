@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 
 using FluentValidation;
+using sharpbox.Common.Data;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
@@ -147,18 +148,18 @@ namespace sharpbox.WebLibrary.Web.Controllers
     public virtual void BootstrapCrudCommands(AppContext appContext)
     {
       //Register Command(s)
-      appContext.Dispatch.Register<T>(this.Insert, this.UnitOfWork.Insert, this.OnInsert);
+      appContext.Dispatch.Register<T>(this.Add, this.UnitOfWork.Add, this.OnAdd);
       appContext.Dispatch.Register<T>(this.Update, this.UnitOfWork.Update, this.OnUpdate);
-      appContext.Dispatch.Register<T>(this.Remove, this.UnitOfWork.Delete, this.OnRemove);
+      appContext.Dispatch.Register<T>(this.Remove, this.UnitOfWork.Remove, this.OnRemove);
 
       //Register Listener(s)
 
       //Populate Command DispatchResponse Map
       this.CommandMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
 
-      this.CommandMessageMap.Add(this.Insert, new Dictionary<ResponseTypes, string>());
-      this.CommandMessageMap[this.Insert].Add(ResponseTypes.Error, "Insert failed.");
-      this.CommandMessageMap[this.Insert].Add(ResponseTypes.Success, "Insert success.");
+      this.CommandMessageMap.Add(this.Add, new Dictionary<ResponseTypes, string>());
+      this.CommandMessageMap[this.Add].Add(ResponseTypes.Error, "Add failed.");
+      this.CommandMessageMap[this.Add].Add(ResponseTypes.Success, "Add success.");
 
       this.CommandMessageMap.Add(this.Update, new Dictionary<ResponseTypes, string>());
       this.CommandMessageMap[this.Update].Add(ResponseTypes.Error, "Update failed.");
@@ -171,11 +172,11 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
     #region CRUD Commands and Events
 
-    public CommandName Insert = new CommandName("Insert");
+    public CommandName Add = new CommandName("Add");
     public CommandName Update = new CommandName("Update");
     public CommandName Remove = new CommandName("Remove");
 
-    public EventName OnInsert = new EventName("OnInsert");
+    public EventName OnAdd = new EventName("OnAdd");
     public EventName OnUpdate = new EventName("OnUpdate");
     public EventName OnRemove = new EventName("OnRemove");
 

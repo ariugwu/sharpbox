@@ -1,11 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace sharpbox.WebLibrary.Core
+namespace sharpbox.App.Model
 {
   public class TechSheet
   {
-    [Key]
     public int TechSheetId { get; set; }
     public string WebServer { get; set; }
     public string DataSource { get; set; }

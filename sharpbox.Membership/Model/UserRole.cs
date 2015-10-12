@@ -1,7 +1,8 @@
-﻿
+﻿using sharpbox.Common.Type;
+
 namespace sharpbox.Membership.Model
 {
-  public class UserRole : Util.Enum.EnumPattern
+  public class UserRole : EnumPattern
   {
     public UserRole(string value)
       : base(value)

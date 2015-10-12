@@ -21,7 +21,7 @@ namespace sharpbox.EfCodeFirst.Notification
         }
 
         public NotificationContext()
-            : base()
+          : base("name=NotificationContext")
         {
 
         }

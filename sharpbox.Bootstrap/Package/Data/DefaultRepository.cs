@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using sharpbox.Common.Data;
 
 namespace sharpbox.WebLibrary.Data
 {

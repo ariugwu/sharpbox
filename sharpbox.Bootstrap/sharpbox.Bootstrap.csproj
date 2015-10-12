@@ -178,13 +178,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ExampleModel.cs" />
-    <Compile Include="Package\Core\BrandType.cs" />
-    <Compile Include="Package\Core\Environment.cs" />
-    <Compile Include="Package\Core\SupportTicket.cs" />
-    <Compile Include="Package\Core\TechSheet.cs" />
-    <Compile Include="Package\Core\SourceControl.cs" />
     <Compile Include="Models\ExampleAppContext.cs" />
-    <Compile Include="Package\Core\EnvironmentType.cs" />
     <Compile Include="Package\Core\LifecycleHandler.cs" />
     <Compile Include="Package\Core\WebContext.cs" />
     <Compile Include="Package\Core\WebContextState.cs" />
@@ -192,8 +186,6 @@
     <Compile Include="Package\Core\WebResponse.cs" />
     <Compile Include="Package\Data\DefaultRepository.cs" />
     <Compile Include="Package\Data\DefaultUnitOfWork.cs" />
-    <Compile Include="Package\Data\IRepository.cs" />
-    <Compile Include="Package\Data\IUnitOfWork.cs" />
     <Compile Include="Package\Web\Controllers\ISharpboxController.cs" />
     <Compile Include="Package\Web\Controllers\SharpboxController.cs" />
     <Compile Include="Package\Web\Helpers\ActionCommandMap.cs" />
@@ -219,7 +211,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Package\Web\Scripts\sharpbox.enum.txt">
+    <Content Include="Package\Web\Scripts\sharpbox.enum.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>sharpbox.enum.tt</DependentUpon>
@@ -233,23 +225,21 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>sharpbox.poco.d.ts</LastGenOutput>
     </Content>
-    <Content Include="Package\Web\Scripts\sharpbox.resources.txt">
+    <Content Include="Package\Web\Scripts\sharpbox.resources.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>sharpbox.resources.tt</DependentUpon>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Package\Web\Views\_Layout.cshtml" />
-    <Content Include="Package\Web\Views\Error.cshtml" />
     <Content Include="Package\Web\Scripts\Manager.ttinclude" />
     <Content Include="Package\Web\Scripts\sharpbox.enum.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>sharpbox.enum.txt</LastGenOutput>
+      <LastGenOutput>sharpbox.enum.d.ts</LastGenOutput>
     </Content>
     <Content Include="Package\Web\Scripts\sharpbox.resources.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>sharpbox.resources.txt</LastGenOutput>
+      <LastGenOutput>sharpbox.resources.d.ts</LastGenOutput>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -301,6 +291,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\sharpbox.App\sharpbox.App.csproj">
+      <Project>{05593411-fbbf-4e14-8ad8-45c1dce55ba9}</Project>
+      <Name>sharpbox.App</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
       <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
       <Name>sharpbox.Audit</Name>

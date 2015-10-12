@@ -2,12 +2,11 @@
 using System.Diagnostics;
 
 using FluentValidation;
-using sharpbox.WebLibrary.Core;
 
 namespace sharpbox.Bootstrap.Controllers
 {
   using WebLibrary.Web.Controllers;
-
+  using WebLibrary.Core;
   using WebLibrary.Helpers;
   using Models;
   using Dispatch.Model;
@@ -26,7 +25,7 @@ namespace sharpbox.Bootstrap.Controllers
       // Register some example commands.
       this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._testCommand, ExampleModel.TestTargetMethod, this._testEvent);
       this.WebContext.AppContext.Dispatch.Listen(_testEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });
-      this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._saveExampleModel, this.UnitOfWork.Insert, _testEvent);
+      this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this._saveExampleModel, this.UnitOfWork.Add, _testEvent);
     }
 
     public override AbstractValidator<ExampleModel> LoadValidatorByUiAction(UiAction uiAction)
