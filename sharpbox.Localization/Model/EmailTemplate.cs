@@ -5,8 +5,6 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Localization.Model
 {
-
-
   [Serializable]
   public abstract class EmailTemplate : ResourceFormatTemplate
   {

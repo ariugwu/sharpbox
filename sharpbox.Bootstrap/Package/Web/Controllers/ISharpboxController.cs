@@ -12,6 +12,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         where T : new()
     {
         #region Properties
+
         WebContext<T> WebContext { get; set; }
 
         IRepository<T> Repository { get; set; }

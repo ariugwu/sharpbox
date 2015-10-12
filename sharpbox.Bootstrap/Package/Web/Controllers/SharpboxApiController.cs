@@ -52,7 +52,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
     {
     }
 
-
     protected SharpboxApiController(AppContext appContext)
       : this(appContext, new DefaultRepository<T>(appContext.File), new DefaultUnitOfWork<T>(appContext.File))
     {
@@ -101,6 +100,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
       if (disposing)
       {
       }
+
       base.Dispose(disposing);
     }
 
