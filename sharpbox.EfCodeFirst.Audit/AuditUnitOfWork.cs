@@ -45,7 +45,6 @@ namespace sharpbox.EfCodeFirst.Audit
 
       return instance;
     }
-
     public Response Update(Response instance)
     {
       throw new NotImplementedException();
