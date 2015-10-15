@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using sharpbox.Common.Dispatch.Model;
 
-namespace sharpbox.Util.Dispatch
+namespace sharpbox.WebLibrary.Helpers
 {
     public static class MetaLoader
     {
@@ -15,12 +15,12 @@ namespace sharpbox.Util.Dispatch
 
         public static string[] AvailableEvents()
         {
-            return GetStaticFieldsByType(typeof(CommandName));
+            return GetStaticFieldsByType(typeof(EventName));
         }
 
         public static string[] AvailableRoutines()
         {
-            return GetStaticFieldsByType(typeof(CommandName));
+            return GetStaticFieldsByType(typeof(RoutineName));
         }
 
         public static string[] AvailableUiActions()
@@ -29,6 +29,16 @@ namespace sharpbox.Util.Dispatch
         }
 
         private static string[] GetStaticFieldsByType(Type type)
+        {
+            IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(p => type.IsAssignableFrom(p));
+
+            return types.SelectMany(x => x.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)).Select(y => y.Name).ToArray();
+
+        }
+
+        private static string[] GetSharpboxControllers(Type type)
         {
             IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())

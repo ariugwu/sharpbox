@@ -6,10 +6,11 @@
 
 <#@ assembly name="$(TargetDir)$(TargetFileName)" #>
 
-<#@ assembly name="$(TargetDir)sharpbox.Util.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Bootstrap.dll" #>
 
-<#@ import namespace="sharpbox.Util.TypeScript" #> 
+<#@ import namespace="sharpbox.WebLibrary.Helpers.TypeScript" #> 
 <#@ output extension=".ts" #>
 
 <# var fluxStore = new FluxStore(); #>
+
 <#= fluxStore.Example() #>

@@ -1,4 +1,4 @@
-﻿namespace sharpbox.Util.TypeScript
+﻿namespace sharpbox.WebLibrary.Helpers.TypeScript
 {
     
     public class FluxStore
