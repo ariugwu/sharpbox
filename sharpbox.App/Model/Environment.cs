@@ -6,6 +6,7 @@ namespace sharpbox.App.Model
   {
     public int EnvironmentId { get; set; }
     public string BaseUrl { get; set; }
+    public string CacheKey { get; set; }
     public string ApplicationName { get; set; }
     public string UploadDirectory { get; set; }
     public string LogoLocation { get; set; }

@@ -3,7 +3,6 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
 
 <#@ assembly name="$(TargetDir)$(TargetFileName)" #>
 
@@ -13,4 +12,4 @@
 <#@ output extension=".ts" #>
 
 <# var fluxStore = new FluxStore(); #>
-<# fluxStore.Example(); #>
+<#= fluxStore.Example() #>

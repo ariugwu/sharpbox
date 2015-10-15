@@ -1,19 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TextTemplating;
-
-namespace sharpbox.Util.TypeScript
+﻿namespace sharpbox.Util.TypeScript
 {
     
-    public class FluxStore : TextTransformation
+    public class FluxStore
     {
-        public override string TransformText()
-        {
-            throw new NotImplementedException();
-        }
-
-      public void Example()
+      public string Example()
       {
-        WriteLine("You get the idea.");
+        return "var wat = \"You get the idea.\"";
       }
     }
 }
