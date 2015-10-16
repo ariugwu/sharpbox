@@ -1,4 +1,6 @@
-﻿namespace sharpbox.Email.Dispatch
+﻿using sharpbox.Common.Dispatch.Model;
+
+namespace sharpbox.Email.Dispatch
 {
     using sharpbox.Dispatch.Model;
 

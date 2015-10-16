@@ -1,9 +1,8 @@
-﻿using sharpbox.Dispatch.Model;
-using sharpbox.WebLibrary.Helpers;
-
-namespace sharpbox.WebLibrary.Core
+﻿namespace sharpbox.WebLibrary.Core
 {
     using System;
+    using Common.Dispatch.Model;
+    using Helpers;
 
     [Serializable]
     public class WebRequest<T>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using sharpbox.Common.Dispatch.Model;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Dispatch

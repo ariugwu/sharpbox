@@ -51,14 +51,11 @@
     <Compile Include="Handler\ResponseHandler.cs" />
     <Compile Include="Model\BasePackage.cs" />
     <Compile Include="Model\CommandHubItem.cs" />
-    <Compile Include="Model\CommandName.cs" />
     <Compile Include="Model\CommandStreamItem.cs" />
     <Compile Include="Model\Response.cs" />
-    <Compile Include="Model\EventName.cs" />
     <Compile Include="Model\Request.cs" />
     <Compile Include="Model\ResponseTypes.cs" />
     <Compile Include="Model\RoutineItem.cs" />
-    <Compile Include="Model\RoutineName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

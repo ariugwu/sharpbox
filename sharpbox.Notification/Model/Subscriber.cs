@@ -4,7 +4,7 @@
 
     using Newtonsoft.Json;
 
-    using sharpbox.Dispatch.Model;
+    using Common.Dispatch.Model;
 
     [Serializable]
     public class Subscriber

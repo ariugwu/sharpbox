@@ -3,5 +3,26 @@
 
  
 
+module sharpbox.Controllers.TestController {
+export enum Command {
+TestCommand,
+SaveExampleModel,
+Add,
+Update,
+Remove,
+}
 
-var wat = "You get the idea."
+export enum Event {
+TestEvent,
+OnAdd,
+OnUpdate,
+OnRemove,
+}
+
+export enum UiAction {
+}
+
+export enum Routine {
+}
+
+}

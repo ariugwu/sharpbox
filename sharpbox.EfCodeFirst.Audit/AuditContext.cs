@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using sharpbox.Common.Dispatch.Model;
 using sharpbox.Dispatch.Model;
 
 namespace sharpbox.EfCodeFirst.Audit

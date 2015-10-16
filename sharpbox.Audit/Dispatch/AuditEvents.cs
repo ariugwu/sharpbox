@@ -1,4 +1,6 @@
-﻿namespace sharpbox.Audit.Dispatch
+﻿using sharpbox.Common.Dispatch.Model;
+
+namespace sharpbox.Audit.Dispatch
 {
     using sharpbox.Dispatch.Model;
 

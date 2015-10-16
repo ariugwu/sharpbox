@@ -1,6 +1,6 @@
 ﻿namespace sharpbox.Notification.Dispatch
 {
-    using sharpbox.Dispatch.Model;
+    using Common.Dispatch.Model;
 
     public class NotificationCommands
     {

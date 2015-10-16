@@ -1,4 +1,6 @@
-﻿namespace sharpbox.Notification.Dispatch
+﻿using sharpbox.Common.Dispatch.Model;
+
+namespace sharpbox.Notification.Dispatch
 {
     using sharpbox.Dispatch.Model;
 

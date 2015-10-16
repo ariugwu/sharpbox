@@ -1,4 +1,4 @@
-﻿using sharpbox.Dispatch.Model;
+﻿using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.Io.Dispatch
 {

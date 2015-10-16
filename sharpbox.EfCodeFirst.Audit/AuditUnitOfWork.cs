@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
-using sharpbox.Dispatch.Model;
 
 namespace sharpbox.EfCodeFirst.Audit
 {
+  using Common.Dispatch.Model;
+  using Dispatch.Model;
+
   public class AuditUnitOfWork : Common.Data.IUnitOfWork<Response>
   {
     public AuditUnitOfWork(string connectionStringName)

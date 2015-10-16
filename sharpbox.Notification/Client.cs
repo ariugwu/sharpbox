@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using sharpbox.Dispatch.Model;
 
 namespace sharpbox.Notification
 {
-    using sharpbox.Localization.Model;
-    using sharpbox.Notification.Model;
+    using Common.Dispatch.Model;
+    using sharpbox.Dispatch.Model;
+    using Localization.Model;
+    using Notification.Model;
 
     [Serializable]
   public class Client

@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
+using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.EfCodeFirst.Audit
 {
@@ -34,7 +35,7 @@ namespace sharpbox.EfCodeFirst.Audit
       }
     }
 
-    public static List<Dispatch.Model.EventName> GetEventNames()
+    public static List<EventName> GetEventNames()
     {
       using (var db = new AuditContext())
       {
@@ -42,7 +43,7 @@ namespace sharpbox.EfCodeFirst.Audit
       }
     }
 
-    public static List<Dispatch.Model.CommandName> GetCommandName()
+    public static List<CommandName> GetCommandName()
     {
       using (var db = new AuditContext())
       {

@@ -1,4 +1,5 @@
 ﻿using System;
+using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.Dispatch.Model
 {

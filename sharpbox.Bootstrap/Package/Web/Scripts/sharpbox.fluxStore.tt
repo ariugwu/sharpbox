@@ -12,5 +12,4 @@
 <#@ output extension=".ts" #>
 
 <# var fluxStore = new FluxStore(); #>
-
 <#= fluxStore.Example() #>

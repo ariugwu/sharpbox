@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 
 using FluentValidation;
-using sharpbox.Common.Data;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
+  using Common.Data;
+  using Common.Dispatch.Model;
   using Dispatch.Model;
   using Core;
   using Data;

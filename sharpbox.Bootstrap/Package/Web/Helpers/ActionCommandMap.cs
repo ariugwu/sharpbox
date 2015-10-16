@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using sharpbox.Dispatch.Model;
+using System.Linq;
 
 namespace sharpbox.WebLibrary.Helpers
 {
-    using System.Linq;
+    
+    using Common.Dispatch.Model;
 
     public class ActionCommandMap
     {
