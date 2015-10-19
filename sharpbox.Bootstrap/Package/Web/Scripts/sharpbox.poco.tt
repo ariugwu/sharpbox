@@ -4,6 +4,7 @@
 <#@ assembly name="$(TargetDir)$(TargetFileName)" #>
 
 <#@ assembly name="$(TargetDir)sharpbox.Audit.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Common.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Dispatch.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Email.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Io.dll" #>
@@ -29,7 +30,7 @@
 		.For<sharpbox.Io.Dispatch.IoCommands>()
 		.For<sharpbox.Io.Dispatch.IoEvents>()
 		.For<sharpbox.Io.Model.FileDetail>()
-		.For<sharpbox.Membership.Model.UserRoleName>()
+		.For<sharpbox.Membership.Model.UserRole>()
 		.For<sharpbox.Notification.Dispatch.NotificationCommands>()
 		.For<sharpbox.Notification.Dispatch.NotificationEvents>()
 		.For<sharpbox.Notification.Model.BackLogItem>()

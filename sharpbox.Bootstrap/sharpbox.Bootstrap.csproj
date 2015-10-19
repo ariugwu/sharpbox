@@ -215,19 +215,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Package\Web\Scripts\sharpbox.enum.d.ts">
+    <Content Include="Package\Web\Scripts\sharpbox.controllers.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>sharpbox.enum.tt</DependentUpon>
+      <DependentUpon>sharpbox.controllers.tt</DependentUpon>
     </Content>
-    <Content Include="Package\Web\Scripts\sharpbox.fluxStore.ts">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>sharpbox.fluxStore.tt</DependentUpon>
-    </Content>
-    <None Include="Package\Web\Scripts\sharpbox.fluxStore.tt">
+    <None Include="Package\Web\Scripts\sharpbox.controllers.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>sharpbox.fluxStore.ts</LastGenOutput>
+      <LastGenOutput>sharpbox.controllers.ts</LastGenOutput>
     </None>
     <Content Include="Package\Web\Scripts\sharpbox.poco.d.ts">
       <AutoGen>True</AutoGen>
@@ -246,10 +241,6 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Package\Web\Scripts\Manager.ttinclude" />
-    <Content Include="Package\Web\Scripts\sharpbox.enum.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>sharpbox.enum.d.ts</LastGenOutput>
-    </Content>
     <Content Include="Package\Web\Scripts\sharpbox.resources.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>sharpbox.resources.d.ts</LastGenOutput>
@@ -399,6 +390,10 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.ViewModel.ts" />
+    <TypeScriptCompile Include="Package\Web\Scripts\Typings\jquery.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
