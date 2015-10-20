@@ -11,11 +11,12 @@ namespace sharpbox.Bootstrap.Controllers
     using Common.Dispatch.Model;
     using Dispatch.Model;
 
-    public class TestController : SharpboxController<ExampleModel>
+    public sealed class TestController : SharpboxController<ExampleModel>
     {
         public CommandName TestCommand = new CommandName("TestCommand");
         public EventName TestEvent = new EventName("TestEvent");
         public CommandName SaveExampleModel = new CommandName("SaveExampleModel");
+        public UiAction CouldBeAnything = new UiAction("CouldBeAnything");
 
         public TestController()
             : base(new ExampleAppContext())

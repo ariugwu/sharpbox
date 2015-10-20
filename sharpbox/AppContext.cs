@@ -13,12 +13,13 @@ namespace sharpbox
   [Serializable]
   public class AppContext
   {
-    /// <summary>
-    /// A bit of a kitchen sink. Will instantiate Dispatch, Email, File, Audit, Notification, and map default commands and listeners.
-    /// </summary>
-    /// <param name="smtpClient"></param>
-    /// <param name="ioStrategy"></param>
-    public AppContext(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox")
+      /// <summary>
+      /// A bit of a kitchen sink. Will instantiate Dispatch, Email, File, Audit, Notification, and map default commands and listeners.
+      /// </summary>
+      /// <param name="smtpClient"></param>
+      /// <param name="ioStrategy"></param>
+      /// <param name="defaultConnectionStringName"></param>
+      public AppContext(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox")
     {
       Dispatch = new Client();
       Email = new Email.Client(smtpClient);

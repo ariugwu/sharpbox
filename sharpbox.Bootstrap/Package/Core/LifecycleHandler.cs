@@ -33,8 +33,13 @@ namespace sharpbox.WebLibrary.Core
       }
     }
 
-    public abstract void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller);
-
+    /// <summary>
+    /// Will (1) Call the controller facade pattern to add this error to the Controller which in turn sets !IsModelValid. (2) add the error to the WebResponse. (3) Set the WebContext as faulted. 
+    /// </summary>
+    /// <param name="webContext"></param>
+    /// <param name="controller"></param>
+    /// <param name="key"></param>
+    /// <param name="modelError"></param>
     public static void AddModelStateError(WebContext<T> webContext, ISharpboxController<T> controller, string key, ModelError modelError)
     {
       controller.AddErrorToModelState(key, modelError.ErrorMessage);
@@ -60,5 +65,8 @@ namespace sharpbox.WebLibrary.Core
       webContext.WebContextState = WebContextState.Faulted;
       webContext.WebResponse.ResponseType = ResponseTypes.Error.ToString();
     }
+
+    public abstract void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller);
+
   }
 }

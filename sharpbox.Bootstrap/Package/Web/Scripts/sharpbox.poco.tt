@@ -12,6 +12,7 @@
 <#@ assembly name="$(TargetDir)sharpbox.Membership.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Notification.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Util.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.Bootstrap.dll" #>
 
 <#@ import namespace="TypeLite" #> 
 <#@ import namespace="TypeLite.Net4" #> 
@@ -35,6 +36,8 @@
 		.For<sharpbox.Notification.Dispatch.NotificationEvents>()
 		.For<sharpbox.Notification.Model.BackLogItem>()
 		.For<sharpbox.Notification.Model.Subscriber>()
+        .For<sharpbox.WebLibrary.Core.WebRequest<object>>()
+        .For<sharpbox.WebLibrary.Core.WebResponse<object>>()
 		.ForLoadedAssemblies();
 #>
 

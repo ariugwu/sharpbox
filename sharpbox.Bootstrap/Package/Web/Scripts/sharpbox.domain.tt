@@ -11,5 +11,6 @@
 <#@ import namespace="sharpbox.WebLibrary.Helpers.TypeScript" #> 
 <#@ output extension=".ts" #>
 
-<# var fluxStore = new FluxStore(); #>
-<#= fluxStore.Example() #>
+<# var generator = new DomainMetadata(); #>
+
+<#= generator.Generate() #>

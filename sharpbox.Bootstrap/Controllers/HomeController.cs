@@ -9,7 +9,7 @@ namespace sharpbox.Bootstrap.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            var test = new FluxStore();
+            var test = new DomainMetadata();
 
             var names = MetaLoader.GetAllMetaDataClasses(); //test.Wat();
 

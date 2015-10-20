@@ -1,5 +1,5 @@
 ﻿/// <reference path="sharpbox.poco.d.ts"/>
-/// <reference path="sharpbox.controllers.ts"/>
+/// <reference path="sharpbox.domain.ts"/>
 /// <reference path="Typings/jquery.d.ts"/>
 var sharpbox;
 (function (sharpbox) {
@@ -24,8 +24,9 @@ var sharpbox;
 
             Model.prototype.execute = function (action) {
                 var url = this.controllerUrl + "Execute/";
+                var webRequest = new sharpbox.WebLibrary.Core.WebRequest();
 
-                var webRequest = {
+                webRequest = {
                     UiAction: action,
                     Instance: this.instance
                 };
@@ -60,5 +61,5 @@ test.instance = { Name: "Administrator", UserRoleNameId: 0 };
 
 var wat = test.instance.UserRoleNameId;
 
-test.execute(sharpbox.Controllers.TestController.Command[2 /* Add */]);
+test.execute(sharpbox.Domain.TestController.Command.Add);
 //# sourceMappingURL=sharpbox.ViewModel.js.map

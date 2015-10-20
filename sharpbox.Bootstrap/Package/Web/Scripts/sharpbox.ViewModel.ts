@@ -1,5 +1,5 @@
 ﻿/// <reference path="sharpbox.poco.d.ts"/>
-/// <reference path="sharpbox.controllers.ts"/>
+/// <reference path="sharpbox.domain.ts"/>
 /// <reference path="Typings/jquery.d.ts"/>
 
 module sharpbox.ViewModel {
@@ -29,13 +29,14 @@ module sharpbox.ViewModel {
 
         execute(action: string) {
             var url = this.controllerUrl + "Execute/";
+            var webRequest = new sharpbox.WebLibrary.Core.WebRequest<T>();
 
-            var webRequest = {
+             webRequest = {
                 UiAction: action,
                 Instance: this.instance
             }
 
-            $.post(url, webRequest, function (webResponse) {
+            $.post(url, webRequest, function (webResponse : sharpbox.WebLibrary.Core.WebResponse<T>) {
                 this.processWebResponse(webResponse);
             }, 'json');
         }
@@ -63,4 +64,4 @@ test.instance = { Name: "Administrator", UserRoleNameId: 0};
 
 var wat : number = test.instance.UserRoleNameId;
 
-test.execute(sharpbox.Controllers.TestController.Command[sharpbox.Controllers.TestController.Command.Add]);
+test.execute(sharpbox.Domain.TestController.Command.Add);
