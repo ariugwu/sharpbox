@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 
 using FluentValidation;
+using Newtonsoft.Json;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
@@ -68,7 +69,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
       try
       {
         this.WebContext.ProcessRequest(webRequest, this);
-        return Json(this.WebContext.WebResponse);
+
+        var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects }; // Prevent circular reference errors with EF objects and other one-to-many relationships
+        return Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
       }
       catch (Exception ex)
       {
@@ -83,8 +86,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
         this.WebContext.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };
       }
 
-      LifecycleHandler<T>.AddModelStateError(this.WebContext, this, "ExecutionError", new ModelError(ex, ex.Message));
-      return this.Json(this.WebContext.WebResponse);
+      this.WebContext._handler.AddModelStateError(this.WebContext, this, "ExecutionError", new ModelError(ex, ex.Message));
+      var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects }; // Prevent circular reference errors with EF objects and other one-to-many relationships
+      return Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
     }
 
     protected override void Dispose(bool disposing)
@@ -133,7 +137,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         foreach (var me in v.Errors)
         {
-         LifecycleHandler<T>.AddModelStateError(this.WebContext, v.ToString(), new ModelError(me.ErrorMessage));
+         this.WebContext._handler.AddModelStateError(this.WebContext, v.ToString(), new ModelError(me.ErrorMessage));
         }
       }
     }

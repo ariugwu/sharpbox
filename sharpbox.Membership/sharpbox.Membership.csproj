@@ -39,7 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\UserAuthClaim.cs" />
+    <Compile Include="Model\Claim.cs" />
+    <Compile Include="Model\UserRoleClaim.cs" />
     <Compile Include="Model\UserRole.cs" />
     <Compile Include="Model\UserUserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

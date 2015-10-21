@@ -1,4 +1,5 @@
-﻿using sharpbox.Common.Type;
+﻿using System;
+using sharpbox.Common.Type;
 
 namespace sharpbox.Membership.Model
 {
@@ -15,5 +16,7 @@ namespace sharpbox.Membership.Model
 
     public static UserRole Administrator = new UserRole("Administrator");
     public static UserRole User = new UserRole("User");
+
+    public Guid ApplicationId { get; set; }
   }
 }

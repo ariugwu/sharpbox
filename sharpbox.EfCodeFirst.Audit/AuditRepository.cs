@@ -35,17 +35,17 @@ namespace sharpbox.EfCodeFirst.Audit
       }
     }
 
-    public static List<EventName> GetEventNames()
+    public static List<EventName> GetEventNames(string connectionStringName = "Audit")
     {
-      using (var db = new AuditContext())
+      using (var db = new AuditContext(connectionStringName))
       {
         return db.EventNames.ToList();
       }
     }
 
-    public static List<CommandName> GetCommandName()
+    public static List<CommandName> GetCommandName(string connectionStringName = "Audit")
     {
-      using (var db = new AuditContext())
+      using (var db = new AuditContext(connectionStringName))
       {
         return db.CommandNames.ToList();
       }

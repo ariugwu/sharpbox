@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using sharpbox.Bootstrap.Package.Core;
 
 namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
@@ -10,6 +11,8 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 
     public class LoadContextHandler<T> : LifecycleHandler<T> where T : new()
     {
+        public LoadContextHandler() : base(new LifeCycleHandlerName("LoadContext")) { } 
+
         public ActionCommandMap ActionCommandMap { get; set; }
 
         public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
@@ -19,8 +22,9 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
             try
             {
                 this.ActionCommandMap = controller.LoadCommandActionMap();
-                webContext.WebRequest.CommandName = this.ActionCommandMap.GetCommandByAction(webContext.AppContext,
-                    webContext.WebRequest.UiAction);
+                webContext.WebRequest.CommandName = this.ActionCommandMap.GetCommandByAction(webContext.AppContext,webContext.WebRequest.UiAction);
+
+                webContext.WebResponse.AddLifeCycleTrailItem(this.Name, LifeCycleHandlerState.Success, string.Empty);
             }
             catch (ArgumentNullException aex)
             {

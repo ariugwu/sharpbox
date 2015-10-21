@@ -8,6 +8,8 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
   using Core;
   public class ExecuteHandler<T> : LifecycleHandler<T> where T : new()
   {
+      public ExecuteHandler() : base(new LifeCycleHandlerName("Execute")) { } 
+
     public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
     {
       webContext.DispatchResponse = webContext.AppContext.Dispatch.Process<T>(webContext.WebRequest.CommandName, "Default Execution Message", new object[] { webContext.WebRequest.Instance });
@@ -34,7 +36,6 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
       {
         webContext.WebResponse.Message = webContext.DispatchResponse.Message;
       }
-
     }
   }
 }

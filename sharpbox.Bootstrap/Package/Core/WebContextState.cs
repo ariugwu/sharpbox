@@ -12,5 +12,6 @@ namespace sharpbox.Bootstrap.Package.Core
         ResponseSet,
         ResponseProcessed,
         Faulted
+
     }
 }
