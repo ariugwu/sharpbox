@@ -2,8 +2,8 @@
 /// <reference path="sharpbox.domain.ts"/>
 /// <reference path="Typings/jquery.d.ts"/>
 
-module sharpbox.ViewModel {
-    export class Model<T> {
+module sharpbox.Web {
+    export class ViewModel<T> {
         instance: T;
         collection: Array<T>;
 
@@ -58,7 +58,7 @@ module sharpbox.ViewModel {
     }
 }
 
-var test = new sharpbox.ViewModel.Model<sharpbox.Membership.Model.UserRole>("UserRole");
+var test = new sharpbox.Web.ViewModel<sharpbox.Membership.Model.UserRole>("UserRole");
 
 test.instance = { Name: "Administrator", UserRoleNameId: 0};
 
