@@ -11,14 +11,15 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 
     public class LoadContextHandler<T> : LifecycleHandler<T> where T : new()
     {
-        public LoadContextHandler() : base(new LifeCycleHandlerName("LoadContext")) { } 
+        public LoadContextHandler()
+            : base(new LifeCycleHandlerName("LoadContext"))
+        {
+        }
 
         public ActionCommandMap ActionCommandMap { get; set; }
 
         public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
         {
-            webContext.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };
-
             try
             {
                 this.ActionCommandMap = controller.LoadCommandActionMap();

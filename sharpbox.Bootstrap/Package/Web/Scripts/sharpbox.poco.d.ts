@@ -123,6 +123,10 @@ declare module System {
 		Source: string;
 		HResult: number;
 	}
+	interface Tuple<T1, T2> {
+		Item1: T1;
+		Item2: T2;
+	}
 }
 declare module sharpbox.Dispatch.Model {
 	interface Request extends sharpbox.Dispatch.Model.BasePackage {
@@ -349,6 +353,7 @@ declare module sharpbox.Membership.Model {
 	interface UserRole extends sharpbox.Common.Type.EnumPattern {
 		UserRoleNameId: number;
 		Name: string;
+		ApplicationId: System.Guid;
 	}
 }
 declare module sharpbox.Notification.Dispatch {
@@ -398,6 +403,7 @@ declare module sharpbox.WebLibrary.Core {
 		ModelErrors: System.Collections.Generic.KeyValuePair<string, System.Web.Mvc.ModelError[]>[];
 		ResponseType: string;
 		Message: string;
+		LifeCycleTrail: System.Collections.Generic.KeyValuePair<sharpbox.Bootstrap.Package.Core.LifeCycleHandlerName, System.Tuple<sharpbox.Bootstrap.Package.Core.LifeCycleHandlerState, string>[]>[];
 	}
 }
 declare module sharpbox.WebLibrary.Helpers {
@@ -415,6 +421,12 @@ declare module System.Web.Mvc {
 	interface ModelError {
 		Exception: System.Exception;
 		ErrorMessage: string;
+	}
+}
+declare module sharpbox.Bootstrap.Package.Core {
+	interface LifeCycleHandlerName extends sharpbox.Common.Type.EnumPattern {
+	}
+	interface LifeCycleHandlerState extends sharpbox.Common.Type.EnumPattern {
 	}
 }
 

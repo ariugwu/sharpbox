@@ -1,4 +1,7 @@
-﻿namespace sharpbox.WebLibrary.Core
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
+
+namespace sharpbox.WebLibrary.Core
 {
   using System.Security.Principal;
   using Web.Helpers.Handler;
@@ -82,6 +85,8 @@
     public void ProcessRequest(WebRequest<T> webRequest, SharpboxController<T> controller)
     {
       this.WebRequest = webRequest;
+      this.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };
+
       this._handler.ProcessRequest(this, controller);
     }
 

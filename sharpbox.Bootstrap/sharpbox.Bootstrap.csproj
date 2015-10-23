@@ -217,36 +217,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Package\Web\Scripts\sharpbox.domain.ts">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>sharpbox.domain.tt</DependentUpon>
-    </Content>
-    <None Include="Package\Web\Scripts\sharpbox.domain.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>sharpbox.domain.ts</LastGenOutput>
-    </None>
-    <Content Include="Package\Web\Scripts\sharpbox.poco.d.ts">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>sharpbox.poco.tt</DependentUpon>
-    </Content>
-    <Content Include="Package\Web\Scripts\sharpbox.poco.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>sharpbox.poco.d.ts</LastGenOutput>
-    </Content>
-    <Content Include="Package\Web\Scripts\sharpbox.resources.d.ts">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>sharpbox.resources.tt</DependentUpon>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Package\Web\Scripts\Manager.ttinclude" />
-    <Content Include="Package\Web\Scripts\sharpbox.resources.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>sharpbox.resources.d.ts</LastGenOutput>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -287,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Package\Web\Scripts\Typings\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -392,10 +366,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.ViewModel.ts" />
-    <TypeScriptCompile Include="Package\Web\Scripts\Typings\jquery.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

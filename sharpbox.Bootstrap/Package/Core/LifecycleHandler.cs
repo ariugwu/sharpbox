@@ -46,7 +46,7 @@ namespace sharpbox.WebLibrary.Core
                     webContext.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };
                 }
 
-                webContext._handler.AddModelStateError(webContext, controller, "ExecutionError", new ModelError(ex, ex.Message));
+                this.AddModelStateError(webContext, controller, "ExecutionError", new ModelError(ex, ex.Message));
             }
 
             if (this._successor != null && controller.IsModelStateValid())
@@ -66,6 +66,7 @@ namespace sharpbox.WebLibrary.Core
         {
             controller.AddErrorToModelState(key, modelError.ErrorMessage);
 
+            // We'll keep track of all the model errors but the LifeCycleTrail below will likely be more helpful
             if (!webContext.WebResponse.ModelErrors.ContainsKey(key))
             {
                 webContext.WebResponse.ModelErrors.Add(key, new Stack<ModelError>());
@@ -73,6 +74,7 @@ namespace sharpbox.WebLibrary.Core
 
             webContext.WebResponse.ModelErrors[key].Push(modelError);
 
+            // We want to know not just what errors occur but also where is the cycle they occur
             webContext.WebResponse.AddLifeCycleTrailItem(this.Name, LifeCycleHandlerState.Error, modelError.ErrorMessage);
 
             webContext.WebContextState = WebContextState.Faulted;

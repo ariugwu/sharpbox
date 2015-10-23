@@ -10,8 +10,10 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 
     public class ValidationHandler<T> : LifecycleHandler<T> where T : new()
     {
-        public ValidationHandler() : base(new LifeCycleHandlerName("Validation")) { } 
-
+        public ValidationHandler()
+            : base(new LifeCycleHandlerName("Validation"))
+        {
+        }
         public ValidationResult ValidationResult { get; set; }
 
         public AbstractValidator<T> Validator { get; set; }

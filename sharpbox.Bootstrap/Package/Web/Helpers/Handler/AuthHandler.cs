@@ -7,10 +7,13 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 
     public class AuthHandler<T> : LifecycleHandler<T> where T : new()
     {
-        public AuthHandler() : base(new LifeCycleHandlerName("Auth")) { } 
+        public AuthHandler()
+            : base(new LifeCycleHandlerName("Auth"))
+        {
+        }
 
-      public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
-    {
+        public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
+        {
+        }
     }
-  }
 }
