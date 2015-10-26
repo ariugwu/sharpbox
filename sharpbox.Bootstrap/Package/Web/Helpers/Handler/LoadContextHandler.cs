@@ -22,6 +22,20 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
         {
             try
             {
+                webContext.AppContext.Environment = null;
+                webContext.AppContext.AvailableClaims = null;
+                webContext.AppContext.AvailableUserRoles = null;
+                webContext.AppContext.ClaimsByUserRole = null;
+                webContext.AppContext.CurrentUserRoles = null;
+                webContext.AppContext.CurrentLogOn = null;
+            }
+            catch (Exception ex)
+            {
+                
+            }
+
+            try
+            {
                 this.ActionCommandMap = controller.LoadCommandActionMap();
                 webContext.WebRequest.CommandName = this.ActionCommandMap.GetCommandByAction(webContext.AppContext,webContext.WebRequest.UiAction);
 

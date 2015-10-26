@@ -43,12 +43,28 @@ namespace sharpbox
     /// <summary>
     /// Handy encapsulation for resources you will/could/might use throughout the application
     /// </summary>
+    public App.Model.Environment Environment { get; set; }
+
+    // Membership
+    public IEnumerable<Membership.Model.UserRole> AvailableUserRoles { get; set; }
+
+    public IEnumerable<Membership.Model.Claim> AvailableClaims { get; set; }
+
+    public IEnumerable<Membership.Model.UserRoleClaim> ClaimsByUserRole { get; set; } 
+
+    public IEnumerable<Membership.Model.UserUserRole> CurrentUserRoles { get; set; }
+
+    public string CurrentLogOn { get; set; }
+
+    // Text Resources
     public Dictionary<ResourceName, string> Resources { get; set; }
+    
     public Client Dispatch { get; set; }
     public Notification.Client Notification { get; set; } // A dispatch friendly notification system.
     public Email.Client Email { get; set; } // A dispatch friendly email client
     public Audit.Client Audit { get; set; } // A dispatch friendly Auditor
     public Io.Client File { get; set; } // A dispatch friendly file client
+
     public string DefaultConnectionStringName { get; set; }
 
     /// <summary>

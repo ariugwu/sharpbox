@@ -56,7 +56,7 @@ namespace sharpbox.WebLibrary.Core
         }
 
         /// <summary>
-        /// Will (1) Call the controller facade pattern to add this error to the Controller which in turn sets !IsModelValid. (2) add the error to the WebResponse. (3) Set the WebContext as faulted. 
+        /// This will: (1) Call the controller facade pattern to add this error to the Controller which in turn sets !IsModelValid. (2) Add the error to the WebResponse using the overload method and (3) set the WebContext as faulted. 
         /// </summary>
         /// <param name="webContext"></param>
         /// <param name="controller"></param>
@@ -66,6 +66,12 @@ namespace sharpbox.WebLibrary.Core
         {
             controller.AddErrorToModelState(key, modelError.ErrorMessage);
 
+            this.AddModelStateError(webContext, key, modelError);
+        }
+
+
+        public void AddModelStateError(WebContext<T> webContext, string key, ModelError modelError)
+        {
             // We'll keep track of all the model errors but the LifeCycleTrail below will likely be more helpful
             if (!webContext.WebResponse.ModelErrors.ContainsKey(key))
             {
@@ -81,21 +87,12 @@ namespace sharpbox.WebLibrary.Core
             webContext.WebResponse.ResponseType = ResponseTypes.Error.ToString();
         }
 
-        public void AddModelStateError(WebContext<T> webContext, string key, ModelError modelError)
-        {
-            if (!webContext.WebResponse.ModelErrors.ContainsKey(key))
-            {
-                webContext.WebResponse.ModelErrors.Add(key, new Stack<ModelError>());
-            }
-
-            webContext.WebResponse.ModelErrors[key].Push(modelError);
-
-            webContext.WebResponse.AddLifeCycleTrailItem(this.Name, LifeCycleHandlerState.Error, modelError.ErrorMessage);
-
-            webContext.WebContextState = WebContextState.Faulted;
-            webContext.WebResponse.ResponseType = ResponseTypes.Error.ToString();
-        }
-
+        /// <summary>
+        /// Used internally for non error lifecycle events
+        /// </summary>
+        /// <param name="webContext"></param>
+        /// <param name="state"></param>
+        /// <param name="message"></param>
         protected void PopulateLifeCycleTrail(WebContext<T> webContext, LifeCycleHandlerState state = null, string message = null)
         {
             webContext.WebResponse.AddLifeCycleTrailItem(this.Name, state ?? LifeCycleHandlerState.Success, message ?? string.Empty);

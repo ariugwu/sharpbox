@@ -51,6 +51,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\sharpbox.App\sharpbox.App.csproj">
+      <Project>{05593411-fbbf-4e14-8ad8-45c1dce55ba9}</Project>
+      <Name>sharpbox.App</Name>
+    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
       <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
       <Name>sharpbox.Audit</Name>
@@ -74,6 +78,10 @@
     <ProjectReference Include="..\sharpbox.Localization\sharpbox.Localization.csproj">
       <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
       <Name>sharpbox.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Membership\sharpbox.Membership.csproj">
+      <Project>{5cdedd58-84c8-4716-a6c1-9a89a927ffd1}</Project>
+      <Name>sharpbox.Membership</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
       <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>
