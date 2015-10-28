@@ -36,6 +36,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
     {
       // Only create a new WebContext if one doesn't already exist.
       this.WebContext = new WebContext<T> { AppContext = appContext, User = this.User };
+        this.WebContext.AppContext.UploadPath = HttpContext.Server.MapPath("~/Upload/");
+        this.WebContext.AppContext.DataPath = HttpContext.Server.MapPath("~/App_Data/");
       this.Repository = repository;
       this.UnitOfWork = unitOfWork;
     }
@@ -157,6 +159,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
       appContext.Dispatch.Register<T>(this.Update, this.UnitOfWork.Update, this.OnUpdate);
       appContext.Dispatch.Register<T>(this.Remove, this.UnitOfWork.Remove, this.OnRemove);
 
+      //appContext.Dispatch.Register<AppContext>(this.LoadEnvironment, () => {}, OnLoadContextEvent);
+
       //Register Listener(s)
 
       //Populate Command DispatchResponse Map
@@ -180,10 +184,16 @@ namespace sharpbox.WebLibrary.Web.Controllers
     public CommandName Add = new CommandName("Add");
     public CommandName Update = new CommandName("Update");
     public CommandName Remove = new CommandName("Remove");
+    public CommandName LoadEnvironment = new CommandName("LoadEnvironment");
+    public CommandName LoadAvailableClaims = new CommandName("LoadAvailableClaims");
+    public CommandName LoadAvailableUserRoles = new CommandName("LoadAvailableUserRoles");
+    public CommandName LoadCurrentUserRoles = new CommandName("LoadCurrentUserRoles");
+    public CommandName LoadTextResources = new CommandName("LoadTextResources");
 
     public EventName OnAdd = new EventName("OnAdd");
     public EventName OnUpdate = new EventName("OnUpdate");
     public EventName OnRemove = new EventName("OnRemove");
+    public EventName OnLoadContextEvent = new EventName("OnLoadContextEvent");
 
     #endregion
 

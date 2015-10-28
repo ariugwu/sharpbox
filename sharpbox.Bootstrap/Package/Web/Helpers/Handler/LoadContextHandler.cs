@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using sharpbox.Bootstrap.Package.Core;
+using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {

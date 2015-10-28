@@ -179,6 +179,7 @@
     </Compile>
     <Compile Include="Models\ExampleModel.cs" />
     <Compile Include="Models\ExampleAppContext.cs" />
+    <Compile Include="Package\Core\Extension\DefaultAppContextFunctions.cs" />
     <Compile Include="Package\Core\LifecycleHandler.cs" />
     <Compile Include="Package\Core\LifeCycleHandlerName.cs" />
     <Compile Include="Package\Core\LifeCycleHandlerState.cs" />

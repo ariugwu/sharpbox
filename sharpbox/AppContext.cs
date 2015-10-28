@@ -66,6 +66,8 @@ namespace sharpbox
     public Io.Client File { get; set; } // A dispatch friendly file client
 
     public string DefaultConnectionStringName { get; set; }
+    public string UploadPath { get; set; }
+    public string DataPath { get; set; }
 
     /// <summary>
     /// Map our actions and listeners to the dispatch
