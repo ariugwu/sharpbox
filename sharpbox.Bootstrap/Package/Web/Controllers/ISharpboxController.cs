@@ -4,7 +4,6 @@ using sharpbox.Bootstrap.Package.Web.Helpers.TypeScript;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
-    using Common.Data;
     using Common.Dispatch.Model;
     using Dispatch.Model;
     using Core;
@@ -16,10 +15,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #region Properties
 
         WebContext<T> WebContext { get; set; }
-
-        IRepository<T> Repository { get; set; }
-
-        IUnitOfWork<T> UnitOfWork { get; set; }
 
         #endregion
 

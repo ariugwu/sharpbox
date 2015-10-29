@@ -187,14 +187,13 @@
     <Compile Include="Package\Core\WebContextState.cs" />
     <Compile Include="Package\Core\WebRequest.cs" />
     <Compile Include="Package\Core\WebResponse.cs" />
-    <Compile Include="Package\Data\DefaultRepository.cs" />
-    <Compile Include="Package\Data\DefaultUnitOfWork.cs" />
     <Compile Include="Package\Web\Controllers\ISharpboxController.cs" />
     <Compile Include="Package\Web\Controllers\SharpboxController.cs" />
     <Compile Include="Package\Web\Helpers\ActionCommandMap.cs" />
     <Compile Include="Package\Web\Helpers\BaseCache.cs" />
     <Compile Include="Package\Web\Helpers\BaseCacheNames.cs" />
     <Compile Include="Package\Web\Helpers\CacheCollection.cs" />
+    <Compile Include="Package\Web\Helpers\ControllerWiring\SharpboxControllerWiring.cs" />
     <Compile Include="Package\Web\Helpers\EPplus\BaseEpplus.cs" />
     <Compile Include="Package\Web\Helpers\Extensions\WebViewPageExtensions.cs" />
     <Compile Include="Package\Web\Helpers\GenericCacheCollection.cs" />
@@ -261,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Package\Data\" />
     <Folder Include="Package\Web\Scripts\Typings\" />
   </ItemGroup>
   <ItemGroup>

@@ -13,20 +13,9 @@ namespace sharpbox.Bootstrap.Controllers
 
     public sealed class TestController : SharpboxController<ExampleModel>
     {
-        public CommandName TestCommand = new CommandName("TestCommand");
-        public EventName TestEvent = new EventName("TestEvent");
-        public CommandName SaveExampleModel = new CommandName("SaveExampleModel");
-        public UiAction CouldBeAnything = new UiAction("CouldBeAnything");
-
         public TestController()
             : base(new ExampleAppContext())
         {
-            this.BootstrapCrudCommands(this.WebContext.AppContext); // Setup some default crud commands pointed at the default UnitOfWork.
-
-            // Register some example commands.
-            this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this.TestCommand, ExampleModel.TestTargetMethod, this.TestEvent);
-            this.WebContext.AppContext.Dispatch.Listen(this.TestEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });
-            this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this.SaveExampleModel, this.UnitOfWork.Add, this.TestEvent);
         }
 
         public override AbstractValidator<ExampleModel> LoadValidatorByUiAction(UiAction uiAction)
@@ -36,12 +25,15 @@ namespace sharpbox.Bootstrap.Controllers
             return validator;
         }
 
-        public override void BootstrapCrudCommands(AppContext appContext)
+        public override void WireApplication()
         {
-            base.BootstrapCrudCommands(appContext);
-
             this.CommandMessageMap.Add(this.SaveExampleModel, new Dictionary<ResponseTypes, string>());
             this.CommandMessageMap[this.SaveExampleModel].Add(ResponseTypes.Success, "Saving the example to the file system was successful!");
+
+            // Register some example commands.
+            this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this.TestCommand, ExampleModel.TestTargetMethod, this.TestEvent);
+            this.WebContext.AppContext.Dispatch.Listen(this.TestEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });
+            //this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this.SaveExampleModel, this.UnitOfWork.Add, this.TestEvent);
         }
 
         public override ActionCommandMap LoadCommandActionMap()
@@ -53,5 +45,11 @@ namespace sharpbox.Bootstrap.Controllers
         {
             return base.LoadCommandMessageMap(webContext);
         }
+
+        public CommandName TestCommand = new CommandName("TestCommand");
+        public EventName TestEvent = new EventName("TestEvent");
+        public CommandName SaveExampleModel = new CommandName("SaveExampleModel");
+        public UiAction CouldBeAnything = new UiAction("CouldBeAnything");
+
     }
 }

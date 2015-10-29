@@ -2,18 +2,16 @@
 using System.Web.Http;
 using System.Collections.Generic;
 using System.Web.Mvc;
-
 using FluentValidation;
 using Newtonsoft.Json;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
-    using Common.Data;
     using Common.Dispatch.Model;
     using Core;
-    using Data;
     using Dispatch.Model;
     using WebLibrary.Helpers;
+    using WebLibrary.Helpers.ControllerWiring;
 
     public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
         where T : new()
@@ -22,32 +20,17 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public WebContext<T> WebContext { get; set; }
 
-        public IRepository<T> Repository { get; set; }
-
-        public IUnitOfWork<T> UnitOfWork { get; set; }
-
         public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; set; }
 
         #endregion
 
         #region Constructor(s)
 
-        protected SharpboxController(AppContext appContext, IRepository<T> repository, IUnitOfWork<T> unitOfWork)
+        protected SharpboxController(AppContext appContext)
         {
             // Only create a new WebContext if one doesn't already exist.
             this.WebContext = new WebContext<T> { AppContext = appContext, User = this.User };
-            this.Repository = repository;
-            this.UnitOfWork = unitOfWork;
-        }
-
-        protected SharpboxController(AppContext appContext, IRepository<T> repository)
-          : this(appContext, repository, new DefaultUnitOfWork<T>(appContext.File))
-        {
-        }
-
-        protected SharpboxController(AppContext appContext)
-          : this(appContext, new DefaultRepository<T>(appContext.File), new DefaultUnitOfWork<T>(appContext.File))
-        {
+            this.WarmBootAppContext(this.WebContext.AppContext);
         }
 
         #endregion
@@ -60,26 +43,34 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
             this.WebContext.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
             this.WebContext.AppContext.DataPath = this.Server.MapPath("~/App_Data/");
-            this.WebContext.AppContext.LoadEnvironmentFromFile();
-            this.WebContext.AppContext.LoadAvailableClaimsFromFile();
-            this.WebContext.AppContext.LoadAvailableUserRolesFromFile();
-            this.WebContext.AppContext.LoadClaimsByRoleFromFile();
-            this.WebContext.AppContext.LoadUserInRolesFromFile();
+            this.WebContext.AppContext.Dispatch.Process<AppContext>(SharpboxControllerWiring.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
             this.WebContext.AppContext.CurrentLogOn = null;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+            }
+
+            base.Dispose(disposing);
         }
 
         #endregion
 
+        #region Action(s)
         [Queryable]
         public JsonResult GetById(int id)
         {
-            return Json(this.Repository.Get(id));
+            //return Json(this.Repository.Get(id));
+            return null;
         }
 
         [Queryable]
         public JsonResult Get()
         {
-            return Json(this.Repository.Get());
+            //return Json(this.Repository.Get());
+            return null;
         }
 
         public JsonResult Execute(WebRequest<T> webRequest)
@@ -109,18 +100,16 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-            }
-
-            base.Dispose(disposing);
-        }
+        #endregion
 
         #region Validation
+
         [System.Web.Http.NonAction]
-        public abstract AbstractValidator<T> LoadValidatorByUiAction(UiAction uiAction);
+        public virtual AbstractValidator<T> LoadValidatorByUiAction(UiAction uiAction)
+        {
+            var validator = new InlineValidator<T>();
+            return validator;
+        }
         #endregion
 
         #region CommandActionMapping
@@ -165,50 +154,20 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #region Bootstrap methods
 
         /// <summary>
-        /// Ideally this will help cut down on some wiring time for apps which only need basic CRUD functionality.
+        /// Every time a request comes in we want pull the latest application info into our AppContext
         /// </summary>
-        /// <param name="appContext"></param>
-        public virtual void BootstrapCrudCommands(AppContext appContext)
+        /// <param name="appContext">The AppContext which handles each request.</param>
+        private void WarmBootAppContext(AppContext appContext)
         {
-            //Register Command(s)
-            appContext.Dispatch.Register<T>(this.Add, this.UnitOfWork.Add, this.OnAdd);
-            appContext.Dispatch.Register<T>(this.Update, this.UnitOfWork.Update, this.OnUpdate);
-            appContext.Dispatch.Register<T>(this.Remove, this.UnitOfWork.Remove, this.OnRemove);
-
-            //appContext.Dispatch.Register<AppContext>(this.LoadEnvironment, () => {}, OnLoadContextEvent);
-
-            //Register Listener(s)
-
-            //Populate Command DispatchResponse Map
-            this.CommandMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
-
-            this.CommandMessageMap.Add(this.Add, new Dictionary<ResponseTypes, string>());
-            this.CommandMessageMap[this.Add].Add(ResponseTypes.Error, "Add failed.");
-            this.CommandMessageMap[this.Add].Add(ResponseTypes.Success, "Add success.");
-
-            this.CommandMessageMap.Add(this.Update, new Dictionary<ResponseTypes, string>());
-            this.CommandMessageMap[this.Update].Add(ResponseTypes.Error, "Update failed.");
-            this.CommandMessageMap[this.Update].Add(ResponseTypes.Success, "Update success.");
-
-            this.CommandMessageMap.Add(this.Remove, new Dictionary<ResponseTypes, string>());
-            this.CommandMessageMap[this.Remove].Add(ResponseTypes.Error, "Removal failed.");
-            this.CommandMessageMap[this.Remove].Add(ResponseTypes.Success, "Removal success.");
+            SharpboxControllerWiring.WireContext(this);
+            WireApplication();
         }
 
-        #region Commands and Events
 
-        public CommandName GetAll = new CommandName("Get");
-        public CommandName GetSingleById = new CommandName("GetSingleById"); 
-
-        public CommandName Add = new CommandName("Add");
-        public CommandName Update = new CommandName("Update");
-        public CommandName Remove = new CommandName("Remove");
-
-        public EventName OnAdd = new EventName("OnAdd");
-        public EventName OnUpdate = new EventName("OnUpdate");
-        public EventName OnRemove = new EventName("OnRemove");
-
-        #endregion
+        public virtual void WireApplication()
+        {
+            
+        }
 
         #endregion
 

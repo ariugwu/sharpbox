@@ -1,21 +1,19 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
-using sharpbox.WebLibrary.Helpers.TypeScript;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using FluentValidation;
+    using Dispatch.Model;
+    using Models;
+    using WebLibrary.Helpers.ControllerWiring;
+    using WebLibrary.Web.Controllers;
+    using WebLibrary.Helpers.TypeScript;
 
-    using sharpbox.Bootstrap.Models;
-    using sharpbox.WebLibrary.Core;
-    using sharpbox.WebLibrary.Helpers;
-    using sharpbox.WebLibrary.Web.Controllers;
-
-    public class HomeController : SharpboxController<ExampleModel>
+    public sealed class HomeController : SharpboxController<ExampleModel>
     {
         public HomeController() : base(new ExampleAppContext())
         {
-            this.BootstrapCrudCommands(this.WebContext.AppContext);
+            
         }
 
         // GET: Home
@@ -38,14 +36,9 @@ namespace sharpbox.Bootstrap.Controllers
             var clerg = woo.ToList();
 
             this.WebContext.AppContext.Environment.BaseUrl = "http://sharpbox.io";
-            this.WebContext.AppContext.SaveEnvironment();
+            this.WebContext.AppContext.Dispatch.Process<AppContext>(SharpboxControllerWiring.SaveEnvironment, this.CommandMessageMap[SharpboxControllerWiring.SaveEnvironment][ResponseTypes.Info], new object[] { this.WebContext.AppContext.Environment });
 
             return View();
-        }
-
-        public override AbstractValidator<ExampleModel> LoadValidatorByUiAction(UiAction uiAction)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
