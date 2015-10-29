@@ -7,6 +7,7 @@ namespace sharpbox.Bootstrap.Controllers
     using FluentValidation;
 
     using sharpbox.Bootstrap.Models;
+    using sharpbox.WebLibrary.Core;
     using sharpbox.WebLibrary.Helpers;
     using sharpbox.WebLibrary.Web.Controllers;
 
@@ -35,6 +36,9 @@ namespace sharpbox.Bootstrap.Controllers
             var arg = hmm.ToList();
 
             var clerg = woo.ToList();
+
+            this.WebContext.AppContext.Environment.BaseUrl = "http://sharpbox.io";
+            this.WebContext.AppContext.SaveEnvironment();
 
             return View();
         }

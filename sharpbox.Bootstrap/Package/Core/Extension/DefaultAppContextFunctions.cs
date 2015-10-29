@@ -14,9 +14,17 @@ namespace sharpbox.WebLibrary.Core
 
     public static class DefaultAppContextFunctions
     {
+        public static string EnivronmentFileName { get { return "Environment.dat";} }
+
+        public static void SaveEnvironment(this AppContext appContext)
+        {
+            var path = Path.Combine(appContext.DataPath, EnivronmentFileName);
+            appContext.File.Replace(path, appContext.Environment);    
+        }
+
         public static void LoadEnvironmentFromFile(this AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, "Environment.dat");
+            var path = Path.Combine(appContext.DataPath, EnivronmentFileName);
 
             if (appContext.File.Exists(path))
             {
