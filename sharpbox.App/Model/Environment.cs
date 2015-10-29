@@ -2,6 +2,7 @@
 
 namespace sharpbox.App.Model
 {
+  [Serializable]
   public class Environment
   {
     public int EnvironmentId { get; set; }

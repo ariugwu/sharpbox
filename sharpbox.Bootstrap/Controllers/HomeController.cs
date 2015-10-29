@@ -4,8 +4,19 @@ using sharpbox.WebLibrary.Helpers.TypeScript;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    public class HomeController : Controller
+    using FluentValidation;
+
+    using sharpbox.Bootstrap.Models;
+    using sharpbox.WebLibrary.Helpers;
+    using sharpbox.WebLibrary.Web.Controllers;
+
+    public class HomeController : SharpboxController<ExampleModel>
     {
+        public HomeController() : base(new ExampleAppContext())
+        {
+            this.BootstrapCrudCommands(this.WebContext.AppContext);
+        }
+
         // GET: Home
         public ActionResult Index()
         {
@@ -26,6 +37,11 @@ namespace sharpbox.Bootstrap.Controllers
             var clerg = woo.ToList();
 
             return View();
+        }
+
+        public override AbstractValidator<ExampleModel> LoadValidatorByUiAction(UiAction uiAction)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
     using Controllers;
     using Core;
     using WebLibrary.Helpers;
-
+    
     public class LoadContextHandler<T> : LifecycleHandler<T> where T : new()
     {
         public LoadContextHandler()
@@ -21,20 +21,6 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 
         public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
         {
-            try
-            {
-                webContext.AppContext.Environment = null;
-                webContext.AppContext.AvailableClaims = null;
-                webContext.AppContext.AvailableUserRoles = null;
-                webContext.AppContext.ClaimsByUserRole = null;
-                webContext.AppContext.CurrentUserRoles = null;
-                webContext.AppContext.CurrentLogOn = null;
-            }
-            catch (Exception ex)
-            {
-                
-            }
-
             try
             {
                 this.ActionCommandMap = controller.LoadCommandActionMap();

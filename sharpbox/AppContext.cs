@@ -46,13 +46,13 @@ namespace sharpbox
     public App.Model.Environment Environment { get; set; }
 
     // Membership
-    public IEnumerable<Membership.Model.UserRole> AvailableUserRoles { get; set; }
+    public List<Membership.Model.UserRole> AvailableUserRoles { get; set; }
 
-    public IEnumerable<Membership.Model.Claim> AvailableClaims { get; set; }
+    public List<Membership.Model.Claim> AvailableClaims { get; set; }
 
-    public IEnumerable<Membership.Model.UserRoleClaim> ClaimsByUserRole { get; set; } 
+    public List<Membership.Model.UserRoleClaim> ClaimsByUserRole { get; set; } 
 
-    public IEnumerable<Membership.Model.UserUserRole> CurrentUserRoles { get; set; }
+    public List<Membership.Model.UserUserRole> UsersInRoles { get; set; }
 
     public string CurrentLogOn { get; set; }
 

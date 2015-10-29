@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox", "sharpbox\sharpbox.csproj", "{5421FF47-83AE-4E05-80F0-368FD912D50A}"
 EndProject
@@ -223,8 +223,5 @@ Global
 		{BFA599EC-C550-43DD-A4D8-8868204F6896} = {600B1494-74D2-4E0A-A7ED-A0923B8931F2}
 		{05593411-FBBF-4E14-8AD8-45C1DCE55BA9} = {600B1494-74D2-4E0A-A7ED-A0923B8931F2}
 		{AE8BB1F1-C9ED-4435-AA0E-048AAAAB427D} = {0CD46913-CDA0-4BFD-BECC-E9919B58CBD2}
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

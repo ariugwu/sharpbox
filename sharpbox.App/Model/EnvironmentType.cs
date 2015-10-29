@@ -1,8 +1,11 @@
-﻿using sharpbox.Common.Type;
+﻿using System;
 
 namespace sharpbox.App.Model
 {
-  public class EnvironmentType : EnumPattern
+    using Common.Type;
+
+    [Serializable]
+    public class EnvironmentType : EnumPattern
   {
     public static EnvironmentType Dev = new EnvironmentType("Development");
     public static EnvironmentType Integration = new EnvironmentType("Integration");

@@ -1,22 +1,25 @@
-﻿using sharpbox.Common.Type;
+﻿using System;
 
 namespace sharpbox.App.Model
 {
-  public class BrandType : EnumPattern
-  {
-    public BrandType(string value)
-      : base(value)
+    using Common.Type;
+
+    [Serializable]
+    public class BrandType : EnumPattern
     {
-      Name = value;
+        public BrandType(string value)
+          : base(value)
+        {
+            Name = value;
+        }
+
+        public BrandType()
+        {
+
+        }
+        public int BrandTypeId { get; set; }
+
+        public string Name { get; set; }
+
     }
-
-    public BrandType()
-    {
-
-    }
-    public int BrandTypeId { get; set; }
-
-    public string Name { get; set; }
-
-  }
 }

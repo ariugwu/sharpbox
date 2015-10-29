@@ -1,8 +1,10 @@
 ﻿using System;
-using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.Membership.Model
 {
+    using Common.Dispatch.Model;
+
+    [Serializable]
     public class Claim
     {
         public int ClaimId { get; set; }

@@ -1,5 +1,9 @@
-﻿namespace sharpbox.Membership.Model
+﻿using System;
+
+namespace sharpbox.Membership.Model
 {
+
+    [Serializable]
     public class UserRoleClaim
     {
         public int UserRoleClaimId { get; set; }
