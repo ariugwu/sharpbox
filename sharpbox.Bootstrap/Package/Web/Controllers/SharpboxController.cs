@@ -10,9 +10,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
 {
     using Common.Data;
     using Common.Dispatch.Model;
-    using Dispatch.Model;
     using Core;
     using Data;
+    using Dispatch.Model;
     using WebLibrary.Helpers;
 
     public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
@@ -195,21 +195,18 @@ namespace sharpbox.WebLibrary.Web.Controllers
             this.CommandMessageMap[this.Remove].Add(ResponseTypes.Success, "Removal success.");
         }
 
-        #region CRUD Commands and Events
+        #region Commands and Events
+
+        public CommandName GetAll = new CommandName("Get");
+        public CommandName GetSingleById = new CommandName("GetSingleById"); 
 
         public CommandName Add = new CommandName("Add");
         public CommandName Update = new CommandName("Update");
         public CommandName Remove = new CommandName("Remove");
-        public CommandName LoadEnvironment = new CommandName("LoadEnvironment");
-        public CommandName LoadAvailableClaims = new CommandName("LoadAvailableClaims");
-        public CommandName LoadAvailableUserRoles = new CommandName("LoadAvailableUserRoles");
-        public CommandName LoadCurrentUserRoles = new CommandName("LoadCurrentUserRoles");
-        public CommandName LoadTextResources = new CommandName("LoadTextResources");
 
         public EventName OnAdd = new EventName("OnAdd");
         public EventName OnUpdate = new EventName("OnUpdate");
         public EventName OnRemove = new EventName("OnRemove");
-        public EventName OnLoadContextEvent = new EventName("OnLoadContextEvent");
 
         #endregion
 

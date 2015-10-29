@@ -28,6 +28,20 @@ namespace sharpbox.Io
             _strategy.Write(filePath, objectToWrite, append);
         }
 
+        public void Replace<T>(string filePath, T objectToWrite) where T : new()
+        {
+            var fileName = Path.GetFileNameWithoutExtension(filePath);
+            var fileExt = Path.GetExtension(filePath);
+            var directory = Path.GetDirectoryName(filePath);
+
+            var originalFile = FixPath(filePath);
+            var newFile = FixPath(Path.Combine(directory, string.Format("{0}-new.{1}", fileName, fileExt)));
+            var backupFile = FixPath(Path.Combine(directory, string.Format("{0}-backup.{1}", fileName, fileExt)));
+
+            _strategy.Replace<T>(originalFile, newFile, backupFile, objectToWrite);
+
+        }
+
         public T Read<T>(string filePath) where T : new()
         {
             filePath = FixPath(filePath);

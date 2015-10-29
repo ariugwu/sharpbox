@@ -28,5 +28,12 @@ namespace sharpbox.Io.Strategy.Binary
         {
             throw new NotImplementedException();
         }
+
+        public void Replace<T>(string originalFile, string newFile, string backupFile, T objectToWrite) where T : new()
+        {
+            this.Write(newFile, objectToWrite);
+
+            File.Replace(newFile, originalFile, backupFile);
+        }
     }
 }

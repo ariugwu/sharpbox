@@ -28,5 +28,7 @@
         T Read<T>(string filePath) where T : new();
 
         void Delete<T>(string filePath) where T : new();
+
+        void Replace<T>(string originalFile, string newFile, string backupFile, T objectToWrite) where T : new();
     }
 }

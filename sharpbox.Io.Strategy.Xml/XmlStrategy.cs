@@ -44,5 +44,9 @@ namespace sharpbox.Io.Strategy.Xml
             throw new System.NotImplementedException();
         }
 
+        public void Replace<T>(string originalFile, string newFile, string backupFile, T objectToWrite) where T : new()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

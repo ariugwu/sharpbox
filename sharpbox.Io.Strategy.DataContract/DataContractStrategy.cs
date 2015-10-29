@@ -27,5 +27,10 @@ namespace sharpbox.Io.Strategy.DataContract
         {
             throw new NotImplementedException();
         }
+
+        public void Replace<T>(string originalFile, string newFile, string backupFile, T objectToWrite) where T : new()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

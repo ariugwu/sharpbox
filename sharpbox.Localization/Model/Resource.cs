@@ -1,10 +1,23 @@
 ﻿using System;
+
 namespace sharpbox.Localization.Model
 {
     [Serializable]
     public class Resource
     {
         public Resource() { }
+
+        public Resource(ResourceName name, ResourceType type, string value, string cultureCode, Guid? applicationId)
+        {
+            this.ResourceName = name;
+            this.ResourceType = type;
+            this.Value = value;
+            this.CreatedDate = DateTime.Now;
+            this.LastModifiedDateTime = DateTime.Now;
+
+            this.CultureCode = cultureCode;
+            this.ApplicationId = applicationId;
+        }
 
         public int ResourceId { get; set; }
         public ResourceName ResourceName { get; set; }
