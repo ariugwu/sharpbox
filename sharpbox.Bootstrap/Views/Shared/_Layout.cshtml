@@ -7,6 +7,8 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <!-- Alpaca -->
+    <link type="text/css" href="http://code.cloudcms.com/alpaca/1.5.14/bootstrap/alpaca.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -40,5 +42,9 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <!-- handlebars -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.js"></script>
+    <!-- Alpaca -->
+    <script type="text/javascript" src="http://code.cloudcms.com/alpaca/1.5.14/bootstrap/alpaca.min.js"></script>
 </body>
 </html>

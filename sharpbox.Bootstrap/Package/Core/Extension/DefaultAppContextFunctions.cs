@@ -11,6 +11,9 @@ namespace sharpbox.WebLibrary.Core
 
     public static class DefaultAppContextFunctions
     {
+
+        public static AppContext AppContext { get; set; }
+
         public static string EnivronmentFileName { get { return "Environment.dat";} }
         public static string AuditTrailFileName { get { return "AuditTrail.dat"; } }
         public static string AvailableClaimsFileName { get { return "AvailableClaims.dat"; } }
@@ -20,14 +23,25 @@ namespace sharpbox.WebLibrary.Core
         public static string TextResourcesFileName { get { return "TextResources.dat"; } }
 
 
-        public static T Add<T>(T instance)
+        public static T Add<T>(T instance) where T : new()
         {
-            throw new NotImplementedException();
+            return Update(instance);
         }
 
-        public static T Update<T>(T instance)
+        public static T Update<T>(T instance) where T : new()
         {
-            throw new NotImplementedException();
+            var path = Path.Combine(AppContext.DataPath, string.Format("{0}.dat",typeof(T).Name));
+
+            if (AppContext.File.Exists(path))
+            {
+                AppContext.File.Replace(path, AppContext.Environment);
+            }
+            else
+            {
+                AppContext.File.Write(path, instance);
+            }
+
+            return instance;
         }
 
         public static T Remove<T>(T instance)
@@ -35,14 +49,24 @@ namespace sharpbox.WebLibrary.Core
             throw new NotImplementedException();
         }
 
-        public static T GetById<T>(int id) where T : new()
+        public static T Get<T>() where T : new()
         {
-            throw new NotImplementedException();
-        }
+            T instance;
 
-        public static IEnumerable<T> GetAll<T>()
-        {
-            throw new NotImplementedException();
+            var path = Path.Combine(AppContext.DataPath, string.Format("{0}.dat", typeof(T).Name));
+
+            if (AppContext.File.Exists(path))
+            {
+                instance = AppContext.File.Read<T>(path);
+            }
+            else
+            {
+                instance = new T();
+
+                AppContext.File.Write(path, instance);
+            }
+
+            return instance;
         }
         public static AppContext SaveEnvironment(AppContext appContext)
         {

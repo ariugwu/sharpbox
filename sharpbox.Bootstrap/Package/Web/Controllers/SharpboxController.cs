@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Http;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Schema;
+using NJsonSchema;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
@@ -77,10 +79,15 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public JsonResult JsonSchema()
         {
-            var generator = new JSchemaGenerator();
-            JSchema schema = generator.Generate(typeof(T));
+            // Uses NJsonSchema lib
+            var schema = JsonSchema4.FromType<T>();
+            var schemaJson = schema.ToJson();
 
-            return Json(schema.ToString(), JsonRequestBehavior.AllowGet);
+            // Uses Json.Net Schema
+            //var generator = new JSchemaGenerator();
+            //JSchema schema = generator.Generate(typeof(T));
+
+            return Json(schemaJson, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Execute(WebRequest<T> webRequest)

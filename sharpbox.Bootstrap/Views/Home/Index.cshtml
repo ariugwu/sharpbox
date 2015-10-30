@@ -1,24 +1,55 @@
-﻿
-<form action="@Url.Action("Execute", "Test")" method="POST">
-    <input type="text" name="Instance.Value" value="" class="form-control" />
-    <input type="hidden" name="UiAction.Name" value="TestCommand" />
-    <input type="submit" value="Run test command." class="form-control" />
-</form>
-<hr />
-<form action="@Url.Action("Execute", "Test")" method="POST">
-  <input type="text" name="Instance.Value" value="" class="form-control" />
-  <input type="hidden" name="UiAction.Name" value="SaveExampleModel" />
-  <input type="submit" value="Save using unit of work." class="form-control" />
-</form>
-
+﻿<h4>Alpaca Forms Test</h4>
+<div id="field1"></div>
 
 @section scripts {
     <script>
         $(document).ready(function () {
-            $.getJSON("/Home/Test/4").done(function (data) {
+            $.getJSON("/Test/JsonSchema").done(function (data) {
                 // On success, 'data' contains a list of products.
-                $.each(data, function (key, item) {
-                  console.log(item);
+                //$.each(data, function (key, item) {
+                //console.log(item);
+                //});
+                var json = data.replace(/\r\n/g, '')
+                                .replace(/\\/, '').replace(',  "$schema": "http://json-schema.org/draft-04/schema#"','');
+
+                var formSelector = "#field1";
+
+                $(formSelector).alpaca({
+                    //"schemaSource": "./Test/JsonSchema"
+                    "schema": JSON.parse(json)
+                    /** add in this section to experiment with a form button */
+                    ,"options": {
+                        "form": {
+                            "attributes": {
+                                "action": "/Test/Execute",
+                                "method": "post"
+                            },
+                            "buttons": {
+                                "submit": {
+                                    "title": "Submit",
+                                    "click": function() {
+                                        //alert("Form value is: " + JSON.stringify(this.getValue(), null, "  "));
+                                        $(formSelector).find("form").append('<input type=\"hidden\" id=\"WebRequest_UiAction\" name=\"WebRequest.UiAction.Name\" value=\"Update\" />');
+                                        $(formSelector).find("form").submit();
+                                    }
+                                }
+                            }
+                        },
+                        "hideInitValidationError": true,
+                    }
+                    ,"postRender": function(control) {
+                        console.log(control);
+                        $(formSelector).find("input").each(function () {
+                            var name = $(this).attr('name');
+                            var bindingName = "WebRequest.Instance." + name;
+                            var labelText = name.replace(/([a-z])([A-Z])/g, '$1 $2'); //Find a lowercase letter followed by an upper case and insert a break.
+
+                            control.childrenByPropertyId[name].name = bindingName;
+                            control.childrenByPropertyId[name].options.label = labelText;
+                            control.childrenByPropertyId[name].refresh();
+
+                        });
+                    }
                 });
             });
         });

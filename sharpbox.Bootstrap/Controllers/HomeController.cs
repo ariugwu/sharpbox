@@ -19,21 +19,21 @@ namespace sharpbox.Bootstrap.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            var test = new DomainMetadata();
+            //var test = new DomainMetadata();
 
-            var names = MetaLoader.GetAllMetaDataClasses(); //test.Wat();
+            //var names = MetaLoader.GetAllMetaDataClasses(); //test.Wat();
 
-            var fields = names.SelectMany(x => x.GetFields()).ToList();
+            //var fields = names.SelectMany(x => x.GetFields()).ToList();
 
-            var hmm = fields.SelectMany(x => x.Name);
+            //var hmm = fields.SelectMany(x => x.Name);
 
-            var woo = names.SelectMany(x => x.Name);
+            //var woo = names.SelectMany(x => x.Name);
 
-            var blerg = fields.ToArray();
+            //var blerg = fields.ToArray();
 
-            var arg = hmm.ToList();
+            //var arg = hmm.ToList();
 
-            var clerg = woo.ToList();
+            //var clerg = woo.ToList();
 
             this.WebContext.AppContext.Environment.BaseUrl = "http://sharpbox.io";
             this.WebContext.AppContext.Dispatch.Process<AppContext>(SharpboxControllerWiring.SaveEnvironment, this.CommandMessageMap[SharpboxControllerWiring.SaveEnvironment][ResponseTypes.Info], new object[] { this.WebContext.AppContext.Environment });

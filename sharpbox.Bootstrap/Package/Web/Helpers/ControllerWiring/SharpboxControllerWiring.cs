@@ -9,6 +9,8 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
     {
         public static void WireContext<T>(Web.Controllers.ISharpboxController<T> controller) where T : new()
         {
+            DefaultAppContextFunctions.AppContext = controller.WebContext.AppContext; // Give our default class access to the context so it can use the built in tools.
+
             var appContext = controller.WebContext.AppContext;
             //Register Command(s)
             appContext.Dispatch.Register<T>(Add, DefaultAppContextFunctions.Add, OnAdd);
