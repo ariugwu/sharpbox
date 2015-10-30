@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentValidation;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Schema;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
     using Common.Dispatch.Model;
     using Core;
     using Dispatch.Model;
+
     using WebLibrary.Helpers;
     using WebLibrary.Helpers.ControllerWiring;
 
@@ -71,6 +73,14 @@ namespace sharpbox.WebLibrary.Web.Controllers
         {
             //return Json(this.Repository.Get());
             return null;
+        }
+
+        public JsonResult JsonSchema()
+        {
+            var generator = new JSchemaGenerator();
+            JSchema schema = generator.Generate(typeof(T));
+
+            return Json(schema.ToString(), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Execute(WebRequest<T> webRequest)
