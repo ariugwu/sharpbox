@@ -23,7 +23,9 @@ namespace sharpbox.Dispatch
             _eventSubscribers = new Dictionary<EventName, Queue<Action<Response>>>();
             _echoSubscribers = new Queue<Action<Response>>();
             _routineHub = new Dictionary<RoutineName, Queue<RoutineItem>>();
+            _queryHub = new Dictionary<QueryName, Delegate>();
             CommandStream = new Queue<CommandStreamItem>();
+            QueryStream = new Queue<QueryName>();
         }
 
         #region Field(s)
@@ -39,12 +41,19 @@ namespace sharpbox.Dispatch
 
         private Dictionary<RoutineName, Queue<RoutineItem>> _routineHub;
 
+        private Dictionary<QueryName, Delegate> _queryHub;
+
         #endregion
 
         /// <summary>
         /// The list of all commands processed by the Dispatcher.
         /// </summary>
         public Queue<CommandStreamItem> CommandStream { get; private set; }
+
+        /// <summary>
+        /// List of all queries sent to the Dispatcher
+        /// </summary>
+        public Queue<QueryName> QueryStream { get; private set; }
 
         public Dictionary<CommandName, CommandHubItem> CommandHub { get { return _commandHub; } }
 
@@ -67,6 +76,25 @@ namespace sharpbox.Dispatch
         public void Echo(Action<Response> method)
         {
             _echoSubscribers.Enqueue(method);
+        }
+
+        /// <summary>
+        /// Allows you to register a query by name and target
+        /// </summary>
+        /// <typeparam name="T">The entity to be returned</typeparam>
+        /// <param name="queryName">The name of the query (i.e. - 'Get', 'GetXByZFromY', etc)</param>
+        /// <param name="target">The method to be invoked</param>
+        public void Register<T>(QueryName queryName, Func<T> target)
+        {
+            try
+            {
+                _queryHub.Add(queryName, target); // wireup the action associated with this command, and the event channel to broadcast to when this command is processed.
+            }
+            catch (Exception ex)
+            {
+                var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, target.Method.Name, typeof(T).Name);
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
+            }
         }
 
         /// <summary>
@@ -325,6 +353,24 @@ namespace sharpbox.Dispatch
 
         //    return response;
         //}
+
+        /// <summary>
+        /// Simply put: pass in some arguments that your target method will understand and get some variant of T back
+        /// </summary>
+        /// <typeparam name="T">The type result of the request</typeparam>
+        /// <param name="queryName">The name of the query</param>
+        /// <param name="args">The arguments to be processed</param>
+        /// <returns>The return T</returns>
+        public T Process<T>(QueryName queryName, object[] args)
+        {
+            var action = _queryHub[queryName];
+            var result = args != null? (T)action.DynamicInvoke(args) : (T)action.DynamicInvoke();
+
+            // Add the query name to the query stream
+            QueryStream.Enqueue(queryName);
+
+            return result;
+        }
 
         /// <summary>
         /// Fires off the action associated with this command. T is the returning type. You can register your command with a Func that takes and returns T, or an inline func that takes any number of parameters to be passed in here. However, the return time must match T (always).

@@ -63,18 +63,11 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #endregion
 
         #region Action(s)
-        [Queryable]
-        public JsonResult GetById(int id)
-        {
-            //return Json(this.Repository.Get(id));
-            return null;
-        }
 
         [Queryable]
-        public JsonResult Get()
+        public virtual JsonResult Get()
         {
-            //return Json(this.Repository.Get());
-            return null;
+            return Json(this.WebContext.AppContext.Dispatch.Process<T>(SharpboxControllerWiring.Get, null), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()

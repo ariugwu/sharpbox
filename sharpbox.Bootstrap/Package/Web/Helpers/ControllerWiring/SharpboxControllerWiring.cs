@@ -12,6 +12,10 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
             DefaultAppContextFunctions.AppContext = controller.WebContext.AppContext; // Give our default class access to the context so it can use the built in tools.
 
             var appContext = controller.WebContext.AppContext;
+
+            //Register Queries
+            appContext.Dispatch.Register(Get, DefaultAppContextFunctions.Get<T>);
+
             //Register Command(s)
             appContext.Dispatch.Register<T>(Add, DefaultAppContextFunctions.Add, OnAdd);
             appContext.Dispatch.Register<T>(Update, DefaultAppContextFunctions.Update, OnUpdate);
@@ -84,8 +88,7 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
 
         #region Commands and Events
 
-        public static CommandName GetAll = new CommandName("Get");
-        public static CommandName GetSingleById = new CommandName("GetSingleById");
+        public static QueryName Get = new QueryName("Get");
 
         public static CommandName Add = new CommandName("Add");
         public static CommandName Update = new CommandName("Update");
@@ -108,6 +111,8 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
         public static CommandName SaveClaimsByRole = new CommandName("SaveClaimsByRole");
         public static CommandName SaveUserInRoles = new CommandName("SaveUserInRoles");
         public static CommandName SaveTextResources = new CommandName("SaveTextResources");
+
+        public static EventName OnGet = new EventName("OnGet");
         public static EventName OnAdd = new EventName("OnAdd");
         public static EventName OnUpdate = new EventName("OnUpdate");
         public static EventName OnRemove = new EventName("OnRemove");

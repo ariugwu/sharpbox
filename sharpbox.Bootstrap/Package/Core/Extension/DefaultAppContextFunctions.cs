@@ -34,7 +34,7 @@ namespace sharpbox.WebLibrary.Core
 
             if (AppContext.File.Exists(path))
             {
-                AppContext.File.Replace(path, AppContext.Environment);
+                AppContext.File.Replace(path, instance);
             }
             else
             {
@@ -44,9 +44,11 @@ namespace sharpbox.WebLibrary.Core
             return instance;
         }
 
-        public static T Remove<T>(T instance)
+        public static T Remove<T>(T instance) where T : new()
         {
-            throw new NotImplementedException();
+            instance = new T();
+
+            return Update(instance);
         }
 
         public static T Get<T>() where T : new()

@@ -44,6 +44,7 @@
     <Compile Include="Dispatch\Model\CommandName.cs" />
     <Compile Include="Dispatch\Model\EntityStateName.cs" />
     <Compile Include="Dispatch\Model\EventName.cs" />
+    <Compile Include="Dispatch\Model\QueryName.cs" />
     <Compile Include="Dispatch\Model\RoutineName.cs" />
     <Compile Include="Type\EnumPattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
