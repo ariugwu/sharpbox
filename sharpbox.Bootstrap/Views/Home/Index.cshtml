@@ -1,28 +1,31 @@
-﻿<h4>Alpaca Forms Test</h4>
-<div id="field1"></div>
+﻿<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            <div id="field1"></div>
+        </div>
+    </div>
+</div>
 
 @section scripts {
     <script>
         $(document).ready(function () {
-            $.getJSON("/Test/JsonSchema").done(function (data) {
-                // On success, 'data' contains a list of products.
-                //$.each(data, function (key, item) {
-                //console.log(item);
-                //});
-                var json = data.replace(/\r\n/g, '')
-                                .replace(/\\/, '').replace(',  "$schema": "http://json-schema.org/draft-04/schema#"','');
+            var formSelector = "#field1";
+            var instanceName = "Test";
+            var action = "Update";
 
-                var formSelector = "#field1";
+            $.getJSON("/" + instanceName + "/JsonSchema").done(function (data) {
+                var json = data.replace(/\r\n/g, '')
+                                .replace(/\\/, '').replace(',  "$schema": "http://json-schema.org/draft-04/schema#"', '');
 
                 $(formSelector).alpaca({
                     //"schemaSource": "./Test/JsonSchema"
-                    "dataSource": "/Test/Get/",
+                    "dataSource": "/" + instanceName + "/Get/",
                     "schema": JSON.parse(json)
                     /** add in this section to experiment with a form button */
                     ,"options": {
                         "form": {
                             "attributes": {
-                                "action": "/Test/Execute",
+                                "action": "/" + instanceName + "/Execute",
                                 "method": "post"
                             },
                             "buttons": {
@@ -30,25 +33,86 @@
                                     "title": "Submit",
                                     "click": function() {
                                         //alert("Form value is: " + JSON.stringify(this.getValue(), null, "  "));
-                                        $(formSelector).find("form").append('<input type=\"hidden\" id=\"WebRequest_UiAction\" name=\"WebRequest.UiAction.Name\" value=\"Update\" />');
-                                        $(formSelector).find("form").submit();
+                                        var form = $(formSelector).find("form");
+                                        form.append('<input type=\"hidden\" id=\"WebRequest_UiAction\" name=\"WebRequest.UiAction.Name\" value=\"'+ action + '\" />');
+                                        //$(formSelector).find("form").submit();
+                                        $.ajax({
+                                            type: "POST",
+                                            url: form.attr('action'),
+                                            data: form.serialize(),
+                                            success: function (response) {
+                                                console.log(response);
+                                                response = JSON.parse(response);
+                                                var responseType = response.ResponseType.toLowerCase();
+
+                                                //BEGIN: Error Processing
+                                                //TODO: Refactor this
+                                                if (responseType == "error") {
+                                                    var auth = (typeof response.LifeCycleTrail.Auth != 'undefined') ?
+                                                        response.LifeCycleTrail.Auth[0].Item2 : "";
+
+                                                    var loadContext = (typeof response.LifeCycleTrail.LoadContext != 'undefined')? 
+                                                        response.LifeCycleTrail.LoadContext[0].Item2 : "";
+
+                                                    var validation = (typeof response.LifeCycleTrail.Validation != 'undefined')? 
+                                                        response.LifeCycleTrail.Validation[0].Item2 : "";
+
+                                                    var execution = (typeof response.LifeCycleTrail.Execution != 'undefined')? 
+                                                        response.LifeCycleTrail.Execution[0].Item2 : "";
+
+                                                    var toastTitle = "Unspecified error: showing whole stack";
+                                                    var toastMsg = response.LifeCycleTrail;
+
+                                                    if (auth != "") {
+                                                        toastTitle = "Error in Authorization";
+                                                        toastMsg = auth;
+                                                    }
+
+                                                    if (loadContext != "") {
+                                                        toastTitle = "Error in Loading Context";
+                                                        toastMsg = loadContext;
+                                                    }
+
+                                                    if (validation != "") {
+                                                        toastTitle = "Error in Validation";
+                                                        toastMsg = validation;
+                                                        console.log(toastMsg);
+                                                    }
+
+                                                    if (execution != "") {
+                                                        toastTitle = "Error in Execution";
+                                                        toastMsg = execution;
+                                                    }
+                                                    //END: Validation
+                                                    toastr[responseType](toastMsg, toastTitle);
+
+                                                } else {
+                                                    toastr[responseType](null, response.Message);
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             }
                         },
                         "hideInitValidationError": true,
                     }
-                    ,"postRender": function(control) {
-                        console.log(control);
-                        $(formSelector).find("input").each(function () {
-                            var name = $(this).attr('name');
+                    , "postRender": function (control) {
+
+                        $.each(control.children, function (key, item) {
+                            var name = item.name;
                             var bindingName = "WebRequest.Instance." + name;
                             var labelText = name.replace(/([a-z])([A-Z])/g, '$1 $2'); //Find a lowercase letter followed by an upper case and insert a break.
 
-                            control.childrenByPropertyId[name].name = bindingName;
-                            control.childrenByPropertyId[name].options.label = labelText;
-                            control.childrenByPropertyId[name].refresh();
+                            item.name = bindingName;
 
+                            if (item.type == "datetime") {
+                                var thisDate = moment(new Date(parseInt(item.data.substr(6)))).format("DD-MMM-YYYY");
+                                item.getControlEl().val(thisDate);
+                            }
+
+                            item.options.label = labelText;
+                            item.refresh();
                         });
                     }
                 });
