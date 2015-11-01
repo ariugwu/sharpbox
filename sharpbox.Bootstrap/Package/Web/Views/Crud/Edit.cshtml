@@ -21,7 +21,6 @@
                     //"schemaSource": "./Test/JsonSchema"
                     "dataSource": "/" + instanceName + "/Get/",
                     "schema": JSON.parse(json)
-                    /** add in this section to experiment with a form button */
                     ,"options": {
                         "form": {
                             "attributes": {
@@ -51,13 +50,13 @@
                                                     var auth = (typeof response.LifeCycleTrail.Auth != 'undefined') ?
                                                         response.LifeCycleTrail.Auth[0].Item2 : "";
 
-                                                    var loadContext = (typeof response.LifeCycleTrail.LoadContext != 'undefined')? 
+                                                    var loadContext = (typeof response.LifeCycleTrail.LoadContext != 'undefined')?
                                                         response.LifeCycleTrail.LoadContext[0].Item2 : "";
 
-                                                    var validation = (typeof response.LifeCycleTrail.Validation != 'undefined')? 
+                                                    var validation = (typeof response.LifeCycleTrail.Validation != 'undefined')?
                                                         response.LifeCycleTrail.Validation[0].Item2 : "";
 
-                                                    var execution = (typeof response.LifeCycleTrail.Execution != 'undefined')? 
+                                                    var execution = (typeof response.LifeCycleTrail.Execution != 'undefined')?
                                                         response.LifeCycleTrail.Execution[0].Item2 : "";
 
                                                     var toastTitle = "Unspecified error: showing whole stack";
@@ -120,3 +119,5 @@
         });
     </script>
 }
+
+

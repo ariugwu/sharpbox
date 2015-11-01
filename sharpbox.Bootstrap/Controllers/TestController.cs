@@ -1,19 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Web.Http;
-using System.Web.Mvc;
 using FluentValidation;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
-using sharpbox.WebLibrary.Helpers.ControllerWiring;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using WebLibrary.Web.Controllers;
-    using WebLibrary.Core;
-    using WebLibrary.Helpers;
-    using Models;
     using Common.Dispatch.Model;
     using Dispatch.Model;
+    using Models;
+    using WebLibrary.Core;
+    using WebLibrary.Helpers;
+    using WebLibrary.Web.Controllers;
 
     public sealed class TestController : SharpboxController<ExampleModel>
     {
@@ -29,7 +25,27 @@ namespace sharpbox.Bootstrap.Controllers
             return validator;
         }
 
-        public override void WireApplication()
+        /// <summary>
+        /// Provides the option to keep all of the default application wiring but provide your own routes for Get, Add, Update, Remove
+        /// For example you might want to provide your own persistence strategy on top of the base wiring but also point to Default routes outside of that strategy.
+        /// </summary>
+        public override void WireDefaultRoutes()
+        {
+            base.WireDefaultRoutes(); // Handles wiring of Get, Add, Update, Remove. Base functionality is to use the file persistence
+        }
+
+        /// <summary>
+        /// Only override if you want to provide your own application wiring. Very much a "everyone thinks they want to, but no one should" scenario.
+        /// </summary>
+        public override void WireApplicationContext()
+        {
+            base.WireApplicationContext(); // Handles the wiring for all of the application persistence. Environment, Membership, Localization, etc. Defaults to file persistence.
+        }
+
+        /// <summary>
+        /// Place additional domain specific wiring here.
+        /// </summary>
+        public override void WireDomain()
         {
             this.CommandMessageMap.Add(this.SaveExampleModel, new Dictionary<ResponseTypes, string>());
             this.CommandMessageMap[this.SaveExampleModel].Add(ResponseTypes.Success, "Saving the example to the file system was successful!");
@@ -40,11 +56,20 @@ namespace sharpbox.Bootstrap.Controllers
             //this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this.SaveExampleModel, this.UnitOfWork.Add, this.TestEvent);
         }
 
+        /// <summary>
+        /// You can map UiActions to Commands explicitly. The default behavior is to assume if a UiAction comes in there will be matching CommandName registered with the dispatcher
+        /// </summary>
+        /// <returns></returns>
         public override ActionCommandMap LoadCommandActionMap()
         {
             return base.LoadCommandActionMap();
         }
 
+        /// <summary>
+        /// Provide custom messages for your commands. One for each response type (Success, Error, Info)
+        /// </summary>
+        /// <param name="webContext"></param>
+        /// <returns></returns>
         public override Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<ExampleModel> webContext)
         {
             return base.LoadCommandMessageMap(webContext);

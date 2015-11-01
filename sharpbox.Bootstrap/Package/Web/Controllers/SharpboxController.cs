@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Http;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentValidation;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Schema;
 using NJsonSchema;
 
 namespace sharpbox.WebLibrary.Web.Controllers
@@ -23,6 +21,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #region Properties
 
         public WebContext<T> WebContext { get; set; }
+        public IAppWiring AppWiring { get; set; }
 
         public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; set; }
 
@@ -30,12 +29,15 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         #region Constructor(s)
 
-        protected SharpboxController(AppContext appContext)
+        protected SharpboxController(AppContext appContext, IAppWiring appWiring)
         {
             // Only create a new WebContext if one doesn't already exist.
             this.WebContext = new WebContext<T> { AppContext = appContext, User = this.User };
+            this.AppWiring = appWiring;
             this.WarmBootAppContext(this.WebContext.AppContext);
         }
+
+        protected  SharpboxController(AppContext appContext): this(appContext, new DefaultAppWiring(new DefaultAppPersistence())) { } 
 
         #endregion
 
@@ -47,7 +49,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
             this.WebContext.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
             this.WebContext.AppContext.DataPath = this.Server.MapPath("~/App_Data/");
-            this.WebContext.AppContext.Dispatch.Process<AppContext>(SharpboxControllerWiring.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
+            this.WebContext.AppContext.Dispatch.Process<AppContext>(DefaultAppWiring.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
             this.WebContext.AppContext.CurrentLogOn = null;
         }
 
@@ -64,10 +66,35 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         #region Action(s)
 
+        public virtual ActionResult Index()
+        {
+            return this.View("~/Package/Web/Views/Crud/Index.cshtml");
+        }
+
+        public virtual ActionResult Create()
+        {
+            return this.View("~/Package/Web/Views/Crud/Edit.cshtml");
+        }
+
+        public virtual ActionResult Edit()
+        {
+            return this.View("~/Package/Web/Views/Crud/Edit.cshtml");
+        }
+
+        public virtual ActionResult View()
+        {
+            return this.View("~/Package/Web/Views/Crud/View.cshtml");
+        }
+
+        public virtual ActionResult Delete()
+        {
+            return this.View("~/Package/Web/Views/Crud/Delete.cshtml");
+        }
+
         [Queryable]
         public virtual JsonResult Get()
         {
-            return Json(this.WebContext.AppContext.Dispatch.Process<T>(SharpboxControllerWiring.Get, null), JsonRequestBehavior.AllowGet);
+            return Json(this.WebContext.AppContext.Dispatch.Process<T>(DefaultAppWiring.Get, null), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()
@@ -169,12 +196,30 @@ namespace sharpbox.WebLibrary.Web.Controllers
         /// <param name="appContext">The AppContext which handles each request.</param>
         private void WarmBootAppContext(AppContext appContext)
         {
-            SharpboxControllerWiring.WireContext(this);
-            WireApplication();
+            this.WireApplicationContext();
+            this.WireDomain();
+            this.WireDefaultRoutes();
+        }
+        /// <summary>
+        /// The default wiring will use writing the file system. 
+        /// </summary>
+        public virtual void WireApplicationContext()
+        {
+            this.AppWiring.WireContext(this);
         }
 
+        /// <summary>
+        /// Override this method to provide new CRUD and GET wiring
+        /// </summary>
+        public virtual void WireDefaultRoutes()
+        {
+            this.AppWiring.WireDefaultRoutes(this);   
+        }
 
-        public virtual void WireApplication()
+        /// <summary>
+        /// Here to extend any methods outside both the application and domain wiring
+        /// </summary>
+        public virtual void WireDomain()
         {
             
         }

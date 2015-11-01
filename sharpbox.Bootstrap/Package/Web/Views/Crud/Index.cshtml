@@ -1,0 +1,40 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            <div id="example"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var formSelector = "#example";
+            var instanceName = "TestList";
+            var action = "Update";
+
+            $.getJSON("/" + instanceName + "/Get").done(function (data) {
+                console.log(data);
+                var table = $.makeTable(data);
+                $("#example").html(table);
+            });
+
+            $.makeTable = function (mydata) {
+                var table = $('<table class="table table-striped">');
+                var tblHeader = "<tr>";
+                for (var k in mydata[0]) tblHeader += "<th>" + k + "</th>";
+                tblHeader += "</tr>";
+                $(tblHeader).appendTo(table);
+                $.each(mydata, function (index, value) {
+                    var TableRow = "<tr>";
+                    $.each(value, function (key, val) {
+                        TableRow += "<td>" + val + "</td>";
+                    });
+                    TableRow += "</tr>";
+                    $(table).append(TableRow);
+                });
+                return ($(table));
+            };
+        });
+    </script>
+}

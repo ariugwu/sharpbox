@@ -9,26 +9,26 @@ namespace sharpbox.WebLibrary.Core
     using Localization.Model;
     using Membership.Model;
 
-    public static class DefaultAppContextFunctions
+    public class DefaultAppPersistence : IAppPersistence
     {
 
-        public static AppContext AppContext { get; set; }
+        public AppContext AppContext { get; set; }
 
-        public static string EnivronmentFileName { get { return "Environment.dat";} }
-        public static string AuditTrailFileName { get { return "AuditTrail.dat"; } }
-        public static string AvailableClaimsFileName { get { return "AvailableClaims.dat"; } }
-        public static string AvailableUserRolesFileName { get { return "AvailableUserRoles"; } }
-        public static string ClaimsByRoleFileName { get { return "ClaimsByRole.dat"; } }
-        public static string UsersInRolesFileName { get { return "UsersInRoles.dat"; } }
-        public static string TextResourcesFileName { get { return "TextResources.dat"; } }
+        public string EnivronmentFileName { get { return "Environment.dat";} }
+        public string AuditTrailFileName { get { return "AuditTrail.dat"; } }
+        public string AvailableClaimsFileName { get { return "AvailableClaims.dat"; } }
+        public string AvailableUserRolesFileName { get { return "AvailableUserRoles"; } }
+        public string ClaimsByRoleFileName { get { return "ClaimsByRole.dat"; } }
+        public string UsersInRolesFileName { get { return "UsersInRoles.dat"; } }
+        public string TextResourcesFileName { get { return "TextResources.dat"; } }
 
 
-        public static T Add<T>(T instance) where T : new()
+        public T Add<T>(T instance) where T : new()
         {
             return Update(instance);
         }
 
-        public static T Update<T>(T instance) where T : new()
+        public T Update<T>(T instance) where T : new()
         {
             var path = Path.Combine(AppContext.DataPath, string.Format("{0}.dat",typeof(T).Name));
 
@@ -44,14 +44,14 @@ namespace sharpbox.WebLibrary.Core
             return instance;
         }
 
-        public static T Remove<T>(T instance) where T : new()
+        public T Remove<T>(T instance) where T : new()
         {
             instance = new T();
 
             return Update(instance);
         }
 
-        public static T Get<T>() where T : new()
+        public T Get<T>() where T : new()
         {
             T instance;
 
@@ -70,7 +70,7 @@ namespace sharpbox.WebLibrary.Core
 
             return instance;
         }
-        public static AppContext SaveEnvironment(AppContext appContext)
+        public AppContext SaveEnvironment(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, EnivronmentFileName);
             appContext.File.Replace(path, appContext.Environment);
@@ -78,7 +78,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext SaveAuditTrail(AppContext appContext)
+        public AppContext SaveAuditTrail(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, AuditTrailFileName);
             var trail = appContext.Audit.Trail.Where(x => x.Type != typeof(AppContext) && !x.Type.IsSubclassOf(typeof(AppContext))).ToList();
@@ -88,7 +88,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext SaveAvailableClaims(AppContext appContext)
+        public AppContext SaveAvailableClaims(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, AvailableClaimsFileName);
             appContext.File.Replace(path, appContext.AvailableClaims);
@@ -96,7 +96,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext SaveAvailableUserRoles(AppContext appContext)
+        public AppContext SaveAvailableUserRoles(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, AvailableUserRolesFileName);
             appContext.File.Replace(path, appContext.AvailableUserRoles);
@@ -104,7 +104,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext SaveClaimsByRole(AppContext appContext)
+        public AppContext SaveClaimsByRole(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, ClaimsByRoleFileName);
             appContext.File.Replace(path, appContext.ClaimsByUserRole);
@@ -112,7 +112,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext SaveUsersInRoles(AppContext appContext)
+        public AppContext SaveUsersInRoles(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, UsersInRolesFileName);
             appContext.File.Replace(path, appContext.UsersInRoles);
@@ -120,7 +120,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext SaveTextResources(AppContext appContext)
+        public AppContext SaveTextResources(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, TextResourcesFileName);
             appContext.File.Replace(path, appContext.Resources);
@@ -128,7 +128,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext LoadEnvironmentFromFile(AppContext appContext)
+        public AppContext LoadEnvironmentFromFile(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, EnivronmentFileName);
 
@@ -150,7 +150,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext LoadAuditTrail(AppContext appContext)
+        public AppContext LoadAuditTrail(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, AuditTrailFileName);
 
@@ -168,7 +168,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext LoadAvailableClaimsFromFile(AppContext appContext)
+        public AppContext LoadAvailableClaimsFromFile(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, AvailableClaimsFileName);
 
@@ -186,7 +186,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext LoadClaimsByRoleFromFile(AppContext appContext)
+        public AppContext LoadClaimsByRoleFromFile(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, ClaimsByRoleFileName);
 
@@ -204,7 +204,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext LoadAvailableUserRolesFromFile(AppContext appContext)
+        public AppContext LoadAvailableUserRolesFromFile(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, AvailableUserRolesFileName);
 
@@ -222,7 +222,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext LoadUserInRolesFromFile(AppContext appContext)
+        public AppContext LoadUserInRolesFromFile(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, UsersInRolesFileName);
 
@@ -240,7 +240,7 @@ namespace sharpbox.WebLibrary.Core
             return appContext;
         }
 
-        public static AppContext LoadTextResourcesFromFile(AppContext appContext)
+        public AppContext LoadTextResourcesFromFile(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, TextResourcesFileName);
 

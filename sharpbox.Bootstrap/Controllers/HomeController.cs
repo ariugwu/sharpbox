@@ -7,7 +7,6 @@ namespace sharpbox.Bootstrap.Controllers
     using Models;
     using WebLibrary.Helpers.ControllerWiring;
     using WebLibrary.Web.Controllers;
-    using WebLibrary.Helpers.TypeScript;
 
     public sealed class HomeController : SharpboxController<ExampleModel>
     {
@@ -17,7 +16,7 @@ namespace sharpbox.Bootstrap.Controllers
         }
 
         // GET: Home
-        public ActionResult Index()
+        public ActionResult Test()
         {
             //var test = new DomainMetadata();
 
@@ -36,7 +35,7 @@ namespace sharpbox.Bootstrap.Controllers
             //var clerg = woo.ToList();
 
             this.WebContext.AppContext.Environment.BaseUrl = "http://sharpbox.io";
-            this.WebContext.AppContext.Dispatch.Process<AppContext>(SharpboxControllerWiring.SaveEnvironment, this.CommandMessageMap[SharpboxControllerWiring.SaveEnvironment][ResponseTypes.Info], new object[] { this.WebContext.AppContext.Environment });
+            this.WebContext.AppContext.Dispatch.Process<AppContext>(DefaultAppWiring.SaveEnvironment, this.CommandMessageMap[DefaultAppWiring.SaveEnvironment][ResponseTypes.Info], new object[] { this.WebContext.AppContext.Environment });
 
             return View();
         }

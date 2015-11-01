@@ -5,38 +5,50 @@ using sharpbox.WebLibrary.Core;
 
 namespace sharpbox.WebLibrary.Helpers.ControllerWiring
 {
-    public class SharpboxControllerWiring
+    public class DefaultAppWiring : IAppWiring
     {
-        public static void WireContext<T>(Web.Controllers.ISharpboxController<T> controller) where T : new()
-        {
-            DefaultAppContextFunctions.AppContext = controller.WebContext.AppContext; // Give our default class access to the context so it can use the built in tools.
+        private IAppPersistence _appPersistence;
 
+        public DefaultAppWiring(IAppPersistence appPersistence)
+        {
+            _appPersistence = appPersistence;
+        }
+
+        public void WireDefaultRoutes<T>(Web.Controllers.ISharpboxController<T> controller) where T : new()
+        {
             var appContext = controller.WebContext.AppContext;
+            this._appPersistence.AppContext = appContext;
 
             //Register Queries
-            appContext.Dispatch.Register(Get, DefaultAppContextFunctions.Get<T>);
+            appContext.Dispatch.Register(Get, this._appPersistence.Get<T>);
 
             //Register Command(s)
-            appContext.Dispatch.Register<T>(Add, DefaultAppContextFunctions.Add, OnAdd);
-            appContext.Dispatch.Register<T>(Update, DefaultAppContextFunctions.Update, OnUpdate);
-            appContext.Dispatch.Register<T>(Remove, DefaultAppContextFunctions.Remove, OnRemove);
+            appContext.Dispatch.Register<T>(Add, this._appPersistence.Add, OnAdd);
+            appContext.Dispatch.Register<T>(Update, this._appPersistence.Update, OnUpdate);
+            appContext.Dispatch.Register<T>(Remove, this._appPersistence.Remove, OnRemove);
+        }
+
+        public void WireContext<T>(Web.Controllers.ISharpboxController<T> controller) where T : new()
+        {
+            var appContext = controller.WebContext.AppContext;
+            this._appPersistence.AppContext = appContext;
 
             // The Load AppContext Routine which fires on each request.
-            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadEnvironment, OnFrameworkCommand, DefaultAppContextFunctions.LoadEnvironmentFromFile);
-            //appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadAuditTrail, OnFrameworkCommand, DefaultAppContextFunctions.LoadAuditTrail);
-            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadAvailableClaims, OnFrameworkCommand, DefaultAppContextFunctions.LoadAvailableClaimsFromFile);
-            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadAvailableUserRoles, OnFrameworkCommand, DefaultAppContextFunctions.LoadAvailableUserRolesFromFile);
-            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadClaimsByRole, OnFrameworkCommand, DefaultAppContextFunctions.LoadClaimsByRoleFromFile);
-            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadUserInRoles, OnFrameworkCommand, DefaultAppContextFunctions.LoadUserInRolesFromFile);
-            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadTextResources, OnFrameworkCommand, DefaultAppContextFunctions.LoadTextResourcesFromFile);
+            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadEnvironment, OnFrameworkCommand, this._appPersistence.LoadEnvironmentFromFile);
+            //appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadAuditTrail, OnFrameworkCommand, this._appPersistence.LoadAuditTrail);
+            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadAvailableClaims, OnFrameworkCommand, this._appPersistence.LoadAvailableClaimsFromFile);
+            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadAvailableUserRoles, OnFrameworkCommand, this._appPersistence.LoadAvailableUserRolesFromFile);
+            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadClaimsByRole, OnFrameworkCommand, this._appPersistence.LoadClaimsByRoleFromFile);
+            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadUserInRoles, OnFrameworkCommand, this._appPersistence.LoadUserInRolesFromFile);
+            appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadTextResources, OnFrameworkCommand, this._appPersistence.LoadTextResourcesFromFile);
 
-            appContext.Dispatch.Register<AppContext>(SaveEnvironment, DefaultAppContextFunctions.SaveEnvironment, OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(SaveAuditTrail, DefaultAppContextFunctions.SaveAuditTrail, OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(SaveAvailableClaims, DefaultAppContextFunctions.SaveAvailableClaims, OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(SaveAvailableUserRoles, DefaultAppContextFunctions.SaveAvailableUserRoles, OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(SaveClaimsByRole, DefaultAppContextFunctions.SaveClaimsByRole, OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(SaveUserInRoles, DefaultAppContextFunctions.SaveUsersInRoles, OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(SaveTextResources, DefaultAppContextFunctions.SaveTextResources, OnFrameworkCommand);
+            appContext.Dispatch.Register<AppContext>(SaveEnvironment, this._appPersistence.SaveEnvironment, OnFrameworkCommand);
+            appContext.Dispatch.Register<AppContext>(SaveAuditTrail, this._appPersistence.SaveAuditTrail, OnFrameworkCommand);
+            appContext.Dispatch.Register<AppContext>(SaveAvailableClaims, this._appPersistence.SaveAvailableClaims, OnFrameworkCommand);
+            appContext.Dispatch.Register<AppContext>(SaveAvailableUserRoles, this._appPersistence.SaveAvailableUserRoles, OnFrameworkCommand);
+            appContext.Dispatch.Register<AppContext>(SaveClaimsByRole, this._appPersistence.SaveClaimsByRole, OnFrameworkCommand);
+            appContext.Dispatch.Register<AppContext>(SaveUserInRoles, this._appPersistence.SaveUsersInRoles, OnFrameworkCommand);
+            appContext.Dispatch.Register<AppContext>(SaveTextResources, this._appPersistence.SaveTextResources, OnFrameworkCommand);
 
             //Register Listener(s)
 

@@ -1,20 +1,23 @@
 ﻿using System.Collections.Generic;
 using FluentValidation;
-using sharpbox.Bootstrap.Package.Web.Helpers.TypeScript;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
+    using Bootstrap.Package.Web.Helpers.TypeScript;
     using Common.Dispatch.Model;
-    using Dispatch.Model;
     using Core;
+    using Dispatch.Model;
     using WebLibrary.Helpers;
-
+    using WebLibrary.Helpers.ControllerWiring;
+   
     public interface ISharpboxController<T> : IDispatchMetadata
         where T : new()
     {
         #region Properties
 
         WebContext<T> WebContext { get; set; }
+
+        IAppWiring AppWiring { get; set; }
 
         #endregion
 
