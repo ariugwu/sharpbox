@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using sharpbox.Common.Dispatch.Model;
-using sharpbox.Dispatch.Model;
-using sharpbox.Common.Data.Core;
+﻿using System;
+using System.Collections.Generic;
 
-namespace sharpbox.Common.Data.Helpers.ControllerWiring
+namespace sharpbox.WebLibrary.Helpers.ControllerWiring
 {
-    using System;
-
-    using sharpbox.Common.Data.Core;
-    using sharpbox.Common.Data;
+    using Common.Data;
+    using Common.Data.Helpers.ControllerWiring;
+    using Common.Dispatch.Model;
+    using Core;
+    using Dispatch.Model;
 
     public class DefaultAppWiring : IAppWiring
     {
@@ -19,7 +18,7 @@ namespace sharpbox.Common.Data.Helpers.ControllerWiring
             _appPersistence = appPersistence;
         }
 
-        public void WireDefaultRoutes<T>(Web.Controllers.ISharpboxController<T> controller) where T : ISharpThing<T>, new()
+        public void WireDefaultRoutes<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : ISharpThing<T>, new()
         {
             var appContext = controller.WebContext.AppContext;
             this._appPersistence.AppContext = appContext;
@@ -35,7 +34,7 @@ namespace sharpbox.Common.Data.Helpers.ControllerWiring
             appContext.Dispatch.Register<T>(Remove, this._appPersistence.Remove, OnRemove);
         }
 
-        public void WireContext<T>(Web.Controllers.ISharpboxController<T> controller) where T : ISharpThing<T>, new()
+        public void WireContext<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : ISharpThing<T>, new()
         {
             var appContext = controller.WebContext.AppContext;
             this._appPersistence.AppContext = appContext;

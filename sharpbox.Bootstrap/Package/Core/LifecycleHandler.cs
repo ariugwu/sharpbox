@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using sharpbox.Common.Data;
 
-namespace sharpbox.Common.Data.Core
+namespace sharpbox.WebLibrary.Core
 {
-    using Bootstrap.Package.Core;
     using Dispatch.Model;
-
-    using sharpbox.Common.Data;
-    using sharpbox.Dispatch.Model;
-
     using Web.Controllers;
 
     public abstract class LifecycleHandler<T> where T : ISharpThing<T>, new()
@@ -36,7 +32,7 @@ namespace sharpbox.Common.Data.Core
             this._successor = successor;
         }
 
-        public void ProcessRequest(WebContext<T> webContext, ISharpboxController<T> controller)
+        public void ProcessRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
         {
             try
             {
@@ -66,7 +62,7 @@ namespace sharpbox.Common.Data.Core
         /// <param name="controller"></param>
         /// <param name="key"></param>
         /// <param name="modelError"></param>
-        public void AddModelStateError(WebContext<T> webContext, ISharpboxController<T> controller, string key, ModelError modelError)
+        public void AddModelStateError(WebContext<T> webContext, ISharpboxScaffoldController<T> controller, string key, ModelError modelError)
         {
             controller.AddErrorToModelState(key, modelError.ErrorMessage);
 
@@ -101,7 +97,7 @@ namespace sharpbox.Common.Data.Core
             webContext.WebResponse.AddLifeCycleTrailItem(this.Name, state ?? LifeCycleHandlerState.Success, message ?? string.Empty);
         }
 
-        public abstract void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller);
+        public abstract void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller);
 
     }
 }

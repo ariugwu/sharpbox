@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Antlr.Runtime.Misc;
-using sharpbox.Bootstrap.Package.Core;
+using sharpbox.WebLibrary.Core;
 
-namespace sharpbox.Common.Data.Core
+namespace sharpbox.WebLibrary.Core
 {
     [Serializable]
     public class WebResponse<T>

@@ -1,4 +1,4 @@
-﻿namespace sharpbox.Bootstrap.Package.Web.Helpers.TypeScript
+﻿namespace sharpbox.WebLibrary.Web.Helpers.TypeScript
 {
     public interface IDispatchMetadata
     {

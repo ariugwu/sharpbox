@@ -1,4 +1,4 @@
-namespace sharpbox.Common.Data.Core
+namespace sharpbox.WebLibrary.Core
 {
     using System;
     using System.Collections.Generic;

@@ -1,14 +1,15 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+
 
 namespace sharpbox.Bootstrap.Controllers
 {
+    using App.Model;
     using Dispatch.Model;
     using Models;
-    using sharpbox.Common.Data.Helpers.ControllerWiring;
-    using sharpbox.Common.Data.Web.Controllers;
+    using WebLibrary.Helpers.ControllerWiring;
+    using WebLibrary.Web.Controllers;
 
-    public sealed class HomeController : SharpboxController<ExampleModel>
+    public sealed class HomeController : SharpboxScaffoldController<Environment>
     {
         public HomeController() : base(new ExampleAppContext())
         {

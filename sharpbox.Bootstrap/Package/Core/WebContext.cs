@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace sharpbox.Common.Data.Core
+namespace sharpbox.WebLibrary.Core
 {
   using System.Security.Principal;
-  using Web.Helpers.Handler;
+  using WebLibrary.Web.Helpers.Handler;
 
-  using Bootstrap.Package.Core;
+  using WebLibrary.Core;
   using Dispatch.Model;
 
   using sharpbox.Common.Data;
   using sharpbox.Dispatch.Model;
 
-  using Web.Controllers;
+  using WebLibrary.Web.Controllers;
 
   public class WebContext<T> where T : ISharpThing<T>, new()
     {
@@ -86,7 +86,7 @@ namespace sharpbox.Common.Data.Core
 
     #endregion
 
-    public void ProcessRequest(WebRequest<T> webRequest, SharpboxController<T> controller)
+    public void ProcessRequest(WebRequest<T> webRequest, ISharpboxScaffoldController<T> controller)
         {
       this.WebRequest = webRequest;
       this.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };

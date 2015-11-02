@@ -1,23 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Web.Mvc;
 using FluentValidation;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using System;
-    using System.Web.Mvc;
-
+    using Common.Data.Helpers;
     using Common.Dispatch.Model;
     using Dispatch.Model;
     using Models;
+  
+    using WebLibrary.Web.Controllers;
+    using WebLibrary.Core;
+    using WebLibrary.Helpers.ControllerWiring;
 
-    using sharpbox.Common.Data.Helpers.ControllerWiring;
-
-    using sharpbox.Common.Data.Core;
-    using sharpbox.Common.Data.Helpers;
-    using sharpbox.Common.Data.Web.Controllers;
-
-    public sealed class TestController : SharpboxController<ExampleModel>
+    public sealed class TestController : SharpboxScaffoldController<ExampleModel>
     {
         public TestController()
             : base(new ExampleAppContext())

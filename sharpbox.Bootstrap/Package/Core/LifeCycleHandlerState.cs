@@ -1,6 +1,6 @@
 ﻿using sharpbox.Common.Type;
 
-namespace sharpbox.Bootstrap.Package.Core
+namespace sharpbox.WebLibrary.Core
 {
     public class LifeCycleHandlerState : EnumPattern
     {

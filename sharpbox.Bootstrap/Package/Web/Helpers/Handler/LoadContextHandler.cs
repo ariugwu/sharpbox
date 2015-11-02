@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using sharpbox.Bootstrap.Package.Core;
-using sharpbox.Common.Dispatch.Model;
 
-namespace sharpbox.Common.Data.Web.Helpers.Handler
+namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
     using Controllers;
     using Core;
-
-    using sharpbox.Common.Data;
-    using sharpbox.Common.Data.Helpers;
+    using Common.Data;
+    using Common.Data.Helpers;
 
     public class LoadContextHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
@@ -21,7 +18,7 @@ namespace sharpbox.Common.Data.Web.Helpers.Handler
 
         public ActionCommandMap ActionCommandMap { get; set; }
 
-        public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
+        public override void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
         {
             try
             {

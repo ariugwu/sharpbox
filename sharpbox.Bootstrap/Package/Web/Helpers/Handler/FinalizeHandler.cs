@@ -1,11 +1,9 @@
-﻿using sharpbox.Bootstrap.Package.Core;
+﻿using sharpbox.WebLibrary.Core;
 
-namespace sharpbox.Common.Data.Web.Helpers.Handler
+namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
-    using Core;
+    using Common.Data;
     using Controllers;
-
-    using sharpbox.Common.Data;
 
     public class FinalizeHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
@@ -14,7 +12,7 @@ namespace sharpbox.Common.Data.Web.Helpers.Handler
             : base(new LifeCycleHandlerName("Finalize"))
         {
         }
-        public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
+        public override void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
         {
 
         }

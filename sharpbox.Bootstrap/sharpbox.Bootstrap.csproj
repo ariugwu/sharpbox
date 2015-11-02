@@ -192,6 +192,7 @@
     <Compile Include="Package\Core\WebResponse.cs" />
     <Compile Include="Package\Web\Controllers\EnvironmentController.cs" />
     <Compile Include="Package\Web\Controllers\ISharpboxController.cs" />
+    <Compile Include="Package\Web\Controllers\SharpboxScaffoldController.cs" />
     <Compile Include="Package\Web\Controllers\SharpboxController.cs" />
     <Compile Include="Package\Web\Helpers\ActionCommandMap.cs" />
     <Compile Include="Package\Web\Helpers\BaseCache.cs" />
@@ -222,6 +223,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Compile Include="Package\Web\Controllers\ISharpScaffoldController.cs" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Package\Web\Scripts\Manager.ttinclude" />

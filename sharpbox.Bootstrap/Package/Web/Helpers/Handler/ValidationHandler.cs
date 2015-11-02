@@ -1,15 +1,12 @@
 ﻿using System.Web.Mvc;
 using FluentValidation;
 using FluentValidation.Results;
-using sharpbox.Bootstrap.Package.Core;
-using sharpbox.Common.Data.Core;
+using sharpbox.WebLibrary.Core;
 
-namespace sharpbox.Common.Data.Web.Helpers.Handler
+namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
     using Controllers;
-
-    using sharpbox.Common.Data.Core;
-    using sharpbox.Common.Data;
+    using Common.Data;
 
     public class ValidationHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
@@ -21,7 +18,7 @@ namespace sharpbox.Common.Data.Web.Helpers.Handler
 
         public AbstractValidator<T> Validator { get; set; }
 
-        public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
+        public override void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
         {
             if (!controller.IsModelStateValid())
             {

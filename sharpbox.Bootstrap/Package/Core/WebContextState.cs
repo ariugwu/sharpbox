@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace sharpbox.Bootstrap.Package.Core
+namespace sharpbox.WebLibrary.Core
 {
     public enum WebContextState
     {

@@ -1,25 +1,18 @@
 ﻿using System.Collections.Generic;
 using FluentValidation;
 
-namespace sharpbox.Common.Data.Web.Controllers
+namespace sharpbox.WebLibrary.Web.Controllers
 {
-    using Bootstrap.Package.Web.Helpers.TypeScript;
+    using Common.Data.Helpers;
     using Common.Dispatch.Model;
     using Core;
-
-    using sharpbox.Common.Data;
-    using sharpbox.Common.Data.Helpers;
-    using sharpbox.Common.Data.Helpers.ControllerWiring;
-    using sharpbox.Dispatch.Model;
+    using Dispatch.Model;
+    using Helpers.TypeScript;
 
     public interface ISharpboxController<T> : IDispatchMetadata
-         where T : ISharpThing<T>, new()
+         where T : new()
     {
         #region Properties
-
-        WebContext<T> WebContext { get; set; }
-
-        IAppWiring AppWiring { get; set; }
 
         #endregion
 
@@ -44,7 +37,7 @@ namespace sharpbox.Common.Data.Web.Controllers
         ActionCommandMap LoadCommandActionMap();
 
         [System.Web.Http.NonAction]
-        Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<T> webContext);
+        Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap();
 
         /// <summary>
         /// Use this to provide messaging that overrides what is supplied to the Dispatcher during command registration.
@@ -53,12 +46,5 @@ namespace sharpbox.Common.Data.Web.Controllers
 
         #endregion
 
-      #region .NET Controller Facade
-      void AddErrorToModelState(string key, string modelErrorMessage);
-
-      bool IsModelStateValid();
-      void MigrateModelErrorsToWebContext();
-
-      #endregion
     }
 }

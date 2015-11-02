@@ -9,9 +9,9 @@
 
 @section scripts {
     <script>
-
+        var url = window.location.pathname.split("/");
         window.formSelector = "#example";
-        window.instanceName = "Environment";
+        window.instanceName = url[1] || "Home";
         window.action = "Update";
         window.schema = null;
 
@@ -165,7 +165,6 @@
         }
 
         $(document).ready(function() {
-
             //alpacaTable(formSelector, instanceName, action);
             $.getJSON("/" + instanceName + "/JsonSchema",function(data) {
                 var json = data.replace(/\r\n/g, '')

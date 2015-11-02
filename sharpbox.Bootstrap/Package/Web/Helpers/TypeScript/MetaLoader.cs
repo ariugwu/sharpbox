@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using sharpbox.Bootstrap.Package.Web.Helpers.TypeScript;
+using sharpbox.Common.Data.Helpers.TypeScript;
 using sharpbox.Common.Dispatch.Model;
+using sharpbox.WebLibrary.Web.Helpers.TypeScript;
 
-namespace sharpbox.Common.Data.Helpers.TypeScript
+namespace sharpbox.WebLibrary.Helpers.TypeScript
 {
     using Type = System.Type;
 

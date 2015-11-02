@@ -1,47 +1,45 @@
 ﻿using System.Web.Mvc;
 
-namespace sharpbox.Common.Data.Web.Helpers.Handler
+namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
-  using Bootstrap.Package.Core;
-  using Controllers;
-  using Dispatch.Model;
-  using Core;
+    using Core;
+    using Controllers;
+    using Dispatch.Model;
+    using Common.Data;
 
-  using sharpbox.Common.Data;
-  using sharpbox.Dispatch.Model;
 
     public class ExecuteHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
-      public ExecuteHandler()
-          : base(new LifeCycleHandlerName("Execute"))
-      {
-      }
-    public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
-    {
-      webContext.DispatchResponse = webContext.AppContext.Dispatch.Process<T>(webContext.WebRequest.CommandName, "Default Execution Message", new object[] { webContext.WebRequest.Instance });
-      webContext.WebResponse.Instance = (T)webContext.DispatchResponse.Entity;
-      webContext.WebResponse.ResponseType = webContext.DispatchResponse.ResponseType.ToString();
-      webContext.WebContextState = WebContextState.ResponseSet;
+        public ExecuteHandler()
+            : base(new LifeCycleHandlerName("Execute"))
+        {
+        }
+        public override void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
+        {
+            webContext.DispatchResponse = webContext.AppContext.Dispatch.Process<T>(webContext.WebRequest.CommandName, "Default Execution Message", new object[] { webContext.WebRequest.Instance });
+            webContext.WebResponse.Instance = (T)webContext.DispatchResponse.Entity;
+            webContext.WebResponse.ResponseType = webContext.DispatchResponse.ResponseType.ToString();
+            webContext.WebContextState = WebContextState.ResponseSet;
 
-      var messageMap = controller.LoadCommandMessageMap(webContext);
-      var commandName = webContext.WebRequest.CommandName;
-      var responseType = webContext.DispatchResponse.ResponseType;
+            var messageMap = controller.LoadCommandMessageMap(webContext);
+            var commandName = webContext.WebRequest.CommandName;
+            var responseType = webContext.DispatchResponse.ResponseType;
 
-      if (webContext.DispatchResponse.ResponseType == ResponseTypes.Error)
-      {
-        AddModelStateError(webContext, controller, "ProcessingError", new ModelError(webContext.DispatchResponse.Message));
-      }
+            if (webContext.DispatchResponse.ResponseType == ResponseTypes.Error)
+            {
+                AddModelStateError(webContext, controller, "ProcessingError", new ModelError(webContext.DispatchResponse.Message));
+            }
 
-      // Doing this allows us to provide the controller with override authority. Kind of loopy but works.
+            // Doing this allows us to provide the controller with override authority. Kind of loopy but works.
 
-      if (messageMap.ContainsKey(commandName) && messageMap[commandName].ContainsKey(responseType))
-      {
-        webContext.WebResponse.Message = messageMap[commandName][responseType];
-      }
-      else
-      {
-        webContext.WebResponse.Message = webContext.DispatchResponse.Message;
-      }
+            if (messageMap.ContainsKey(commandName) && messageMap[commandName].ContainsKey(responseType))
+            {
+                webContext.WebResponse.Message = messageMap[commandName][responseType];
+            }
+            else
+            {
+                webContext.WebResponse.Message = webContext.DispatchResponse.Message;
+            }
+        }
     }
-  }
 }

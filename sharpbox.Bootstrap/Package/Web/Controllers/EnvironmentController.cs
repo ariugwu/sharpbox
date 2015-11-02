@@ -3,7 +3,7 @@
 namespace sharpbox.Bootstrap.Package.Web.Controllers
 {
     using Models;
-    using Common.Data.Web.Controllers;
+    using WebLibrary.Web.Controllers;
 
     public class EnvironmentController : SharpboxController<App.Model.Environment>
     {

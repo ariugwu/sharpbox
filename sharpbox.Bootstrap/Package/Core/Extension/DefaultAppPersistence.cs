@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace sharpbox.Common.Data.Core
+namespace sharpbox.WebLibrary.Core
 {
     using App.Model;
-    using sharpbox.Common.Data;
+    using Common.Data;
+    using Dispatch.Model;
     using Localization.Model;
     using Membership.Model;
-
-    using sharpbox.Dispatch.Model;
 
     public class DefaultAppPersistence : IAppPersistence
     {
@@ -36,7 +35,7 @@ namespace sharpbox.Common.Data.Core
 
         public List<T> UpdateAll<T>(List<T> items) where T : ISharpThing<T>, new()
         {
-            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}_Collection.dat", typeof(T).Name));
+            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat", typeof(T).Name));
 
             if (this.AppContext.File.Exists(path))
             {
@@ -62,7 +61,7 @@ namespace sharpbox.Common.Data.Core
                 things[things.IndexOf(item)] = instance;
             }
 
-            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}_Collection.dat",typeof(T).Name));
+            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat",typeof(T).Name));
 
             if (this.AppContext.File.Exists(path))
             {
@@ -93,7 +92,7 @@ namespace sharpbox.Common.Data.Core
         {
             List<T> things;
 
-            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}_Collection.dat", typeof(T).Name));
+            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat", typeof(T).Name));
 
             if (this.AppContext.File.Exists(path))
             {
@@ -112,7 +111,10 @@ namespace sharpbox.Common.Data.Core
         public AppContext SaveEnvironment(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, EnivronmentFileName);
-            appContext.File.Replace(path, appContext.Environment);
+
+            var envs = new List<Environment>{appContext.Environment};
+
+            appContext.File.Replace(path, envs);
 
             return appContext;
         }
@@ -173,7 +175,8 @@ namespace sharpbox.Common.Data.Core
 
             if (appContext.File.Exists(path))
             {
-                appContext.Environment = appContext.File.Read<Environment>(path);
+                var envs = appContext.File.Read<List<Environment>>(path);
+                appContext.Environment = envs.First();
             }
             else
             {
@@ -182,8 +185,8 @@ namespace sharpbox.Common.Data.Core
                     SharpId = Guid.NewGuid(), 
                     ApplicationName = "Sample Application"
                 };
-
-                appContext.File.Write(path, appContext.Environment);
+                var envs = new List<Environment> { appContext.Environment };
+                appContext.File.Write(path, envs);
             }
 
             return appContext;
