@@ -84,15 +84,15 @@ namespace sharpbox.Dispatch
         /// <typeparam name="T">The entity to be returned</typeparam>
         /// <param name="queryName">The name of the query (i.e. - 'Get', 'GetXByZFromY', etc)</param>
         /// <param name="target">The method to be invoked</param>
-        public void Register<T>(QueryName queryName, Func<T> target)
+        public void Register<T>(QueryName queryName, Delegate action)
         {
             try
             {
-                _queryHub.Add(queryName, target); // wireup the action associated with this command, and the event channel to broadcast to when this command is processed.
+                _queryHub.Add(queryName, action); // wireup the action associated with this command, and the event channel to broadcast to when this command is processed.
             }
             catch (Exception ex)
             {
-                var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, target.Method.Name, typeof(T).Name);
+                var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
                 Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
             }
         }
@@ -361,13 +361,13 @@ namespace sharpbox.Dispatch
         /// <param name="queryName">The name of the query</param>
         /// <param name="args">The arguments to be processed</param>
         /// <returns>The return T</returns>
-        public T Process<T>(QueryName queryName, object[] args)
+        public object Process(QueryName queryName, object[] args)
         {
             var action = _queryHub[queryName];
-            var result = args != null? (T)action.DynamicInvoke(args) : (T)action.DynamicInvoke();
+            var result = args != null? action.DynamicInvoke(args) : action.DynamicInvoke();
 
             // Add the query name to the query stream
-            QueryStream.Enqueue(queryName);
+            this.QueryStream.Enqueue(queryName);
 
             return result;
         }

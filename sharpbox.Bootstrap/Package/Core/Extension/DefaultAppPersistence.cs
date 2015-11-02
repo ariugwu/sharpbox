@@ -6,6 +6,7 @@ using System.Linq;
 namespace sharpbox.WebLibrary.Core
 {
     using App.Model;
+    using Data;
     using Localization.Model;
     using Membership.Model;
 
@@ -23,53 +24,89 @@ namespace sharpbox.WebLibrary.Core
         public string TextResourcesFileName { get { return "TextResources.dat"; } }
 
 
-        public T Add<T>(T instance) where T : new()
+        public T Add<T>(T instance) where T : ISharpThing<T>, new()
         {
-            return Update(instance);
+            List<T> things = this.Get<T>();
+            things.Add(instance);
+
+            return instance;
         }
 
-        public T Update<T>(T instance) where T : new()
+        public List<T> UpdateAll<T>(List<T> items) where T : ISharpThing<T>, new()
         {
-            var path = Path.Combine(AppContext.DataPath, string.Format("{0}.dat",typeof(T).Name));
+            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}_Collection.dat", typeof(T).Name));
 
-            if (AppContext.File.Exists(path))
+            if (this.AppContext.File.Exists(path))
             {
-                AppContext.File.Replace(path, instance);
+                this.AppContext.File.Replace(path, items);
             }
             else
             {
-                AppContext.File.Write(path, instance);
+                items = new List<T>();
+
+                this.AppContext.File.Write(path, items);
+            }
+
+            return items;
+        }  
+
+        public T Update<T>(T instance) where T : ISharpThing<T>, new()
+        {
+            List<T> things = this.Get<T>();
+            var item = things.FirstOrDefault(x => x.SharpId == instance.SharpId);
+
+            if (item != null)
+            {
+                things[things.IndexOf(item)] = instance;
+            }
+
+            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}_Collection.dat",typeof(T).Name));
+
+            if (this.AppContext.File.Exists(path))
+            {
+                this.AppContext.File.Replace(path, instance);
+            }
+            else
+            {
+                this.AppContext.File.Write(path, instance);
             }
 
             return instance;
         }
 
-        public T Remove<T>(T instance) where T : new()
+        public T Remove<T>(T instance) where T : ISharpThing<T>, new()
         {
             instance = new T();
 
-            return Update(instance);
+            return this.Update(instance);
         }
 
-        public T Get<T>() where T : new()
+        public T GetBySharpId<T>(Guid sharpId) where T : ISharpThing<T>, new()
         {
-            T instance;
+            List<T> things = this.Get<T>();
+            return things.FirstOrDefault(x => x.SharpId == sharpId);
+        }
 
-            var path = Path.Combine(AppContext.DataPath, string.Format("{0}.dat", typeof(T).Name));
+        public List<T> Get<T>() where T : ISharpThing<T>, new()
+        {
+            List<T> things;
 
-            if (AppContext.File.Exists(path))
+            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}_Collection.dat", typeof(T).Name));
+
+            if (this.AppContext.File.Exists(path))
             {
-                instance = AppContext.File.Read<T>(path);
+                things = this.AppContext.File.Read<List<T>>(path);
             }
             else
             {
-                instance = new T();
+                things = new List<T>();
 
-                AppContext.File.Write(path, instance);
+                this.AppContext.File.Write(path, things);
             }
 
-            return instance;
+            return things;
         }
+
         public AppContext SaveEnvironment(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, EnivronmentFileName);

@@ -7,11 +7,14 @@ namespace sharpbox.WebLibrary.Web.Controllers
     using Common.Dispatch.Model;
     using Core;
     using Dispatch.Model;
+
+    using sharpbox.WebLibrary.Data;
+
     using WebLibrary.Helpers;
     using WebLibrary.Helpers.ControllerWiring;
    
     public interface ISharpboxController<T> : IDispatchMetadata
-        where T : new()
+         where T : ISharpThing<T>, new()
     {
         #region Properties
 

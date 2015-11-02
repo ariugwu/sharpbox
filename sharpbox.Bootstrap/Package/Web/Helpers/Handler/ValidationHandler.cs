@@ -8,7 +8,9 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
     using Controllers;
 
-    public class ValidationHandler<T> : LifecycleHandler<T> where T : new()
+    using sharpbox.WebLibrary.Data;
+
+    public class ValidationHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
         public ValidationHandler()
             : base(new LifeCycleHandlerName("Validation"))

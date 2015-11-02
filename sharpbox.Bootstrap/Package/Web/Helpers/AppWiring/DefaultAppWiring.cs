@@ -5,6 +5,10 @@ using sharpbox.WebLibrary.Core;
 
 namespace sharpbox.WebLibrary.Helpers.ControllerWiring
 {
+    using System;
+
+    using sharpbox.WebLibrary.Data;
+
     public class DefaultAppWiring : IAppWiring
     {
         private IAppPersistence _appPersistence;
@@ -14,21 +18,23 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
             _appPersistence = appPersistence;
         }
 
-        public void WireDefaultRoutes<T>(Web.Controllers.ISharpboxController<T> controller) where T : new()
+        public void WireDefaultRoutes<T>(Web.Controllers.ISharpboxController<T> controller) where T : ISharpThing<T>, new()
         {
             var appContext = controller.WebContext.AppContext;
             this._appPersistence.AppContext = appContext;
 
             //Register Queries
-            appContext.Dispatch.Register(Get, this._appPersistence.Get<T>);
+            appContext.Dispatch.Register<List<T>>(Get, new Func<List<T>>(this._appPersistence.Get<T>));
+            appContext.Dispatch.Register<T>(GetBySharpId, new Func<Guid, T>(this._appPersistence.GetBySharpId<T>));
 
             //Register Command(s)
             appContext.Dispatch.Register<T>(Add, this._appPersistence.Add, OnAdd);
             appContext.Dispatch.Register<T>(Update, this._appPersistence.Update, OnUpdate);
+            appContext.Dispatch.Register<List<T>>(UpdateAll, this._appPersistence.UpdateAll, OnUpdateAll);
             appContext.Dispatch.Register<T>(Remove, this._appPersistence.Remove, OnRemove);
         }
 
-        public void WireContext<T>(Web.Controllers.ISharpboxController<T> controller) where T : new()
+        public void WireContext<T>(Web.Controllers.ISharpboxController<T> controller) where T : ISharpThing<T>, new()
         {
             var appContext = controller.WebContext.AppContext;
             this._appPersistence.AppContext = appContext;
@@ -101,9 +107,11 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
         #region Commands and Events
 
         public static QueryName Get = new QueryName("Get");
+        public static QueryName GetBySharpId = new QueryName("GetBySharpId");
 
         public static CommandName Add = new CommandName("Add");
         public static CommandName Update = new CommandName("Update");
+        public static CommandName UpdateAll = new CommandName("UpdateAll");
         public static CommandName Remove = new CommandName("Remove");
 
         public static RoutineName RunLoadAppContextRoutine = new RoutineName("RunLoadAppContextRoutine");
@@ -127,6 +135,7 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
         public static EventName OnGet = new EventName("OnGet");
         public static EventName OnAdd = new EventName("OnAdd");
         public static EventName OnUpdate = new EventName("OnUpdate");
+        public static EventName OnUpdateAll = new EventName("OnUpdateAll");
         public static EventName OnRemove = new EventName("OnRemove");
         public static EventName OnFrameworkCommand = new EventName("OnFrameworkCommand");
 

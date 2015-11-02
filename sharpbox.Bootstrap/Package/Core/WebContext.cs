@@ -8,10 +8,13 @@ namespace sharpbox.WebLibrary.Core
 
   using Bootstrap.Package.Core;
   using Dispatch.Model;
+
+  using sharpbox.WebLibrary.Data;
+
   using Web.Controllers;
 
-  public class WebContext<T> where T : new()
-  {
+  public class WebContext<T> where T : ISharpThing<T>, new()
+    {
 
     #region Constructor(s)
 
@@ -83,7 +86,7 @@ namespace sharpbox.WebLibrary.Core
     #endregion
 
     public void ProcessRequest(WebRequest<T> webRequest, SharpboxController<T> controller)
-    {
+        {
       this.WebRequest = webRequest;
       this.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };
 

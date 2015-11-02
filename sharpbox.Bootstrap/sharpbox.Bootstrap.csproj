@@ -176,7 +176,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Controllers\TestListController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -191,6 +190,7 @@
     <Compile Include="Package\Core\WebContextState.cs" />
     <Compile Include="Package\Core\WebRequest.cs" />
     <Compile Include="Package\Core\WebResponse.cs" />
+    <Compile Include="Package\Data\ISharpThing.cs" />
     <Compile Include="Package\Web\Controllers\ISharpboxController.cs" />
     <Compile Include="Package\Web\Controllers\SharpboxController.cs" />
     <Compile Include="Package\Web\Helpers\ActionCommandMap.cs" />
@@ -226,7 +226,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Package\Web\Scripts\Manager.ttinclude" />
     <Content Include="Package\Web\Views\Web.config" />
-    <Content Include="Package\Web\Views\Crud\View.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -261,15 +260,12 @@
     <Content Include="Package\Web\Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Package\Web\Views\Shared\_Layout.cshtml" />
-    <Content Include="Package\Web\Views\Crud\Test.cshtml" />
     <Content Include="Package\Web\Views\Crud\Index.cshtml" />
     <Content Include="Scripts\Manager.ttinclude" />
-    <Content Include="Package\Web\Views\Crud\Edit.cshtml" />
-    <Content Include="Package\Web\Views\Crud\Delete.cshtml" />
+    <Content Include="Package\Web\Views\Crud\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Package\Data\" />
     <Folder Include="Package\Web\Scripts\Typings\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>

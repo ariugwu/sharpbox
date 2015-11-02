@@ -6,8 +6,11 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
   using Controllers;
   using Dispatch.Model;
   using Core;
-  public class ExecuteHandler<T> : LifecycleHandler<T> where T : new()
-  {
+
+  using sharpbox.WebLibrary.Data;
+
+    public class ExecuteHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
+    {
       public ExecuteHandler()
           : base(new LifeCycleHandlerName("Execute"))
       {

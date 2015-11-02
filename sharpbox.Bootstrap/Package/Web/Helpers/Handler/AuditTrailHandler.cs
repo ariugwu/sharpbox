@@ -5,7 +5,9 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
     using Controllers;
     using Core;
 
-    public class AuditTrailHandler<T> : LifecycleHandler<T> where T : new()
+    using sharpbox.WebLibrary.Data;
+
+    public class AuditTrailHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
         public AuditTrailHandler()
             : base(new LifeCycleHandlerName("AuditTrail"))

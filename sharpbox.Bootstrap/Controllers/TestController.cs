@@ -4,9 +4,15 @@ using FluentValidation;
 
 namespace sharpbox.Bootstrap.Controllers
 {
+    using System;
+    using System.Web.Mvc;
+
     using Common.Dispatch.Model;
     using Dispatch.Model;
     using Models;
+
+    using sharpbox.WebLibrary.Helpers.ControllerWiring;
+
     using WebLibrary.Core;
     using WebLibrary.Helpers;
     using WebLibrary.Web.Controllers;
@@ -23,6 +29,27 @@ namespace sharpbox.Bootstrap.Controllers
             var validator = new InlineValidator<ExampleModel>();
             validator.RuleFor(x => x.Value).Length(10, 30);
             return validator;
+        }
+
+        public ActionResult Seed()
+        {
+            var list = new List<ExampleModel>();
+            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 1, BirthDate = DateTime.Now.AddDays(1), FirstName = "Sally", LastName = "Ranch", Value = "A" });
+            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 2, BirthDate = DateTime.Now.AddDays(2), FirstName = "Mark", LastName = "Resiling", Value = "B" });
+            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 3, BirthDate = DateTime.Now.AddDays(3), FirstName = "Jason", LastName = "Brooks", Value = "C" });
+            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 4, BirthDate = DateTime.Now.AddDays(4), FirstName = "Alex", LastName = "Tinsley", Value = "D" });
+            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 5, BirthDate = DateTime.Now.AddDays(5), FirstName = "Brian", LastName = "Walker", Value = "E" });
+            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 6, BirthDate = DateTime.Now.AddDays(6), FirstName = "Steven", LastName = "Stokes", Value = "F" });
+            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 7, BirthDate = DateTime.Now.AddDays(7), FirstName = "Mike", LastName = "Jackson", Value = "G" });
+            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 8, BirthDate = DateTime.Now.AddDays(8), FirstName = "Nick", LastName = "Lancaster", Value = "H" });
+            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 9, BirthDate = DateTime.Now.AddDays(9), FirstName = "Josh", LastName = "Holmes", Value = "I" });
+
+            this.WebContext.AppContext.Dispatch.Process<List<ExampleModel>>(
+                DefaultAppWiring.UpdateAll,
+                "Seeding the collection",
+                new object[] { list });
+
+            return this.RedirectToAction("Index");
         }
 
         /// <summary>

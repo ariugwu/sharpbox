@@ -6,9 +6,12 @@ namespace sharpbox.WebLibrary.Core
 {
     using Bootstrap.Package.Core;
     using Dispatch.Model;
+
+    using sharpbox.WebLibrary.Data;
+
     using Web.Controllers;
 
-    public abstract class LifecycleHandler<T> where T : new()
+    public abstract class LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
         protected LifecycleHandler(LifeCycleHandlerName name)
         {

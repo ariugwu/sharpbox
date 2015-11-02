@@ -8,9 +8,12 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
     using Controllers;
     using Core;
+
+    using sharpbox.WebLibrary.Data;
+
     using WebLibrary.Helpers;
     
-    public class LoadContextHandler<T> : LifecycleHandler<T> where T : new()
+    public class LoadContextHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
         public LoadContextHandler()
             : base(new LifeCycleHandlerName("LoadContext"))

@@ -10,13 +10,14 @@ namespace sharpbox.WebLibrary.Web.Controllers
 {
     using Common.Dispatch.Model;
     using Core;
+    using Data;
     using Dispatch.Model;
 
     using WebLibrary.Helpers;
     using WebLibrary.Helpers.ControllerWiring;
 
     public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
-        where T : new()
+        where T : ISharpThing<T>, new()
     {
         #region Properties
 
@@ -71,30 +72,20 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return this.View("~/Package/Web/Views/Crud/Index.cshtml");
         }
 
-        public virtual ActionResult Create()
+        public virtual ActionResult Detail()
         {
-            return this.View("~/Package/Web/Views/Crud/Edit.cshtml");
-        }
-
-        public virtual ActionResult Edit()
-        {
-            return this.View("~/Package/Web/Views/Crud/Edit.cshtml");
-        }
-
-        public virtual ActionResult View()
-        {
-            return this.View("~/Package/Web/Views/Crud/View.cshtml");
-        }
-
-        public virtual ActionResult Delete()
-        {
-            return this.View("~/Package/Web/Views/Crud/Delete.cshtml");
+            return this.View("~/Package/Web/Views/Crud/Detail.cshtml");
         }
 
         [Queryable]
         public virtual JsonResult Get()
         {
-            return Json(this.WebContext.AppContext.Dispatch.Process<T>(DefaultAppWiring.Get, null), JsonRequestBehavior.AllowGet);
+            return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.Get, null), JsonRequestBehavior.AllowGet);
+        }
+
+        public virtual JsonResult GetBySharpId(Guid sharpId)
+        {
+            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.GetBySharpId, new object[] { sharpId }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()

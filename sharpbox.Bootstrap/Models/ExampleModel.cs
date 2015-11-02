@@ -2,9 +2,12 @@
 {
     using System;
 
+    using sharpbox.WebLibrary.Data;
+
     [Serializable]
-    public class ExampleModel
+    public class ExampleModel : ISharpThing<ExampleModel>
     {
+        public Guid SharpId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }

@@ -4,7 +4,10 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
     using Core;
     using Controllers;
-    public class FinalizeHandler<T> : LifecycleHandler<T> where T : new()
+
+    using sharpbox.WebLibrary.Data;
+
+    public class FinalizeHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
 
         public FinalizeHandler()
