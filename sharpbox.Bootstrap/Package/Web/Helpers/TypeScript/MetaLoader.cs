@@ -4,8 +4,10 @@ using System.Linq;
 using sharpbox.Bootstrap.Package.Web.Helpers.TypeScript;
 using sharpbox.Common.Dispatch.Model;
 
-namespace sharpbox.WebLibrary.Helpers.TypeScript
+namespace sharpbox.Common.Data.Helpers.TypeScript
 {
+    using Type = System.Type;
+
     public static class MetaLoader
     {
         private static IList<Type> _metaStores = GetMetaStoresByMetaLoaderAttribute();

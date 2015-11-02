@@ -1,9 +1,9 @@
-namespace sharpbox.WebLibrary.Core
+namespace sharpbox.Common.Data.Core
 {
     using System;
     using System.Collections.Generic;
 
-    using sharpbox.WebLibrary.Data;
+    using sharpbox.Common.Data;
 
     public interface IAppPersistence
     {

@@ -1,4 +1,4 @@
-﻿namespace sharpbox.WebLibrary.Helpers
+﻿namespace sharpbox.Common.Data.Helpers
 {
   public class BaseCacheNames
   {

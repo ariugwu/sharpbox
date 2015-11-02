@@ -4,7 +4,7 @@ using System.Web.Caching;
 using System.Collections.Generic;
 using sharpbox.Localization.Model;
 
-namespace sharpbox.WebLibrary.Helpers
+namespace sharpbox.Common.Data.Helpers
 {
   public static class CacheCollection
   {

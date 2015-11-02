@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using FluentValidation;
 
-namespace sharpbox.WebLibrary.Web.Controllers
+namespace sharpbox.Common.Data.Web.Controllers
 {
     using Bootstrap.Package.Web.Helpers.TypeScript;
     using Common.Dispatch.Model;
     using Core;
-    using Dispatch.Model;
 
-    using sharpbox.WebLibrary.Data;
+    using sharpbox.Common.Data;
+    using sharpbox.Common.Data.Helpers;
+    using sharpbox.Common.Data.Helpers.ControllerWiring;
+    using sharpbox.Dispatch.Model;
 
-    using WebLibrary.Helpers;
-    using WebLibrary.Helpers.ControllerWiring;
-   
     public interface ISharpboxController<T> : IDispatchMetadata
          where T : ISharpThing<T>, new()
     {

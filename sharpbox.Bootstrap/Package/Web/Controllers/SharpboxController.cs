@@ -6,15 +6,15 @@ using FluentValidation;
 using Newtonsoft.Json;
 using NJsonSchema;
 
-namespace sharpbox.WebLibrary.Web.Controllers
+namespace sharpbox.Common.Data.Web.Controllers
 {
     using Common.Dispatch.Model;
     using Core;
     using Data;
-    using Dispatch.Model;
 
-    using WebLibrary.Helpers;
-    using WebLibrary.Helpers.ControllerWiring;
+    using sharpbox.Common.Data.Helpers;
+    using sharpbox.Common.Data.Helpers.ControllerWiring;
+    using sharpbox.Dispatch.Model;
 
     public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
         where T : ISharpThing<T>, new()

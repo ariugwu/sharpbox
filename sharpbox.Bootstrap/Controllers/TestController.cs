@@ -11,11 +11,11 @@ namespace sharpbox.Bootstrap.Controllers
     using Dispatch.Model;
     using Models;
 
-    using sharpbox.WebLibrary.Helpers.ControllerWiring;
+    using sharpbox.Common.Data.Helpers.ControllerWiring;
 
-    using WebLibrary.Core;
-    using WebLibrary.Helpers;
-    using WebLibrary.Web.Controllers;
+    using sharpbox.Common.Data.Core;
+    using sharpbox.Common.Data.Helpers;
+    using sharpbox.Common.Data.Web.Controllers;
 
     public sealed class TestController : SharpboxController<ExampleModel>
     {

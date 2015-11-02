@@ -190,7 +190,7 @@
     <Compile Include="Package\Core\WebContextState.cs" />
     <Compile Include="Package\Core\WebRequest.cs" />
     <Compile Include="Package\Core\WebResponse.cs" />
-    <Compile Include="Package\Data\ISharpThing.cs" />
+    <Compile Include="Package\Web\Controllers\EnvironmentController.cs" />
     <Compile Include="Package\Web\Controllers\ISharpboxController.cs" />
     <Compile Include="Package\Web\Controllers\SharpboxController.cs" />
     <Compile Include="Package\Web\Helpers\ActionCommandMap.cs" />
@@ -266,7 +266,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Package\Data\" />
     <Folder Include="Package\Web\Scripts\Typings\" />
+    <Folder Include="Views\Environment\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>

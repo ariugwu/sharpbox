@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace sharpbox.WebLibrary.Helpers.TypeScript
+namespace sharpbox.Common.Data.Helpers.TypeScript
 {
     public class GenerateTypeScriptMetadata : Attribute
     {

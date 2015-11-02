@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using sharpbox.Common.Dispatch.Model;
 using sharpbox.Dispatch.Model;
-using sharpbox.WebLibrary.Core;
+using sharpbox.Common.Data.Core;
 
-namespace sharpbox.WebLibrary.Helpers.ControllerWiring
+namespace sharpbox.Common.Data.Helpers.ControllerWiring
 {
     using System;
 
-    using sharpbox.WebLibrary.Data;
+    using sharpbox.Common.Data.Core;
+    using sharpbox.Common.Data;
 
     public class DefaultAppWiring : IAppWiring
     {

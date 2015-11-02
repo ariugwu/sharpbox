@@ -1,4 +1,4 @@
-﻿namespace sharpbox.WebLibrary.Core
+﻿namespace sharpbox.Common.Data.Core
 {
     using System;
     using Common.Dispatch.Model;

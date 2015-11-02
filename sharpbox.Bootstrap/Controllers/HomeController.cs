@@ -5,8 +5,8 @@ namespace sharpbox.Bootstrap.Controllers
 {
     using Dispatch.Model;
     using Models;
-    using WebLibrary.Helpers.ControllerWiring;
-    using WebLibrary.Web.Controllers;
+    using sharpbox.Common.Data.Helpers.ControllerWiring;
+    using sharpbox.Common.Data.Web.Controllers;
 
     public sealed class HomeController : SharpboxController<ExampleModel>
     {

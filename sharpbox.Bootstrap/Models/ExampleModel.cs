@@ -2,7 +2,7 @@
 {
     using System;
 
-    using sharpbox.WebLibrary.Data;
+    using sharpbox.Common.Data;
 
     [Serializable]
     public class ExampleModel : ISharpThing<ExampleModel>

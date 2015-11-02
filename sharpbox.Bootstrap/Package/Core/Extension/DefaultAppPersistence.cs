@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace sharpbox.WebLibrary.Core
+namespace sharpbox.Common.Data.Core
 {
     using App.Model;
-    using Data;
+    using sharpbox.Common.Data;
     using Localization.Model;
     using Membership.Model;
+
+    using sharpbox.Dispatch.Model;
 
     public class DefaultAppPersistence : IAppPersistence
     {
@@ -177,7 +179,7 @@ namespace sharpbox.WebLibrary.Core
             {
                 appContext.Environment = new Environment
                 {
-                    ApplicationId = Guid.NewGuid(), 
+                    SharpId = Guid.NewGuid(), 
                     ApplicationName = "Sample Application"
                 };
 
@@ -193,11 +195,11 @@ namespace sharpbox.WebLibrary.Core
 
             if (appContext.File.Exists(path))
             {
-                appContext.Audit.Trail = appContext.File.Read<List<Dispatch.Model.Response>>(path);
+                appContext.Audit.Trail = appContext.File.Read<List<Response>>(path);
             }
             else
             {
-                appContext.Audit.Trail = appContext.Audit.Trail ?? new List<Dispatch.Model.Response>();
+                appContext.Audit.Trail = appContext.Audit.Trail ?? new List<Response>();
 
                 appContext.File.Write(path, appContext.Audit.Trail);
             }

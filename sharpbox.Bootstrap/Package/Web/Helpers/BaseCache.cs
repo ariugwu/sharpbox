@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace sharpbox.WebLibrary.Helpers
+namespace sharpbox.Common.Data.Helpers
 {
   public static class BaseCache
   {

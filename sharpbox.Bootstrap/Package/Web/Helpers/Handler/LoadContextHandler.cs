@@ -4,15 +4,14 @@ using System.Web.Mvc;
 using sharpbox.Bootstrap.Package.Core;
 using sharpbox.Common.Dispatch.Model;
 
-namespace sharpbox.WebLibrary.Web.Helpers.Handler
+namespace sharpbox.Common.Data.Web.Helpers.Handler
 {
     using Controllers;
     using Core;
 
-    using sharpbox.WebLibrary.Data;
+    using sharpbox.Common.Data;
+    using sharpbox.Common.Data.Helpers;
 
-    using WebLibrary.Helpers;
-    
     public class LoadContextHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
     {
         public LoadContextHandler()

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace sharpbox.WebLibrary.Data
+namespace sharpbox.Common.Data
 {
     public interface ISharpThing<T> where T : new()
     {

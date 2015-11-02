@@ -1,9 +1,10 @@
 ﻿using System.Web.Mvc;
-using sharpbox.WebLibrary.Core;
+using sharpbox.Common.Data.Core;
 
-namespace sharpbox.WebLibrary.Helpers.Extensions
+namespace sharpbox.Common.Data.Helpers.Extensions
 {
-    using sharpbox.WebLibrary.Data;
+    using sharpbox.Common.Data.Core;
+    using sharpbox.Common.Data;
 
     public static class WebViewPageExtensions
     {

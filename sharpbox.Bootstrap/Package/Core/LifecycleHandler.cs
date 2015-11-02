@@ -2,12 +2,13 @@
 using System.Web.Mvc;
 using System.Collections.Generic;
 
-namespace sharpbox.WebLibrary.Core
+namespace sharpbox.Common.Data.Core
 {
     using Bootstrap.Package.Core;
     using Dispatch.Model;
 
-    using sharpbox.WebLibrary.Data;
+    using sharpbox.Common.Data;
+    using sharpbox.Dispatch.Model;
 
     using Web.Controllers;
 
@@ -71,7 +72,6 @@ namespace sharpbox.WebLibrary.Core
 
             this.AddModelStateError(webContext, key, modelError);
         }
-
 
         public void AddModelStateError(WebContext<T> webContext, string key, ModelError modelError)
         {

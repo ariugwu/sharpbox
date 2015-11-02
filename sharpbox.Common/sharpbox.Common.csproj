@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\ISharpThing.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Dispatch\Model\CommandName.cs" />
     <Compile Include="Dispatch\Model\EntityStateName.cs" />

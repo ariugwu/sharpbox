@@ -2,7 +2,7 @@
 using System.Text;
 using sharpbox.Common.Dispatch.Model;
 
-namespace sharpbox.WebLibrary.Helpers.TypeScript
+namespace sharpbox.Common.Data.Helpers.TypeScript
 {   
     public class DomainMetadata
     {

@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using Antlr.Runtime.Misc;
 using sharpbox.Bootstrap.Package.Core;
 
-namespace sharpbox.WebLibrary.Core
+namespace sharpbox.Common.Data.Core
 {
     [Serializable]
     public class WebResponse<T>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace sharpbox.WebLibrary.Helpers
+namespace sharpbox.Common.Data.Helpers
 {
     
     using Common.Dispatch.Model;

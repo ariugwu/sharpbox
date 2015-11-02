@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace sharpbox.WebLibrary.Core
+namespace sharpbox.Common.Data.Core
 {
   using System.Security.Principal;
   using Web.Helpers.Handler;
@@ -9,7 +9,8 @@ namespace sharpbox.WebLibrary.Core
   using Bootstrap.Package.Core;
   using Dispatch.Model;
 
-  using sharpbox.WebLibrary.Data;
+  using sharpbox.Common.Data;
+  using sharpbox.Dispatch.Model;
 
   using Web.Controllers;
 

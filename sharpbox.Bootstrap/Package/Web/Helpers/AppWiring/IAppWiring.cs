@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace sharpbox.WebLibrary.Helpers.ControllerWiring
+namespace sharpbox.Common.Data.Helpers.ControllerWiring
 {
-    using sharpbox.WebLibrary.Data;
+    using sharpbox.Common.Data;
 
     public interface IAppWiring
     {
