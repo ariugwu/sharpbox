@@ -72,20 +72,15 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return this.View("~/Package/Web/Views/Crud/Index.cshtml");
         }
 
-        public virtual ActionResult Detail()
-        {
-            return this.View("~/Package/Web/Views/Crud/Detail.cshtml");
-        }
-
         [Queryable]
         public virtual JsonResult Get()
         {
             return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.Get, null), JsonRequestBehavior.AllowGet);
         }
 
-        public virtual JsonResult GetBySharpId(Guid sharpId)
+        public virtual JsonResult GetBySharpId(string sharpId)
         {
-            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.GetBySharpId, new object[] { sharpId }), JsonRequestBehavior.AllowGet);
+            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.GetBySharpId, new object[] { Guid.Parse(sharpId) }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()

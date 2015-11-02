@@ -1,4 +1,5 @@
-﻿<div class="container">
+﻿<br/>
+<div class="container">
     <div class="row">
         <div class="col-lg-4">
             <div id="example"></div>
@@ -8,16 +9,35 @@
 
 @section scripts {
     <script>
-        $(document).ready(function () {
-            var formSelector = "#example";
-            var instanceName = "Test";
-            var action = "Update";
 
+        window.formSelector = "#example";
+        window.instanceName = "Test";
+        window.action = "Update";
+        window.schema = null;
+
+        var alpacaTable = function() {
+            $.getJSON("/" + instanceName + "/Get", function(data) {
+                json = data;
+                    $(formSelector).alpaca({
+                        "data": json,
+                        "schema": {
+                            "type": "array",
+                            "items": window.schema
+                        },
+                        "options":
+                        {
+                            "type": "table"
+                        }
+                    });
+                });
+        }
+
+        var loadGrid = function() {
             $.getJSON("/" + instanceName + "/Get").done(function (data) {
-                console.log(data);
                 var table = $.makeTable(data);
                 $("#example").html(table);
             });
+
 
             $.makeTable = function (mydata) {
                 var table = $('<table class="table table-striped">');
@@ -26,15 +46,135 @@
                 tblHeader += "</tr>";
                 $(tblHeader).appendTo(table);
                 $.each(mydata, function (index, value) {
+
                     var TableRow = "<tr>";
                     $.each(value, function (key, val) {
-                        TableRow += "<td>" + val + "</td>";
+                        if (key == "SharpId") {
+                            TableRow += "<td><button onClick=\"alpacaEdit('" + val + "');return false;\" class=\"btn btn-sm btn-info\">Edit</button></td>";
+                        } else {
+                            TableRow += "<td>" + val + "</td>";
+                        }
+
                     });
                     TableRow += "</tr>";
                     $(table).append(TableRow);
                 });
                 return ($(table));
             };
+        }
+
+        var alpacaEdit = function (sharpId) {
+            $(window.formSelector).html("<button onclick=\"loadGrid();return false;\"<i class=\"\"><i> Return to List</button>");
+            $(window.formSelector).alpaca({
+                //"schemaSource": "./Test/JsonSchema"
+                "dataSource": "/" + window.instanceName + "/GetBySharpId?sharpId=" + sharpId,
+                "schema": window.schema,
+                "options": {
+                    "form": {
+                        "attributes": {
+                            "action": "/" + window.instanceName + "/Execute",
+                            "method": "post"
+                        },
+                        "buttons": {
+                            "submit": {
+                                "title": "Submit",
+                                "click": function() {
+                                    //alert("Form value is: " + JSON.stringify(this.getValue(), null, "  "));
+                                    var form = $(window.formSelector).find("form");
+                                    form.append('<input type=\"hidden\" id=\"WebRequest_UiAction\" name=\"WebRequest.UiAction.Name\" value=\"' + action + '\" />');
+                                    //$(formSelector).find("form").submit();
+                                    $.ajax({
+                                        type: "POST",
+                                        url: form.attr('action'),
+                                        data: form.serialize(),
+                                        success: function(response) {
+                                            console.log(response);
+                                            response = JSON.parse(response);
+                                            var responseType = response.ResponseType.toLowerCase();
+
+                                            //BEGIN: Error Processing
+                                            //TODO: Refactor this
+                                            if (responseType == "error") {
+                                                var auth = (typeof response.LifeCycleTrail.Auth != 'undefined') ?
+                                                    response.LifeCycleTrail.Auth[0].Item2 : "";
+
+                                                var loadContext = (typeof response.LifeCycleTrail.LoadContext != 'undefined') ?
+                                                    response.LifeCycleTrail.LoadContext[0].Item2 : "";
+
+                                                var validation = (typeof response.LifeCycleTrail.Validation != 'undefined') ?
+                                                    response.LifeCycleTrail.Validation[0].Item2 : "";
+
+                                                var execution = (typeof response.LifeCycleTrail.Execution != 'undefined') ?
+                                                    response.LifeCycleTrail.Execution[0].Item2 : "";
+
+                                                var toastTitle = "Unspecified error: showing whole stack";
+                                                var toastMsg = response.LifeCycleTrail;
+
+                                                if (auth != "") {
+                                                    toastTitle = "Error in Authorization";
+                                                    toastMsg = auth;
+                                                }
+
+                                                if (loadContext != "") {
+                                                    toastTitle = "Error in Loading Context";
+                                                    toastMsg = loadContext;
+                                                }
+
+                                                if (validation != "") {
+                                                    toastTitle = "Error in Validation";
+                                                    toastMsg = validation;
+                                                    console.log(toastMsg);
+                                                }
+
+                                                if (execution != "") {
+                                                    toastTitle = "Error in Execution";
+                                                    toastMsg = execution;
+                                                }
+                                                //END: Validation
+                                                toastr[responseType](toastMsg, toastTitle);
+
+                                            } else {
+                                                toastr[responseType](null, response.Message);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    "hideInitValidationError": true,
+                },
+                "postRender": function(control) {
+                    $.each(control.children, function(key, item) {
+                        var name = item.name;
+                        var bindingName = "WebRequest.Instance." + name;
+                        var labelText = name.replace(/([a-z])([A-Z])/g, '$1 $2'); //Find a lowercase letter followed by an upper case and insert a break.
+
+                        item.name = bindingName;
+
+                        if (item.type == "datetime") {
+                            var thisDate = moment(new Date(parseInt(item.data.substr(6)))).format("DD-MMM-YYYY");
+                            item.getControlEl().val(thisDate);
+                        }
+
+                        item.options.label = labelText;
+                        item.refresh();
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function() {
+
+            //alpacaTable(formSelector, instanceName, action);
+            $.getJSON("/" + instanceName + "/JsonSchema",function(data) {
+                var json = data.replace(/\r\n/g, '')
+                    .replace(/\\/, '').replace(',  "$schema": "http://json-schema.org/draft-04/schema#"', '');
+
+                window.schema = JSON.parse(json);
+            }).done(function() {
+                loadGrid();
+            });
         });
     </script>
 }
