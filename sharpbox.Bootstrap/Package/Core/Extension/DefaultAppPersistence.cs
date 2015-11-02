@@ -65,11 +65,11 @@ namespace sharpbox.WebLibrary.Core
 
             if (this.AppContext.File.Exists(path))
             {
-                this.AppContext.File.Replace(path, instance);
+                this.AppContext.File.Replace(path, things);
             }
             else
             {
-                this.AppContext.File.Write(path, instance);
+                this.AppContext.File.Write(path, things);
             }
 
             return instance;
