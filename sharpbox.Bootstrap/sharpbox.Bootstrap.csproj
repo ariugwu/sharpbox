@@ -179,6 +179,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ExampleChildElement.cs" />
     <Compile Include="Models\ExampleModel.cs" />
     <Compile Include="Models\ExampleAppContext.cs" />
     <Compile Include="Package\Core\Extension\DefaultAppPersistence.cs" />

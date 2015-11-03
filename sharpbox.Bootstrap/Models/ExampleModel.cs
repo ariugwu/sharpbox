@@ -1,6 +1,7 @@
 ﻿namespace sharpbox.Bootstrap.Models
 {
     using System;
+    using System.Collections.Generic;
 
     using sharpbox.Common.Data;
 
@@ -14,6 +15,8 @@
         public int Age { get; set; }
         //public bool IsAlive { get; set; } //TODO: Need to fix form to send "true" instead of "on", otherwise it fails the model binding validation.
         public string Value { get; set; }
+
+        public List<ExampleChildElement> SomeStuff { get; set; } 
 
         public static ExampleModel TestTargetMethod(ExampleModel exampleModel)
         {

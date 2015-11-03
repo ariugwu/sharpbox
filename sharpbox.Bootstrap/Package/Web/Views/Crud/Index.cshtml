@@ -166,11 +166,11 @@
 
         $(document).ready(function() {
             //alpacaTable(formSelector, instanceName, action);
-            $.getJSON("/" + instanceName + "/JsonSchema",function(data) {
+            $.getJSON("/" + instanceName + "/JsonSchema", function (data) {
+                console.log(data);
                 var json = data.replace(/\r\n/g, '')
                     .replace(/\\/, '').replace(',  "$schema": "http://json-schema.org/draft-04/schema#"', '');
 
-                window.schema = JSON.parse(json);
             }).done(function() {
                 loadGrid();
             });
