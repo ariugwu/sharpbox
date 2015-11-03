@@ -6,21 +6,45 @@
  
 
 
-declare module sharpbox.Audit.Dispatch {
-	interface AuditCommands {
+declare module sharpbox.App.Model {
+	interface Environment {
+		EnvironmentId: number;
+		BaseUrl: string;
+		CacheKey: string;
+		ApplicationName: string;
+		UploadDirectory: string;
+		LogoLocation: string;
+		BrandTypeId: number;
+		BrandType: sharpbox.App.Model.BrandType;
+		EnvironmentTypeId: number;
+		EnvironmentType: sharpbox.App.Model.EnvironmentType;
+		TechSheetId: number;
+		TechSheet: sharpbox.App.Model.TechSheet;
+		SharpId: System.Guid;
 	}
-	interface AuditEvents extends sharpbox.Common.Dispatch.Model.EventName {
-	}
-}
-declare module sharpbox.Common.Dispatch.Model {
-	interface EventName extends sharpbox.Common.Type.EnumPattern {
-		EventNameId: number;
+	interface BrandType extends sharpbox.Common.Type.EnumPattern {
+		BrandTypeId: number;
 		Name: string;
+	}
+	interface EnvironmentType extends sharpbox.Common.Type.EnumPattern {
+		EnvironmentTypeId: number;
+		Name: string;
+	}
+	interface TechSheet {
+		TechSheetId: number;
+		WebServer: string;
+		DataSource: string;
+		Database: string;
+		SourceControlId: number;
+		SourceControl: sharpbox.App.Model.SourceControl;
 		ApplicationId: System.Guid;
 	}
-	interface CommandName extends sharpbox.Common.Type.EnumPattern {
-		CommandNameId: number;
-		Name: string;
+	interface SourceControl {
+		SourceControlId: number;
+		ServerAddress: string;
+		ProjectName: string;
+		ProjectSiteUrl: string;
+		SourceLocation: string;
 		ApplicationId: System.Guid;
 	}
 }
@@ -114,8 +138,8 @@ declare module System {
 		Target: any;
 	}
 	interface Exception {
-		Message: string;
 		Data: any;
+		Message: string;
 		InnerException: System.Exception;
 		TargetSite: System.Reflection.MethodBase;
 		StackTrace: string;
@@ -126,6 +150,24 @@ declare module System {
 	interface Tuple<T1, T2> {
 		Item1: T1;
 		Item2: T2;
+	}
+}
+declare module sharpbox.Audit.Dispatch {
+	interface AuditCommands {
+	}
+	interface AuditEvents extends sharpbox.Common.Dispatch.Model.EventName {
+	}
+}
+declare module sharpbox.Common.Dispatch.Model {
+	interface EventName extends sharpbox.Common.Type.EnumPattern {
+		EventNameId: number;
+		Name: string;
+		ApplicationId: System.Guid;
+	}
+	interface CommandName extends sharpbox.Common.Type.EnumPattern {
+		CommandNameId: number;
+		Name: string;
+		ApplicationId: System.Guid;
 	}
 }
 declare module sharpbox.Dispatch.Model {
@@ -394,7 +436,7 @@ declare module sharpbox.Notification.Model {
 }
 declare module sharpbox.WebLibrary.Core {
 	interface WebRequest<T> {
-		UiAction: sharpbox.WebLibrary.Helpers.UiAction;
+		UiAction: sharpbox.Common.Data.Helpers.UiAction;
 		CommandName: sharpbox.Common.Dispatch.Model.CommandName;
 		Instance: T;
 	}
@@ -403,10 +445,14 @@ declare module sharpbox.WebLibrary.Core {
 		ModelErrors: System.Collections.Generic.KeyValuePair<string, System.Web.Mvc.ModelError[]>[];
 		ResponseType: string;
 		Message: string;
-		LifeCycleTrail: System.Collections.Generic.KeyValuePair<sharpbox.Bootstrap.Package.Core.LifeCycleHandlerName, System.Tuple<sharpbox.Bootstrap.Package.Core.LifeCycleHandlerState, string>[]>[];
+		LifeCycleTrail: System.Collections.Generic.KeyValuePair<sharpbox.WebLibrary.Core.LifeCycleHandlerName, System.Tuple<sharpbox.WebLibrary.Core.LifeCycleHandlerState, string>[]>[];
+	}
+	interface LifeCycleHandlerName extends sharpbox.Common.Type.EnumPattern {
+	}
+	interface LifeCycleHandlerState extends sharpbox.Common.Type.EnumPattern {
 	}
 }
-declare module sharpbox.WebLibrary.Helpers {
+declare module sharpbox.Common.Data.Helpers {
 	interface UiAction extends sharpbox.Common.Type.EnumPattern {
 		Name: string;
 	}
@@ -421,12 +467,6 @@ declare module System.Web.Mvc {
 	interface ModelError {
 		Exception: System.Exception;
 		ErrorMessage: string;
-	}
-}
-declare module sharpbox.Bootstrap.Package.Core {
-	interface LifeCycleHandlerName extends sharpbox.Common.Type.EnumPattern {
-	}
-	interface LifeCycleHandlerState extends sharpbox.Common.Type.EnumPattern {
 	}
 }
 

@@ -6,11 +6,9 @@ using Newtonsoft.Json;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
-    using Core;
     using Common.Data.Helpers;
     using Common.Dispatch.Model;
     using Dispatch.Model;
-    using WebLibrary.Helpers.ControllerWiring;
 
     public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
         where T : new()
@@ -29,6 +27,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
         {
             this.WarmBootAppContext(this.AppContext);
         }
+
+        protected SharpboxController() { } 
 
         #endregion
 

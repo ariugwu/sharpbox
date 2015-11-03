@@ -8,6 +8,7 @@
 <#@ assembly name="$(TargetDir)sharpbox.Dispatch.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Email.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Io.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.App.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Localization.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Membership.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Notification.dll" #>
@@ -22,6 +23,7 @@
 <# var manager = Manager.Create(Host, GenerationEnvironment); #>
 
 <# var ts = TypeScript.Definitions()
+        .For<sharpbox.App.Model.Environment>()
 		.For<sharpbox.Audit.Dispatch.AuditCommands>()
 		.For<sharpbox.Audit.Dispatch.AuditEvents>()
 		.For<sharpbox.Dispatch.Model.Request>()

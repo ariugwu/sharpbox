@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Http;
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -17,7 +18,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
     using Common.Dispatch.Model;
     using WebLibrary.Helpers.ControllerWiring;
 
-    public abstract class SharpboxScaffoldController<T> : Controller, ISharpboxScaffoldController<T>
+    public abstract class SharpboxScaffoldController<T> : SharpboxController<T>, ISharpboxScaffoldController<T>
         where T : ISharpThing<T>, new()
     {
         #region Properties
@@ -97,6 +98,19 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return Json(schemaJson, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult DataflowMatrix()
+        {
+            // Build an object that shows what commands are pointed to what methods and what UiActions are mapped to what commands.
+            // Also show routines w/ failover and rollback paths.
+            // Show events that are listening.
+            
+            Dictionary<string, string> eventNameTarget;
+            Dictionary<string, string> commandNameTarget;
+            Dictionary<string, List<string>> routineNameTarget;
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult Execute(WebRequest<T> webRequest)
         {
             try
@@ -126,22 +140,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         #endregion
 
-        #region Validation
-
-        [System.Web.Http.NonAction]
-        public virtual AbstractValidator<T> LoadValidatorByUiAction(UiAction uiAction)
-        {
-            var validator = new InlineValidator<T>();
-            return validator;
-        }
-        #endregion
-
         #region CommandActionMapping
-        [System.Web.Http.NonAction]
-        public virtual ActionCommandMap LoadCommandActionMap()
-        {
-            return new ActionCommandMap(useOneToOneMap: true);
-        }
 
         [System.Web.Http.NonAction]
         public virtual Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<T> webContext)
@@ -207,14 +206,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
         public virtual void WireDefaultRoutes()
         {
             this.AppWiring.WireDefaultRoutes(this);   
-        }
-
-        /// <summary>
-        /// Here to extend any methods outside both the application and domain wiring
-        /// </summary>
-        public virtual void WireDomain()
-        {
-            
         }
 
         #endregion
