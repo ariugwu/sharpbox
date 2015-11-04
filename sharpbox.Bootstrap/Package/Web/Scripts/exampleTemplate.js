@@ -1,0 +1,1 @@
+var simpleTemplate = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-6\">\n            {{{body}}}\n        </div>\n        <div class=\"col-md-6\"></div>\n    </div>\n</div>";
