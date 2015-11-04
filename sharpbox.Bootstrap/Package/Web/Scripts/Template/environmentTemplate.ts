@@ -4,9 +4,6 @@
 
 module sharpbox.Web.Templating {
     export var environmentEditForm = (viewModel: sharpbox.Web.ViewModel<sharpbox.App.Model.Environment>) => {
-        viewModel.updateForm = new UpdateForm("Update", viewModel.controllerUrl, "Update", "POST");
-        viewModel.updateForm.populateFieldDictionary(viewModel.schema);
-
         var html = `<div class="container">
                         ${viewModel.updateForm.header.toHtml()}
                         <div class="row">
