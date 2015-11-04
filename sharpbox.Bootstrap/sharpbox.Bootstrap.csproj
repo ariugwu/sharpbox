@@ -26,7 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -234,6 +234,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>sharpbox.poco.d.ts</LastGenOutput>
     </Content>
+    <Content Include="Package\Web\Scripts\sharpbox.domain.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>sharpbox.domain.ts</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -383,11 +387,17 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.domain.ts">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>sharpbox.domain.tt</DependentUpon>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.poco.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>sharpbox.poco.tt</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.Form.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.ViewModel.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\Typings\jquery.d.ts" />
   </ItemGroup>

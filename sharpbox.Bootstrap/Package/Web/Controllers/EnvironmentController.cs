@@ -3,7 +3,7 @@
     using Models;
     using WebLibrary.Web.Controllers;
 
-    public class EnvironmentController : SharpboxController<App.Model.Environment>
+    public class EnvironmentController : SharpboxScaffoldController<App.Model.Environment>
     {
         public EnvironmentController()
             : base(new ExampleAppContext())
