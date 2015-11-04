@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentValidation;
 using Newtonsoft.Json;
+using sharpbox.WebLibrary.Helpers;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
@@ -25,6 +26,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         protected SharpboxController(AppContext appContext)
         {
+            this.AppContext = appContext;
             this.WarmBootAppContext(this.AppContext);
         }
 
@@ -37,6 +39,11 @@ namespace sharpbox.WebLibrary.Web.Controllers
         protected override void OnAuthorization(AuthorizationContext filterContext)
         {
             base.OnAuthorization(filterContext);
+            InitDuringAuthorization();
+        }
+
+        protected virtual void InitDuringAuthorization()
+        {
 
             this.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
             this.AppContext.DataPath = this.Server.MapPath("~/App_Data/");
@@ -87,6 +94,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #endregion
 
         #region CommandActionMapping
+
         [System.Web.Http.NonAction]
         public virtual ActionCommandMap LoadCommandActionMap()
         {

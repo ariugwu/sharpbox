@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using sharpbox.Common.Data.Helpers.TypeScript;
 using sharpbox.Common.Dispatch.Model;
 using sharpbox.WebLibrary.Web.Helpers.TypeScript;
 

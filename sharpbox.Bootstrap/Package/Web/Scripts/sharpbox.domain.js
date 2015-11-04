@@ -2,6 +2,80 @@ var sharpbox;
 (function (sharpbox) {
     var Domain;
     (function (Domain) {
+        var EnvironmentController;
+        (function (EnvironmentController) {
+            var Command = (function () {
+                function Command() {
+                    throw new Error("Cannot new this class");
+                }
+                return Command;
+            })();
+            EnvironmentController.Command = Command;
+            var Event = (function () {
+                function Event() {
+                    throw new Error("Cannot new this class");
+                }
+                return Event;
+            })();
+            EnvironmentController.Event = Event;
+            var UiAction = (function () {
+                function UiAction() {
+                    throw new Error("Cannot new this class");
+                }
+                return UiAction;
+            })();
+            EnvironmentController.UiAction = UiAction;
+            var Routine = (function () {
+                function Routine() {
+                    throw new Error("Cannot new this class");
+                }
+                return Routine;
+            })();
+            EnvironmentController.Routine = Routine;
+        })(EnvironmentController = Domain.EnvironmentController || (Domain.EnvironmentController = {}));
+    })(Domain = sharpbox.Domain || (sharpbox.Domain = {}));
+})(sharpbox || (sharpbox = {}));
+var sharpbox;
+(function (sharpbox) {
+    var Domain;
+    (function (Domain) {
+        var HomeController;
+        (function (HomeController) {
+            var Command = (function () {
+                function Command() {
+                    throw new Error("Cannot new this class");
+                }
+                return Command;
+            })();
+            HomeController.Command = Command;
+            var Event = (function () {
+                function Event() {
+                    throw new Error("Cannot new this class");
+                }
+                return Event;
+            })();
+            HomeController.Event = Event;
+            var UiAction = (function () {
+                function UiAction() {
+                    throw new Error("Cannot new this class");
+                }
+                return UiAction;
+            })();
+            HomeController.UiAction = UiAction;
+            var Routine = (function () {
+                function Routine() {
+                    throw new Error("Cannot new this class");
+                }
+                return Routine;
+            })();
+            HomeController.Routine = Routine;
+        })(HomeController = Domain.HomeController || (Domain.HomeController = {}));
+    })(Domain = sharpbox.Domain || (sharpbox.Domain = {}));
+})(sharpbox || (sharpbox = {}));
+var sharpbox;
+(function (sharpbox) {
+    var Domain;
+    (function (Domain) {
         var TestController;
         (function (TestController) {
             var Command = (function () {
@@ -10,9 +84,6 @@ var sharpbox;
                 }
                 Command.TestCommand = "TestCommand";
                 Command.SaveExampleModel = "SaveExampleModel";
-                Command.Add = "Add";
-                Command.Update = "Update";
-                Command.Remove = "Remove";
                 return Command;
             })();
             TestController.Command = Command;
@@ -21,9 +92,6 @@ var sharpbox;
                     throw new Error("Cannot new this class");
                 }
                 Event.TestEvent = "TestEvent";
-                Event.OnAdd = "OnAdd";
-                Event.OnUpdate = "OnUpdate";
-                Event.OnRemove = "OnRemove";
                 return Event;
             })();
             TestController.Event = Event;
@@ -31,6 +99,7 @@ var sharpbox;
                 function UiAction() {
                     throw new Error("Cannot new this class");
                 }
+                UiAction.CouldBeAnything = "CouldBeAnything";
                 return UiAction;
             })();
             TestController.UiAction = UiAction;
@@ -44,3 +113,4 @@ var sharpbox;
         })(TestController = Domain.TestController || (Domain.TestController = {}));
     })(Domain = sharpbox.Domain || (sharpbox.Domain = {}));
 })(sharpbox || (sharpbox = {}));
+//# sourceMappingURL=sharpbox.domain.js.map

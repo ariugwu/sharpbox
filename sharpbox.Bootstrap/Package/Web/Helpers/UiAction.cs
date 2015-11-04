@@ -1,6 +1,6 @@
 ﻿using sharpbox.Common.Type;
 
-namespace sharpbox.Common.Data.Helpers
+namespace sharpbox.WebLibrary.Helpers
 {
     public class UiAction : EnumPattern
     {

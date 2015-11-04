@@ -10,9 +10,11 @@ module sharpbox.Web {
         controllerUrl: string;
         schema: any;
 
-        updateForm: UpdateForm<T>;
+        form: Form<T>;
 
         createInputOverrideMap: { [id: string]: any }
+
+        onSchemaLoad: Function;
 
         constructor(instanceName: string) {
             this.controllerUrl = `/${instanceName}/`;
@@ -22,6 +24,8 @@ module sharpbox.Web {
             const url = this.controllerUrl + "Get/";
             $.get(url, data => {
                 this.collection = data;
+            }).done(data => {
+
             });
         }
 
@@ -29,13 +33,17 @@ module sharpbox.Web {
             const url = this.controllerUrl + "GetBySharpId/" + id;
             $.get(url, data => {
                 this.instance = data;
+            }).done(data => {
+
             });
         }
 
-        getSchema() {
+        getSchema(onSchemaLoad: Function) {
             const url = this.controllerUrl + "JsonSchema/";
             $.getJSON(url, data => {
                 this.schema = JSON.parse(data);
+            }).done(data => {
+                onSchemaLoad();
             });
         }
 
@@ -69,25 +77,3 @@ module sharpbox.Web {
         }        
     }
 }
-
-var test = new sharpbox.Web.ViewModel<sharpbox.App.Model.Environment>("Environment");
-
-test.instance = {
-    EnvironmentId: 0,
-    ApplicationName: "Sample Application",
-    BaseUrl: "http://example.com",
-    CacheKey: "any",
-    UploadDirectory: "~/Uploads/",
-    LogoLocation: "~/Images/Logo",
-    BrandTypeId: 1,
-    BrandType: null,
-    EnvironmentTypeId: 1,
-    EnvironmentType: null,
-    TechSheetId: 1,
-    TechSheet: null,
-    SharpId: null
-};
-
-var wat: number = test.instance.BrandTypeId;
-
-test.execute(sharpbox.Domain.TestController.Command.Update);

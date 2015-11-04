@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 using System.Text;
 using sharpbox.Common.Dispatch.Model;
-using sharpbox.WebLibrary.Helpers.TypeScript;
 
-namespace sharpbox.Common.Data.Helpers.TypeScript
+namespace sharpbox.WebLibrary.Helpers.TypeScript
 {   
     public class DomainMetadata
     {

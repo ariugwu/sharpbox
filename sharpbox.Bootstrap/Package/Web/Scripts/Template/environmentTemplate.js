@@ -8,10 +8,11 @@ var sharpbox;
         var Templating;
         (function (Templating) {
             Templating.environmentEditForm = function (viewModel) {
-                var html = "<div class=\"container\">\n                        " + viewModel.updateForm.header.toHtml() + "\n                        <div class=\"row\">\n                            <div class=\"col-md-6\">\n                                " + viewModel.updateForm.fieldsToHtml() + "\n                            </div>\n                            <div class=\"col-md-6\">\n                                " + viewModel.updateForm.fieldDictionary[viewModel.instance.BaseUrl].toHtml() + "\n                            </div>\n                        </div>\n                        " + viewModel.updateForm.footer.toHtml(viewModel.updateForm.header.name) + "\n                    </div>";
+                var html = "<div class=\"container\">\n                        " + viewModel.form.header.toHtml() + "\n                        <div class=\"row\">\n                            <div class=\"col-lg-12\">\n                                " + viewModel.form.fieldsToHtml() + "\n                            </div>\n                        </div>\n                        " + viewModel.form.footer.toHtml(viewModel.form.header.name) + "\n                    </div>";
                 return html;
             };
         })(Templating = Web.Templating || (Web.Templating = {}));
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
 ;
+//# sourceMappingURL=environmentTemplate.js.map

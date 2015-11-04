@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using sharpbox.WebLibrary.Helpers;
 
 namespace sharpbox.Common.Data.Helpers
 {
     
-    using Common.Dispatch.Model;
+    using Dispatch.Model;
 
     public class ActionCommandMap
     {

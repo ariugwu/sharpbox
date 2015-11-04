@@ -1,27 +1,36 @@
 ﻿/// <reference path="sharpbox.poco.d.ts"/>
 /// <reference path="sharpbox.domain.ts"/>
 /// <reference path="sharpbox.Web.ViewModel.ts"/>
+/// <reference path="Typings/collections.d.ts"/>
+
 /// <reference path="Typings/jquery.d.ts"/>
 
 module sharpbox.Web {
     export class Form<T> {
         header: Header;
-        fieldDictionary: { [id: string]: Field };
+        fieldDictionary: collections.Dictionary<string, Field>;
         button: {
             submit: Button;
             reset: Button;
         }
         footer: Footer;
+        schema: any;
 
-        constructor(name: string, controllerUrl: string, uiAction: string, method: string) {
+        constructor(schema: any,name: string, controllerUrl: string, uiAction: string, method: string) {
+            this.schema = schema;
             this.header = new Header();
             this.header.name = name;
             this.header.action = controllerUrl + uiAction;
             this.header.method = method;
+            this.footer = new Footer();
+
+            this.fieldDictionary = new collections.Dictionary<string, Field>();
+            this.populateFieldDictionary();
         }
 
-        populateFieldDictionary(schema: any) {
-            let properties = schema.properties;
+        populateFieldDictionary() {
+            let properties = this.schema.properties;
+            let self = this;
 
             $.each(properties, (key, field) => {
                 if (field.type == 'array') {
@@ -30,25 +39,33 @@ module sharpbox.Web {
                         console.log(k1);
                     });
                 } else if (field.type == 'object') {
+                    var titleField = new Field(key, { type: "title", format: "title" });
+                    self.insertField(key, titleField);
                     console.log(`Would create an embedded form for the object:${key}`);
+                    $.each(field.properties, (k, f) => {
+                        self.insertField(k,f);
+                    });
                 } else {
+                    console.debug("Processing: " + key + ": "+ field);
                     this.insertField(key, field);
                 }
             });
+
+            
         }
 
 		insertField(key: string, field: any) {
-		    this.fieldDictionary[key] = new Field(key, field);
+            this.fieldDictionary.setValue(key, new Field(key, field));
         }
 
-		fieldsToHtml() {
+        fieldsToHtml() {
+            let properties = this.schema.properties;
             var html = "";
-            for (let f in this.fieldDictionary) {
-                if (this.fieldDictionary.hasOwnProperty(f)) {
-                    html = html + f.toHtml();
-                }
-            }
-
+            $.each(properties, (key, field) => {
+                var f = this.fieldDictionary.getValue(key);
+                var fieldHtml = f.toHtml();
+                html = html + f.toHtml();
+            });
             return html;
 		}
     }
@@ -74,21 +91,6 @@ module sharpbox.Web {
         }
     }
 
-    export class InsertForm<T> extends Form<T> {
-
-        constructor(name: string, controllerUrl: string, uiAction: string, method: string) {
-            super(name, controllerUrl, uiAction, method);
-
-            this.button.submit = new Button();
-            this.button.submit.type = "submit";
-            this.button.submit.value = "Insert";
-        }
-    }
-
-    export class UpdateForm<T> extends InsertForm<T> {
-
-    }
-
     export class Field {
         labelElement: string;
         inputElement: string;
@@ -98,7 +100,6 @@ module sharpbox.Web {
         ordinal: number;
 
         constructor(key: string, field: any) {
-            let html = "";
             let inputExtraClasses = "";
             let inputAppend = "";
             let inputType = "text";

@@ -26,8 +26,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
         public WebContext<T> WebContext { get; set; }
         public IAppWiring AppWiring { get; set; }
 
-        public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; set; }
-
         #endregion
 
         #region Constructor(s)
@@ -46,10 +44,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         #region MVC Override(s)
 
-        protected override void OnAuthorization(AuthorizationContext filterContext)
+        protected override void InitDuringAuthorization()
         {
-            base.OnAuthorization(filterContext);
-
             this.WebContext.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
             this.WebContext.AppContext.DataPath = this.Server.MapPath("~/App_Data/");
             this.WebContext.AppContext.Dispatch.Process<AppContext>(DefaultAppWiring.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
@@ -144,12 +140,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         [System.Web.Http.NonAction]
         public virtual Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<T> webContext)
-        {
-            return this.CommandMessageMap;
-        }
-
-        [System.Web.Http.NonAction]
-        public virtual Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap()
         {
             return this.CommandMessageMap;
         }

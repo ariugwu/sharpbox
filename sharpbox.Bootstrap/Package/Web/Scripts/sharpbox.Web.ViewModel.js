@@ -15,6 +15,7 @@ var sharpbox;
                 var url = this.controllerUrl + "Get/";
                 $.get(url, function (data) {
                     _this.collection = data;
+                }).done(function (data) {
                 });
             };
             ViewModel.prototype.getById = function (id) {
@@ -22,13 +23,16 @@ var sharpbox;
                 var url = this.controllerUrl + "GetBySharpId/" + id;
                 $.get(url, function (data) {
                     _this.instance = data;
+                }).done(function (data) {
                 });
             };
-            ViewModel.prototype.getSchema = function () {
+            ViewModel.prototype.getSchema = function (onSchemaLoad) {
                 var _this = this;
                 var url = this.controllerUrl + "JsonSchema/";
                 $.getJSON(url, function (data) {
                     _this.schema = JSON.parse(data);
+                }).done(function (data) {
+                    onSchemaLoad();
                 });
             };
             ViewModel.prototype.execute = function (action) {
@@ -58,21 +62,4 @@ var sharpbox;
         Web.ViewModel = ViewModel;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-var test = new sharpbox.Web.ViewModel("Environment");
-test.instance = {
-    EnvironmentId: 0,
-    ApplicationName: "Sample Application",
-    BaseUrl: "http://example.com",
-    CacheKey: "any",
-    UploadDirectory: "~/Uploads/",
-    LogoLocation: "~/Images/Logo",
-    BrandTypeId: 1,
-    BrandType: null,
-    EnvironmentTypeId: 1,
-    EnvironmentType: null,
-    TechSheetId: 1,
-    TechSheet: null,
-    SharpId: null
-};
-var wat = test.instance.BrandTypeId;
-test.execute(sharpbox.Domain.TestController.Command.Update);
+//# sourceMappingURL=sharpbox.Web.ViewModel.js.map

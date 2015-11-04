@@ -1,26 +1,27 @@
 /// <reference path="sharpbox.poco.d.ts"/>
 /// <reference path="sharpbox.domain.ts"/>
 /// <reference path="sharpbox.Web.ViewModel.ts"/>
+/// <reference path="Typings/collections.d.ts"/>
 /// <reference path="Typings/jquery.d.ts"/>
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var sharpbox;
 (function (sharpbox) {
     var Web;
     (function (Web) {
         var Form = (function () {
-            function Form(name, controllerUrl, uiAction, method) {
+            function Form(schema, name, controllerUrl, uiAction, method) {
+                this.schema = schema;
                 this.header = new Header();
                 this.header.name = name;
                 this.header.action = controllerUrl + uiAction;
                 this.header.method = method;
+                this.footer = new Footer();
+                this.fieldDictionary = new collections.Dictionary();
+                this.populateFieldDictionary();
             }
-            Form.prototype.populateFieldDictionary = function (schema) {
+            Form.prototype.populateFieldDictionary = function () {
                 var _this = this;
-                var properties = schema.properties;
+                var properties = this.schema.properties;
+                var self = this;
                 $.each(properties, function (key, field) {
                     if (field.type == 'array') {
                         console.log("Would create a daughter grid for the array of:" + key);
@@ -29,23 +30,31 @@ var sharpbox;
                         });
                     }
                     else if (field.type == 'object') {
+                        var titleField = new Field(key, { type: "title", format: "title" });
+                        self.insertField(key, titleField);
                         console.log("Would create an embedded form for the object:" + key);
+                        $.each(field.properties, function (k, f) {
+                            self.insertField(k, f);
+                        });
                     }
                     else {
+                        console.debug("Processing: " + key + ": " + field);
                         _this.insertField(key, field);
                     }
                 });
             };
             Form.prototype.insertField = function (key, field) {
-                this.fieldDictionary[key] = new Field(key, field);
+                this.fieldDictionary.setValue(key, new Field(key, field));
             };
             Form.prototype.fieldsToHtml = function () {
+                var _this = this;
+                var properties = this.schema.properties;
                 var html = "";
-                for (var f in this.fieldDictionary) {
-                    if (this.fieldDictionary.hasOwnProperty(f)) {
-                        html = html + f.toHtml();
-                    }
-                }
+                $.each(properties, function (key, field) {
+                    var f = _this.fieldDictionary.getValue(key);
+                    var fieldHtml = f.toHtml();
+                    html = html + f.toHtml();
+                });
                 return html;
             };
             return Form;
@@ -75,28 +84,8 @@ var sharpbox;
             return Footer;
         })();
         Web.Footer = Footer;
-        var InsertForm = (function (_super) {
-            __extends(InsertForm, _super);
-            function InsertForm(name, controllerUrl, uiAction, method) {
-                _super.call(this, name, controllerUrl, uiAction, method);
-                this.button.submit = new Button();
-                this.button.submit.type = "submit";
-                this.button.submit.value = "Insert";
-            }
-            return InsertForm;
-        })(Form);
-        Web.InsertForm = InsertForm;
-        var UpdateForm = (function (_super) {
-            __extends(UpdateForm, _super);
-            function UpdateForm() {
-                _super.apply(this, arguments);
-            }
-            return UpdateForm;
-        })(InsertForm);
-        Web.UpdateForm = UpdateForm;
         var Field = (function () {
             function Field(key, field) {
-                var html = "";
                 var inputExtraClasses = "";
                 var inputAppend = "";
                 var inputType = "text";
@@ -128,3 +117,4 @@ var sharpbox;
         Web.Field = Field;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
+//# sourceMappingURL=sharpbox.Web.Form.js.map

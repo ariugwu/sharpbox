@@ -471,7 +471,7 @@ declare module System.Web.Mvc {
 }
 
 
-module sharpbox.Dispatch.Model {
+declare module sharpbox.Dispatch.Model {
 	export const enum ResponseTypes {
 		Info = 0,
 		Warning = 1,
@@ -479,7 +479,7 @@ module sharpbox.Dispatch.Model {
 		Error = 3
 	}
 }
-module System.Reflection {
+declare module System.Reflection {
 	export const enum MethodImplAttributes {
 		CodeTypeMask = 3,
 		IL = 0,
@@ -637,14 +637,14 @@ module System.Reflection {
 		DefaultConstructorConstraint = 16
 	}
 }
-module System.Runtime.InteropServices {
+declare module System.Runtime.InteropServices {
 	export const enum LayoutKind {
 		Sequential = 0,
 		Explicit = 2,
 		Auto = 3
 	}
 }
-module System.Security {
+declare module System.Security {
 	export const enum SecurityRuleSet {
 		None = 0,
 		Level1 = 1,

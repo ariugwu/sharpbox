@@ -225,7 +225,15 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Compile Include="Package\Web\Controllers\ISharpScaffoldController.cs" />
-    <Content Include="Package\Web\Scripts\ExampleTemplate.html" />
+    <Content Include="Package\Web\Scripts\collections.js" />
+    <Content Include="Package\Web\Scripts\sharpbox.domain.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>sharpbox.domain.ts</LastGenOutput>
+    </Content>
+    <Content Include="Package\Web\Scripts\sharpbox.js" />
+    <Content Include="Package\Web\Scripts\sharpbox.Web.Form.js" />
+    <Content Include="Package\Web\Scripts\sharpbox.Web.ViewModel.js" />
+    <Content Include="Package\Web\Scripts\Template\environmentTemplate.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Package\Web\Scripts\Manager.ttinclude" />
@@ -233,10 +241,6 @@
     <Content Include="Package\Web\Scripts\sharpbox.poco.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>sharpbox.poco.d.ts</LastGenOutput>
-    </Content>
-    <Content Include="Package\Web\Scripts\sharpbox.domain.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>sharpbox.domain.ts</LastGenOutput>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -279,8 +283,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Package\Data\" />
-    <Folder Include="Views\Environment\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -388,17 +390,20 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.domain.ts">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>sharpbox.domain.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.poco.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>sharpbox.poco.tt</DependentUpon>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.Form.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.ViewModel.ts" />
+    <TypeScriptCompile Include="Package\Web\Scripts\Template\environmentTemplate.ts" />
+    <TypeScriptCompile Include="Package\Web\Scripts\Typings\collections.d.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\Typings\jquery.d.ts" />
   </ItemGroup>
   <PropertyGroup>

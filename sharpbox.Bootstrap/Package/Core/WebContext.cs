@@ -4,15 +4,13 @@ using System.Web.Mvc;
 namespace sharpbox.WebLibrary.Core
 {
   using System.Security.Principal;
-  using WebLibrary.Web.Helpers.Handler;
+  using Web.Helpers.Handler;
 
-  using WebLibrary.Core;
   using Dispatch.Model;
 
-  using sharpbox.Common.Data;
-  using sharpbox.Dispatch.Model;
+  using Common.Data;
 
-  using WebLibrary.Web.Controllers;
+  using Web.Controllers;
 
   public class WebContext<T> where T : ISharpThing<T>, new()
     {
