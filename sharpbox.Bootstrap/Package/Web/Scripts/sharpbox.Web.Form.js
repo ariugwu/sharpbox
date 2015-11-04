@@ -39,6 +39,15 @@ var sharpbox;
             Form.prototype.insertField = function (key, field) {
                 this.fieldDictionary[key] = new Field(key, field);
             };
+            Form.prototype.fieldsToHtml = function () {
+                var html = "";
+                for (var f in this.fieldDictionary) {
+                    if (this.fieldDictionary.hasOwnProperty(f)) {
+                        html = html + f.toHtml();
+                    }
+                }
+                return html;
+            };
             return Form;
         })();
         Web.Form = Form;

@@ -39,6 +39,17 @@ module sharpbox.Web {
 
 		insertField(key: string, field: any) {
 		    this.fieldDictionary[key] = new Field(key, field);
+        }
+
+		fieldsToHtml() {
+            var html = "";
+            for (let f in this.fieldDictionary) {
+                if (this.fieldDictionary.hasOwnProperty(f)) {
+                    html = html + f.toHtml();
+                }
+            }
+
+            return html;
 		}
     }
 
