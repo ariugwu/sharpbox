@@ -233,7 +233,7 @@
     <Content Include="Package\Web\Scripts\sharpbox.js" />
     <Content Include="Package\Web\Scripts\sharpbox.Web.Form.js" />
     <Content Include="Package\Web\Scripts\sharpbox.Web.ViewModel.js" />
-    <Content Include="Package\Web\Scripts\Template\environmentTemplate.js" />
+    <Content Include="Package\Web\Scripts\Template\SharpCrudTemplate.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Package\Web\Scripts\Manager.ttinclude" />
@@ -394,6 +394,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.Json.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.poco.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -402,7 +403,7 @@
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.Form.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.ViewModel.ts" />
-    <TypeScriptCompile Include="Package\Web\Scripts\Template\environmentTemplate.ts" />
+    <TypeScriptCompile Include="Package\Web\Scripts\Template\SharpCrudTemplate.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\Typings\collections.d.ts" />
     <TypeScriptCompile Include="Package\Web\Scripts\Typings\jquery.d.ts" />
   </ItemGroup>

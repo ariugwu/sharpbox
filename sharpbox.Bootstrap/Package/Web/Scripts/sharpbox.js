@@ -1,6 +1,6 @@
 /// <reference path="sharpbox.Web.ViewModel.ts"/>
 /// <reference path="sharpbox.Web.Form.ts"/>
-/// <reference path="Template/environmentTemplate.ts"/>
+/// <reference path="Template/SharpCrudTemplate.ts"/>
 /// <reference path="Typings/jquery.d.ts"/>
 var test = new sharpbox.Web.ViewModel("Environment");
 //while (test.ajaxPause) {
@@ -9,7 +9,7 @@ var test = new sharpbox.Web.ViewModel("Environment");
 // Use a lambda to use the loaded schema to init the form.
 test.getSchema(function () {
     test.form = new sharpbox.Web.Form(test.schema, "UpdateForm", test.controllerUrl, "Update", "POST");
-    var template = sharpbox.Web.Templating.environmentEditForm(test);
+    var template = sharpbox.Web.Templating.editForm(test);
     $("#example").html(template);
 });
 test.instance = {
@@ -29,4 +29,3 @@ test.instance = {
 };
 var wat = test.instance.BrandTypeId;
 //test.execute(sharpbox.Domain.TestController.Command.TestCommand); 
-//# sourceMappingURL=sharpbox.js.map

@@ -57,6 +57,13 @@ var sharpbox;
                 });
                 return html;
             };
+            Form.prototype.bindToForm = function (instance) {
+                $.each(instance, function (key, value) {
+                    if (instance.hasOwnProperty(key)) {
+                        $(key).html(value);
+                    }
+                });
+            };
             return Form;
         })();
         Web.Form = Form;
@@ -64,7 +71,7 @@ var sharpbox;
             function Header() {
             }
             Header.prototype.toHtml = function () {
-                return "<form role=\"form\" name=\"" + this.name + "\" action=\"" + this.action + "\" method=\"" + this.method + "\">";
+                return "<form class=\"form-horizontal\" role=\"form\" name=\"" + this.name + "\" action=\"" + this.action + "\" method=\"" + this.method + "\">";
             };
             return Header;
         })();
@@ -93,7 +100,7 @@ var sharpbox;
                     inputExtraClasses = "datepicker";
                     inputAppend = "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
                 }
-                this.labelElement = "<label for=\"" + key + "\">" + key.replace(/([a-z])([A-Z])/g, "$1 $2") + "</label>";
+                this.labelElement = "<label class=\"col-md-4 text-right text-muted\" for=\"" + key + "\"><small>" + key.replace(/([a-z])([A-Z])/g, "$1 $2") + "</small></label>";
                 this.inputPrepend = "";
                 this.inputElement = "<input type=\"" + inputType + "\" class=\"form-control " + inputExtraClasses + "\" id=\"" + key + "\" />";
                 this.inputAppend = inputAppend;
@@ -101,10 +108,8 @@ var sharpbox;
             Field.prototype.toHtml = function () {
                 var html = "";
                 html = html + "<div class=\"form-group\">";
-                html = html + "<div class=\"col-md-4 text-right input-group\">";
                 html = html + this.labelElement;
-                html = html + "</div>";
-                html = html + "<div class=\"col-md-8 input-group\">";
+                html = html + "<div class=\"col-md-8\">";
                 html = html + this.inputPrepend;
                 html = html + this.inputElement;
                 html = html + this.inputAppend;
@@ -117,4 +122,3 @@ var sharpbox;
         Web.Field = Field;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.Form.js.map

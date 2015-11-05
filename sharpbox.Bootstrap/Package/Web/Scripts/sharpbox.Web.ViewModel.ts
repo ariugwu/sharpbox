@@ -65,13 +65,6 @@ module sharpbox.Web {
 
         }
 
-        bindToForm(formName: string) {
-            var form = $(formName);
-            for (var i; i < this.instance; i++) {
-
-            }
-        }
-
         setProperty(name: string, value: string) {
             this.instance[name] = value;
         }        

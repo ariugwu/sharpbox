@@ -49,11 +49,6 @@ var sharpbox;
             };
             ViewModel.prototype.processWebResponse = function (webResponse) {
             };
-            ViewModel.prototype.bindToForm = function (formName) {
-                var form = $(formName);
-                for (var i; i < this.instance; i++) {
-                }
-            };
             ViewModel.prototype.setProperty = function (name, value) {
                 this.instance[name] = value;
             };
@@ -62,4 +57,3 @@ var sharpbox;
         Web.ViewModel = ViewModel;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.ViewModel.js.map
