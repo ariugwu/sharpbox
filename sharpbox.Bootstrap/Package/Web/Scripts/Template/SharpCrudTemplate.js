@@ -9,14 +9,26 @@ var sharpbox;
         var Templating;
         (function (Templating) {
             Templating.editForm = function (viewModel) {
-                var html = "<div class=\"container\">\n                        " + viewModel.form.header.toHtml() + "\n                        " + viewModel.form.fieldsToHtml() + "\n                        " + viewModel.form.footer.toHtml(viewModel.form.header.name) + "\n                    </div>";
+                var html = "<div class=\"container\">\n                        " + viewModel.form.header.toHtml() + "\n                        " + Templating.fieldsToHtml(viewModel) + "\n                        " + viewModel.form.footer.toHtml(viewModel.form.header.name) + "\n                    </div>";
                 return html;
             };
             Templating.grid = function (schema, data) {
                 var html = "<div class=\"container\">\n                        <div class=\"row\">\n                            <div class=\"col-lg-12\">\n                            </div>\n                        </div>\n                    </div>";
                 return html;
             };
+            Templating.fieldsToHtml = function (viewModel) {
+                var fields = viewModel.form.fieldDictionaryToArray();
+                var htmlStrategy = viewModel.form.htmlStrategy;
+                var html = "";
+                $.each(fields, function (key, field) {
+                    var label = htmlStrategy.labelHtml(field, "");
+                    var input = htmlStrategy.inputHtml(field, "");
+                    html = html + htmlStrategy.groupHtml(label, input);
+                });
+                return html;
+            };
         })(Templating = Web.Templating || (Web.Templating = {}));
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
 ;
+//# sourceMappingURL=SharpCrudTemplate.js.map

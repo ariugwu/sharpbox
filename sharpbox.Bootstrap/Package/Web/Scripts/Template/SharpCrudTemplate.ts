@@ -4,17 +4,16 @@
 /// <reference path="../Typings/collections.d.ts"/>
 
 module sharpbox.Web.Templating {
-    export var editForm = (viewModel: sharpbox.Web.ViewModel<any>) => {
+    export var editForm = (viewModel: sharpbox.Web.ViewModel<any>): string => {
         var html = `<div class="container">
                         ${viewModel.form.header.toHtml()}
-                        ${viewModel.form.fieldsToHtml()}
+                        ${fieldsToHtml(viewModel)}
                         ${viewModel.form.footer.toHtml(viewModel.form.header.name)}
                     </div>`;
         return html;
     };
 
-    export var grid = (schema: any, data: Array<any>) =>
-    {
+    export var grid = (schema: any, data: Array<any>): string => {
         var html = `<div class="container">
                         <div class="row">
                             <div class="col-lg-12">
@@ -23,4 +22,17 @@ module sharpbox.Web.Templating {
                     </div>`;
         return html;
     }
+
+    export var fieldsToHtml = (viewModel: sharpbox.Web.ViewModel<any>) : string => {
+        var fields : Field[] = viewModel.form.fieldDictionaryToArray();
+        var htmlStrategy: IHtmlStrategy = viewModel.form.htmlStrategy;
+        var html : string = "";
+            $.each(fields, (key, field) => {
+                    let label = htmlStrategy.labelHtml(field, "");
+                    let input = htmlStrategy.inputHtml(field, "");
+                    html = html + htmlStrategy.groupHtml(label, input);
+            });
+
+        return html;
+    };
 };

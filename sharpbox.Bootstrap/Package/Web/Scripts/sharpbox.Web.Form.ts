@@ -2,7 +2,6 @@
 /// <reference path="sharpbox.domain.ts"/>
 /// <reference path="sharpbox.Web.ViewModel.ts"/>
 /// <reference path="Typings/collections.d.ts"/>
-
 /// <reference path="Typings/jquery.d.ts"/>
 
 module sharpbox.Web {
@@ -15,20 +14,23 @@ module sharpbox.Web {
         }
         footer: Footer;
         schema: any;
+        htmlStrategy: IHtmlStrategy;
 
-        constructor(schema: any,name: string, controllerUrl: string, uiAction: string, method: string) {
+        constructor(schema: any, name: string, controllerUrl: string, uiAction: string, method: string, htmlStrategy: IHtmlStrategy) {
             this.schema = schema;
             this.header = new Header();
             this.header.name = name;
             this.header.action = controllerUrl + uiAction;
             this.header.method = method;
             this.footer = new Footer();
+            this.htmlStrategy = htmlStrategy;
 
             this.fieldDictionary = new collections.Dictionary<string, Field>();
-            this.populateFieldDictionary();
+
+            this.populateFieldDictionary(htmlStrategy);
         }
 
-        populateFieldDictionary() {
+        populateFieldDictionary(htmlStrategy: IHtmlStrategy) {
             let properties = this.schema.properties;
             let self = this;
 
@@ -39,14 +41,14 @@ module sharpbox.Web {
                         console.log(k1);
                     });
                 } else if (field.type == 'object') {
-                    var titleField = new Field(key, { type: "title", format: "title" });
+                    var titleField = new Field(key, { dataType: "title", format: "title" });
                     self.insertField(key, titleField);
                     console.log(`Would create an embedded form for the object:${key}`);
                     $.each(field.properties, (k, f) => {
                         self.insertField(k,f);
                     });
                 } else {
-                    console.debug("Processing: " + key + ": "+ field);
+                    console.debug(`Processing: ${key}: ${field}`);
                     this.insertField(key, field);
                 }
             });
@@ -54,21 +56,21 @@ module sharpbox.Web {
             
         }
 
-		insertField(key: string, field: any) {
+        insertField(key: string, field: any) {
             this.fieldDictionary.setValue(key, new Field(key, field));
         }
 
-        fieldsToHtml() {
+        fieldDictionaryToArray() : Array<Field> {
+            let array = new Array<Field>();
+
             let properties = this.schema.properties;
-            var html = "";
             $.each(properties, (key, field) => {
                 var f = this.fieldDictionary.getValue(key);
-                var fieldHtml = f.toHtml();
-                html = html + f.toHtml();
+                array.push(f);
             });
-            return html;
-        }
 
+            return array;
+        }
         bindToForm(instance: T) {
             $.each(instance, (key, value) => {
                 if (instance.hasOwnProperty(key)) {
@@ -100,42 +102,99 @@ module sharpbox.Web {
     }
 
     export class Field {
-        labelElement: string;
-        inputElement: string;
-        inputAppend: string;
-        inputPrepend: string;
-        targetContainer: string;
-        ordinal: number;
-
-        constructor(key: string, field: any) {
-            let inputExtraClasses = "";
-            let inputAppend = "";
-            let inputType = "text";
-
-            if (field.format == "date-time") {
-                inputExtraClasses = "datepicker";
-                inputAppend = "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
-            }
-
-            this.labelElement = `<label class=\"col-md-4 text-right text-muted\" for="${key}"><small>${key.replace(/([a-z])([A-Z])/g, "$1 $2") }</small></label>`;
-            this.inputPrepend = "";
-            this.inputElement = `<input type="${inputType}" class="form-control ${inputExtraClasses}" id="${key}" />`;
-            this.inputAppend = inputAppend;
-			
+        name: string;
+        data: {
+            dataType: any;
+            format: string;
         }
 
-        toHtml() {
-            let html = "";
-            html = html + "<div class=\"form-group\">";
-            html = html + this.labelElement;
-            html = html + "<div class=\"col-md-8\">";
-            html = html + this.inputPrepend;
-            html = html + this.inputElement;
-            html = html + this.inputAppend;
-            html = html + "</div>";
-            html = html + "</div>";
-
-            return html;
+        constructor(name: string, data: { dataType: any; format: string }) {
+            this.name = name;
+            this.data = data;
         }
     }
+
+    export interface IHtmlStrategy {
+        labelHtml(field: Field, extraClasses: string) : string;
+        inputHtml(field: Field, extraClasses: string): string;
+
+        groupHtml(label: string, input: string): string;
+
+        formatInputPrepend(field: Field): string;
+        formatInputAppend(field: Field): string;
+    }
+
+    export class BaseHtmlStrategy implements IHtmlStrategy {
+
+        labelHtml(field: Field, extraClasses: string): string {
+            return `<label for="${field.name}"><small>${field.name.replace(/([a-z])([A-Z])/g, "$1 $2") }</small></label>`;
+        }
+
+        inputHtml(field: Field, extraClasses: string): string {
+            let inputType = "text";
+
+            switch(field.data.dataType) {
+                default:
+                    return `<input type="${inputType}" id="${field.name}" />`;
+            }
+        }
+
+        groupHtml(label: string, input: string) : string {
+            return `<div class="form-group">
+                        ${label}
+                        ${input}
+                    </div>
+                    `;
+        }
+
+        formatInputPrepend(field: Field): string {
+            return "";
+        }
+
+        formatInputAppend(field: Field): string {
+            return "";
+        }
+    }
+
+    export class BootstrapHtmlStrategy extends BaseHtmlStrategy {
+        labelHtml(field: Field, extraClasses: string): string {
+            return `<label class=\"${extraClasses}"\" for="${field.name}"><small>${field.name.replace(/([a-z])([A-Z])/g, "$1 $2") }</small></label>`;
+        }
+
+        inputHtml(field: Field, extraClasses: string): string {
+            let inputType = "text";
+
+            switch (field.data.dataType) {
+                default:
+                    return `${this.formatInputPrepend(field) }<input type="${inputType}" class="form-control ${extraClasses}" id="${field.name}" />${this.formatInputAppend(field)}`;
+            }
+        }
+
+        groupHtml(label: string, input: string): string {
+            return `<div class="form-group">
+                        ${label}
+                        ${input}
+                    </div>
+                    `;
+        }
+
+        formatInputPrepend(field: Field): string {
+            switch (field.data.format) {
+                case "date-time":
+                    return "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
+                default:
+                    return "";
+            }
+        }
+
+        formatInputAppend(field: Field): string {
+            switch (field.data.format) {
+                case "date-time":
+                    return "";
+                default:
+                    return "";
+            }
+        }
+    }
+
 }
