@@ -22,9 +22,10 @@ var sharpbox;
                 this.footer = new Footer();
                 this.htmlStrategy = htmlStrategy;
                 this.fieldDictionary = new collections.Dictionary();
-                this.populateFieldDictionary(htmlStrategy);
+                this.populateFieldDictionary();
             }
-            Form.prototype.populateFieldDictionary = function (htmlStrategy) {
+            // Takes all the properties and fields of from the schema and creates a dictionary
+            Form.prototype.populateFieldDictionary = function () {
                 var _this = this;
                 var properties = this.schema.properties;
                 var self = this;
@@ -63,11 +64,15 @@ var sharpbox;
                 return array;
             };
             Form.prototype.bindToForm = function (instance) {
+                var _this = this;
                 $.each(instance, function (key, value) {
                     if (instance.hasOwnProperty(key)) {
-                        $(key).html(value);
+                        $(_this.prefixFieldName(key)).html(value);
                     }
                 });
+            };
+            Form.prototype.prefixFieldName = function (key) {
+                return "WebRequest.Intance." + key;
             };
             return Form;
         })();

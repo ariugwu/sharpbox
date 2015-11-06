@@ -27,10 +27,11 @@ module sharpbox.Web {
 
             this.fieldDictionary = new collections.Dictionary<string, Field>();
 
-            this.populateFieldDictionary(htmlStrategy);
+            this.populateFieldDictionary();
         }
 
-        populateFieldDictionary(htmlStrategy: IHtmlStrategy) {
+        // Takes all the properties and fields of from the schema and creates a dictionary
+        populateFieldDictionary() {
             let properties = this.schema.properties;
             let self = this;
 
@@ -51,9 +52,7 @@ module sharpbox.Web {
                     console.debug(`Processing: ${key}: ${field}`);
                     this.insertField(key, field);
                 }
-            });
-
-            
+            });         
         }
 
         insertField(key: string, field: any) {
@@ -71,12 +70,17 @@ module sharpbox.Web {
 
             return array;
         }
+
         bindToForm(instance: T) {
             $.each(instance, (key, value) => {
                 if (instance.hasOwnProperty(key)) {
-                    $(key).html(value);
+                    $(this.prefixFieldName(key)).html(value);
                 }
             });
+        }
+
+        prefixFieldName(key: string) : string {
+            return `WebRequest.Intance.${key}`;
         }
     }
 

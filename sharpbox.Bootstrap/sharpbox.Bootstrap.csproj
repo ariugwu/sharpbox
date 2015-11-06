@@ -179,42 +179,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ExampleChildElement.cs" />
-    <Compile Include="Models\ExampleModel.cs" />
-    <Compile Include="Models\ExampleAppContext.cs" />
-    <Compile Include="Package\Core\Extension\DefaultAppPersistence.cs" />
-    <Compile Include="Package\Core\Extension\IAppPersistence.cs" />
-    <Compile Include="Package\Core\LifecycleHandler.cs" />
-    <Compile Include="Package\Core\LifeCycleHandlerName.cs" />
-    <Compile Include="Package\Core\LifeCycleHandlerState.cs" />
-    <Compile Include="Package\Core\WebContext.cs" />
-    <Compile Include="Package\Core\WebContextState.cs" />
-    <Compile Include="Package\Core\WebRequest.cs" />
-    <Compile Include="Package\Core\WebResponse.cs" />
-    <Compile Include="Package\Web\Controllers\EnvironmentController.cs" />
-    <Compile Include="Package\Web\Controllers\ISharpboxController.cs" />
-    <Compile Include="Package\Web\Controllers\SharpboxScaffoldController.cs" />
-    <Compile Include="Package\Web\Controllers\SharpboxController.cs" />
-    <Compile Include="Package\Web\Helpers\ActionCommandMap.cs" />
-    <Compile Include="Package\Web\Helpers\BaseCache.cs" />
-    <Compile Include="Package\Web\Helpers\BaseCacheNames.cs" />
-    <Compile Include="Package\Web\Helpers\CacheCollection.cs" />
-    <Compile Include="Package\Web\Helpers\AppWiring\IAppWiring.cs" />
-    <Compile Include="Package\Web\Helpers\AppWiring\DefaultAppWiring.cs" />
-    <Compile Include="Package\Web\Helpers\EPplus\BaseEpplus.cs" />
-    <Compile Include="Package\Web\Helpers\Extensions\WebViewPageExtensions.cs" />
-    <Compile Include="Package\Web\Helpers\GenericCacheCollection.cs" />
-    <Compile Include="Package\Web\Helpers\Handler\AuditTrailHandler.cs" />
-    <Compile Include="Package\Web\Helpers\Handler\AuthHandler.cs" />
-    <Compile Include="Package\Web\Helpers\Handler\ExecuteHandler.cs" />
-    <Compile Include="Package\Web\Helpers\Handler\FinalizeHandler.cs" />
-    <Compile Include="Package\Web\Helpers\Handler\LoadContextHandler.cs" />
-    <Compile Include="Package\Web\Helpers\Handler\ValidationHandler.cs" />
-    <Compile Include="Package\Web\Helpers\TypeScript\DomainMetadata.cs" />
-    <Compile Include="Package\Web\Helpers\TypeScript\GenerateTypeScriptMetadata.cs" />
-    <Compile Include="Package\Web\Helpers\TypeScript\IDispatchMetadata.cs" />
-    <Compile Include="Package\Web\Helpers\TypeScript\MetaLoader.cs" />
-    <Compile Include="Package\Web\Helpers\UiAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -224,7 +188,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Compile Include="Package\Web\Controllers\ISharpScaffoldController.cs" />
     <Content Include="Package\Web\Scripts\collections.js" />
     <Content Include="Package\Web\Scripts\sharpbox.domain.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -282,7 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Package\Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -307,6 +269,10 @@
     <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
       <Name>sharpbox.Dispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.EfCodeFirst.App\sharpbox.EfCodeFirst.App.csproj">
+      <Project>{ae8bb1f1-c9ed-4435-aa0e-048aaaab427d}</Project>
+      <Name>sharpbox.EfCodeFirst.App</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.EfCodeFirst.Audit\sharpbox.EfCodeFirst.Audit.csproj">
       <Project>{5fcd76ef-5ca2-4d7c-bf0a-32fb6456ef7c}</Project>
@@ -379,6 +345,10 @@
     <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
       <Project>{15b019a3-9142-4220-b6de-a75515b5e288}</Project>
       <Name>sharpbox.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.WebLibrary\sharpbox.WebLibrary.csproj">
+      <Project>{762a507f-3483-427c-882d-85e4762c4043}</Project>
+      <Name>sharpbox.WebLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox\sharpbox.csproj">
       <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>
