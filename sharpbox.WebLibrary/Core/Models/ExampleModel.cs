@@ -1,4 +1,4 @@
-﻿namespace sharpbox.Bootstrap.Models
+﻿namespace sharpbox.WebLibrary.Core.Models
 {
     using System;
     using System.Collections.Generic;

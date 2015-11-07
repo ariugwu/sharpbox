@@ -1,13 +1,12 @@
 ﻿using System.Web.Mvc;
-
+using sharpbox.WebLibrary.Core.Models;
+using sharpbox.WebLibrary.Helpers.ControllerWiring;
+using sharpbox.WebLibrary.Web.Controllers;
 
 namespace sharpbox.Bootstrap.Controllers
 {
     using App.Model;
     using Dispatch.Model;
-    using Models;
-    using WebLibrary.Helpers.ControllerWiring;
-    using WebLibrary.Web.Controllers;
 
     public sealed class HomeController : SharpboxScaffoldController<Environment>
     {
@@ -38,7 +37,7 @@ namespace sharpbox.Bootstrap.Controllers
             this.WebContext.AppContext.Environment.BaseUrl = "http://sharpbox.io";
             this.WebContext.AppContext.Dispatch.Process<AppContext>(DefaultAppWiring.SaveEnvironment, this.CommandMessageMap[DefaultAppWiring.SaveEnvironment][ResponseTypes.Info], new object[] { this.WebContext.AppContext.Environment });
 
-            return View();
+            return this.View("~/Sharpbox/Web/Views/Crud/Index.cshtml");
         }
     }
 }

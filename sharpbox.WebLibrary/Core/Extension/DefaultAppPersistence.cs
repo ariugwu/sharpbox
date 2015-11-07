@@ -59,6 +59,10 @@ namespace sharpbox.WebLibrary.Core.Extension
             {
                 things[things.IndexOf(item)] = instance;
             }
+            else
+            {
+                things.Add(instance);
+            }
 
             var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat",typeof(T).Name));
 

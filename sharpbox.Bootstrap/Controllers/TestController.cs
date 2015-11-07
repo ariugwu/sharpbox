@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Mvc;
+
 using FluentValidation;
 
 namespace sharpbox.Bootstrap.Controllers
 {
     using Common.Data.Helpers;
     using Common.Dispatch.Model;
+
     using Dispatch.Model;
-    using Models;
- 
+
     using WebLibrary.Core;
+    using WebLibrary.Core.Models;
     using WebLibrary.Helpers;
     using WebLibrary.Helpers.ControllerWiring;
     using WebLibrary.Web.Controllers;
@@ -32,7 +34,7 @@ namespace sharpbox.Bootstrap.Controllers
 
         public ActionResult Detail()
         {
-            return this.View("~/Package/Web/Views/Crud/Detail.cshtml");
+            return this.View("~/Sharpbox/Web/Views/Crud/Detail.cshtml");
         }
 
         public ActionResult Seed()

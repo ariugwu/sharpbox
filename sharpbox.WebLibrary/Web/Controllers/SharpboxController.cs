@@ -66,7 +66,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #region Action(s)
 
 
-        public ActionResult Execute(T instance, UiAction action)
+        public ActionResult ExecuteWithoutScaffold(T instance, UiAction action)
         {
             try
             {

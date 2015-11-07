@@ -2,43 +2,6 @@ var sharpbox;
 (function (sharpbox) {
     var Domain;
     (function (Domain) {
-        var EnvironmentController;
-        (function (EnvironmentController) {
-            var Command = (function () {
-                function Command() {
-                    throw new Error("Cannot new this class");
-                }
-                return Command;
-            })();
-            EnvironmentController.Command = Command;
-            var Event = (function () {
-                function Event() {
-                    throw new Error("Cannot new this class");
-                }
-                return Event;
-            })();
-            EnvironmentController.Event = Event;
-            var UiAction = (function () {
-                function UiAction() {
-                    throw new Error("Cannot new this class");
-                }
-                return UiAction;
-            })();
-            EnvironmentController.UiAction = UiAction;
-            var Routine = (function () {
-                function Routine() {
-                    throw new Error("Cannot new this class");
-                }
-                return Routine;
-            })();
-            EnvironmentController.Routine = Routine;
-        })(EnvironmentController = Domain.EnvironmentController || (Domain.EnvironmentController = {}));
-    })(Domain = sharpbox.Domain || (sharpbox.Domain = {}));
-})(sharpbox || (sharpbox = {}));
-var sharpbox;
-(function (sharpbox) {
-    var Domain;
-    (function (Domain) {
         var HomeController;
         (function (HomeController) {
             var Command = (function () {
@@ -111,6 +74,43 @@ var sharpbox;
             })();
             TestController.Routine = Routine;
         })(TestController = Domain.TestController || (Domain.TestController = {}));
+    })(Domain = sharpbox.Domain || (sharpbox.Domain = {}));
+})(sharpbox || (sharpbox = {}));
+var sharpbox;
+(function (sharpbox) {
+    var Domain;
+    (function (Domain) {
+        var EnvironmentController;
+        (function (EnvironmentController) {
+            var Command = (function () {
+                function Command() {
+                    throw new Error("Cannot new this class");
+                }
+                return Command;
+            })();
+            EnvironmentController.Command = Command;
+            var Event = (function () {
+                function Event() {
+                    throw new Error("Cannot new this class");
+                }
+                return Event;
+            })();
+            EnvironmentController.Event = Event;
+            var UiAction = (function () {
+                function UiAction() {
+                    throw new Error("Cannot new this class");
+                }
+                return UiAction;
+            })();
+            EnvironmentController.UiAction = UiAction;
+            var Routine = (function () {
+                function Routine() {
+                    throw new Error("Cannot new this class");
+                }
+                return Routine;
+            })();
+            EnvironmentController.Routine = Routine;
+        })(EnvironmentController = Domain.EnvironmentController || (Domain.EnvironmentController = {}));
     })(Domain = sharpbox.Domain || (sharpbox.Domain = {}));
 })(sharpbox || (sharpbox = {}));
 //# sourceMappingURL=sharpbox.domain.js.map

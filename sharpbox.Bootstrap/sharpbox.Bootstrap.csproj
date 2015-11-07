@@ -93,9 +93,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Spatial, Version=5.6.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -105,19 +105,19 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http.OData">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.5.0.0\lib\net45\System.Web.Http.OData.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -188,20 +188,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Package\Web\Scripts\collections.js" />
-    <Content Include="Package\Web\Scripts\sharpbox.domain.tt">
+    <Content Include="Sharpbox\Web\Scripts\collections.js" />
+    <Content Include="Sharpbox\Web\Scripts\sharpbox.domain.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>sharpbox.domain.ts</LastGenOutput>
     </Content>
-    <Content Include="Package\Web\Scripts\sharpbox.js" />
-    <Content Include="Package\Web\Scripts\sharpbox.Web.Form.js" />
-    <Content Include="Package\Web\Scripts\sharpbox.Web.ViewModel.js" />
-    <Content Include="Package\Web\Scripts\Template\SharpCrudTemplate.js" />
+    <Content Include="Sharpbox\Web\Scripts\sharpbox.js" />
+    <Content Include="Sharpbox\Web\Scripts\sharpbox.Web.Form.js" />
+    <Content Include="Sharpbox\Web\Scripts\sharpbox.Web.ViewModel.js" />
+    <Content Include="Sharpbox\Web\Scripts\Template\SharpCrudTemplate.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Package\Web\Scripts\Manager.ttinclude" />
-    <Content Include="Package\Web\Views\Web.config" />
-    <Content Include="Package\Web\Scripts\sharpbox.poco.tt">
+    <Content Include="Sharpbox\Web\Scripts\Manager.ttinclude" />
+    <Content Include="Sharpbox\Web\Views\Web.config" />
+    <Content Include="Sharpbox\Web\Scripts\sharpbox.poco.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>sharpbox.poco.d.ts</LastGenOutput>
     </Content>
@@ -236,12 +236,12 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Package\Web\Views\_ViewStart.cshtml" />
+    <Content Include="Sharpbox\Web\Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Package\Web\Views\Shared\_Layout.cshtml" />
-    <Content Include="Package\Web\Views\Crud\Index.cshtml" />
+    <Content Include="Sharpbox\Web\Views\Shared\_Layout.cshtml" />
+    <Content Include="Sharpbox\Web\Views\Crud\Index.cshtml" />
     <Content Include="Scripts\Manager.ttinclude" />
-    <Content Include="Package\Web\Views\Crud\Detail.cshtml" />
+    <Content Include="Sharpbox\Web\Views\Crud\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -359,23 +359,23 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.domain.ts">
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.domain.ts">
       <DependentUpon>sharpbox.domain.tt</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.Json.ts" />
-    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.poco.d.ts">
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.Web.Json.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.poco.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>sharpbox.poco.tt</DependentUpon>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.ts" />
-    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.Form.ts" />
-    <TypeScriptCompile Include="Package\Web\Scripts\sharpbox.Web.ViewModel.ts" />
-    <TypeScriptCompile Include="Package\Web\Scripts\Template\SharpCrudTemplate.ts" />
-    <TypeScriptCompile Include="Package\Web\Scripts\Typings\collections.d.ts" />
-    <TypeScriptCompile Include="Package\Web\Scripts\Typings\jquery.d.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.Web.Form.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.Web.ViewModel.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\Template\SharpCrudTemplate.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\collections.d.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\jquery.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -13,7 +13,7 @@
 <#@ assembly name="$(TargetDir)sharpbox.Membership.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Notification.dll" #>
 <#@ assembly name="$(TargetDir)sharpbox.Util.dll" #>
-<#@ assembly name="$(TargetDir)sharpbox.Bootstrap.dll" #>
+<#@ assembly name="$(TargetDir)sharpbox.WebLibrary.dll" #>
 
 <#@ import namespace="TypeLite" #> 
 <#@ import namespace="TypeLite.Net4" #> 

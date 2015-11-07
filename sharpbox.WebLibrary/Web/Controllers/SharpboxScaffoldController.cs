@@ -1,19 +1,24 @@
 ﻿using System;
-using System.Web.Http;
 using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+
 using Newtonsoft.Json;
+
 using NJsonSchema;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
-    using Dispatch.Model;
-    using Core;
     using Common.Data;
     using Common.Data.Helpers.ControllerWiring;
     using Common.Dispatch.Model;
+
+    using Core;
+    using Core.Extension;
+
+    using Dispatch.Model;
+
     using WebLibrary.Helpers.ControllerWiring;
 
     public abstract class SharpboxScaffoldController<T> : SharpboxController<T>, ISharpboxScaffoldController<T>
@@ -31,7 +36,16 @@ namespace sharpbox.WebLibrary.Web.Controllers
         protected SharpboxScaffoldController(AppContext appContext, IAppWiring appWiring)
         {
             // Only create a new WebContext if one doesn't already exist.
-            this.WebContext = new WebContext<T> { AppContext = appContext, User = this.User };
+            this.WebContext = new WebContext<T>
+                                  {
+                                      AppContext = appContext,
+                                      User = this.User,
+                                      WebResponse =
+                                          new WebResponse<T>()
+                                              {
+                                                  ModelErrors = new Dictionary<string, Stack<ModelError>>()
+                                              }
+                                  };
             this.AppWiring = appWiring;
             this.WarmBootAppContext(this.WebContext.AppContext);
         }
@@ -65,10 +79,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual ActionResult Index()
         {
-            return this.View("~/Package/Web/Views/Crud/Index.cshtml");
+            return this.View("~/Sharpbox/Web/Views/Crud/Index.cshtml");
         }
 
-        [Queryable]
         public virtual JsonResult Get()
         {
             return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.Get, null), JsonRequestBehavior.AllowGet);
@@ -102,17 +115,24 @@ namespace sharpbox.WebLibrary.Web.Controllers
             Dictionary<string, string> commandNameTarget;
             Dictionary<string, List<string>> routineNameTarget;
 
-            return Json(null, JsonRequestBehavior.AllowGet);
+            return this.Json(null, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Execute(WebRequest<T> webRequest)
         {
             try
             {
-                this.WebContext.ProcessRequest(webRequest, this);
+                if (!this.IsModelStateValid())
+                {
+                    this.MigrateModelErrorsToWebContext();
+                }
+                else
+                {
+                    this.WebContext.ProcessRequest(webRequest, this);
+                }
 
                 var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects }; // Prevent circular reference errors with EF objects and other one-to-many relationships
-                return Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
+                return this.Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
             }
             catch (Exception ex)
             {
@@ -131,7 +151,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
                 this.WebContext.ProcessRequest(webRequest, this);
 
                 var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects }; // Prevent circular reference errors with EF objects and other one-to-many relationships
-                return Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
+
+                return this.Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
             }
             catch (Exception ex)
             {
@@ -148,7 +169,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
             this.WebContext._handler.AddModelStateError(this.WebContext, this, "ExecutionError", new ModelError(ex, ex.Message));
             var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects }; // Prevent circular reference errors with EF objects and other one-to-many relationships
-            return Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
+
+            return this.Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
         }
 
         #endregion

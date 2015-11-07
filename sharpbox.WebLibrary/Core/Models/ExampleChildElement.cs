@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace sharpbox.Bootstrap.Models
+﻿namespace sharpbox.WebLibrary.Core.Models
 {
-    using sharpbox.Common.Data;
+    using System;
 
     public class ExampleChildElement
     {

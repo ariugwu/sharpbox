@@ -9,7 +9,7 @@ var sharpbox;
         var Templating;
         (function (Templating) {
             Templating.editForm = function (viewModel) {
-                var html = "<div class=\"container\">\n                        " + viewModel.form.header.toHtml() + "\n                        " + Templating.fieldsToHtml(viewModel) + "\n                        " + viewModel.form.footer.toHtml(viewModel.form.header.name) + "\n                    </div>";
+                var html = "<div class=\"container\">\n                        " + viewModel.form.header.toHtml() + "\n                        " + Templating.fieldsToHtml(viewModel) + "\n                        <input type=\"hidden\" id=\"WebRequest_UiAction\" name=\"WebRequest.UiAction.Name\" value=\"" + viewModel.form.uiAction + "\" />\n                        <input type=\"submit\" value=\"Update\" />\n                        " + viewModel.form.footer.toHtml(viewModel.form.header.name) + "\n                    </div>";
                 return html;
             };
             Templating.grid = function (schema, data) {

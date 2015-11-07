@@ -17,7 +17,9 @@ var sharpbox;
                 this.schema = schema;
                 this.header = new Header();
                 this.header.name = name;
-                this.header.action = controllerUrl + uiAction;
+                this.controllerUrl = controllerUrl;
+                this.header.action = controllerUrl + "Execute";
+                this.uiAction = uiAction;
                 this.header.method = method;
                 this.footer = new Footer();
                 this.htmlStrategy = htmlStrategy;
@@ -119,7 +121,7 @@ var sharpbox;
                 var inputType = "text";
                 switch (field.data.dataType) {
                     default:
-                        return "<input type=\"" + inputType + "\" id=\"" + field.name + "\" />";
+                        return "<input type=\"" + inputType + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />";
                 }
             };
             BaseHtmlStrategy.prototype.groupHtml = function (label, input) {
@@ -146,7 +148,7 @@ var sharpbox;
                 var inputType = "text";
                 switch (field.data.dataType) {
                     default:
-                        return this.formatInputPrepend(field) + "<input type=\"" + inputType + "\" class=\"form-control " + extraClasses + "\" id=\"" + field.name + "\" />" + this.formatInputAppend(field);
+                        return this.formatInputPrepend(field) + "<input type=\"" + inputType + "\" class=\"form-control " + extraClasses + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />" + this.formatInputAppend(field);
                 }
             };
             BootstrapHtmlStrategy.prototype.groupHtml = function (label, input) {

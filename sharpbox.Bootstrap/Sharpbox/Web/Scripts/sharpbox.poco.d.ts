@@ -138,8 +138,8 @@ declare module System {
 		Target: any;
 	}
 	interface Exception {
-		Data: any;
 		Message: string;
+		Data: any;
 		InnerException: System.Exception;
 		TargetSite: System.Reflection.MethodBase;
 		StackTrace: string;
@@ -436,9 +436,10 @@ declare module sharpbox.Notification.Model {
 }
 declare module sharpbox.WebLibrary.Core {
 	interface WebRequest<T> {
-		UiAction: sharpbox.Common.Data.Helpers.UiAction;
+		UiAction: sharpbox.WebLibrary.Helpers.UiAction;
 		CommandName: sharpbox.Common.Dispatch.Model.CommandName;
 		Instance: T;
+		FileDetail: sharpbox.Io.Model.FileDetail;
 	}
 	interface WebResponse<T> {
 		Instance: T;
@@ -452,7 +453,7 @@ declare module sharpbox.WebLibrary.Core {
 	interface LifeCycleHandlerState extends sharpbox.Common.Type.EnumPattern {
 	}
 }
-declare module sharpbox.Common.Data.Helpers {
+declare module sharpbox.WebLibrary.Helpers {
 	interface UiAction extends sharpbox.Common.Type.EnumPattern {
 		Name: string;
 	}
@@ -479,6 +480,7 @@ declare module sharpbox.Dispatch.Model {
 		Error = 3
 	}
 }
+
 declare module System.Reflection {
 	export const enum MethodImplAttributes {
 		CodeTypeMask = 3,

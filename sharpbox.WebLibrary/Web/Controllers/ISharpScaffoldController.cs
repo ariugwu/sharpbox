@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using FluentValidation;
 using sharpbox.WebLibrary.Core;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
     using Common.Data;
-    using Common.Data.Helpers;
     using Common.Data.Helpers.ControllerWiring;
     using Common.Dispatch.Model;
     using Dispatch.Model;

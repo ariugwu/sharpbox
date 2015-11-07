@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace sharpbox.WebLibrary.Web.Helpers.Handler
@@ -14,11 +14,22 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
             : base(new LifeCycleHandlerName("Execute"))
         {
         }
+
         public override void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
         {
-            webContext.DispatchResponse = webContext.AppContext.Dispatch.Process<T>(webContext.WebRequest.CommandName, "Default Execution Message", new object[] { instanceToPass });
+            var parameters = new List<object> { webContext.WebRequest.Instance };
+
+            // If this is a request with a file then add it to the parameters for execution
+            if (webContext.WebRequest.FileDetail != null)
+            {
+                parameters.Add(webContext.WebRequest.FileDetail);
+            }
+
+            webContext.DispatchResponse = webContext.AppContext.Dispatch.Process<T>(webContext.WebRequest.CommandName, "Default Execution Message", parameters.ToArray());
+
             webContext.WebResponse.Instance = (T)webContext.DispatchResponse.Entity;
             webContext.WebResponse.ResponseType = webContext.DispatchResponse.ResponseType.ToString();
+
             webContext.WebContextState = WebContextState.ResponseSet;
 
             var messageMap = controller.LoadCommandMessageMap(webContext);
@@ -27,7 +38,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 
             if (webContext.DispatchResponse.ResponseType == ResponseTypes.Error)
             {
-                AddModelStateError(webContext, controller, "ProcessingError", new ModelError(webContext.DispatchResponse.Message));
+                this.AddModelStateError(webContext, controller, "ProcessingError", new ModelError(webContext.DispatchResponse.Message));
             }
 
             // Doing this allows us to provide the controller with override authority. Kind of loopy but works.

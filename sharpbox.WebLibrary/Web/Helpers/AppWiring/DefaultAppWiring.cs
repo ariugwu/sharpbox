@@ -9,6 +9,8 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
     using Core;
     using Dispatch.Model;
 
+    using sharpbox.WebLibrary.Core.Extension;
+
     public class DefaultAppWiring : IAppWiring
     {
         private IAppPersistence _appPersistence;

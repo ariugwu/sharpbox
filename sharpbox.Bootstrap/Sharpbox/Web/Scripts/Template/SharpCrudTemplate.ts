@@ -8,6 +8,8 @@ module sharpbox.Web.Templating {
         var html = `<div class="container">
                         ${viewModel.form.header.toHtml()}
                         ${fieldsToHtml(viewModel)}
+                        <input type=\"hidden\" id=\"WebRequest_UiAction\" name=\"WebRequest.UiAction.Name\" value=\"${viewModel.form.uiAction}\" />
+                        <input type="submit" value="Update" />
                         ${viewModel.form.footer.toHtml(viewModel.form.header.name)}
                     </div>`;
         return html;
