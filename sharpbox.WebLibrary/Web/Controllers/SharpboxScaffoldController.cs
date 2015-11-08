@@ -82,6 +82,11 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return this.View("~/Sharpbox/Web/Views/Crud/Index.cshtml");
         }
 
+        public ActionResult Detail()
+        {
+            return this.View("~/Sharpbox/Web/Views/Crud/Detail.cshtml");
+        }
+
         public virtual JsonResult Get()
         {
             return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.Get, null), JsonRequestBehavior.AllowGet);

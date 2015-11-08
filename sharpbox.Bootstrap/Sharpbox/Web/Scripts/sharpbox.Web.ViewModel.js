@@ -10,20 +10,22 @@ var sharpbox;
             function ViewModel(instanceName) {
                 this.controllerUrl = "/" + instanceName + "/";
             }
-            ViewModel.prototype.getAll = function () {
+            ViewModel.prototype.getAll = function (callback) {
                 var _this = this;
                 var url = this.controllerUrl + "Get/";
                 $.get(url, function (data) {
                     _this.collection = data;
                 }).done(function (data) {
+                    callback();
                 });
             };
-            ViewModel.prototype.getById = function (id) {
+            ViewModel.prototype.getById = function (id, callback) {
                 var _this = this;
-                var url = this.controllerUrl + "GetBySharpId/" + id;
+                var url = this.controllerUrl + "GetBySharpId/?sharpId=" + id;
                 $.get(url, function (data) {
                     _this.instance = data;
                 }).done(function (data) {
+                    callback();
                 });
             };
             ViewModel.prototype.getSchema = function (onSchemaLoad) {
@@ -57,4 +59,3 @@ var sharpbox;
         Web.ViewModel = ViewModel;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.ViewModel.js.map

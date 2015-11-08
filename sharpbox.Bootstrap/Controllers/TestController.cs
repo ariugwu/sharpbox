@@ -32,11 +32,6 @@ namespace sharpbox.Bootstrap.Controllers
             return validator;
         }
 
-        public ActionResult Detail()
-        {
-            return this.View("~/Sharpbox/Web/Views/Crud/Detail.cshtml");
-        }
-
         public ActionResult Seed()
         {
             var list = new List<ExampleModel>();

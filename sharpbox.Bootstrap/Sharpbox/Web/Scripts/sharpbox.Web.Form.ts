@@ -3,6 +3,7 @@
 /// <reference path="sharpbox.Web.ViewModel.ts"/>
 /// <reference path="Typings/collections.d.ts"/>
 /// <reference path="Typings/jquery.d.ts"/>
+/// <reference path="Typings/toastr.d.ts"/>
 
 module sharpbox.Web {
     export class Form<T> {
@@ -78,13 +79,14 @@ module sharpbox.Web {
         bindToForm(instance: T) {
             $.each(instance, (key, value) => {
                 if (instance.hasOwnProperty(key)) {
-                    $(this.prefixFieldName(key)).html(value);
+                    var inputName = `[name="${this.prefixFieldName(key) }"]`;
+                    $(inputName).val(value);
                 }
             });
         }
 
         prefixFieldName(key: string) : string {
-            return `WebRequest.Intance.${key}`;
+            return `WebRequest.Instance.${key}`;
         }
     }
 
@@ -101,6 +103,7 @@ module sharpbox.Web {
     export class Button {
         type: string;
         value: string;
+        onClick: Function;
     }
 
     export class Footer {
@@ -130,6 +133,9 @@ module sharpbox.Web {
 
         formatInputPrepend(field: Field): string;
         formatInputAppend(field: Field): string;
+
+        wireSubmit(formName: string): void;
+        submitForm(formName: string): void;
     }
 
     export class BaseHtmlStrategy implements IHtmlStrategy {
@@ -161,6 +167,76 @@ module sharpbox.Web {
 
         formatInputAppend(field: Field): string {
             return "";
+        }
+
+        wireSubmit(formName: string): void {
+            var form = $(`[name="${formName}"]`);
+            form.submit((event) => {
+                event.preventDefault();
+                
+                this.submitForm(formName);
+            });
+        }
+
+        submitForm(formName: string): void {
+            
+            var form = $(`[name="${formName}"]`);
+
+            $.ajax({
+                type: "POST",
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: (response) => {
+                    console.log(response);
+                    response = JSON.parse(response);
+                    var responseType = response.ResponseType.toLowerCase();
+
+                    //BEGIN: Error Processing
+                    //TODO: Refactor this
+                    if (responseType == "error") {
+                        var auth = (typeof response.LifeCycleTrail.Auth != 'undefined') ?
+                            response.LifeCycleTrail.Auth[0].Item2 : "";
+
+                        var loadContext = (typeof response.LifeCycleTrail.LoadContext != 'undefined') ?
+                            response.LifeCycleTrail.LoadContext[0].Item2 : "";
+
+                        var validation = (typeof response.LifeCycleTrail.Validation != 'undefined') ?
+                            response.LifeCycleTrail.Validation[0].Item2 : "";
+
+                        var execution = (typeof response.LifeCycleTrail.Execution != 'undefined') ?
+                            response.LifeCycleTrail.Execution[0].Item2 : "";
+
+                        var toastTitle = "Unspecified error: showing whole stack";
+                        var toastMsg = response.LifeCycleTrail.toString();
+
+                        if (auth != "") {
+                            toastTitle = "Error in Authorization";
+                            toastMsg = auth;
+                        }
+
+                        if (loadContext != "") {
+                            toastTitle = "Error in Loading Context";
+                            toastMsg = loadContext;
+                        }
+
+                        if (validation != "") {
+                            toastTitle = "Error in Validation";
+                            toastMsg = validation;
+                            console.log(toastMsg);
+                        }
+
+                        if (execution != "") {
+                            toastTitle = "Error in Execution";
+                            toastMsg = execution;
+                        }
+                        //END: Validation
+                        toastr[responseType](toastMsg, toastTitle);
+
+                    } else {
+                        toastr[responseType](null, response.Message);
+                    }
+                }
+            });
         }
     }
 

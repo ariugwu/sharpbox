@@ -20,21 +20,21 @@ module sharpbox.Web {
             this.controllerUrl = `/${instanceName}/`;
         }
 
-        getAll() {
+        getAll(callback: Function) {
             const url = this.controllerUrl + "Get/";
             $.get(url, data => {
                 this.collection = data;
             }).done(data => {
-
+                callback();
             });
         }
 
-        getById(id: string) {
-            const url = this.controllerUrl + "GetBySharpId/" + id;
+        getById(id: string, callback: Function) {
+            const url = this.controllerUrl + "GetBySharpId/?sharpId=" + id;
             $.get(url, data => {
                 this.instance = data;
             }).done(data => {
-
+                callback();
             });
         }
 

@@ -15,6 +15,8 @@ module sharpbox.Web.Templating {
         return html;
     };
 
+
+
     export var grid = (schema: any, data: Array<any>): string => {
         var html = `<div class="container">
                         <div class="row">

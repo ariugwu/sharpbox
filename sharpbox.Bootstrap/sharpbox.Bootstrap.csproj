@@ -245,6 +245,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\typings\jquery\" />
+    <Folder Include="Scripts\typings\toastr\" />
+    <Folder Include="Sharpbox\Web\Controller\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -364,6 +367,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.Web.Environment.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.Web.Json.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.poco.d.ts">
       <AutoGen>True</AutoGen>
@@ -376,6 +380,7 @@
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\Template\SharpCrudTemplate.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\collections.d.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\jquery.d.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\toastr.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

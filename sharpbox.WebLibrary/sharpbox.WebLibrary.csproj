@@ -125,6 +125,7 @@
     <Compile Include="Web\Controllers\ISharpScaffoldController.cs" />
     <Compile Include="Web\Controllers\SharpboxController.cs" />
     <Compile Include="Web\Controllers\SharpboxScaffoldController.cs" />
+    <Compile Include="Web\Controllers\SharpControllerFactory.cs" />
     <Compile Include="Web\Helpers\ActionCommandMap.cs" />
     <Compile Include="Web\Helpers\AppWiring\DefaultAppWiring.cs" />
     <Compile Include="Web\Helpers\AppWiring\IAppWiring.cs" />
