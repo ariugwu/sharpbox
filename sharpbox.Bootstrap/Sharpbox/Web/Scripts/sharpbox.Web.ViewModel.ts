@@ -6,6 +6,7 @@
 module sharpbox.Web {
     export class ViewModel<T> {
         instance: T;
+        instanceName: string;
         collection: Array<T>;
         controllerUrl: string;
         schema: any;
@@ -17,6 +18,8 @@ module sharpbox.Web {
         onSchemaLoad: Function;
 
         constructor(instanceName: string) {
+
+            this.instanceName = instanceName;
             this.controllerUrl = `/${instanceName}/`;
         }
 

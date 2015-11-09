@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 using Newtonsoft.Json;
 
 using NJsonSchema;
+using sharpbox.WebLibrary.Helpers;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
@@ -106,6 +109,17 @@ namespace sharpbox.WebLibrary.Web.Controllers
             // Uses Json.Net Schema
             //var generator = new JSchemaGenerator();
             //JSchema schema = generator.Generate(typeof(T));
+
+            //Try to grab the validator and poke around
+            //var validator = this.LoadValidatorByUiAction(new UiAction("Update"));
+            //var list = validator.ToList();
+            //foreach (var v in list)
+            //{
+            //    foreach (var vv in v.Validators)
+            //    {
+            //        vv.
+            //    }
+            //}
 
             return Json(schemaJson, JsonRequestBehavior.AllowGet);
         }

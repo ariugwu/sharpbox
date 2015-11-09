@@ -8,6 +8,7 @@ var sharpbox;
     (function (Web) {
         var ViewModel = (function () {
             function ViewModel(instanceName) {
+                this.instanceName = instanceName;
                 this.controllerUrl = "/" + instanceName + "/";
             }
             ViewModel.prototype.getAll = function (callback) {
@@ -59,3 +60,4 @@ var sharpbox;
         Web.ViewModel = ViewModel;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
+//# sourceMappingURL=sharpbox.Web.ViewModel.js.map

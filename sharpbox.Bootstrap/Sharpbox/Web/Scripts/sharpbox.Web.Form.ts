@@ -105,8 +105,8 @@ module sharpbox.Web {
         action: string;
         method: string;
 
-        toHtml() {
-            return `<form class=\"form-horizontal\" role="form" name="${this.name}" action="${this.action}" method="${this.method}">`;
+        toHtml(extraClasses: string) {
+            return `<form class=\"form-horizontal ${extraClasses}\" role="form" name="${this.name}" action="${this.action}" method="${this.method}">`; 
         }
     }
 
@@ -252,15 +252,28 @@ module sharpbox.Web {
 
     export class BootstrapHtmlStrategy extends BaseHtmlStrategy {
         labelHtml(field: Field, extraClasses: string): string {
-            return `<label class=\"${extraClasses}"\" for="${field.name}"><small>${field.name.replace(/([a-z])([A-Z])/g, "$1 $2") }</small></label>`;
+            return `<label class="control-label col-sm-2 ${extraClasses}" for="${field.name}"><small>${field.name.replace(/([a-z])([A-Z])/g, "$1 $2") }</small></label>`;
         }
 
         inputHtml(field: Field, extraClasses: string): string {
             let inputType = "text";
 
-            switch (field.data.dataType) {
+            switch (field.data.format) {
+                case "date-time":
+                    return `
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    ${this.formatInputPrepend(field)}
+                                    <input type="${inputType}" class="form-control ${extraClasses}" id="${field.name}" name="WebRequest.Instance.${field.name}" />
+                                    ${this.formatInputAppend(field)}
+                                </div>
+                            </div>
+                            `;
                 default:
-                    return `${this.formatInputPrepend(field) }<input type="${inputType}" class="form-control ${extraClasses}" id="${field.name}" name="WebRequest.Instance.${field.name}" />${this.formatInputAppend(field)}`;
+                    return `<div class="col-sm-10">
+                                ${this.formatInputPrepend(field) }<input type="${inputType}" class="form-control ${extraClasses}" id="${field.name}" name="WebRequest.Instance.${field.name}" />${this.formatInputAppend(field) }
+                            </div>
+                            `;
             }
         }
 
@@ -275,7 +288,7 @@ module sharpbox.Web {
         formatInputPrepend(field: Field): string {
             switch (field.data.format) {
                 case "date-time":
-                    return "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
+                    return "";
                 default:
                     return "";
             }
@@ -284,7 +297,7 @@ module sharpbox.Web {
         formatInputAppend(field: Field): string {
             switch (field.data.format) {
                 case "date-time":
-                    return "";
+                    return "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
                 default:
                     return "";
             }

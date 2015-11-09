@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The description of my page" />
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous" />
     <!-- Toastr -->
     <link type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
     <!-- Alpaca -->
-    <link type="text/css" href="http://code.cloudcms.com/alpaca/1.5.14/bootstrap/alpaca.min.css" rel="stylesheet"/>
+    <link type="text/css" href="http://code.cloudcms.com/alpaca/1.5.14/bootstrap/alpaca.min.css" rel="stylesheet" />
     <!-- Bootstrap Datetime Picker -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/smalot-bootstrap-datetimepicker/2.3.4/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/smalot-bootstrap-datetimepicker/2.3.4/css/bootstrap-datetimepicker.min.css"/>
+
+    <!-- Sharpbox -->
+    <link type="text/css" rel="stylesheet" href="/Sharpbox/Web/Content/sharpbox.css">
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,6 +36,8 @@
             </div>
         </div>
     </div>
+    <br />
+    <br />
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -41,9 +46,10 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <!-- Toastr -->
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <!-- handlebars -->
@@ -54,5 +60,9 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
     <!-- Bootstrap Timepicker -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+
 </body>
 </html>

@@ -188,6 +188,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Sharpbox\Web\Content\sharpbox.css" />
     <Content Include="Sharpbox\Web\Scripts\collections.js" />
     <Content Include="Sharpbox\Web\Scripts\sharpbox.domain.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

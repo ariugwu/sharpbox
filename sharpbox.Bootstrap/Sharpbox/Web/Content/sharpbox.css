@@ -1,0 +1,31 @@
+﻿
+
+.sharpform {
+    border: 2px solid #000;
+    background: #DEDEDE;
+}
+
+.sharpform form {
+    padding: 0 15px;
+}
+
+.sharpform .sharpform-header{
+    border-bottom: 4px solid #000;
+    background: #FFF;
+    margin-bottom: 15px;
+    padding: 5px 5px 5px 15px;
+}
+
+.sharpform .sharpform-header hr{
+    margin: 1px;
+}
+
+.sharpform .sharpform-header p.title{
+    font-weight: bold;
+    font-size: 150%;
+    font-style: italic;
+}
+
+.sharpform .form-group label {
+    display: block;
+}

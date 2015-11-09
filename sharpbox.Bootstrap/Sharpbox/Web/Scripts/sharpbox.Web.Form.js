@@ -93,8 +93,8 @@ var sharpbox;
         var Header = (function () {
             function Header() {
             }
-            Header.prototype.toHtml = function () {
-                return "<form class=\"form-horizontal\" role=\"form\" name=\"" + this.name + "\" action=\"" + this.action + "\" method=\"" + this.method + "\">";
+            Header.prototype.toHtml = function (extraClasses) {
+                return "<form class=\"form-horizontal " + extraClasses + "\" role=\"form\" name=\"" + this.name + "\" action=\"" + this.action + "\" method=\"" + this.method + "\">";
             };
             return Header;
         })();
@@ -210,13 +210,15 @@ var sharpbox;
                 _super.apply(this, arguments);
             }
             BootstrapHtmlStrategy.prototype.labelHtml = function (field, extraClasses) {
-                return "<label class=\"" + extraClasses + "\"\" for=\"" + field.name + "\"><small>" + field.name.replace(/([a-z])([A-Z])/g, "$1 $2") + "</small></label>";
+                return "<label class=\"control-label col-sm-2 " + extraClasses + "\" for=\"" + field.name + "\"><small>" + field.name.replace(/([a-z])([A-Z])/g, "$1 $2") + "</small></label>";
             };
             BootstrapHtmlStrategy.prototype.inputHtml = function (field, extraClasses) {
                 var inputType = "text";
-                switch (field.data.dataType) {
+                switch (field.data.format) {
+                    case "date-time":
+                        return "\n                            <div class=\"col-sm-10\">\n                                <div class=\"input-group\">\n                                    " + this.formatInputPrepend(field) + "\n                                    <input type=\"" + inputType + "\" class=\"form-control " + extraClasses + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />\n                                    " + this.formatInputAppend(field) + "\n                                </div>\n                            </div>\n                            ";
                     default:
-                        return this.formatInputPrepend(field) + "<input type=\"" + inputType + "\" class=\"form-control " + extraClasses + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />" + this.formatInputAppend(field);
+                        return "<div class=\"col-sm-10\">\n                                " + this.formatInputPrepend(field) + "<input type=\"" + inputType + "\" class=\"form-control " + extraClasses + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />" + this.formatInputAppend(field) + "\n                            </div>\n                            ";
                 }
             };
             BootstrapHtmlStrategy.prototype.groupHtml = function (label, input) {
@@ -225,7 +227,7 @@ var sharpbox;
             BootstrapHtmlStrategy.prototype.formatInputPrepend = function (field) {
                 switch (field.data.format) {
                     case "date-time":
-                        return "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
+                        return "";
                     default:
                         return "";
                 }
@@ -233,7 +235,7 @@ var sharpbox;
             BootstrapHtmlStrategy.prototype.formatInputAppend = function (field) {
                 switch (field.data.format) {
                     case "date-time":
-                        return "";
+                        return "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
                     default:
                         return "";
                 }
@@ -243,3 +245,4 @@ var sharpbox;
         Web.BootstrapHtmlStrategy = BootstrapHtmlStrategy;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
+//# sourceMappingURL=sharpbox.Web.Form.js.map

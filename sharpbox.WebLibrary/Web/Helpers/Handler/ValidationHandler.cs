@@ -14,6 +14,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
             : base(new LifeCycleHandlerName("Validation"))
         {
         }
+
         public ValidationResult ValidationResult { get; set; }
 
         public AbstractValidator<T> Validator { get; set; }

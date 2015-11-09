@@ -120,6 +120,7 @@
     <Compile Include="Core\WebRequest.cs" />
     <Compile Include="Core\WebResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\Controllers\ResourceController.cs" />
     <Compile Include="Web\Controllers\EnvironmentController.cs" />
     <Compile Include="Web\Controllers\ISharpboxController.cs" />
     <Compile Include="Web\Controllers\ISharpScaffoldController.cs" />
