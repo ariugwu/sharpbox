@@ -2,13 +2,16 @@
 
 namespace sharpbox.Localization.Model
 {
+    using Common.Data;
+
     [Serializable]
-    public class Resource
+    public class Resource: ISharpThing<Resource>
     {
         public Resource() { }
 
-        public Resource(ResourceName name, ResourceType type, string value, string cultureCode, Guid? applicationId)
+        public Resource(ResourceName name, ResourceType type, string value, string cultureCode, Guid? applicationSharpId)
         {
+            this.SharpId = Guid.NewGuid();
             this.ResourceName = name;
             this.ResourceType = type;
             this.Value = value;
@@ -16,8 +19,10 @@ namespace sharpbox.Localization.Model
             this.LastModifiedDateTime = DateTime.Now;
 
             this.CultureCode = cultureCode;
-            this.ApplicationId = applicationId;
+            this.ApplicationSharpId = applicationSharpId;
         }
+
+        public Guid SharpId { get; set; }
 
         public int ResourceId { get; set; }
         public ResourceName ResourceName { get; set; }
@@ -33,6 +38,6 @@ namespace sharpbox.Localization.Model
         /// </summary>
         public string CultureCode { get; set; }
 
-        public Guid? ApplicationId { get; set; }
+        public Guid? ApplicationSharpId { get; set; }
     }
 }

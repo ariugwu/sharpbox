@@ -54,7 +54,7 @@ var sharpbox;
                 });
             };
             Form.prototype.insertField = function (key, field) {
-                this.fieldDictionary.setValue(key, new Field(key, field));
+                this.fieldDictionary.setValue(key, new Field(key, { dataType: field.type, format: field.format }));
             };
             Form.prototype.fieldDictionaryToArray = function () {
                 var _this = this;
@@ -62,7 +62,8 @@ var sharpbox;
                 var properties = this.schema.properties;
                 $.each(properties, function (key, field) {
                     var f = _this.fieldDictionary.getValue(key);
-                    array.push(f);
+                    if (f != null)
+                        array.push(f);
                 });
                 return array;
             };
@@ -70,6 +71,14 @@ var sharpbox;
                 var _this = this;
                 $.each(instance, function (key, value) {
                     if (instance.hasOwnProperty(key)) {
+                        var field = _this.fieldDictionary.getValue(key);
+                        if (field != null && field.data != null && field.data.format == "date-time") {
+                            var date = new Date(parseInt(value.substr(6)));
+                            var d = date.getDate();
+                            var m = date.getMonth() + 1;
+                            var y = date.getFullYear();
+                            value = d + "/" + m + "/" + y;
+                        }
                         var inputName = "[name=\"" + _this.prefixFieldName(key) + "\"]";
                         $(inputName).val(value);
                     }

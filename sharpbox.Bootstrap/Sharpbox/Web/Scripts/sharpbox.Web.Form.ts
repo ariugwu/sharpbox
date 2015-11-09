@@ -61,7 +61,7 @@ module sharpbox.Web {
         }
 
         insertField(key: string, field: any) {
-            this.fieldDictionary.setValue(key, new Field(key, field));
+            this.fieldDictionary.setValue(key, new Field(key, { dataType: field.type, format: field.format }));
         }
 
         fieldDictionaryToArray() : Array<Field> {
@@ -70,7 +70,8 @@ module sharpbox.Web {
             let properties = this.schema.properties;
             $.each(properties, (key, field) => {
                 var f = this.fieldDictionary.getValue(key);
-                array.push(f);
+
+                if(f != null) array.push(f);
             });
 
             return array;
@@ -79,6 +80,15 @@ module sharpbox.Web {
         bindToForm(instance: T) {
             $.each(instance, (key, value) => {
                 if (instance.hasOwnProperty(key)) {
+                    var field = this.fieldDictionary.getValue(key);
+                    if (field != null && field.data != null && field.data.format == "date-time") {
+                        var date = new Date(parseInt(value.substr(6)));
+                        var d = date.getDate();
+                        var m = date.getMonth() + 1;
+                        var y = date.getFullYear();
+                        value = `${d}/${m}/${y}`;
+                    }
+
                     var inputName = `[name="${this.prefixFieldName(key) }"]`;
                     $(inputName).val(value);
                 }

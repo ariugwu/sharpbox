@@ -8,47 +8,14 @@
 </div>
 
 @section scripts {
-    <script>
-        var url = window.location.pathname.split("/");
-        window.formSelector = "#example";
-        window.instanceName = url[1] || "Home";
-        window.action = "Update";
-        window.schema = null;
+<script type="text/javascript" src="/Sharpbox/Web/Scripts/collections.js"></script>
+<script type="text/javascript" src="/Sharpbox/Web/Scripts/sharpbox.Web.Environment.js"></script>
+<script type="text/javascript" src="/Sharpbox/Web/Scripts/sharpbox.Web.ViewModel.js"></script>
+<script type="text/javascript" src="/Sharpbox/Web/Scripts/sharpbox.Web.Form.js"></script>
+<script type="text/javascript" src="/Sharpbox/Web/Scripts/sharpbox.Web.Scaffold.js"></script>
+<script type="text/javascript" src="/Sharpbox/Web/Scripts/Template/SharpCrudTemplate.js"></script>
+<script type="text/javascript" src="/Sharpbox/Web/Scripts/sharpbox.js"></script>
+<script>
 
-        var loadGrid = function() {
-            $.getJSON("/" + instanceName + "/Get").done(function (data) {
-                var table = $.makeTable(data);
-                $("#example").html(table);
-            });
-
-
-            $.makeTable = function (mydata) {
-                var table = $('<table class="table table-striped">');
-                var tblHeader = "<tr>";
-                for (var k in mydata[0]) tblHeader += "<th>" + k + "</th>";
-                tblHeader += "</tr>";
-                $(tblHeader).appendTo(table);
-                $.each(mydata, function (index, value) {
-
-                    var TableRow = "<tr>";
-                    $.each(value, function (key, val) {
-                        if (key == "SharpId") {
-                            TableRow += "<td><a href=\"/"+ instanceName +"/Detail/?sharpId="+ val +"\" class=\"btn btn-sm btn-info\">Edit</a></td>";
-                        } else {
-                            TableRow += "<td>" + val + "</td>";
-                        }
-
-                    });
-                    TableRow += "</tr>";
-                    $(table).append(TableRow);
-                });
-                return ($(table));
-            };
-        }
-
-        
-        $(document).ready(function() {
-            loadGrid();
-        });
-    </script>
+</script>
 }

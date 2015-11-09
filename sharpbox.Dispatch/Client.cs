@@ -93,7 +93,7 @@ namespace sharpbox.Dispatch
             catch (Exception ex)
             {
                 var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, SharpId = Guid.NewGuid() });
             }
         }
 
@@ -112,7 +112,7 @@ namespace sharpbox.Dispatch
             catch (Exception ex)
             {
                 var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, SharpId = Guid.NewGuid() });
             }
         }
 
@@ -125,7 +125,7 @@ namespace sharpbox.Dispatch
             catch (Exception ex)
             {
                 var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, SharpId = Guid.NewGuid() });
             }
         }
 
@@ -149,7 +149,7 @@ namespace sharpbox.Dispatch
             catch (Exception ex)
             {
                 var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, ResponseUniqueKey = Guid.NewGuid() });
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, SharpId = Guid.NewGuid() });
             }
         }
 
@@ -200,11 +200,11 @@ namespace sharpbox.Dispatch
                 Entity = ex,
                 Type = ex.GetType(),
                 EventName = EventName.OnException,
-                Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null) ? ex.Message : ex.InnerException.Message, request.RequestUniqueKey),
+                Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null) ? ex.Message : ex.InnerException.Message, request.SharpId),
                 RequestId = request.RequestId,
-                RequestUniqueKey = request.RequestUniqueKey,
+                RequestSharpId = request.SharpId,
                 Request = request,
-                ResponseUniqueKey = Guid.NewGuid(),
+                SharpId = Guid.NewGuid(),
                 ResponseType = ResponseTypes.Error
             };
 
@@ -212,7 +212,7 @@ namespace sharpbox.Dispatch
 
             Broadcast(exResponse);
 
-            return exResponse.RequestUniqueKey;
+            return exResponse.SharpId;
 
         }
 

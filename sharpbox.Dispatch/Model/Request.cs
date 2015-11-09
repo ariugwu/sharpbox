@@ -3,16 +3,20 @@ using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.Dispatch.Model
 {
+    using sharpbox.Common.Data;
+
     [Serializable]
-    public class Request : BasePackage
+    public class Request : BasePackage, ISharpThing<Request>
     {
         public Request()
         {
             CreatedDate = DateTime.Now;
         }
 
+        public Guid SharpId { get; set; }
+
         public int RequestId { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
-        public Guid RequestUniqueKey { get; set; }
+        
         
         public string Message { get; set; }
         public int CommandNameId { get; set; }
@@ -26,7 +30,7 @@ namespace sharpbox.Dispatch.Model
         {
             return new Request()
             {  
-                RequestUniqueKey = Guid.NewGuid(),
+                SharpId = Guid.NewGuid(),
                 CommandName = commandName,
                 Message = message,
                 Entity = entity,

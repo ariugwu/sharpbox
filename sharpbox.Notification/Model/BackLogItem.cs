@@ -3,22 +3,23 @@
     using System;
     using System.Collections.Generic;
 
-    using sharpbox.Util.Notification;
+    using Common.Data;
+    using Util.Notification;
 
     [Serializable]
     [EmailTemplate]
-    public class BackLogItem
+    public class BackLogItem : ISharpThing<BackLogItem>
     {
         public BackLogItem() { }
 
         public int BackLogItemId { get; set; }
 
-        public Guid BackLogItemUniqueId { get; set; }
+        public Guid SharpId { get; set; }
         public int RequestId { get; set; }
-        public Guid RequestUniqueKey { get; set; }
+        public Guid RequestSharpId { get; set; }
         public int ResponseId { get; set; }
-        public Guid ResponseUniqueKey { get; set; }
-        public string UserId { get; set; }
+        public Guid ResponseSharpId { get; set; }
+        public string LogOn { get; set; }
 
         public bool WasSent { get; set; }
         public DateTime? SentDate { get; set; }

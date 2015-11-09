@@ -1,10 +1,12 @@
 ﻿using System;
-using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.Dispatch.Model
 {
+    using Common.Data;
+    using Common.Dispatch.Model;
+
     [Serializable]
-    public class Response : BasePackage
+    public class Response : BasePackage, ISharpThing<Response>
     {
         private string _message;
 
@@ -12,9 +14,9 @@ namespace sharpbox.Dispatch.Model
         {
             Entity = request.Entity;
             Message = message;
-            ResponseUniqueKey = Guid.NewGuid();
+            SharpId = Guid.NewGuid();
             RequestId = request.RequestId;
-            RequestUniqueKey = request.RequestUniqueKey;
+            RequestSharpId = request.SharpId;
             Request = request;
             ResponseType = responseType;
             CreatedDate = DateTime.Now;
@@ -25,10 +27,10 @@ namespace sharpbox.Dispatch.Model
             CreatedDate = DateTime.Now;        
         }
 
+        public Guid SharpId { get; set; }
+
         public int ResponseId { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
-
-        public Guid ResponseUniqueKey { get; set; }
-
+        
         public string Message
         {
             get { return _message + " [Status: " + ResponseType + "]"; }
@@ -40,7 +42,7 @@ namespace sharpbox.Dispatch.Model
         public EventName EventName { get; set; }
 
         public int RequestId { get; set; }
-        public Guid RequestUniqueKey { get; set; }
+        public Guid RequestSharpId { get; set; }
         public Request Request { get; set; }
         public string UserId { get; set;}
 

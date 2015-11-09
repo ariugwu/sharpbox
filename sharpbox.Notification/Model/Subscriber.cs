@@ -6,22 +6,26 @@
 
     using Common.Dispatch.Model;
 
+    using sharpbox.Common.Data;
+
     [Serializable]
-    public class Subscriber
+    public class Subscriber : ISharpThing<Subscriber>
     {
         public Subscriber(EventName eventName, string userId)
         {
+            this.SharpId = Guid.NewGuid();
             this.EventName = eventName;
             this.UserId = userId;
         }
 
         public Subscriber()
         {
-            
+            this.SharpId = Guid.NewGuid();
         }
 
         private string _serializedType;
 
+        public Guid SharpId { get; set; }
         public int SubscriberId { get; set; }
         public EventName EventName { get; set; }
         public Type Type { get; set; }

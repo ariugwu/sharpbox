@@ -193,10 +193,18 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>sharpbox.domain.ts</LastGenOutput>
     </Content>
-    <Content Include="Sharpbox\Web\Scripts\sharpbox.js" />
-    <Content Include="Sharpbox\Web\Scripts\sharpbox.Web.Form.js" />
-    <Content Include="Sharpbox\Web\Scripts\sharpbox.Web.ViewModel.js" />
-    <Content Include="Sharpbox\Web\Scripts\Template\SharpCrudTemplate.js" />
+    <Content Include="Sharpbox\Web\Scripts\sharpbox.js">
+      <DependentUpon>sharpbox.ts</DependentUpon>
+    </Content>
+    <Content Include="Sharpbox\Web\Scripts\sharpbox.Web.Form.js">
+      <DependentUpon>sharpbox.Web.Form.ts</DependentUpon>
+    </Content>
+    <Content Include="Sharpbox\Web\Scripts\sharpbox.Web.ViewModel.js">
+      <DependentUpon>sharpbox.Web.ViewModel.ts</DependentUpon>
+    </Content>
+    <Content Include="Sharpbox\Web\Scripts\Template\SharpCrudTemplate.js">
+      <DependentUpon>SharpCrudTemplate.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Sharpbox\Web\Scripts\Manager.ttinclude" />
@@ -376,6 +384,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.Web.Form.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.Web.Scaffold.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\sharpbox.Web.ViewModel.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\Template\SharpCrudTemplate.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\collections.d.ts" />

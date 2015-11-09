@@ -12,7 +12,7 @@ namespace sharpbox.TestHarness
         public List<Response> TestResponses {
             get
             {
-                return _dispatcher.CommandStream.Where(x => TestStream.Contains(x.Response.RequestUniqueKey)).Select(x => x.Response).ToList();
+                return _dispatcher.CommandStream.Where(x => TestStream.Contains(x.Response.RequestSharpId)).Select(x => x.Response).ToList();
             }
         } 
 
@@ -28,7 +28,7 @@ namespace sharpbox.TestHarness
         {
             foreach (var response in _dispatcher.CommandHub.Select(c => _dispatcher.Process<T>(c.Key, "Test Runner: " + c.Value.Action.Method.Name, new object[]{ entity })))
             {
-                TestStream.Add(response.RequestUniqueKey);
+                this.TestStream.Add(response.RequestSharpId);
             }
             //TODO: Now that we have a populated command stream find a way to output that data nicely.
             //TODO: When data is output the (when) command (then) event should also show the (then) listeners.

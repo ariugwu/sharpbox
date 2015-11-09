@@ -77,20 +77,20 @@ namespace sharpbox.Notification
         {
           AttempNumber = 0,
           AttemptMessage = "Created.",
-          BackLogItemUniqueId = Guid.NewGuid(),
+          SharpId = Guid.NewGuid(),
           NextAttempTime = null,
           RequestId = response.RequestId,
-          RequestUniqueKey = response.RequestUniqueKey,
+          RequestSharpId = response.RequestSharpId,
           ResponseId = response.ResponseId,
-          ResponseUniqueKey = response.ResponseUniqueKey,
+          ResponseSharpId = response.SharpId,
           SentDate = null,
-          UserId = s,
+          LogOn = s,
           WasSent = false,
           Subject = subject,
           Message = body
         };
 
-        BackLog.Add(bli);
+        this.BackLog.Add(bli);
       }
 
     }
@@ -112,7 +112,7 @@ namespace sharpbox.Notification
       }
 
       // If this doesn't exist then add it. If it does then update it.
-      if (!BackLog.Exists(x => x.BackLogItemUniqueId.Equals(bli.BackLogItemUniqueId)))
+      if (!BackLog.Exists(x => x.SharpId.Equals(bli.SharpId)))
       {
         BackLog.Add(bli);
       }
@@ -121,7 +121,7 @@ namespace sharpbox.Notification
         // update the item in our backlog
         for (var i = 0; i < BackLog.Count; i++)
         {
-          if (BackLog[i].BackLogItemUniqueId != bli.BackLogItemUniqueId) continue;
+          if (BackLog[i].SharpId != bli.SharpId) continue;
 
           BackLog[i] = bli;
           break;
