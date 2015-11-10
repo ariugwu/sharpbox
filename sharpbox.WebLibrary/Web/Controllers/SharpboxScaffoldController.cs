@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 using Newtonsoft.Json;
 
 using NJsonSchema;
-using sharpbox.WebLibrary.Helpers;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
+    using System.ComponentModel;
+    using System.Reflection;
+
     using Common.Data;
     using Common.Data.Helpers.ControllerWiring;
     using Common.Dispatch.Model;
@@ -21,6 +21,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
     using Core.Extension;
 
     using Dispatch.Model;
+
+    using Newtonsoft.Json.Schema;
 
     using WebLibrary.Helpers.ControllerWiring;
 
@@ -108,7 +110,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
             // Uses Json.Net Schema
             //var generator = new JSchemaGenerator();
-            //JSchema schema = generator.Generate(typeof(T));
+            //    generator.GenerationProviders.Add(null);
+            //JSchema jSchema = generator.Generate(typeof(T));
 
             //Try to grab the validator and poke around
             //var validator = this.LoadValidatorByUiAction(new UiAction("Update"));
@@ -121,7 +124,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             //    }
             //}
 
-            return Json(schemaJson, JsonRequestBehavior.AllowGet);
+            return this.Json(schemaJson, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult DataflowMatrix()
@@ -224,6 +227,22 @@ namespace sharpbox.WebLibrary.Web.Controllers
                     this.WebContext._handler.AddModelStateError(this.WebContext, v.ToString(), new ModelError(me.ErrorMessage));
                 }
             }
+        }
+
+        #endregion
+
+        #region Validation
+
+        public virtual TypeDescriptionProvider GetTypeDescriptonProvider()
+        {
+            var entity = new T();
+            var t = TypeDescriptor.GetProvider(entity.GetType());
+            return t;
+        }
+
+        private void AddDataAnotationsToValidator()
+        {
+            
         }
 
         #endregion

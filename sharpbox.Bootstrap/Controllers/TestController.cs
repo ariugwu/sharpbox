@@ -7,6 +7,10 @@ using FluentValidation;
 
 namespace sharpbox.Bootstrap.Controllers
 {
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Reflection;
+
     using Common.Data.Helpers;
     using Common.Dispatch.Model;
 
@@ -30,6 +34,21 @@ namespace sharpbox.Bootstrap.Controllers
             var validator = new InlineValidator<ExampleModel>();
             validator.RuleFor(x => x.Value).Length(10, 30);
             return validator;
+        }
+
+        public override TypeDescriptionProvider GetTypeDescriptonProvider()
+        {
+            var entity = new ExampleModel();
+            entity.Value = "";
+            var t = TypeDescriptor.AddAttributes(entity.Age, new Attribute[] { new MaxLengthAttribute(15) });
+            t = TypeDescriptor.AddAttributes(entity.Value, new Attribute[] { new RequiredAttribute() });
+
+            foreach (Attribute a in t.GetTypeDescriptor(entity.Age).GetAttributes())
+            {
+               Debug.WriteLine(a.GetType().FullName);
+            }
+
+            return t;
         }
 
         public ActionResult Seed()
