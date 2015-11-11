@@ -233,14 +233,12 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         #region Validation
 
-        public virtual TypeDescriptionProvider GetTypeDescriptonProvider()
+        public virtual Dictionary<object, Attribute> GetDataAnnotations()
         {
-            var entity = new T();
-            var t = TypeDescriptor.GetProvider(entity.GetType());
-            return t;
+            return new Dictionary<object, Attribute>(0);
         }
 
-        private void AddDataAnotationsToValidator()
+        public void AddDataAnotationsToValidator()
         {
             
         }

@@ -36,19 +36,15 @@ namespace sharpbox.Bootstrap.Controllers
             return validator;
         }
 
-        public override TypeDescriptionProvider GetTypeDescriptonProvider()
+        public override Dictionary<object, Attribute> GetDataAnnotations()
         {
-            var entity = new ExampleModel();
-            entity.Value = "";
-            var t = TypeDescriptor.AddAttributes(entity.Age, new Attribute[] { new MaxLengthAttribute(15) });
-            t = TypeDescriptor.AddAttributes(entity.Value, new Attribute[] { new RequiredAttribute() });
+            var entity = new ExampleModel {Value = "", FirstName = ""}; // Seems like in order to reference the object in the dictionary it can't be null.
 
-            foreach (Attribute a in t.GetTypeDescriptor(entity.Age).GetAttributes())
-            {
-               Debug.WriteLine(a.GetType().FullName);
-            }
+            var annotationMap = new Dictionary<object, Attribute>();
+                annotationMap.Add(entity.Age, new MaxLengthAttribute(15));
+                annotationMap.Add(entity.FirstName, new RequiredAttribute());
 
-            return t;
+            return annotationMap;
         }
 
         public ActionResult Seed()

@@ -27,6 +27,8 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
                 return;
             }
 
+            controller.AddDataAnotationsToValidator(); // This will take any data annotations that were added in the controller and make them FluentValidation rules if they don't already exist.
+
             this.Validator = controller.LoadValidatorByUiAction(webContext.WebRequest.UiAction);
 
             if (!this.Validate(webContext.WebRequest))
