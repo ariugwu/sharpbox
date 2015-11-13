@@ -28,7 +28,7 @@ namespace sharpbox.EfCodeFirst.Audit
         return db.Responses.Include(x => x.Request)
           .Include(x => x.EventName)
           .Include(x => x.Request.CommandName)
-          .Where(x => (Guid) x.ApplicationId == appId)
+          .Where(x => (Guid) x.EnvironmentId == appId)
           .OrderByDescending(x => x.CreatedDate)
           .Take(250)
           .ToList();

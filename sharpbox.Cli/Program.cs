@@ -94,7 +94,7 @@ namespace sharpbox.Cli
             response = example.Dispatch.Process<FileDetail>(ExampleContext.WriteARandomFile, "Example from the CLI project of writing a file.", new object[] { new FileDetail() { FilePath = "Random.txt", Data = System.Text.Encoding.UTF8.GetBytes(randomText) } });
 
             Console.WriteLine("The input was saved to a text file. We received a 'response' object back so we can get all the info needd to look up the action details in the audit log.");
-            Console.WriteLine("[Status:{0}] [Request Id: {1}] [ResponseId: {2}]", response.ResponseType, response.RequestSharpId, response.SharpId);
+            Console.WriteLine("[Status:{0}] [Request Id: {1}] [ResponseId: {2}]", response.ResponseType, response.RequestId, response.ResponseId);
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();

@@ -8,7 +8,7 @@ namespace sharpbox.WebLibrary.Core
     using Dispatch.Model;
     using Web.Controllers;
 
-    public abstract class LifecycleHandler<T> where T : ISharpThing<T>, new()
+    public abstract class LifecycleHandler<T> where T : new()
     {
         protected LifecycleHandler(LifeCycleHandlerName name)
         {

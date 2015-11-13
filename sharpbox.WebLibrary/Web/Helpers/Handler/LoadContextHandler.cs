@@ -9,7 +9,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
     using Common.Data;
     using Common.Data.Helpers;
 
-    public class LoadContextHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
+    public class LoadContextHandler<T> : LifecycleHandler<T> where T : new()
     {
         public LoadContextHandler()
             : base(new LifeCycleHandlerName("LoadContext"))

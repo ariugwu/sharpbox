@@ -6,7 +6,7 @@
     using sharpbox.Common.Data;
 
     [Serializable]
-    public class ExampleModel : ISharpThing<ExampleModel>
+    public class ExampleModel
     {
         public Guid SharpId { get; set; }
         public string FirstName { get; set; }

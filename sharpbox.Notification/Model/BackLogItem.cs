@@ -8,7 +8,7 @@
 
     [Serializable]
     [EmailTemplate]
-    public class BackLogItem : ISharpThing<BackLogItem>
+    public class BackLogItem
     {
         public BackLogItem() { }
 

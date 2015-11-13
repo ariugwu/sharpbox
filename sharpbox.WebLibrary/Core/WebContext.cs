@@ -12,7 +12,7 @@ namespace sharpbox.WebLibrary.Core
 
   using Web.Controllers;
 
-  public class WebContext<T> where T : ISharpThing<T>, new()
+  public class WebContext<T> where T : new()
     {
 
     #region Constructor(s)

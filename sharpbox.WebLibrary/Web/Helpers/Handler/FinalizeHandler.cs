@@ -5,7 +5,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
     using Common.Data;
     using Controllers;
 
-    public class FinalizeHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
+    public class FinalizeHandler<T> : LifecycleHandler<T> where T : new()
     {
 
         public FinalizeHandler()

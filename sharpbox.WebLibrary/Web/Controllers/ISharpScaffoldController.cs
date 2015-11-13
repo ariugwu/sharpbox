@@ -8,7 +8,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
     using Common.Dispatch.Model;
     using Dispatch.Model;
 
-    public interface ISharpboxScaffoldController<T> : ISharpboxController<T> where T : ISharpThing<T>, new()
+    public interface ISharpboxScaffoldController<T> : ISharpboxController<T> where T : new()
     {
         #region Properties
 

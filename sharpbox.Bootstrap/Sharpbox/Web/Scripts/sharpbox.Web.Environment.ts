@@ -7,7 +7,7 @@ module sharpbox.Web {
         environment: sharpbox.App.Model.Environment;
 
         loadEnvironmentById(id: string, callback: Function): void {
-            $.getJSON(`/Environment/GetBySharpId?sharpId=${id}`, (data) => {
+            $.getJSON(`/Environment/GetById?sharpId=${id}`, (data) => {
                 this.environment = data;
                 callback();
             });

@@ -9,9 +9,9 @@ namespace sharpbox.Common.Data.Helpers.ControllerWiring
 
     public interface IAppWiring
     {
-        void WireDefaultRoutes<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : ISharpThing<T>, new();
+        void WireDefaultRoutes<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : new();
 
-        void WireContext<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : ISharpThing<T>, new();
+        void WireContext<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : new();
 
     }
 }

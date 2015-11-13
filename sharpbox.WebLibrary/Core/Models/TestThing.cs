@@ -4,7 +4,7 @@
 
     using sharpbox.Common.Data;
 
-    public class TestThing : ExampleChildElement, ISharpThing<ExampleChildElement>
+    public class TestThing : ExampleChildElement
     {
         public Guid SharpId { get; set; }
     }

@@ -10,9 +10,6 @@ using NJsonSchema;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
-    using System.ComponentModel;
-    using System.Reflection;
-
     using Common.Data;
     using Common.Data.Helpers.ControllerWiring;
     using Common.Dispatch.Model;
@@ -22,12 +19,10 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
     using Dispatch.Model;
 
-    using Newtonsoft.Json.Schema;
-
     using WebLibrary.Helpers.ControllerWiring;
 
     public abstract class SharpboxScaffoldController<T> : SharpboxController<T>, ISharpboxScaffoldController<T>
-        where T : ISharpThing<T>, new()
+        where T : new()
     {
         #region Properties
 
@@ -99,7 +94,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult GetBySharpId(string sharpId)
         {
-            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.GetBySharpId, new object[] { Guid.Parse(sharpId) }), JsonRequestBehavior.AllowGet);
+            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.GetById, new object[] { Guid.Parse(sharpId) }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()

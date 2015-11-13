@@ -22,7 +22,7 @@ var sharpbox;
             };
             ViewModel.prototype.getById = function (id, callback) {
                 var _this = this;
-                var url = this.controllerUrl + "GetBySharpId/?sharpId=" + id;
+                var url = this.controllerUrl + "GetById/?sharpId=" + id;
                 $.get(url, function (data) {
                     _this.instance = data;
                 }).done(function (data) {

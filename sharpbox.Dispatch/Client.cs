@@ -93,7 +93,7 @@ namespace sharpbox.Dispatch
             catch (Exception ex)
             {
                 var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, SharpId = Guid.NewGuid() });
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg });
             }
         }
 
@@ -112,7 +112,7 @@ namespace sharpbox.Dispatch
             catch (Exception ex)
             {
                 var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, SharpId = Guid.NewGuid() });
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg });
             }
         }
 
@@ -125,7 +125,7 @@ namespace sharpbox.Dispatch
             catch (Exception ex)
             {
                 var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, SharpId = Guid.NewGuid() });
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg });
             }
         }
 
@@ -149,7 +149,7 @@ namespace sharpbox.Dispatch
             catch (Exception ex)
             {
                 var msg = String.Format(ResponseMessage, "Registration failed with msg: " + ex.Message, action.Method.Name, typeof(T).Name);
-                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg, SharpId = Guid.NewGuid() });
+                Broadcast(new Response { Entity = ex, Type = ex.GetType(), EventName = EventName.OnException, Message = msg });
             }
         }
 
@@ -193,18 +193,16 @@ namespace sharpbox.Dispatch
         /// <param name="ex"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Guid BroadCastExceptionResponse(Exception ex, Request request)
+        public Response BroadCastExceptionResponse(Exception ex, Request request)
         {
             var exResponse = new Response
             {
                 Entity = ex,
                 Type = ex.GetType(),
                 EventName = EventName.OnException,
-                Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null) ? ex.Message : ex.InnerException.Message, request.SharpId),
+                Message = string.Format("[Exception Message: {0} [Request Id: {1} ]", (ex.InnerException == null) ? ex.Message : ex.InnerException.Message, request.RequestId),
                 RequestId = request.RequestId,
-                RequestSharpId = request.SharpId,
                 Request = request,
-                SharpId = Guid.NewGuid(),
                 ResponseType = ResponseTypes.Error
             };
 
@@ -212,7 +210,7 @@ namespace sharpbox.Dispatch
 
             Broadcast(exResponse);
 
-            return exResponse.SharpId;
+            return exResponse;
 
         }
 
@@ -313,7 +311,7 @@ namespace sharpbox.Dispatch
                 catch (Exception ex)
                 {
                     var request = Request.Create(routine[i].CommandName, routine[i].BroadCastMessage, args);
-                    var exResponseUniqueKey = BroadCastExceptionResponse(ex, request);
+                    var exResponse = BroadCastExceptionResponse(ex, request);
 
                     try
                     {
@@ -323,7 +321,7 @@ namespace sharpbox.Dispatch
 
                             try
                             {
-                                result = ProcessFailOver<T>(routineName, request, exResponseUniqueKey, routine[i], args);
+                                result = ProcessFailOver<T>(routineName, request, exResponse.ResponseId, routine[i], args);
                             }
                             catch (Exception failOverException)
                             {
@@ -443,7 +441,7 @@ namespace sharpbox.Dispatch
             return result;
         }
 
-        private T ProcessFailOver<T>(RoutineName routineName, Request request, Guid exResponseUniqueKey, RoutineItem r, object[] args)
+        private T ProcessFailOver<T>(RoutineName routineName, Request request, int exResponseId, RoutineItem r, object[] args)
         {
             request.Message = request.Message;
             var response = new Response(request, "", ResponseTypes.Success);

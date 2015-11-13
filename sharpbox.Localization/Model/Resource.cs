@@ -5,7 +5,7 @@ namespace sharpbox.Localization.Model
     using Common.Data;
 
     [Serializable]
-    public class Resource: ISharpThing<Resource>
+    public class Resource
     {
         public Resource() { }
 

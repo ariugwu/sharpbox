@@ -9,7 +9,7 @@
     using sharpbox.Common.Data;
 
     [Serializable]
-    public class Subscriber : ISharpThing<Subscriber>
+    public class Subscriber
     {
         public Subscriber(EventName eventName, string userId)
         {

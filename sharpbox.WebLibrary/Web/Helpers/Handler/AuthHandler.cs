@@ -6,7 +6,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
     using Controllers;
     using Core;
 
-    public class AuthHandler<T> : LifecycleHandler<T> where T : ISharpThing<T>, new()
+    public class AuthHandler<T> : LifecycleHandler<T> where T : new()
     {
         public AuthHandler()
             : base(new LifeCycleHandlerName("Auth"))

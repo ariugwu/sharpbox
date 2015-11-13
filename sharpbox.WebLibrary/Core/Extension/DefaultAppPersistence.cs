@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using sharpbox.Common.Data;
 using sharpbox.Dispatch.Model;
 using sharpbox.Localization.Model;
 using sharpbox.Membership.Model;
@@ -10,6 +9,8 @@ using Environment = sharpbox.App.Model.Environment;
 
 namespace sharpbox.WebLibrary.Core.Extension
 {
+    using System.Reflection;
+
     public class DefaultAppPersistence : IAppPersistence
     {
 
@@ -24,7 +25,7 @@ namespace sharpbox.WebLibrary.Core.Extension
         public string TextResourcesFileName { get { return "TextResources.dat"; } }
 
 
-        public T Add<T>(T instance) where T : ISharpThing<T>, new()
+        public T Add<T>(T instance) where T : new()
         {
             List<T> things = this.Get<T>();
             things.Add(instance);
@@ -32,7 +33,7 @@ namespace sharpbox.WebLibrary.Core.Extension
             return instance;
         }
 
-        public List<T> UpdateAll<T>(List<T> items) where T : ISharpThing<T>, new()
+        public List<T> UpdateAll<T>(List<T> items) where T : new()
         {
             var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat", typeof(T).Name));
 
@@ -50,10 +51,10 @@ namespace sharpbox.WebLibrary.Core.Extension
             return items;
         }  
 
-        public T Update<T>(T instance) where T : ISharpThing<T>, new()
+        public T Update<T>(T instance) where T : new()
         {
             List<T> things = this.Get<T>();
-            var item = things.FirstOrDefault(x => x.SharpId == instance.SharpId);
+            var item = things.FirstOrDefault();
 
             if (item != null)
             {
@@ -78,20 +79,22 @@ namespace sharpbox.WebLibrary.Core.Extension
             return instance;
         }
 
-        public T Remove<T>(T instance) where T : ISharpThing<T>, new()
+        public T Remove<T>(T instance) where T : new()
         {
             instance = new T();
 
             return this.Update(instance);
         }
 
-        public T GetBySharpId<T>(Guid sharpId) where T : ISharpThing<T>, new()
+        public T GetById<T>(object id) where T : new()
         {
+            var idInfo = this.GetIdPropertyByConvention(typeof(T));
+            
             List<T> things = this.Get<T>();
-            return things.FirstOrDefault(x => x.SharpId == sharpId);
+            return things.FirstOrDefault();
         }
 
-        public List<T> Get<T>() where T : ISharpThing<T>, new()
+        public List<T> Get<T>() where T : new()
         {
             List<T> things;
 
@@ -185,7 +188,6 @@ namespace sharpbox.WebLibrary.Core.Extension
             {
                 appContext.Environment = new Environment
                 {
-                    SharpId = Guid.NewGuid(), 
                     ApplicationName = "Sample Application"
                 };
                 var envs = new List<Environment> { appContext.Environment };
@@ -302,6 +304,13 @@ namespace sharpbox.WebLibrary.Core.Extension
             }
 
             return appContext;
+        }
+
+        private PropertyInfo GetIdPropertyByConvention(Type type)
+        {
+            string idName = $"{type.Name}Id";
+
+            return type.GetProperty(idName);
         }
 
     }

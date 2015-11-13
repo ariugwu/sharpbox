@@ -6,10 +6,8 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
     using Common.Data;
     using Common.Data.Helpers.ControllerWiring;
     using Common.Dispatch.Model;
-    using Core;
+    using Core.Extension;
     using Dispatch.Model;
-
-    using sharpbox.WebLibrary.Core.Extension;
 
     public class DefaultAppWiring : IAppWiring
     {
@@ -20,14 +18,14 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
             _appPersistence = appPersistence;
         }
 
-        public void WireDefaultRoutes<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : ISharpThing<T>, new()
+        public void WireDefaultRoutes<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : new()
         {
             var appContext = controller.WebContext.AppContext;
             this._appPersistence.AppContext = appContext;
 
             //Register Queries
             appContext.Dispatch.Register<List<T>>(Get, new Func<List<T>>(this._appPersistence.Get<T>));
-            appContext.Dispatch.Register<T>(GetBySharpId, new Func<Guid, T>(this._appPersistence.GetBySharpId<T>));
+            appContext.Dispatch.Register<T>(GetById, new Func<object, T>(this._appPersistence.GetById<T>));
 
             //Register Command(s)
             appContext.Dispatch.Register<T>(Add, this._appPersistence.Add, OnAdd);
@@ -36,7 +34,7 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
             appContext.Dispatch.Register<T>(Remove, this._appPersistence.Remove, OnRemove);
         }
 
-        public void WireContext<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : ISharpThing<T>, new()
+        public void WireContext<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : new()
         {
             var appContext = controller.WebContext.AppContext;
             this._appPersistence.AppContext = appContext;
@@ -109,7 +107,7 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
         #region Commands and Events
 
         public static QueryName Get = new QueryName("Get");
-        public static QueryName GetBySharpId = new QueryName("GetBySharpId");
+        public static QueryName GetById = new QueryName("GetId");
 
         public static CommandName Add = new CommandName("Add");
         public static CommandName Update = new CommandName("Update");

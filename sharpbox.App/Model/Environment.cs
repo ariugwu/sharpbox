@@ -5,7 +5,7 @@ namespace sharpbox.App.Model
     using Common.Data;
 
     [Serializable]
-  public class Environment : ISharpThing<Environment>
+  public class Environment
   {
     public int EnvironmentId { get; set; }
     public string BaseUrl { get; set; }
@@ -19,7 +19,5 @@ namespace sharpbox.App.Model
     public EnvironmentType EnvironmentType {get; set; }
     public int TechSheetId { get; set; }
     public TechSheet TechSheet { get; set; }
-
-    public Guid SharpId { get; set; }
   }
 }
