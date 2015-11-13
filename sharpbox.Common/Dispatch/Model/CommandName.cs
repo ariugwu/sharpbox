@@ -17,6 +17,6 @@ namespace sharpbox.Common.Dispatch.Model
         public int CommandNameId { get; set; }
         public string Name { get; set; }
 
-        public Guid? ApplicationId { get; set; }
+        public Guid? EnvironmentId { get; set; }
     }
 }

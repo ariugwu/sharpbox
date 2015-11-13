@@ -18,7 +18,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         List<T> Get<T>() where T : new();
 
-        T GetById<T>(object id) where T : new();
+        T GetById<T>(string id) where T : new();
 
         AppContext SaveEnvironment(AppContext appContext);
 

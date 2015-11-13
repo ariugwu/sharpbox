@@ -6,6 +6,6 @@
 
     public class TestThing : ExampleChildElement
     {
-        public Guid SharpId { get; set; }
+        public string TestStringThingFoo { get; set; }
     }
 }

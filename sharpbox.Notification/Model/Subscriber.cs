@@ -13,25 +13,22 @@
     {
         public Subscriber(EventName eventName, string userId)
         {
-            this.SharpId = Guid.NewGuid();
             this.EventName = eventName;
             this.UserId = userId;
         }
 
         public Subscriber()
         {
-            this.SharpId = Guid.NewGuid();
         }
 
         private string _serializedType;
 
-        public Guid SharpId { get; set; }
         public int SubscriberId { get; set; }
         public EventName EventName { get; set; }
         public Type Type { get; set; }
         public string UserId { get; set; }
 
-        public Guid? ApplicationId { get; set; }
+        public Guid? EnvironmentId { get; set; }
 
         /// <summary>
         /// Used only for EF. @SEE: http://stackoverflow.com/a/14785553

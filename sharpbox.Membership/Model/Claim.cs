@@ -12,6 +12,6 @@ namespace sharpbox.Membership.Model
         public EntityStateName EntityState { get; set; }
         public CommandName CommandName { get; set; }
 
-        public Guid ApplicationId { get; set; }
+        public Guid EnvironmentId { get; set; }
     }
 }

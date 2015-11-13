@@ -50,15 +50,15 @@ namespace sharpbox.Bootstrap.Controllers
         public ActionResult Seed()
         {
             var list = new List<ExampleModel>();
-            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 1, BirthDate = DateTime.Now.AddDays(1), FirstName = "Sally", LastName = "Ranch", Value = "A" });
-            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 2, BirthDate = DateTime.Now.AddDays(2), FirstName = "Mark", LastName = "Resiling", Value = "B" });
-            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 3, BirthDate = DateTime.Now.AddDays(3), FirstName = "Jason", LastName = "Brooks", Value = "C" });
-            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 4, BirthDate = DateTime.Now.AddDays(4), FirstName = "Alex", LastName = "Tinsley", Value = "D" });
-            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 5, BirthDate = DateTime.Now.AddDays(5), FirstName = "Brian", LastName = "Walker", Value = "E" });
-            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 6, BirthDate = DateTime.Now.AddDays(6), FirstName = "Steven", LastName = "Stokes", Value = "F" });
-            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 7, BirthDate = DateTime.Now.AddDays(7), FirstName = "Mike", LastName = "Jackson", Value = "G" });
-            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 8, BirthDate = DateTime.Now.AddDays(8), FirstName = "Nick", LastName = "Lancaster", Value = "H" });
-            list.Add(new ExampleModel() { SharpId = Guid.NewGuid(), Age = 9, BirthDate = DateTime.Now.AddDays(9), FirstName = "Josh", LastName = "Holmes", Value = "I" });
+            list.Add(new ExampleModel() { ExampleModelId = 9, Age = 1, BirthDate = DateTime.Now.AddDays(1), FirstName = "Sally", LastName = "Ranch", Value = "A" });
+            list.Add(new ExampleModel() { ExampleModelId = 8, Age = 2, BirthDate = DateTime.Now.AddDays(2), FirstName = "Mark", LastName = "Resiling", Value = "B" });
+            list.Add(new ExampleModel() { ExampleModelId = 7, Age = 3, BirthDate = DateTime.Now.AddDays(3), FirstName = "Jason", LastName = "Brooks", Value = "C" });
+            list.Add(new ExampleModel() { ExampleModelId = 6, Age = 4, BirthDate = DateTime.Now.AddDays(4), FirstName = "Alex", LastName = "Tinsley", Value = "D" });
+            list.Add(new ExampleModel() { ExampleModelId = 5, Age = 5, BirthDate = DateTime.Now.AddDays(5), FirstName = "Brian", LastName = "Walker", Value = "E" });
+            list.Add(new ExampleModel() { ExampleModelId = 4, Age = 6, BirthDate = DateTime.Now.AddDays(6), FirstName = "Steven", LastName = "Stokes", Value = "F" });
+            list.Add(new ExampleModel() { ExampleModelId = 3, Age = 7, BirthDate = DateTime.Now.AddDays(7), FirstName = "Mike", LastName = "Jackson", Value = "G" });
+            list.Add(new ExampleModel() { ExampleModelId = 2, Age = 8, BirthDate = DateTime.Now.AddDays(8), FirstName = "Nick", LastName = "Lancaster", Value = "H" });
+            list.Add(new ExampleModel() { ExampleModelId = 1, Age = 9, BirthDate = DateTime.Now.AddDays(9), FirstName = "Josh", LastName = "Holmes", Value = "I" });
 
             this.WebContext.AppContext.Dispatch.Process<List<ExampleModel>>(
                 DefaultAppWiring.UpdateAll,

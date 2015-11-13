@@ -6,8 +6,8 @@ module sharpbox.Web {
     export class Site {
         environment: sharpbox.App.Model.Environment;
 
-        loadEnvironmentById(id: string, callback: Function): void {
-            $.getJSON(`/Environment/GetById?sharpId=${id}`, (data) => {
+        loadEnvironmentById(id: any, callback: Function): void {
+            $.getJSON(`/Environment/GetById?id=${id}`, (data) => {
                 this.environment = data;
                 callback();
             });

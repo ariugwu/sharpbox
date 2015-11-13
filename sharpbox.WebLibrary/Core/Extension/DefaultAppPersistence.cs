@@ -13,17 +13,15 @@ namespace sharpbox.WebLibrary.Core.Extension
 
     public class DefaultAppPersistence : IAppPersistence
     {
-
         public AppContext AppContext { get; set; }
 
-        public string EnivronmentFileName { get { return "Environment.dat";} }
-        public string AuditTrailFileName { get { return "AuditTrail.dat"; } }
-        public string AvailableClaimsFileName { get { return "AvailableClaims.dat"; } }
-        public string AvailableUserRolesFileName { get { return "AvailableUserRoles"; } }
-        public string ClaimsByRoleFileName { get { return "ClaimsByRole.dat"; } }
-        public string UsersInRolesFileName { get { return "UsersInRoles.dat"; } }
-        public string TextResourcesFileName { get { return "TextResources.dat"; } }
-
+        public string EnivronmentFileName => "Environment.dat";
+        public string AuditTrailFileName => "AuditTrail.dat";
+        public string AvailableClaimsFileName => "AvailableClaims.dat";
+        public string AvailableUserRolesFileName => "AvailableUserRoles";
+        public string ClaimsByRoleFileName => "ClaimsByRole.dat";
+        public string UsersInRolesFileName => "UsersInRoles.dat";
+        public string TextResourcesFileName => "TextResources.dat";
 
         public T Add<T>(T instance) where T : new()
         {
@@ -35,7 +33,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public List<T> UpdateAll<T>(List<T> items) where T : new()
         {
-            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat", typeof(T).Name));
+            var path = Path.Combine(this.AppContext.DataPath, $"{typeof(T).Name}.dat");
 
             if (this.AppContext.File.Exists(path))
             {
@@ -49,34 +47,42 @@ namespace sharpbox.WebLibrary.Core.Extension
             }
 
             return items;
-        }  
+        }
 
         public T Update<T>(T instance) where T : new()
         {
-            List<T> things = this.Get<T>();
-            var item = things.FirstOrDefault();
+            PropertyInfo idInfo = this.GetIdPropertyByConvention(typeof(T));
 
-            if (item != null)
+            if (idInfo != null)
             {
-                things[things.IndexOf(item)] = instance;
-            }
-            else
-            {
-                things.Add(instance);
-            }
+                List<T> things = this.Get<T>();
 
-            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat",typeof(T).Name));
+                //@SEE: http://stackoverflow.com/a/28658501
+                var item = things.FirstOrDefault(x => idInfo.GetValue(x).ToString() == idInfo.GetValue(instance).ToString());
 
-            if (this.AppContext.File.Exists(path))
-            {
-                this.AppContext.File.Replace(path, things);
-            }
-            else
-            {
-                this.AppContext.File.Write(path, things);
-            }
+                if (item != null)
+                {
+                    things[things.IndexOf(item)] = instance;
+                }
+                else
+                {
+                    things.Add(instance);
+                }
 
-            return instance;
+                var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat", typeof(T).Name));
+
+                if (this.AppContext.File.Exists(path))
+                {
+                    this.AppContext.File.Replace(path, things);
+                }
+                else
+                {
+                    this.AppContext.File.Write(path, things);
+                }
+
+                return instance;
+            }
+            throw new ArgumentException("This object has no id that follows the connvention 'ObjectNameId'");
         }
 
         public T Remove<T>(T instance) where T : new()
@@ -86,17 +92,16 @@ namespace sharpbox.WebLibrary.Core.Extension
             return this.Update(instance);
         }
 
-        public T GetById<T>(object id) where T : new()
+        public T GetById<T>(string id) where T : new()
         {
             PropertyInfo idInfo = this.GetIdPropertyByConvention(typeof(T));
 
             if (idInfo != null)
             {
-                //@SEE: http://stackoverflow.com/a/28658501
-                Type idType = idInfo.GetType();
-                var compId = Convert.ChangeType(id, idType);
                 List<T> things = this.Get<T>();
-                return things.FirstOrDefault(x => idInfo.GetValue(x) == compId);
+
+                //@SEE: http://stackoverflow.com/a/28658501
+                return things.FirstOrDefault(x => idInfo.GetValue(x).ToString() == id);
             }
 
             throw new ArgumentException("This object has no id that follows the connvention 'ObjectNameId'");
@@ -126,7 +131,7 @@ namespace sharpbox.WebLibrary.Core.Extension
         {
             var path = Path.Combine(appContext.DataPath, EnivronmentFileName);
 
-            var envs = new List<Environment>{appContext.Environment};
+            var envs = new List<Environment> { appContext.Environment };
 
             appContext.File.Replace(path, envs);
 
@@ -196,6 +201,7 @@ namespace sharpbox.WebLibrary.Core.Extension
             {
                 appContext.Environment = new Environment
                 {
+                    EnvironmentId = 1,
                     ApplicationName = "Sample Application"
                 };
                 var envs = new List<Environment> { appContext.Environment };

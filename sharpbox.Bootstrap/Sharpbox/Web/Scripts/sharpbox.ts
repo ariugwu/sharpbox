@@ -21,16 +21,16 @@ var urlParams;
 $(document).ready(() => {
     var url = window.location.pathname.split("/");
     var container = "#example";
-    var instanceName = url[1] || "Home";
+    var instanceName = url[1] || "Environment";
     var actionName = url[2];
-    var sharpId = urlParams["sharpId"];
+    var id = urlParams["id"];
     var site = new sharpbox.Web.Site();
     var scaffold = new sharpbox.Web.Scaffold();
-    console.log(sharpId);
-    site.loadEnvironmentById("1be0590f-e0db-4923-988a-384d473dfb4d", () => {
+    console.log(id);
+    site.loadEnvironmentById(1, () => {
         $("#appName").html(site.environment.ApplicationName);
-        if (sharpId != null || actionName == "Detail") {
-            scaffold.loadEditForm(container, instanceName, sharpId); //SEE sharpbox.Web.Scaffold.ts
+        if (id != null || actionName == "Detail") {
+            scaffold.loadEditForm(container, instanceName, id); //SEE sharpbox.Web.Scaffold.ts
         } else {
             scaffold.loadGrid(container, instanceName);
         }

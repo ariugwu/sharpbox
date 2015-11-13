@@ -9,9 +9,8 @@ namespace sharpbox.Localization.Model
     {
         public Resource() { }
 
-        public Resource(ResourceName name, ResourceType type, string value, string cultureCode, Guid? applicationSharpId)
+        public Resource(ResourceName name, ResourceType type, string value, string cultureCode, Guid? environmentId)
         {
-            this.SharpId = Guid.NewGuid();
             this.ResourceName = name;
             this.ResourceType = type;
             this.Value = value;
@@ -19,10 +18,8 @@ namespace sharpbox.Localization.Model
             this.LastModifiedDateTime = DateTime.Now;
 
             this.CultureCode = cultureCode;
-            this.ApplicationSharpId = applicationSharpId;
+            this.EnvironmentId = environmentId;
         }
-
-        public Guid SharpId { get; set; }
 
         public int ResourceId { get; set; }
         public ResourceName ResourceName { get; set; }
@@ -38,6 +35,6 @@ namespace sharpbox.Localization.Model
         /// </summary>
         public string CultureCode { get; set; }
 
-        public Guid? ApplicationSharpId { get; set; }
+        public Guid? EnvironmentId { get; set; }
     }
 }

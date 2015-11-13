@@ -11,16 +11,10 @@
     public class BackLogItem
     {
         public BackLogItem() { }
-
         public int BackLogItemId { get; set; }
-
-        public Guid SharpId { get; set; }
         public int RequestId { get; set; }
-        public Guid RequestSharpId { get; set; }
         public int ResponseId { get; set; }
-        public Guid ResponseSharpId { get; set; }
         public string LogOn { get; set; }
-
         public bool WasSent { get; set; }
         public DateTime? SentDate { get; set; }
         public int AttempNumber { get; set; }
@@ -35,7 +29,7 @@
 
         public string Message { get; set; }
 
-        public Guid? ApplicationId { get; set; }
+        public Guid? EnvironmentId { get; set; }
 
     }
 }

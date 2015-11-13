@@ -18,8 +18,8 @@ namespace sharpbox.EfCodeFirst.Audit
     {
       using (var db = new AuditContext(this.ConnectionStringName))
       {
-          var eventNames = AuditRepository.GetEventNames(this.ConnectionStringName).Where(x => x.ApplicationId == null || (x.ApplicationId != null && x.ApplicationId == instance.EnvironmentId)).ToList();
-          var commandNames = AuditRepository.GetCommandName(this.ConnectionStringName).Where(x => x.ApplicationId == null || (x.ApplicationId != null && x.ApplicationId == instance.EnvironmentId)).ToList();
+          var eventNames = AuditRepository.GetEventNames(this.ConnectionStringName).Where(x => x.EnvironmentId == null || (x.EnvironmentId != null && x.EnvironmentId == instance.EnvironmentId)).ToList();
+          var commandNames = AuditRepository.GetCommandName(this.ConnectionStringName).Where(x => x.EnvironmentId == null || (x.EnvironmentId != null && x.EnvironmentId == instance.EnvironmentId)).ToList();
 
         //Clean up the event name stuff to prevent duplicates
         var eventName = eventNames.FirstOrDefault(x => x.Name.ToLower().Trim() == instance.EventName.Name.ToLower().Trim()) ?? instance.EventName;

@@ -22,7 +22,7 @@ var sharpbox;
             };
             ViewModel.prototype.getById = function (id, callback) {
                 var _this = this;
-                var url = this.controllerUrl + "GetById/?sharpId=" + id;
+                var url = this.controllerUrl + "GetById/?id=" + id;
                 $.get(url, function (data) {
                     _this.instance = data;
                 }).done(function (data) {
@@ -60,4 +60,3 @@ var sharpbox;
         Web.ViewModel = ViewModel;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.ViewModel.js.map

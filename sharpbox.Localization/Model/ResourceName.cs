@@ -16,6 +16,6 @@ namespace sharpbox.Localization.Model
         public int ResourceNameId { get; set; }
         public string Name { get; set; }
 
-        public Guid? ApplicationSharpId { get; set; }
+        public Guid? EnvironmentId { get; set; }
     }
 }

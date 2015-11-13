@@ -25,7 +25,7 @@ module sharpbox.Web {
         }
 
         loadGrid = (containerSelector: string, domainName: string) => {
-            $.getJSON(`/${domainName}/Get`).done(data => {
+            $.getJSON(`/${domainName}/Get`, { _: new Date().getTime() }).done(data => {
                 var table = this.makeTable(data, domainName);
                 $(containerSelector).append(table);
             });
@@ -33,11 +33,20 @@ module sharpbox.Web {
 
         makeTable = (data : any, domainName: string) => {
             var table = $("<table class=\"table table-striped\">");
+            var caption = $(`<caption><div class=\"btn-group pull-right\"><a href="/${domainName}/Detail">Add</a></div></caption>`);
+
+            $(caption).appendTo(table);
+
             var tblHeader = "<tr>";
             var object = data[0];
             for (let k in object) {
                 if (object.hasOwnProperty(k)) {
-                    tblHeader += `<th>${k}</th>`;
+                    if (k == `${domainName}Id`) {
+                        tblHeader += `<th>Action(s)</th>`;
+                    } else {
+
+                        tblHeader += `<th>${k}</th>`;
+                    }
                 }
             }
             tblHeader += "</tr>";
@@ -46,8 +55,8 @@ module sharpbox.Web {
 
                 var tableRow = "<tr>";
                 $.each(value, (key, val) => {
-                    if (key == "SharpId") {
-                        tableRow += `<td><a href="/${domainName}/Detail/?sharpId=${val}" class="btn btn-sm btn-info">Edit</a></td>`;
+                    if (key == `${domainName}Id`) {
+                        tableRow += `<td><a href="/${domainName}/Detail/?id=${val}" class="btn btn-sm btn-info">Edit</a></td>`;
                     } else {
                         tableRow += `<td>${val}</td>`;
                     }

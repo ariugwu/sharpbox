@@ -10,6 +10,6 @@ namespace sharpbox.App.Model
         public string ProjectName { get; set; }
         public string ProjectSiteUrl { get; set; }
         public string SourceLocation { get; set; }
-        public Guid? ApplicationId { get; set; }
+        public Guid? EnvironmentId { get; set; }
     }
 }

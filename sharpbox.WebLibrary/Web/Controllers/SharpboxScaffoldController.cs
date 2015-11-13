@@ -92,9 +92,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.Get, null), JsonRequestBehavior.AllowGet);
         }
 
-        public virtual JsonResult GetBySharpId(string sharpId)
+        public virtual JsonResult GetById(string id)
         {
-            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.GetById, new object[] { Guid.Parse(sharpId) }), JsonRequestBehavior.AllowGet);
+            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()

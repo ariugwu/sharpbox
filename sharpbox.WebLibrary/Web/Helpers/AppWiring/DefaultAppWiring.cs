@@ -25,7 +25,7 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
 
             //Register Queries
             appContext.Dispatch.Register<List<T>>(Get, new Func<List<T>>(this._appPersistence.Get<T>));
-            appContext.Dispatch.Register<T>(GetById, new Func<object, T>(this._appPersistence.GetById<T>));
+            appContext.Dispatch.Register<T>(GetById, new Func<string, T>(this._appPersistence.GetById<T>));
 
             //Register Command(s)
             appContext.Dispatch.Register<T>(Add, this._appPersistence.Add, OnAdd);

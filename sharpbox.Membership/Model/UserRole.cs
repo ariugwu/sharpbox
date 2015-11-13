@@ -19,6 +19,6 @@ namespace sharpbox.Membership.Model
         public static UserRole Administrator = new UserRole("Administrator");
         public static UserRole User = new UserRole("User");
 
-        public Guid ApplicationId { get; set; }
+        public Guid EnvironmentId { get; set; }
     }
 }

@@ -27,8 +27,8 @@ namespace sharpbox.App.Model
         public bool IsHighPriority { get; set; }
         public string SubmittedBy { get; set; }
         public DateTime CreatedDate { get; set; }
-        public Guid ResponseUniqueKey { get; set; }
-        public Guid? ApplicationId { get; set; }
+        public int ResponseId { get; set; }
+        public Guid? EnvironmentId { get; set; }
 
     }
 }

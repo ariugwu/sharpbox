@@ -33,7 +33,7 @@ module sharpbox.Web {
         }
 
         getById(id: string, callback: Function) {
-            const url = this.controllerUrl + "GetById/?sharpId=" + id;
+            const url = this.controllerUrl + "GetById/?id=" + id;
             $.get(url, data => {
                 this.instance = data;
             }).done(data => {
