@@ -88,10 +88,18 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public T GetById<T>(object id) where T : new()
         {
-            var idInfo = this.GetIdPropertyByConvention(typeof(T));
-            
-            List<T> things = this.Get<T>();
-            return things.FirstOrDefault();
+            PropertyInfo idInfo = this.GetIdPropertyByConvention(typeof(T));
+
+            if (idInfo != null)
+            {
+                //@SEE: http://stackoverflow.com/a/28658501
+                Type idType = idInfo.GetType();
+                var compId = Convert.ChangeType(id, idType);
+                List<T> things = this.Get<T>();
+                return things.FirstOrDefault(x => idInfo.GetValue(x) == compId);
+            }
+
+            throw new ArgumentException("This object has no id that follows the connvention 'ObjectNameId'");
         }
 
         public List<T> Get<T>() where T : new()
