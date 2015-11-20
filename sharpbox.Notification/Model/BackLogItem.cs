@@ -1,10 +1,11 @@
-﻿namespace sharpbox.Notification.Model
+﻿using sharpbox.Common.Notification;
+
+namespace sharpbox.Notification.Model
 {
     using System;
     using System.Collections.Generic;
 
     using Common.Data;
-    using Util.Notification;
 
     [Serializable]
     [EmailTemplate]

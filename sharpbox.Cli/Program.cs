@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Mail;
-using sharpbox.Common.Dispatch.Model;
-using sharpbox.Dispatch.Model;
-using sharpbox.Cli.Model.Domain.Sharpbox;
-using sharpbox.Io.Model;
+
 
 namespace sharpbox.Cli
 {
-    using sharpbox.Notification.Dispatch;
-    using sharpbox.Notification.Model;
-    using sharpbox.Util.Notification;
+    using Model.Domain.Sharpbox;
+
+    using Dispatch.Model;
+    using Common.Dispatch.Model;
+    using Common.Notification;
+    using Io.Model;
+    using Notification.Dispatch;
+    using Notification.Model;
 
     class Program
     {
@@ -100,17 +102,6 @@ namespace sharpbox.Cli
             Console.ReadKey();
             Console.Clear();
 
-            Console.WriteLine("Example 4: Example of writing an object to a file. In this case we've decided to persist our current audit trail. We should see a broad cast anouncement below:");
-            Console.WriteLine(); Console.WriteLine();
-
-            var trail = new List<Response>();
-            trail.AddRange(example.Audit.Trail);
-            example.Dispatch.Process<List<Response>>(ExampleContext.WriteAuditTrailToDisk, "Writing the current audit trail to a binary file", new object[] { trail });
-            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
-            Console.WriteLine("Press any key to continue....");
-            Console.ReadKey();
-            Console.Clear();
-
             Console.WriteLine("Example 5: Okay. Now let's output the command stream and see how it what it looks like.");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
@@ -132,13 +123,6 @@ namespace sharpbox.Cli
             Console.WriteLine("###Notification Info####");
             Console.WriteLine("Total subscribers: " + example.Notification.Subscribers.Count);
             Console.WriteLine("Total back log: " + example.Notification.BackLog.Count);
-            // Audit: See the results in the audit trail
-            Console.WriteLine("###Audit Info####");
-            Console.WriteLine("Audit Trail Count: " + example.Audit.Trail.Count);
-            Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
-            Console.WriteLine("Press any key to continue....");
-            Console.ReadKey();
-            Console.Clear();
 
             // Process a routine
             Console.WriteLine("Example 7: Now we're going to process a routine. This is a chain of events that will run from start to finish syncronously. After which we'll out put the command stream again.");

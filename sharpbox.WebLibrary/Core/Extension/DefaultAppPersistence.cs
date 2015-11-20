@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using sharpbox.App;
 using sharpbox.Dispatch.Model;
 using sharpbox.Localization.Model;
 using sharpbox.Membership.Model;
@@ -138,16 +139,6 @@ namespace sharpbox.WebLibrary.Core.Extension
             return appContext;
         }
 
-        public AppContext SaveAuditTrail(AppContext appContext)
-        {
-            var path = Path.Combine(appContext.DataPath, AuditTrailFileName);
-            var trail = appContext.Audit.Trail.Where(x => x.Type != typeof(AppContext) && !x.Type.IsSubclassOf(typeof(AppContext))).ToList();
-            trail = trail.Where(x => x.Request.Type != typeof(AppContext) && !x.Request.Type.IsSubclassOf(typeof(AppContext))).ToList();
-            appContext.File.Replace(path, trail);
-
-            return appContext;
-        }
-
         public AppContext SaveAvailableClaims(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, AvailableClaimsFileName);
@@ -206,24 +197,6 @@ namespace sharpbox.WebLibrary.Core.Extension
                 };
                 var envs = new List<Environment> { appContext.Environment };
                 appContext.File.Write(path, envs);
-            }
-
-            return appContext;
-        }
-
-        public AppContext LoadAuditTrail(AppContext appContext)
-        {
-            var path = Path.Combine(appContext.DataPath, AuditTrailFileName);
-
-            if (appContext.File.Exists(path))
-            {
-                appContext.Audit.Trail = appContext.File.Read<List<Response>>(path);
-            }
-            else
-            {
-                appContext.Audit.Trail = appContext.Audit.Trail ?? new List<Response>();
-
-                appContext.File.Write(path, appContext.Audit.Trail);
             }
 
             return appContext;

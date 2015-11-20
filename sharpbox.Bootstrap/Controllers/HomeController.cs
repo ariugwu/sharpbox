@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using sharpbox.App;
 using sharpbox.WebLibrary.Core.Models;
 using sharpbox.WebLibrary.Helpers.ControllerWiring;
 using sharpbox.WebLibrary.Web.Controllers;

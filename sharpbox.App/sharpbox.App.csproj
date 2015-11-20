@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppContext.cs" />
     <Compile Include="Model\BrandType.cs" />
     <Compile Include="Model\Environment.cs" />
     <Compile Include="Model\EnvironmentType.cs" />
@@ -55,6 +56,30 @@
     <ProjectReference Include="..\sharpbox.Common\sharpbox.Common.csproj">
       <Project>{bfa599ec-c550-43dd-a4d8-8868204f6896}</Project>
       <Name>sharpbox.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
+      <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
+      <Name>sharpbox.Dispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Email\sharpbox.Email.csproj">
+      <Project>{793637e7-810e-44b7-820e-9e8577a79d4b}</Project>
+      <Name>sharpbox.Email</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Io\sharpbox.Io.csproj">
+      <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
+      <Name>sharpbox.Io</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Localization\sharpbox.Localization.csproj">
+      <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
+      <Name>sharpbox.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Membership\sharpbox.Membership.csproj">
+      <Project>{5cdedd58-84c8-4716-a6c1-9a89a927ffd1}</Project>
+      <Name>sharpbox.Membership</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
+      <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>
+      <Name>sharpbox.Notification</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

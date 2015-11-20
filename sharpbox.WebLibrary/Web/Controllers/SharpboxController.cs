@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using FluentValidation;
+using sharpbox.App;
 using sharpbox.WebLibrary.Helpers;
 
 namespace sharpbox.WebLibrary.Web.Controllers

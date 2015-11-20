@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Net.Mail;
+using sharpbox.App;
 using sharpbox.Common.Dispatch.Model;
 using sharpbox.Dispatch;
 using sharpbox.Dispatch.Model;
-using sharpbox.EfCodeFirst.Audit;
 using sharpbox.EfCodeFirst.Notification;
 using sharpbox.Io.Model;
 using sharpbox.Localization.Model;
@@ -34,8 +34,6 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
       Email = new Email.Client(smtpClient);
       File = new Io.Client(new Io.Strategy.Binary.BinaryStrategy());
-
-      Audit = new Audit.Client(); // This is passed as a ref because the audit class will register itself to various events depending on the audit level chosen.
 
       // Bootstrap the notification client.
       Notification = new Notification.Client(Email);
@@ -111,7 +109,6 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
       // Look at the concept of 'Echo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
       Dispatch.Echo(Notification.ProcessEvent);
-      Dispatch.Echo(Audit.Record);
     }
 
     #region Event and Command Method(s)
@@ -188,15 +185,6 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
     public void Final()
     {
-      using (var db = new AuditContext())
-      {
-        foreach (var a in Audit.Trail)
-        {
-          db.Responses.AddOrUpdate(a);
-          db.SaveChanges();
-        }
-      }
-
       using (var db = new NotificationContext())
       {
         foreach (var b in Notification.BackLog)

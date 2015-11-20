@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using sharpbox.App;
 using sharpbox.Common.Data;
 
 namespace sharpbox.WebLibrary.Core.Extension
@@ -22,8 +23,6 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         AppContext SaveEnvironment(AppContext appContext);
 
-        AppContext SaveAuditTrail(AppContext appContext);
-
         AppContext SaveAvailableClaims(AppContext appContext);
 
         AppContext SaveAvailableUserRoles(AppContext appContext);
@@ -35,8 +34,6 @@ namespace sharpbox.WebLibrary.Core.Extension
         AppContext SaveTextResources(AppContext appContext);
 
         AppContext LoadEnvironmentFromFile(AppContext appContext);
-
-        AppContext LoadAuditTrail(AppContext appContext);
 
         AppContext LoadAvailableClaimsFromFile(AppContext appContext);
 

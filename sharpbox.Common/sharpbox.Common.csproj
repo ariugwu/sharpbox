@@ -46,6 +46,9 @@
     <Compile Include="Dispatch\Model\EventName.cs" />
     <Compile Include="Dispatch\Model\QueryName.cs" />
     <Compile Include="Dispatch\Model\RoutineName.cs" />
+    <Compile Include="Notification\EmailTemplateAttribute.cs" />
+    <Compile Include="Notification\ITemplateType.cs" />
+    <Compile Include="Notification\TemplateTypeLoader.cs" />
     <Compile Include="Type\EnumPattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

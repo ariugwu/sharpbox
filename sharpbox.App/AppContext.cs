@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Mail;
 
-namespace sharpbox
+namespace sharpbox.App
 {
   using Dispatch;
   using Email.Dispatch;
@@ -24,7 +24,6 @@ namespace sharpbox
       Dispatch = new Client();
       Email = new Email.Client(smtpClient);
       File = new Io.Client(ioStrategy);
-      Audit = new Audit.Client();
       Notification = new Notification.Client(Email);
 
       DefaultConnectionStringName = defaultConnectionStringName;
@@ -62,7 +61,6 @@ namespace sharpbox
     public Client Dispatch { get; set; }
     public Notification.Client Notification { get; set; } // A dispatch friendly notification system.
     public Email.Client Email { get; set; } // A dispatch friendly email client
-    public Audit.Client Audit { get; set; } // A dispatch friendly Auditor
     public Io.Client File { get; set; } // A dispatch friendly file client
 
     public string DefaultConnectionStringName { get; set; }
@@ -92,7 +90,6 @@ namespace sharpbox
     {
       // Look at the concept of 'EchoAllEventsTo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
       Dispatch.Echo(Notification.ProcessEvent);
-      Dispatch.Echo(Audit.Record);
     }
 
     public virtual MailMessage SendEmail(MailMessage mail)

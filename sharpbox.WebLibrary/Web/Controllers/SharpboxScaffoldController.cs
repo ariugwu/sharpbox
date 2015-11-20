@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 
 using NJsonSchema;
+using sharpbox.App;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
@@ -127,7 +128,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
             // Build an object that shows what commands are pointed to what methods and what UiActions are mapped to what commands.
             // Also show routines w/ failover and rollback paths.
             // Show events that are listening.
-            
+
+            Dictionary<string, string> commandNameTest;
             Dictionary<string, string> eventNameTarget;
             Dictionary<string, string> commandNameTarget;
             Dictionary<string, List<string>> routineNameTarget;

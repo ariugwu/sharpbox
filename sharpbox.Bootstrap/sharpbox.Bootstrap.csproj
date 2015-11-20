@@ -268,10 +268,6 @@
       <Project>{05593411-fbbf-4e14-8ad8-45c1dce55ba9}</Project>
       <Name>sharpbox.App</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
-      <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
-      <Name>sharpbox.Audit</Name>
-    </ProjectReference>
     <ProjectReference Include="..\sharpbox.Common\sharpbox.Common.csproj">
       <Project>{bfa599ec-c550-43dd-a4d8-8868204f6896}</Project>
       <Name>sharpbox.Common</Name>
@@ -283,10 +279,6 @@
     <ProjectReference Include="..\sharpbox.EfCodeFirst.App\sharpbox.EfCodeFirst.App.csproj">
       <Project>{ae8bb1f1-c9ed-4435-aa0e-048aaaab427d}</Project>
       <Name>sharpbox.EfCodeFirst.App</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.EfCodeFirst.Audit\sharpbox.EfCodeFirst.Audit.csproj">
-      <Project>{5fcd76ef-5ca2-4d7c-bf0a-32fb6456ef7c}</Project>
-      <Name>sharpbox.EfCodeFirst.Audit</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.EfCodeFirst.Localization\sharpbox.EfCodeFirst.Localization.csproj">
       <Project>{c279e7a9-bfc7-4a86-95c1-c367dbfa3b3c}</Project>
@@ -352,17 +344,9 @@
       <Project>{f326208d-013d-4167-894b-2c3682f4f1e5}</Project>
       <Name>sharpbox.TestHarness</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
-      <Project>{15b019a3-9142-4220-b6de-a75515b5e288}</Project>
-      <Name>sharpbox.Util</Name>
-    </ProjectReference>
     <ProjectReference Include="..\sharpbox.WebLibrary\sharpbox.WebLibrary.csproj">
       <Project>{762a507f-3483-427c-882d-85e4762c4043}</Project>
       <Name>sharpbox.WebLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox\sharpbox.csproj">
-      <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>
-      <Name>sharpbox</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

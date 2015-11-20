@@ -1,9 +1,9 @@
-﻿namespace sharpbox.Util.Notification
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
+namespace sharpbox.Common.Notification
+{
     public static class TemplateTypeLoader
   {
     // TODO: Figure out if this represents a security risk
@@ -12,12 +12,12 @@
     /// @SEE: http://stackoverflow.com/questions/26733/getting-all-types-that-implement-an-interface
     /// </summary>
     /// <returns>List of all types which implement the 'marker' interface.</returns>
-    public static IEnumerable<Type> GetTypesByITemplateTypeUsage()
+    public static IEnumerable<System.Type> GetTypesByITemplateTypeUsage()
     {
       //TODO: Ensure that all appropriate types are in the appdomain and that this link isn't necessary: http://stackoverflow.com/questions/2384592/is-there-a-way-to-force-all-referenced-assemblies-to-be-loaded-into-the-app-doma
       //TODO: Consider a extendable helper pattern that allows any library that needs it the ability to supply it's own "GetTemplateTypes"?
-      Type type = typeof(ITemplateType);
-      IEnumerable<Type> types = AppDomain.CurrentDomain.GetAssemblies()
+      System.Type type = typeof(ITemplateType);
+      IEnumerable<System.Type> types = AppDomain.CurrentDomain.GetAssemblies()
           .SelectMany(s => s.GetTypes())
           .Where(p => type.IsAssignableFrom(p));
 
@@ -29,7 +29,7 @@
     /// @SEE: http://stackoverflow.com/questions/607178/how-enumerate-all-classes-with-custom-class-attribute
     /// </summary>
     /// <returns></returns>
-    public static IEnumerable<Type> GetTypesWithEmailTemplateAttribute()
+    public static IEnumerable<System.Type> GetTypesWithEmailTemplateAttribute()
     {
       return
       from a in AppDomain.CurrentDomain.GetAssemblies()

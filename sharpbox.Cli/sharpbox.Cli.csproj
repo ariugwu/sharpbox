@@ -78,9 +78,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\sharpbox.Audit\sharpbox.Audit.csproj">
-      <Project>{92418361-e230-49f6-892f-691e41b2db4c}</Project>
-      <Name>sharpbox.Audit</Name>
+    <ProjectReference Include="..\sharpbox.App\sharpbox.App.csproj">
+      <Project>{05593411-FBBF-4E14-8AD8-45C1DCE55BA9}</Project>
+      <Name>sharpbox.App</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Common\sharpbox.Common.csproj">
       <Project>{BFA599EC-C550-43DD-A4D8-8868204F6896}</Project>
@@ -89,10 +89,6 @@
     <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
       <Name>sharpbox.Dispatch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.EfCodeFirst.Audit\sharpbox.EfCodeFirst.Audit.csproj">
-      <Project>{5fcd76ef-5ca2-4d7c-bf0a-32fb6456ef7c}</Project>
-      <Name>sharpbox.EfCodeFirst.Audit</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.EfCodeFirst.Localization\sharpbox.EfCodeFirst.Localization.csproj">
       <Project>{c279e7a9-bfc7-4a86-95c1-c367dbfa3b3c}</Project>
@@ -125,14 +121,6 @@
     <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
       <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>
       <Name>sharpbox.Notification</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
-      <Project>{15B019A3-9142-4220-B6DE-A75515B5E288}</Project>
-      <Name>sharpbox.Util</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox\sharpbox.csproj">
-      <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>
-      <Name>sharpbox</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

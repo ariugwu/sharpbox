@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using sharpbox.App;
 
 namespace sharpbox.WebLibrary.Helpers.ControllerWiring
 {
@@ -41,7 +42,6 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
 
             // The Load AppContext Routine which fires on each request.
             appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadEnvironment, OnFrameworkCommand, this._appPersistence.LoadEnvironmentFromFile);
-            //appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadAuditTrail, OnFrameworkCommand, this._appPersistence.LoadAuditTrail);
             appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadAvailableClaims, OnFrameworkCommand, this._appPersistence.LoadAvailableClaimsFromFile);
             appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadAvailableUserRoles, OnFrameworkCommand, this._appPersistence.LoadAvailableUserRolesFromFile);
             appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadClaimsByRole, OnFrameworkCommand, this._appPersistence.LoadClaimsByRoleFromFile);
@@ -49,7 +49,6 @@ namespace sharpbox.WebLibrary.Helpers.ControllerWiring
             appContext.Dispatch.Register<AppContext>(RunLoadAppContextRoutine, LoadTextResources, OnFrameworkCommand, this._appPersistence.LoadTextResourcesFromFile);
 
             appContext.Dispatch.Register<AppContext>(SaveEnvironment, this._appPersistence.SaveEnvironment, OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(SaveAuditTrail, this._appPersistence.SaveAuditTrail, OnFrameworkCommand);
             appContext.Dispatch.Register<AppContext>(SaveAvailableClaims, this._appPersistence.SaveAvailableClaims, OnFrameworkCommand);
             appContext.Dispatch.Register<AppContext>(SaveAvailableUserRoles, this._appPersistence.SaveAvailableUserRoles, OnFrameworkCommand);
             appContext.Dispatch.Register<AppContext>(SaveClaimsByRole, this._appPersistence.SaveClaimsByRole, OnFrameworkCommand);

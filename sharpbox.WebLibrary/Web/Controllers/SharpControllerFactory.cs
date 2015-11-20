@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
@@ -18,8 +14,11 @@ namespace sharpbox.WebLibrary.Web.Controllers
             switch (controllerName.Trim().ToLower())
             {
                 case "environment":
-                    return null;
-                    break;
+                    return new EnvironmentController();
+                case "resource":
+                    return new ResourceController();
+                case "membership":
+                case "notification":
                 default:
                     return null;
             }

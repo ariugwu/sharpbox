@@ -1,4 +1,6 @@
-﻿namespace sharpbox.WebLibrary.Core.Models
+﻿using sharpbox.App;
+
+namespace sharpbox.WebLibrary.Core.Models
 {
     using System.Net.Mail;
 

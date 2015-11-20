@@ -1,7 +1,7 @@
-﻿namespace sharpbox.Util.Notification
-{
-    using System;
+﻿using System;
 
+namespace sharpbox.Common.Notification
+{
     public class EmailTemplateAttribute : Attribute
   {
   }

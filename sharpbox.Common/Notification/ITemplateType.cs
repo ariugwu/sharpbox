@@ -1,4 +1,4 @@
-﻿namespace sharpbox.Util.Notification
+﻿namespace sharpbox.Common.Notification
 {
     /// <summary>
   /// Used as a marker for any class which will be used to populate an Email Template and Subscriber

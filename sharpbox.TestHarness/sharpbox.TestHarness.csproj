@@ -53,14 +53,6 @@
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
       <Name>sharpbox.Dispatch</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Util\sharpbox.Util.csproj">
-      <Project>{15b019a3-9142-4220-b6de-a75515b5e288}</Project>
-      <Name>sharpbox.Util</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox\sharpbox.csproj">
-      <Project>{5421ff47-83ae-4e05-80f0-368fd912d50a}</Project>
-      <Name>sharpbox</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
