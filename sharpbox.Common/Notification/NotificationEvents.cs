@@ -1,8 +1,6 @@
-﻿using sharpbox.Common.Dispatch.Model;
-
-namespace sharpbox.Notification.Dispatch
+﻿namespace sharpbox.Common.Notification
 {
-    using sharpbox.Dispatch.Model;
+    using sharpbox.Common.Dispatch.Model;
 
     public class NotificationEvents
     {

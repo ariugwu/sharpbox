@@ -11,7 +11,7 @@ namespace sharpbox.Cli
     using Common.Dispatch.Model;
     using Common.Notification;
     using Io.Model;
-    using Notification.Dispatch;
+
     using Notification.Model;
 
     class Program

@@ -1,8 +1,7 @@
-﻿using sharpbox.Common.Dispatch.Model;
-using sharpbox.Dispatch.Model;
-
-namespace sharpbox.Io.Dispatch
+﻿namespace sharpbox.Common.Io
 {
+    using sharpbox.Common.Dispatch.Model;
+
     public class IoEvents
     {
         public static readonly EventName OnFileCreate = new EventName("OnFileCreate");

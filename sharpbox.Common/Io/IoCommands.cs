@@ -1,7 +1,7 @@
-﻿using sharpbox.Common.Dispatch.Model;
-
-namespace sharpbox.Io.Dispatch
+﻿namespace sharpbox.Common.Io
 {
+    using sharpbox.Common.Dispatch.Model;
+
     public class IoCommands
     {
         public static readonly CommandName FileCreate = new CommandName("FileCreate");

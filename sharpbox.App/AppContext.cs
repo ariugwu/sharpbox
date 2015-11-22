@@ -5,12 +5,15 @@ using System.Net.Mail;
 namespace sharpbox.App
 {
   using Dispatch;
-  using Email.Dispatch;
+
   using Localization.Model;
-  using Notification.Dispatch;
+
   using Notification.Model;
 
-  [Serializable]
+  using sharpbox.Common.Email;
+  using sharpbox.Common.Notification;
+
+    [Serializable]
   public class AppContext
   {
       /// <summary>

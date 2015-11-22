@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
 using System.Net.Mail;
 using sharpbox.App;
 using sharpbox.Common.Dispatch.Model;
@@ -12,9 +11,12 @@ using sharpbox.Localization.Model;
 
 namespace sharpbox.Cli.Model.Domain.Sharpbox
 {
-    using Email.Dispatch;
-    using Notification.Dispatch;
+    using System.Data.Entity.Migrations;
+
     using Notification.Model;
+
+    using sharpbox.Common.Email;
+    using sharpbox.Common.Notification;
 
     [Serializable]
   public class ExampleContext : AppContext

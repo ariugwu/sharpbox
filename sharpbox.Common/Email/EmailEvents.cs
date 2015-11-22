@@ -1,7 +1,7 @@
 ﻿
-namespace sharpbox.Email.Dispatch
+namespace sharpbox.Common.Email
 {
-    using Common.Dispatch.Model;
+    using sharpbox.Common.Dispatch.Model;
 
     public class EmailEvents
     {

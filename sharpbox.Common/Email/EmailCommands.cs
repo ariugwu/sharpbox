@@ -1,8 +1,6 @@
-﻿using sharpbox.Common.Dispatch.Model;
-
-namespace sharpbox.Email.Dispatch
+﻿namespace sharpbox.Common.Email
 {
-    using sharpbox.Dispatch.Model;
+    using Dispatch.Model;
 
     public class EmailCommands
     {
