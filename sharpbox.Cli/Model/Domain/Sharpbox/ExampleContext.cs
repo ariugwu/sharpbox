@@ -15,8 +15,8 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
     using Notification.Model;
 
-    using sharpbox.Common.Email;
-    using sharpbox.Common.Notification;
+    using Common.Email;
+    using Common.Notification;
 
     [Serializable]
   public class ExampleContext : AppContext
@@ -30,15 +30,15 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
       : base()
     {
 
-      Dispatch = new Client();
+      this.Dispatch = new Client();
 
       this.LogOn = LogOn;
 
-      Email = new Email.Client(smtpClient);
-      File = new Io.Client(new Io.Strategy.Binary.BinaryStrategy());
+      this.Email = new Email.Client(smtpClient);
+      this.File = new Io.Client(new Io.Strategy.Binary.BinaryStrategy());
 
       // Bootstrap the notification client.
-      Notification = new Notification.Client(Email);
+      this.Notification = new Notification.Client(Email);
 
       // Create a email template for type 'object[]'
       var subjectResource = new Resource() { Value = "Example Subject: {0}", ResourceType = ResourceType.EmailSubject};
@@ -46,12 +46,12 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
       var emailTemplate = new ExampleEmailTemplate(typeof(object[]), subjectResource, bodyResource);
 
-      Notification.AddEmailTemplate(ExampleContext.OnUserChange, emailTemplate);
+      this.Notification.AddEmailTemplate(ExampleContext.OnUserChange, emailTemplate);
 
       //Wire up the dispatch items
-      WireUpListeners();
-      WireUpRoutines();
-      WireUpCommandHubItems();
+      this.WireUpListeners();
+      this.WireUpRoutines();
+      this.WireUpCommandHubItems();
 
     }
 
@@ -75,16 +75,16 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
     public void WireUpCommandHubItems()
     {
       // Setup what a command should do and who it should broadcast to when it's done
-      Dispatch.Register<String>(ExampleContext.UserChange, ChangeUser, ExampleContext.OnUserChange);
+      this.Dispatch.Register<String>(ExampleContext.UserChange, ChangeUser, ExampleContext.OnUserChange);
 
       // We use this command to showcase how you can wire up existing code that you want audited, or otherwise a part of the command stream but not necessarily processed.
-      Dispatch.Register<String>(ExampleContext.DummyPassThroughCommand, (value) => value, ExampleContext.OnDummyPassThroughCommand);
+      this.Dispatch.Register<String>(ExampleContext.DummyPassThroughCommand, (value) => value, ExampleContext.OnDummyPassThroughCommand);
 
-      Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, Notification.Notify, NotificationEvents.OnNotificationNotify);
-      Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
-      Dispatch.Register<MailMessage>(EmailCommands.SendEmail, SendEmail, EmailEvents.OnEmailSend);
-      Dispatch.Register<FileDetail>(WriteARandomFile, WriteRandomTxtFile, OnRandomFileWritten);
-      Dispatch.Register<List<Response>>(WriteAuditTrailToDisk, StoreAuditTrailAsBinary, OnWriteAuditTrailToDisk);
+      this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, Notification.Notify, NotificationEvents.OnNotificationNotify);
+      this.Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
+      this.Dispatch.Register<MailMessage>(EmailCommands.SendEmail, SendEmail, EmailEvents.OnEmailSend);
+      this.Dispatch.Register<FileDetail>(WriteARandomFile, WriteRandomTxtFile, OnRandomFileWritten);
+      this.Dispatch.Register<List<Response>>(WriteAuditTrailToDisk, StoreAuditTrailAsBinary, OnWriteAuditTrailToDisk);
 
     }
 
@@ -92,9 +92,9 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
     {
       // Let's try a routine
       // Our first routine item will feed a string argument to the UserChange method, broadcast the event through the OnUserChange channel
-      Dispatch.Register<string>(RoutineName.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUser, null, null);
-      Dispatch.Register<string>(RoutineName.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep2, ChangeUserStep2FailOver, null);
-      Dispatch.Register<string>(RoutineName.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep3, null, null);
+      this.Dispatch.Register<string>(RoutineName.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUser, null, null);
+      this.Dispatch.Register<string>(RoutineName.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep2, ChangeUserStep2FailOver, null);
+      this.Dispatch.Register<string>(RoutineName.Example, ExampleContext.UserChange, ExampleContext.OnUserChange, ChangeUserStep3, null, null);
     }
 
     public void WireUpListeners()
