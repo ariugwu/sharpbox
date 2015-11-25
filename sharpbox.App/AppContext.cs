@@ -48,7 +48,7 @@ namespace sharpbox.App
     public App.Model.Environment Environment { get; set; }
 
     // Membership
-    public List<Membership.Model.UserRole> AvailableUserRoles { get; set; }
+    public List<Membership.Model.Role> AvailableUserRoles { get; set; }
 
     public List<Membership.Model.Claim> AvailableClaims { get; set; }
 

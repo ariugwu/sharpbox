@@ -5,7 +5,7 @@ namespace sharpbox.Membership.Model
     using Common.Dispatch.Model;
 
     [Serializable]
-    public class Claim
+    public class Claim : Microsoft.AspNet.Identity.
     {
         public int ClaimId { get; set; }
         public Type EntityType { get; set; }

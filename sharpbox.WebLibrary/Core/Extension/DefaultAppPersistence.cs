@@ -244,11 +244,11 @@ namespace sharpbox.WebLibrary.Core.Extension
 
             if (appContext.File.Exists(path))
             {
-                appContext.AvailableUserRoles = appContext.File.Read<List<UserRole>>(path);
+                appContext.AvailableUserRoles = appContext.File.Read<List<Role>>(path);
             }
             else
             {
-                appContext.AvailableUserRoles = new List<UserRole>();
+                appContext.AvailableUserRoles = new List<Role>();
 
                 appContext.File.Write(path, appContext.AvailableUserRoles);
             }

@@ -21,7 +21,7 @@ namespace sharpbox.Localization.Model
 
     public int EmailTemplateId { get; set; }
 
-    public Dictionary<EventName, Dictionary<Type, UserRole>> SubscribedRoles { get; set; }
+    public Dictionary<EventName, Dictionary<Type, Role>> SubscribedRoles { get; set; }
 
     public Type EntityType { get; private set; }
 

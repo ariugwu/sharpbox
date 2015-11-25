@@ -5,19 +5,20 @@ namespace sharpbox.Membership.Model
     using Common.Type;
 
     [Serializable]
-    public class UserRole : EnumPattern
+    public class Role : EnumPattern, Microsoft.AspNet.Identity.IRole<int>
     {
-        public UserRole(string value)
+        public Role(string value)
           : base(value)
         {
             Name = value;
         }
 
-        public int UserRoleNameId { get; set; }
+        public int Id { get; }
+
         public string Name { get; set; }
 
-        public static UserRole Administrator = new UserRole("Administrator");
-        public static UserRole User = new UserRole("User");
+        public static Role Administrator = new Role("Administrator");
+        public static Role User = new Role("User");
 
         public Guid EnvironmentId { get; set; }
     }
