@@ -142,7 +142,7 @@ namespace sharpbox.WebLibrary.Core.Extension
         public AppContext SaveAvailableClaims(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, AvailableClaimsFileName);
-            appContext.File.Replace(path, appContext.AvailableClaims);
+            //appContext.File.Replace(path, appContext.AvailableClaims);
 
             return appContext;
         }
@@ -150,7 +150,7 @@ namespace sharpbox.WebLibrary.Core.Extension
         public AppContext SaveAvailableUserRoles(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, AvailableUserRolesFileName);
-            appContext.File.Replace(path, appContext.AvailableUserRoles);
+            //appContext.File.Replace(path, appContext.AvailableUserRoles);
 
             return appContext;
         }
@@ -158,7 +158,7 @@ namespace sharpbox.WebLibrary.Core.Extension
         public AppContext SaveClaimsByRole(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, ClaimsByRoleFileName);
-            appContext.File.Replace(path, appContext.ClaimsByUserRole);
+            //appContext.File.Replace(path, appContext.ClaimsByUserRole);
 
             return appContext;
         }
@@ -166,7 +166,7 @@ namespace sharpbox.WebLibrary.Core.Extension
         public AppContext SaveUsersInRoles(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, UsersInRolesFileName);
-            appContext.File.Replace(path, appContext.UsersInRoles);
+            //appContext.File.Replace(path, appContext.UsersInRoles);
 
             return appContext;
         }
@@ -208,13 +208,13 @@ namespace sharpbox.WebLibrary.Core.Extension
 
             if (appContext.File.Exists(path))
             {
-                appContext.AvailableClaims = appContext.File.Read<List<Claim>>(path);
+                //appContext.AvailableClaims = appContext.File.Read<List<Claim>>(path);
             }
             else
             {
-                appContext.AvailableClaims = new List<Claim>();
+                //appContext.AvailableClaims = new List<Claim>();
 
-                appContext.File.Write(path, appContext.AvailableClaims);
+               // appContext.File.Write(path, appContext.AvailableClaims);
             }
 
             return appContext;
@@ -226,13 +226,13 @@ namespace sharpbox.WebLibrary.Core.Extension
 
             if (appContext.File.Exists(path))
             {
-                appContext.ClaimsByUserRole = appContext.File.Read<List<UserRoleClaim>>(path);
+               // appContext.ClaimsByUserRole = appContext.File.Read<List<UserRoleClaim>>(path);
             }
             else
             {
-                appContext.ClaimsByUserRole = new List<UserRoleClaim>();
+                //appContext.ClaimsByUserRole = new List<UserRoleClaim>();
 
-                appContext.File.Write(path, appContext.ClaimsByUserRole);
+                //appContext.File.Write(path, appContext.ClaimsByUserRole);
             }
 
             return appContext;
@@ -244,13 +244,13 @@ namespace sharpbox.WebLibrary.Core.Extension
 
             if (appContext.File.Exists(path))
             {
-                appContext.AvailableUserRoles = appContext.File.Read<List<Role>>(path);
+                //appContext.AvailableUserRoles = appContext.File.Read<List<Role>>(path);
             }
             else
             {
-                appContext.AvailableUserRoles = new List<Role>();
+                //appContext.AvailableUserRoles = new List<Role>();
 
-                appContext.File.Write(path, appContext.AvailableUserRoles);
+                //appContext.File.Write(path, appContext.AvailableUserRoles);
             }
 
             return appContext;
@@ -262,13 +262,13 @@ namespace sharpbox.WebLibrary.Core.Extension
 
             if (appContext.File.Exists(path))
             {
-                appContext.UsersInRoles = appContext.File.Read<List<UserUserRole>>(path);
+               // appContext.UsersInRoles = appContext.File.Read<List<UserUserRole>>(path);
             }
             else
             {
-                appContext.UsersInRoles = new List<UserUserRole>();
+                //appContext.UsersInRoles = new List<UserUserRole>();
 
-                appContext.File.Write(path, appContext.UsersInRoles);
+                //appContext.File.Write(path, appContext.UsersInRoles);
             }
 
             return appContext;
