@@ -3,6 +3,7 @@
   public interface IUnitOfWork<T>
   {
     string ConnectionStringName { get; set; }
+
     T Add(T instance);
 
     T Update(T instance);

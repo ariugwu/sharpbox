@@ -5,6 +5,9 @@
 
 module sharpbox.Web {
     export class ViewModel<T> {
+        pageArgs: sharpbox.Web.PageArgs;
+
+
         instance: T;
         instanceName: string;
         collection: Array<T>;

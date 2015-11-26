@@ -1,11 +1,13 @@
-﻿/// <reference path="sharpbox.Web.ViewModel.ts"/>
-/// <reference path="sharpbox.Web.Environment.ts"/>
+﻿/// <reference path="sharpbox.Web.PageArgs.ts"/>
+/// <reference path="sharpbox.Web.ViewModel.ts"/>
 /// <reference path="sharpbox.Web.Form.ts"/>
 /// <reference path="Template/SharpCrudTemplate.ts"/>
 /// <reference path="sharpbox.Web.Scaffold.ts"/>
 
 //SEE: http://stackoverflow.com/a/2880929
 var urlParams;
+var pageArgs;
+
 (window.onpopstate = function () {
     var match,
         pl = /\+/g,  // Regex for replacing addition symbol with a space
@@ -16,23 +18,22 @@ var urlParams;
     urlParams = {};
     while (match = search.exec(query))
         urlParams[decode(match[1])] = decode(match[2]);
+
+    pageArgs = new sharpbox.Web.PageArgs(urlParams);
 })();
 
 $(document).ready(() => {
-    var url = window.location.pathname.split("/");
     var container = "#example";
-    var instanceName = url[1] || "Environment";
-    var actionName = url[2];
-    var id = urlParams["id"];
-    var site = new sharpbox.Web.Site();
+
+    var siteViewModel = new sharpbox.Web.ViewModel<sharpbox.App.Model.Environment>("environment");
     var scaffold = new sharpbox.Web.Scaffold();
-    console.log(id);
-    site.loadEnvironmentById(1, () => {
-        $("#appName").html(site.environment.ApplicationName);
-        if (id != null || actionName == "Detail") {
-            scaffold.loadEditForm(container, instanceName, id); //SEE sharpbox.Web.Scaffold.ts
+
+    siteViewModel.getById("1", () => {
+        $("#appName").html(siteViewModel.instance.ApplicationName);
+        if (pageArgs.id != null || pageArgs.actionName == "Detail") {
+            scaffold.loadEditForm(container, pageArgs.controllerName, pageArgs.id); //SEE sharpbox.Web.Scaffold.ts
         } else {
-            scaffold.loadGrid(container, instanceName);
+            scaffold.loadGrid(container, pageArgs.controllerName);
         }
     });
 

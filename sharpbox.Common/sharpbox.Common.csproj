@@ -50,6 +50,7 @@
     <Compile Include="Email\EmailEvents.cs" />
     <Compile Include="Io\IoCommands.cs" />
     <Compile Include="Io\IoEvents.cs" />
+    <Compile Include="Membership\IdentityStrategy.cs" />
     <Compile Include="Notification\EmailTemplateAttribute.cs" />
     <Compile Include="Notification\ITemplateType.cs" />
     <Compile Include="Notification\NotificationCommands.cs" />

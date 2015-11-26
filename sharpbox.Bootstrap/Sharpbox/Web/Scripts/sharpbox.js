@@ -1,33 +1,30 @@
+/// <reference path="sharpbox.Web.PageArgs.ts"/>
 /// <reference path="sharpbox.Web.ViewModel.ts"/>
-/// <reference path="sharpbox.Web.Environment.ts"/>
 /// <reference path="sharpbox.Web.Form.ts"/>
 /// <reference path="Template/SharpCrudTemplate.ts"/>
 /// <reference path="sharpbox.Web.Scaffold.ts"/>
 //SEE: http://stackoverflow.com/a/2880929
 var urlParams;
+var pageArgs;
 (window.onpopstate = function () {
     var match, pl = /\+/g, // Regex for replacing addition symbol with a space
     search = /([^&=]+)=?([^&]*)/g, decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); }, query = window.location.search.substring(1);
     urlParams = {};
     while (match = search.exec(query))
         urlParams[decode(match[1])] = decode(match[2]);
+    pageArgs = new sharpbox.Web.PageArgs(urlParams);
 })();
 $(document).ready(function () {
-    var url = window.location.pathname.split("/");
     var container = "#example";
-    var instanceName = url[1] || "Environment";
-    var actionName = url[2];
-    var id = urlParams["id"];
-    var site = new sharpbox.Web.Site();
+    var siteViewModel = new sharpbox.Web.ViewModel("environment");
     var scaffold = new sharpbox.Web.Scaffold();
-    console.log(id);
-    site.loadEnvironmentById(1, function () {
-        $("#appName").html(site.environment.ApplicationName);
-        if (id != null || actionName == "Detail") {
-            scaffold.loadEditForm(container, instanceName, id); //SEE sharpbox.Web.Scaffold.ts
+    siteViewModel.getById("1", function () {
+        $("#appName").html(siteViewModel.instance.ApplicationName);
+        if (pageArgs.id != null || pageArgs.actionName == "Detail") {
+            scaffold.loadEditForm(container, pageArgs.controllerName, pageArgs.id); //SEE sharpbox.Web.Scaffold.ts
         }
         else {
-            scaffold.loadGrid(container, instanceName);
+            scaffold.loadGrid(container, pageArgs.controllerName);
         }
     });
 });
@@ -61,4 +58,3 @@ $(document).ready(function () {
 //    var wat: number = test.instance.BrandTypeId;
 //    //test.execute(sharpbox.Domain.TestController.Command.TestCommand);
 //};
-//# sourceMappingURL=sharpbox.js.map

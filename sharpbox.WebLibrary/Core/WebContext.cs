@@ -9,8 +9,6 @@ namespace sharpbox.WebLibrary.Core
 
   using Dispatch.Model;
 
-  using Common.Data;
-
   using Web.Controllers;
 
   public class WebContext<T> where T : new()

@@ -7,6 +7,7 @@ var sharpbox;
     (function (Web) {
         var Site = (function () {
             function Site() {
+                this.viewModel = new sharpbox.Web.ViewModel("environment");
             }
             Site.prototype.loadEnvironmentById = function (id, callback) {
                 var _this = this;
@@ -20,4 +21,3 @@ var sharpbox;
         Web.Site = Site;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.Environment.js.map

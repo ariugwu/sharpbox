@@ -43,11 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IdentityContext.cs" />
     <Compile Include="Model\Claim.cs" />
     <Compile Include="Model\UserClaimStore.cs" />
     <Compile Include="Model\RoleStore.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\Role.cs" />
+    <Compile Include="Model\UserRoleStore.cs" />
     <Compile Include="Model\UserStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
