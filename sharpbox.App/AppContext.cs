@@ -6,11 +6,8 @@ namespace sharpbox.App
 {
     using Common.Email;
     using Common.Notification;
-
     using Dispatch;
-
     using Localization.Model;
-
     using Notification.Model;
 
     [Serializable]
@@ -24,15 +21,14 @@ namespace sharpbox.App
         /// <param name="defaultConnectionStringName"></param>
         public AppContext(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox")
         {
-            Dispatch = new Client();
-            Email = new Email.Client(smtpClient);
-            File = new Io.Client(ioStrategy);
-            Notification = new Notification.Client(Email);
-
-            DefaultConnectionStringName = defaultConnectionStringName;
-
-            RegisterCommands();
-            MapListeners();
+            this.Dispatch = new Client();
+            this.Email = new Email.Client(smtpClient);
+            this.File = new Io.Client(ioStrategy);
+            this.Notification = new Notification.Client(this.Email);
+            this.DefaultConnectionStringName = defaultConnectionStringName;
+            
+            this.RegisterCommands();
+            this.MapListeners();
         }
 
         /// <summary>
@@ -72,26 +68,26 @@ namespace sharpbox.App
             // Dispatch
 
             // Email
-            Dispatch.Register<MailMessage>(EmailCommands.SendEmail, SendEmail, EmailEvents.OnEmailSend);
+            this.Dispatch.Register<MailMessage>(EmailCommands.SendEmail, this.SendEmail, EmailEvents.OnEmailSend);
 
             // IO
             //Dispatch.Register(ExtendedCommandNames.FileCreate, WriteFile, ExtendedEventNames.OnFileCreate);
 
             // Notification
-            Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, Notification.Notify, NotificationEvents.OnNotificationNotify);
-            Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
+            this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, this.Notification.Notify, NotificationEvents.OnNotificationNotify);
+            this.Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(this.Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
 
         }
 
         public void MapListeners()
         {
             // Look at the concept of 'EchoAllEventsTo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
-            Dispatch.Echo(Notification.ProcessEvent);
+            this.Dispatch.Echo(Notification.ProcessEvent);
         }
 
         public virtual MailMessage SendEmail(MailMessage mail)
         {
-            Email.Send(mail);
+            this.Email.Send(mail);
             return mail;
         }
     }

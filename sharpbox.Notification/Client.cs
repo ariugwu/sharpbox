@@ -34,6 +34,10 @@ namespace sharpbox.Notification
 
     public List<BackLogItem> BackLog { get { return _backLog ?? (_backLog = new List<BackLogItem>()); } set { _backLog = value; } }
 
+
+    /// <summary>
+    /// Same as the Subscribers. Use the string value of the EventName and the type to find the EmailTemplate
+    /// </summary>
     public Dictionary<string, Dictionary<Type, EmailTemplate>> EmailTemplateLookup
     {
       get
