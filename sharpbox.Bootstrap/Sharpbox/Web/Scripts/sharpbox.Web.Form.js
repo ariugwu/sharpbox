@@ -124,6 +124,11 @@ var sharpbox;
         Web.Field = Field;
         var BaseHtmlStrategy = (function () {
             function BaseHtmlStrategy() {
+                this.makeTable = function (data, domainName) {
+                    var msg = "Error: No table generation code for Base html strategy. See sharpbox.Web.Form.ts line 254(ish).";
+                    console.log(msg);
+                    alert(msg);
+                };
             }
             BaseHtmlStrategy.prototype.labelHtml = function (field, extraClasses) {
                 return "<label for=\"" + field.name + "\"><small>" + field.name.replace(/([a-z])([A-Z])/g, "$1 $2") + "</small></label>";
@@ -208,6 +213,39 @@ var sharpbox;
             __extends(BootstrapHtmlStrategy, _super);
             function BootstrapHtmlStrategy() {
                 _super.apply(this, arguments);
+                this.makeTable = function (data, domainName) {
+                    var table = $("<table class=\"table table-striped\">");
+                    var caption = $("<caption><div class=\"btn-group pull-right\"><a href=\"/" + domainName + "/Detail\">Add</a></div></caption>");
+                    $(caption).appendTo(table);
+                    var tblHeader = "<tr>";
+                    var object = data[0];
+                    for (var k in object) {
+                        if (object.hasOwnProperty(k)) {
+                            if (k == domainName + "Id") {
+                                tblHeader += "<th>Action(s)</th>";
+                            }
+                            else {
+                                tblHeader += "<th>" + k + "</th>";
+                            }
+                        }
+                    }
+                    tblHeader += "</tr>";
+                    $(tblHeader).appendTo(table);
+                    $.each(data, function (index, value) {
+                        var tableRow = "<tr>";
+                        $.each(value, function (key, val) {
+                            if (key == domainName + "Id") {
+                                tableRow += "<td><a href=\"/" + domainName + "/Detail/?id=" + val + "\" class=\"btn btn-sm btn-info\">Edit</a></td>";
+                            }
+                            else {
+                                tableRow += "<td>" + val + "</td>";
+                            }
+                        });
+                        tableRow += "</tr>";
+                        $(table).append(tableRow);
+                    });
+                    return ($(table));
+                };
             }
             BootstrapHtmlStrategy.prototype.labelHtml = function (field, extraClasses) {
                 return "<label class=\"control-label col-sm-2 " + extraClasses + "\" for=\"" + field.name + "\"><small>" + field.name.replace(/([a-z])([A-Z])/g, "$1 $2") + "</small></label>";

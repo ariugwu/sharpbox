@@ -17,14 +17,15 @@ var pageArgs;
 $(document).ready(function () {
     var container = "#example";
     var siteViewModel = new sharpbox.Web.ViewModel("environment");
-    var scaffold = new sharpbox.Web.Scaffold();
+    var htmlStrategy = new sharpbox.Web.BootstrapHtmlStrategy();
+    var scaffold = new sharpbox.Web.Scaffold(pageArgs, htmlStrategy);
     siteViewModel.getById("1", function () {
         $("#appName").html(siteViewModel.instance.ApplicationName);
         if (pageArgs.id != null || pageArgs.actionName == "Detail") {
-            scaffold.loadEditForm(container, pageArgs.controllerName, pageArgs.id); //SEE sharpbox.Web.Scaffold.ts
+            scaffold.loadEditForm(container); //SEE sharpbox.Web.Scaffold.ts
         }
         else {
-            scaffold.loadGrid(container, pageArgs.controllerName);
+            scaffold.loadGrid(container);
         }
     });
 });

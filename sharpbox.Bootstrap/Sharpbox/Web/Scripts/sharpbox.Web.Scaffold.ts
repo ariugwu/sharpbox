@@ -3,70 +3,41 @@
 /// <reference path="Typings/jquery.d.ts"/>
 
 module sharpbox.Web {
-    export class Scaffold {
-        loadEditForm = (containerSelector: string, domainName: string, id: string): void => {
-            var detail = new sharpbox.Web.ViewModel<any>(domainName);
-            detail.getSchema(() => {
-                var htmlStrategy: sharpbox.Web.IHtmlStrategy = new sharpbox.Web.BootstrapHtmlStrategy();
+    export class Scaffold<T> {
+        viewModel: sharpbox.Web.ViewModel<any>;
+        pageArgs: sharpbox.Web.PageArgs;
+        htmlStrategy: sharpbox.Web.IHtmlStrategy;
+
+        constructor(pageArgs: sharpbox.Web.PageArgs, htmlStrategy: sharpbox.Web.IHtmlStrategy) {
+            this.pageArgs = pageArgs;
+            this.htmlStrategy = htmlStrategy;
+            this.viewModel = new sharpbox.Web.ViewModel<any>(this.pageArgs.controllerName);
+        }
+
+        loadEditForm = (containerSelector: string): void => {
+            this.viewModel.getSchema(() => {
                 var formName = "UpdateForm";
-                detail.form = new sharpbox.Web.Form(detail.schema, formName, detail.controllerUrl, "Update", "POST", htmlStrategy);
-                var template = sharpbox.Web.Templating.editForm(detail);
+                this.viewModel.form = new sharpbox.Web.Form(this.viewModel.schema, formName, this.viewModel.controllerUrl, "Update", "POST", this.htmlStrategy);
+                var template = sharpbox.Web.Templating.editForm(this.viewModel);
 
                 $(containerSelector).html(template);
 
-                detail.form.htmlStrategy.wireSubmit(formName);
+                this.viewModel.form.htmlStrategy.wireSubmit(formName);
 
-                if (id != null) {
-                    detail.getById(id, () => {
-                        detail.form.bindToForm(detail.instance);
+                if (this.pageArgs.id != null) {
+                    this.viewModel.getById(this.pageArgs.id, () => {
+                        this.viewModel.form.bindToForm(this.viewModel.instance);
                     });
                 }
             });
         }
 
-        loadGrid = (containerSelector: string, domainName: string) => {
-            $.getJSON(`/${domainName}/Get`, { _: new Date().getTime() }).done(data => {
-                var table = this.makeTable(data, domainName);
+        loadGrid = (containerSelector: string) => {
+            this.viewModel.getAll((data) => {
+                var table = this.htmlStrategy.makeTable(data, this.pageArgs.controllerName);
                 $(containerSelector).append(table);
             });
         }
-
-        makeTable = (data : any, domainName: string) => {
-            var table = $("<table class=\"table table-striped\">");
-            var caption = $(`<caption><div class=\"btn-group pull-right\"><a href="/${domainName}/Detail">Add</a></div></caption>`);
-
-            $(caption).appendTo(table);
-
-            var tblHeader = "<tr>";
-            var object = data[0];
-            for (let k in object) {
-                if (object.hasOwnProperty(k)) {
-                    if (k == `${domainName}Id`) {
-                        tblHeader += `<th>Action(s)</th>`;
-                    } else {
-
-                        tblHeader += `<th>${k}</th>`;
-                    }
-                }
-            }
-            tblHeader += "</tr>";
-            $(tblHeader).appendTo(table);
-            $.each(data, (index, value) => {
-
-                var tableRow = "<tr>";
-                $.each(value, (key, val) => {
-                    if (key == `${domainName}Id`) {
-                        tableRow += `<td><a href="/${domainName}/Detail/?id=${val}" class="btn btn-sm btn-info">Edit</a></td>`;
-                    } else {
-                        tableRow += `<td>${val}</td>`;
-                    }
-
-                });
-                tableRow += "</tr>";
-                $(table).append(tableRow);
-            });
-            return ($(table));
-        };
     }
 }
 

@@ -12,12 +12,9 @@ var sharpbox;
                 this.controllerUrl = "/" + instanceName + "/";
             }
             ViewModel.prototype.getAll = function (callback) {
-                var _this = this;
                 var url = this.controllerUrl + "Get/";
-                $.get(url, function (data) {
-                    _this.collection = data;
-                }).done(function (data) {
-                    callback();
+                $.getJSON(url, { _: new Date().getTime() }).done(function (data) {
+                    callback(data);
                 });
             };
             ViewModel.prototype.getById = function (id, callback) {

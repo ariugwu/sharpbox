@@ -144,6 +144,8 @@ module sharpbox.Web {
         formatInputPrepend(field: Field): string;
         formatInputAppend(field: Field): string;
 
+        makeTable(data: any, domainName: string) : any;
+
         wireSubmit(formName: string): void;
         submitForm(formName: string): void;
     }
@@ -248,6 +250,11 @@ module sharpbox.Web {
                 }
             });
         }
+        makeTable = (data: any, domainName: string): any => {
+            var msg = "Error: No table generation code for Base html strategy. See sharpbox.Web.Form.ts line 254(ish).";
+            console.log(msg);
+            alert(msg);
+        }
     }
 
     export class BootstrapHtmlStrategy extends BaseHtmlStrategy {
@@ -302,6 +309,43 @@ module sharpbox.Web {
                     return "";
             }
         }
+
+        makeTable = (data: any, domainName: string): any => {
+            var table = $("<table class=\"table table-striped\">");
+            var caption = $(`<caption><div class=\"btn-group pull-right\"><a href="/${domainName}/Detail">Add</a></div></caption>`);
+
+            $(caption).appendTo(table);
+
+            var tblHeader = "<tr>";
+            var object = data[0];
+            for (let k in object) {
+                if (object.hasOwnProperty(k)) {
+                    if (k == `${domainName}Id`) {
+                        tblHeader += `<th>Action(s)</th>`;
+                    } else {
+
+                        tblHeader += `<th>${k}</th>`;
+                    }
+                }
+            }
+            tblHeader += "</tr>";
+            $(tblHeader).appendTo(table);
+            $.each(data, (index, value) => {
+
+                var tableRow = "<tr>";
+                $.each(value, (key, val) => {
+                    if (key == `${domainName}Id`) {
+                        tableRow += `<td><a href="/${domainName}/Detail/?id=${val}" class="btn btn-sm btn-info">Edit</a></td>`;
+                    } else {
+                        tableRow += `<td>${val}</td>`;
+                    }
+
+                });
+                tableRow += "</tr>";
+                $(table).append(tableRow);
+            });
+            return ($(table));
+        };
     }
 
 }

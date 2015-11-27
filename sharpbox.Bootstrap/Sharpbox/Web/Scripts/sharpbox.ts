@@ -24,19 +24,18 @@ var pageArgs;
 
 $(document).ready(() => {
     var container = "#example";
-
     var siteViewModel = new sharpbox.Web.ViewModel<sharpbox.App.Model.Environment>("environment");
-    var scaffold = new sharpbox.Web.Scaffold();
+    var htmlStrategy: sharpbox.Web.IHtmlStrategy = new sharpbox.Web.BootstrapHtmlStrategy();
+    var scaffold = new sharpbox.Web.Scaffold<any>(pageArgs, htmlStrategy);
 
     siteViewModel.getById("1", () => {
         $("#appName").html(siteViewModel.instance.ApplicationName);
         if (pageArgs.id != null || pageArgs.actionName == "Detail") {
-            scaffold.loadEditForm(container, pageArgs.controllerName, pageArgs.id); //SEE sharpbox.Web.Scaffold.ts
+            scaffold.loadEditForm(container); //SEE sharpbox.Web.Scaffold.ts
         } else {
-            scaffold.loadGrid(container, pageArgs.controllerName);
+            scaffold.loadGrid(container);
         }
     });
-
 });
 
 //var exampleOfUsingStrongyTyped = (): void => {

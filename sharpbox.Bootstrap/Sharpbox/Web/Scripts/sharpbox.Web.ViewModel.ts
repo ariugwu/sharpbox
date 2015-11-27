@@ -28,10 +28,8 @@ module sharpbox.Web {
 
         getAll(callback: Function) {
             const url = this.controllerUrl + "Get/";
-            $.get(url, data => {
-                this.collection = data;
-            }).done(data => {
-                callback();
+            $.getJSON(url, { _: new Date().getTime() }).done(data => {
+                callback(data);
             });
         }
 
