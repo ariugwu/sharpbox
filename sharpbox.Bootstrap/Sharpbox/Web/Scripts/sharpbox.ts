@@ -9,7 +9,7 @@ var urlParams;
 var pageArgs;
 
 (window.onpopstate = () => {
-    var match,
+    var match: RegExpExecArray,
         pl = /\+/g,  // Regex for replacing addition symbol with a space
         search = /([^&=]+)=?([^&]*)/g,
         decode = (s) => { return decodeURIComponent(s.replace(pl, " ")); },

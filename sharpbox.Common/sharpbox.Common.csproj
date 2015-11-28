@@ -58,6 +58,7 @@
     <Compile Include="Notification\TemplateTypeLoader.cs" />
     <Compile Include="Type\EnumPattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Type\TypeInfoHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

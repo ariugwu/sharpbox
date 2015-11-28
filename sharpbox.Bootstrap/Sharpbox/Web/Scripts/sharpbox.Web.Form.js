@@ -33,7 +33,9 @@ var sharpbox;
                 var properties = this.schema.properties;
                 var self = this;
                 $.each(properties, function (key, field) {
-                    if (field.type == 'array') {
+                    if (key == "PLACEHOLDER") {
+                    }
+                    else if (field.type == 'array') {
                         console.log("TODO: Would create a daughter grid for the array of:" + key);
                         $.each(field.items.properties, function (k1, f1) {
                             console.log(k1);
@@ -67,6 +69,7 @@ var sharpbox;
                 });
                 return array;
             };
+            // Try to bind the instance to the form we target with the 'name' property in our constructor
             Form.prototype.bindToForm = function (instance) {
                 var _this = this;
                 $.each(instance, function (key, value) {
@@ -84,6 +87,7 @@ var sharpbox;
                     }
                 });
             };
+            //Used in the bindToForm method to populate a form so the Scaffold controller can bind it
             Form.prototype.prefixFieldName = function (key) {
                 return "WebRequest.Instance." + key;
             };
@@ -283,3 +287,4 @@ var sharpbox;
         Web.BootstrapHtmlStrategy = BootstrapHtmlStrategy;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
+//# sourceMappingURL=sharpbox.Web.Form.js.map

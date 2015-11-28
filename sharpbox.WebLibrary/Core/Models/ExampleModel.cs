@@ -18,10 +18,17 @@
 
         public List<TestThing> SomeStuff { get; set; } 
 
+        public int ExampleChildId { get; set; }
+
         public static ExampleModel TestTargetMethod(ExampleModel exampleModel)
         {
             exampleModel.Value = exampleModel.Value + "...I changed this";
             return exampleModel;
+        }
+
+        public override string ToString()
+        {
+            return $"{this.LastName},{this.FirstName}";
         }
     }
 }

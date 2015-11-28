@@ -52,7 +52,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public T Update<T>(T instance) where T : new()
         {
-            PropertyInfo idInfo = this.GetIdPropertyByConvention(typeof(T));
+            PropertyInfo idInfo = Common.Type.TypeInfoHelper.GetIdPropertyByConvention(typeof(T));
 
             if (idInfo != null)
             {
@@ -95,7 +95,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public T GetById<T>(string id) where T : new()
         {
-            PropertyInfo idInfo = this.GetIdPropertyByConvention(typeof(T));
+            PropertyInfo idInfo = Common.Type.TypeInfoHelper.GetIdPropertyByConvention(typeof(T));
 
             if (idInfo != null)
             {
@@ -292,13 +292,5 @@ namespace sharpbox.WebLibrary.Core.Extension
 
             return appContext;
         }
-
-        private PropertyInfo GetIdPropertyByConvention(Type type)
-        {
-            string idName = $"{type.Name}Id";
-
-            return type.GetProperty(idName);
-        }
-
     }
 }

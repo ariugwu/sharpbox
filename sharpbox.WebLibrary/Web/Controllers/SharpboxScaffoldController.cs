@@ -11,6 +11,8 @@ using sharpbox.App;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
+    using System.Linq;
+
     using Common.Data.Helpers.ControllerWiring;
     using Common.Dispatch.Model;
 
@@ -18,6 +20,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
     using Core.Extension;
 
     using Dispatch.Model;
+
+    using Microsoft.Win32.SafeHandles;
 
     using WebLibrary.Helpers.ControllerWiring;
 
@@ -90,6 +94,24 @@ namespace sharpbox.WebLibrary.Web.Controllers
         public virtual JsonResult Get()
         {
             return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.Get, null), JsonRequestBehavior.AllowGet);
+        }
+
+        [OutputCache(Duration = 20, VaryByParam = "None")]
+        public virtual JsonResult GetAsLookUpDictionary()
+        {
+            var items = (List<T>)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.Get, null);
+            var dict = new Dictionary<string, string>();
+            var type = typeof(T);
+
+            foreach (var i in items)
+            {
+                var key = Common.Type.TypeInfoHelper.GetIdValueByConvention(i, type);
+                var value = i.ToString(); //Common.Type.TypeInfoHelper.GetNameValueByConvention(i, type);
+
+                dict.Add(key.ToString(), value);
+            }
+
+            return this.Json(dict, JsonRequestBehavior.AllowGet);
         }
 
         public virtual JsonResult GetById(string id)

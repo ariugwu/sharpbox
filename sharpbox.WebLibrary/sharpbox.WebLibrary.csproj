@@ -116,7 +116,7 @@
     <Compile Include="Core\LifeCycleHandlerName.cs" />
     <Compile Include="Core\LifeCycleHandlerState.cs" />
     <Compile Include="Core\Models\ExampleAppContext.cs" />
-    <Compile Include="Core\Models\ExampleChildElement.cs" />
+    <Compile Include="Core\Models\ExampleChild.cs" />
     <Compile Include="Core\Models\ExampleModel.cs" />
     <Compile Include="Core\Models\TestThing.cs" />
     <Compile Include="Core\WebContext.cs" />

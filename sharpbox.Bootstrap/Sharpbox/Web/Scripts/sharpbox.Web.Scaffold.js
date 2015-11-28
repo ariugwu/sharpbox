@@ -37,3 +37,4 @@ var sharpbox;
         Web.Scaffold = Scaffold;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
+//# sourceMappingURL=sharpbox.Web.Scaffold.js.map

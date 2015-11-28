@@ -9,6 +9,7 @@ module sharpbox.Web {
     export class Form<T> {
         header: Header;
         fieldDictionary: collections.Dictionary<string, Field>;
+        
         button: {
             submit: Button;
             reset: Button;
@@ -41,7 +42,9 @@ module sharpbox.Web {
             let self = this;
 
             $.each(properties, (key, field) => {
-                if (field.type == 'array') {
+                if (key == "PLACEHOLDER") {
+                    
+                } else if (field.type == 'array') {
                     console.log(`TODO: Would create a daughter grid for the array of:${key}`);
                     $.each(field.items.properties, (k1, f1) => {
                         console.log(k1);
@@ -76,7 +79,7 @@ module sharpbox.Web {
 
             return array;
         }
-
+        // Try to bind the instance to the form we target with the 'name' property in our constructor
         bindToForm(instance: T) {
             $.each(instance, (key, value) => {
                 if (instance.hasOwnProperty(key)) {
@@ -95,6 +98,7 @@ module sharpbox.Web {
             });
         }
 
+        //Used in the bindToForm method to populate a form so the Scaffold controller can bind it
         prefixFieldName(key: string) : string {
             return `WebRequest.Instance.${key}`;
         }
@@ -134,7 +138,7 @@ module sharpbox.Web {
             this.data = data;
         }
     }
-
+    
     export interface IHtmlStrategy {
         labelHtml(field: Field, extraClasses: string) : string;
         inputHtml(field: Field, extraClasses: string): string;
