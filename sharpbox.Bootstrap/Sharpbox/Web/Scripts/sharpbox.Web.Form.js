@@ -34,7 +34,7 @@ var sharpbox;
                 var self = this;
                 $.each(properties, function (key, field) {
                     if (field.type == 'array') {
-                        console.log("Would create a daughter grid for the array of:" + key);
+                        console.log("TODO: Would create a daughter grid for the array of:" + key);
                         $.each(field.items.properties, function (k1, f1) {
                             console.log(k1);
                         });
@@ -42,7 +42,7 @@ var sharpbox;
                     else if (field.type == 'object') {
                         var titleField = new Field(key, { dataType: "title", format: "title" });
                         self.insertField(key, titleField);
-                        console.log("Would create an embedded form for the object:" + key);
+                        console.log("TODO: Would create an embedded form for the object:" + key);
                         $.each(field.properties, function (k, f) {
                             self.insertField(k, f);
                         });

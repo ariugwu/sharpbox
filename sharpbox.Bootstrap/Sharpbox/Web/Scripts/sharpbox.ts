@@ -8,7 +8,7 @@
 var urlParams;
 var pageArgs;
 
-(window.onpopstate = function () {
+(window.onpopstate = () => {
     var match,
         pl = /\+/g,  // Regex for replacing addition symbol with a space
         search = /([^&=]+)=?([^&]*)/g,
