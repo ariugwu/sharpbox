@@ -38,7 +38,6 @@ module sharpbox.Web {
             this.fieldDictionary = new collections.Dictionary<string, Field>();
 
             this.populateFieldDictionary();
-            
         }
 
         // Takes all the properties and fields of from the schema and creates a dictionary
@@ -60,20 +59,20 @@ module sharpbox.Web {
                         //console.log(k1);
                     });
                 } else if (field.type == 'object') {
-                    var titleField = new Field(key, "title", "title");
+                    var titleField = new Field(key, "child", "child");
                     self.insertField(key, titleField);
                     //TODO: console.log(`TODO: Would create an embedded form for the object:${key}`);
                     $.each(field.properties, (k, f) => {
                         self.insertField(k,f);
                     });
                 } else {
-                    console.debug(`Processing: ${key}: ${field.type}`);
                     this.insertField(key, new Field(key, field.type, field.format));
                 }
             });         
         }
 
         insertField(key: string, field: any) {
+            console.log(field.type + ": " + field.name);
             this.fieldDictionary.setValue(key, new Field(key, field.type, field.format));
         }
 
@@ -88,6 +87,7 @@ module sharpbox.Web {
                     array.push(f);
                 }
             });
+            console.log(this.fieldDictionary);
             return array;
         }
         // Try to bind the instance to the form we target with the 'name' property in our constructor
@@ -309,6 +309,7 @@ module sharpbox.Web {
 
         inputHtml(field: Field, extraClasses: string): string {
             let inputType = "text";
+            console.log(field.name + " : " + field.type + " : " + field.format);
             switch (field.format) {
                 case "hidden":
                     return `<div class="col-sm-10">

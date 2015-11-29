@@ -49,7 +49,7 @@ var sharpbox;
                         });
                     }
                     else if (field.type == 'object') {
-                        var titleField = new Field(key, "title", "title");
+                        var titleField = new Field(key, "child", "child");
                         self.insertField(key, titleField);
                         //TODO: console.log(`TODO: Would create an embedded form for the object:${key}`);
                         $.each(field.properties, function (k, f) {
@@ -57,12 +57,12 @@ var sharpbox;
                         });
                     }
                     else {
-                        console.debug("Processing: " + key + ": " + field.type);
                         _this.insertField(key, new Field(key, field.type, field.format));
                     }
                 });
             };
             Form.prototype.insertField = function (key, field) {
+                console.log(field.type + ": " + field.name);
                 this.fieldDictionary.setValue(key, new Field(key, field.type, field.format));
             };
             Form.prototype.fieldDictionaryToArray = function () {
@@ -75,6 +75,7 @@ var sharpbox;
                         array.push(f);
                     }
                 });
+                console.log(this.fieldDictionary);
                 return array;
             };
             // Try to bind the instance to the form we target with the 'name' property in our constructor
@@ -290,6 +291,7 @@ var sharpbox;
             };
             BootstrapHtmlStrategy.prototype.inputHtml = function (field, extraClasses) {
                 var inputType = "text";
+                console.log(field.name + " : " + field.type + " : " + field.format);
                 switch (field.format) {
                     case "hidden":
                         return "<div class=\"col-sm-10\">\n                                <strong><span data-bind=\"" + field.name + "\"></span></strong>\n                                <input type=\"hidden\" name=\"WebRequest.Instance." + field.name + "\" />\n                            </div>\n                            ";
