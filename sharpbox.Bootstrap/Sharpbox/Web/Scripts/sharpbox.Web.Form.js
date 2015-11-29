@@ -253,7 +253,7 @@ var sharpbox;
                 _super.apply(this, arguments);
                 this.makeTable = function (data, domainName) {
                     var table = $("<table class=\"table table-striped\">");
-                    var caption = $("<caption><div class=\"btn-group pull-right\"><a href=\"/" + domainName + "/Detail\">Add</a></div></caption>");
+                    var caption = $("<caption><div class=\"btn-group pull-right\"><a class=\"btn btn-sm btn-info\" href=\"/" + domainName + "/Detail\">Add</a></div></caption>");
                     $(caption).appendTo(table);
                     var tblHeader = "<tr>";
                     var object = data[0];

@@ -29,6 +29,8 @@ module sharpbox.Web.Templating {
                         ${viewModel.form.header.toHtml("")}
                         ${fieldsToHtml(viewModel)}
                         <hr />
+                        <p><a href="${viewModel.controllerUrl}">View all ${viewModel.instanceName}(s)</a></p>
+                        <p class="text-muted bold"><small>*This form created dynamically based on assumptions about your model.</small></p>
                         <input type=\"hidden\" id=\"WebRequest_UiAction\" name=\"WebRequest.UiAction.Name\" value=\"${viewModel.form.uiAction}\" />
                         ${viewModel.form.footer.toHtml(viewModel.form.header.name)}
                     </div>
