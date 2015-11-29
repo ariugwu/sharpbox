@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using System.Web.Mvc;
-
     using WebLibrary.Core.Models;
-    using WebLibrary.Helpers.ControllerWiring;
+    using WebLibrary.Core.Wiring;
     using WebLibrary.Web.Controllers;
 
     public class ExampleChildController : SharpboxScaffoldController<ExampleChild>
@@ -26,7 +25,7 @@ namespace sharpbox.Bootstrap.Controllers
             list.Add(new ExampleChild() { ExampleChildId = 9, ARandomNumber = 6610, CreatedDate = DateTime.Now.AddDays(12), IsValid = true, SomeDoubleNumber = 198823.2, Title = "Making up titles is hard." });
             list.Add(new ExampleChild() { ExampleChildId = 4, ARandomNumber = 710, CreatedDate = DateTime.Now.AddDays(-13), IsValid = true, SomeDoubleNumber = 335923.2, Title = "For science!" });
             this.WebContext.AppContext.Dispatch.Process<List<ExampleChild>>(
-                DefaultAppWiring.UpdateAll,
+                BaseWiringCommands.UpdateAll,
                 "Seeding the collection",
                 new object[] { list });
 

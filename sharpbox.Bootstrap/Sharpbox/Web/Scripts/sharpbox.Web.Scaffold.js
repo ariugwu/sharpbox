@@ -11,7 +11,7 @@ var sharpbox;
                 this.loadEditForm = function (containerSelector) {
                     _this.viewModel.getSchema(function () {
                         var formName = "UpdateForm";
-                        _this.viewModel.form = new sharpbox.Web.Form(_this.viewModel.schema, formName, _this.viewModel.controllerUrl, "Update", "POST", _this.htmlStrategy);
+                        _this.viewModel.form = new sharpbox.Web.Form(_this.viewModel.schema, formName, _this.viewModel.instanceName, _this.viewModel.controllerUrl, "Update", "POST", _this.htmlStrategy);
                         var template = sharpbox.Web.Templating.editForm(_this.viewModel);
                         $(containerSelector).html(template);
                         _this.viewModel.form.htmlStrategy.wireSubmit(formName);
@@ -37,4 +37,3 @@ var sharpbox;
         Web.Scaffold = Scaffold;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.Scaffold.js.map

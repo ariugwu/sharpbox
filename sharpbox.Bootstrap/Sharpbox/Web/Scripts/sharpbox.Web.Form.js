@@ -14,8 +14,9 @@ var sharpbox;
     var Web;
     (function (Web) {
         var Form = (function () {
-            function Form(schema, name, controllerUrl, uiAction, method, htmlStrategy) {
+            function Form(schema, name, instanceName, controllerUrl, uiAction, method, htmlStrategy) {
                 this.schema = schema;
+                this.instanceName = instanceName;
                 this.header = new Header();
                 this.header.name = name;
                 this.controllerUrl = controllerUrl;
@@ -33,30 +34,36 @@ var sharpbox;
                 var properties = this.schema.properties;
                 var self = this;
                 $.each(properties, function (key, field) {
-                    if (key == "PLACEHOLDER") {
+                    // First if tries to identify lookup fields by convention
+                    if (_this.isPrimaryKey(key)) {
+                        self.insertField(key, new Field(key, "hidden", "hidden"));
+                    }
+                    else if (_this.isLookupField(key)) {
+                        var lookupField = new Field(key, "options", "options");
+                        self.insertField(key, lookupField);
                     }
                     else if (field.type == 'array') {
-                        console.log("TODO: Would create a daughter grid for the array of:" + key);
+                        //Todo: console.log(`TODO: Would create a daughter grid for the array of:${key}`);
                         $.each(field.items.properties, function (k1, f1) {
-                            console.log(k1);
+                            //console.log(k1);
                         });
                     }
                     else if (field.type == 'object') {
-                        var titleField = new Field(key, { dataType: "title", format: "title" });
+                        var titleField = new Field(key, "title", "title");
                         self.insertField(key, titleField);
-                        console.log("TODO: Would create an embedded form for the object:" + key);
+                        //TODO: console.log(`TODO: Would create an embedded form for the object:${key}`);
                         $.each(field.properties, function (k, f) {
                             self.insertField(k, f);
                         });
                     }
                     else {
-                        console.debug("Processing: " + key + ": " + field);
-                        _this.insertField(key, field);
+                        console.debug("Processing: " + key + ": " + field.type);
+                        _this.insertField(key, new Field(key, field.type, field.format));
                     }
                 });
             };
             Form.prototype.insertField = function (key, field) {
-                this.fieldDictionary.setValue(key, new Field(key, { dataType: field.type, format: field.format }));
+                this.fieldDictionary.setValue(key, new Field(key, field.type, field.format));
             };
             Form.prototype.fieldDictionaryToArray = function () {
                 var _this = this;
@@ -64,8 +71,9 @@ var sharpbox;
                 var properties = this.schema.properties;
                 $.each(properties, function (key, field) {
                     var f = _this.fieldDictionary.getValue(key);
-                    if (f != null)
+                    if (f != null) {
                         array.push(f);
+                    }
                 });
                 return array;
             };
@@ -75,21 +83,33 @@ var sharpbox;
                 $.each(instance, function (key, value) {
                     if (instance.hasOwnProperty(key)) {
                         var field = _this.fieldDictionary.getValue(key);
-                        if (field != null && field.data != null && field.data.format == "date-time") {
+                        if (field != null && field.format != null && field.format == "date-time") {
                             var date = new Date(parseInt(value.substr(6)));
                             var d = date.getDate();
                             var m = date.getMonth() + 1;
                             var y = date.getFullYear();
-                            value = d + "/" + m + "/" + y;
+                            value = m + "/" + d + "/" + y;
                         }
                         var inputName = "[name=\"" + _this.prefixFieldName(key) + "\"]";
                         $(inputName).val(value);
+                        $("[data-bind=\"" + key + "\"]").html(value);
                     }
                 });
             };
             //Used in the bindToForm method to populate a form so the Scaffold controller can bind it
             Form.prototype.prefixFieldName = function (key) {
                 return "WebRequest.Instance." + key;
+            };
+            //#region Lookup Helpers
+            Form.prototype.isLookupField = function (key) {
+                return (this.endsWithId(key) && key.toLowerCase().slice(0, -2) != this.instanceName.toLowerCase());
+            };
+            Form.prototype.isPrimaryKey = function (key) {
+                return (key.toLowerCase().slice(0, -2) == this.instanceName.toLowerCase());
+            };
+            Form.prototype.endsWithId = function (source) {
+                var subject = source.slice(-2);
+                return subject.toLowerCase() == "id";
             };
             return Form;
         })();
@@ -119,9 +139,10 @@ var sharpbox;
         })();
         Web.Footer = Footer;
         var Field = (function () {
-            function Field(name, data) {
+            function Field(name, type, format) {
                 this.name = name;
-                this.data = data;
+                this.type = type;
+                this.format = format;
             }
             return Field;
         })();
@@ -139,7 +160,7 @@ var sharpbox;
             };
             BaseHtmlStrategy.prototype.inputHtml = function (field, extraClasses) {
                 var inputType = "text";
-                switch (field.data.dataType) {
+                switch (field.type) {
                     default:
                         return "<input type=\"" + inputType + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />";
                 }
@@ -210,6 +231,19 @@ var sharpbox;
                     }
                 });
             };
+            // Assume that you have a property "FooId" and it's *not* the primary key. We assume this is a lookup value to populate a tag or select field
+            // We want to grab the lookup data from that controllers cached method
+            BaseHtmlStrategy.prototype.populateDropdown = function (key, callback) {
+                var lookupName = key.slice(0, -2);
+                $.getJSON("/" + lookupName + "/GetAsLookUpDictionary/", function (data) {
+                    var lookupData = [];
+                    $.each(data, function (key, item) {
+                        lookupData.push({ key: key, item: item });
+                    });
+                }).done(function (data) {
+                    callback(data);
+                });
+            };
             return BaseHtmlStrategy;
         })();
         Web.BaseHtmlStrategy = BaseHtmlStrategy;
@@ -256,9 +290,24 @@ var sharpbox;
             };
             BootstrapHtmlStrategy.prototype.inputHtml = function (field, extraClasses) {
                 var inputType = "text";
-                switch (field.data.format) {
+                switch (field.format) {
+                    case "hidden":
+                        return "<div class=\"col-sm-10\">\n                                <strong><span data-bind=\"" + field.name + "\"></span></strong>\n                                <input type=\"hidden\" name=\"WebRequest.Instance." + field.name + "\" />\n                            </div>\n                            ";
                     case "date-time":
                         return "\n                            <div class=\"col-sm-10\">\n                                <div class=\"input-group\">\n                                    " + this.formatInputPrepend(field) + "\n                                    <input type=\"" + inputType + "\" class=\"form-control " + extraClasses + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />\n                                    " + this.formatInputAppend(field) + "\n                                </div>\n                            </div>\n                            ";
+                    case "options":
+                        var name = "WebRequest.Instance." + field.name;
+                        var options = "";
+                        var optData = {};
+                        this.populateDropdown(field.name, function (data) {
+                            optData = data;
+                            $.each(optData, function (key, value) {
+                                options += "<option value=\"" + key + "\">" + value + "</option>";
+                            });
+                            $("select[name=\"" + name + "\"]").append(options);
+                            console.debug("There is a likely race condition on line 325(ish) of sharpbox.web.Form.ts. We assume that the form will always render before we get our options back!");
+                        });
+                        return "<div class=\"col-sm-10\">\n                                    <select class=\"form-control " + extraClasses + "\" id=\"" + field.name + "\" name=\"" + name + "\">\n                                        " + options + "\n                                    </select>\n                            </div>\n                            ";
                     default:
                         return "<div class=\"col-sm-10\">\n                                " + this.formatInputPrepend(field) + "<input type=\"" + inputType + "\" class=\"form-control " + extraClasses + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />" + this.formatInputAppend(field) + "\n                            </div>\n                            ";
                 }
@@ -267,7 +316,7 @@ var sharpbox;
                 return "<div class=\"form-group\">\n                        " + label + "\n                        " + input + "\n                    </div>\n                    ";
             };
             BootstrapHtmlStrategy.prototype.formatInputPrepend = function (field) {
-                switch (field.data.format) {
+                switch (field.format) {
                     case "date-time":
                         return "";
                     default:
@@ -275,7 +324,7 @@ var sharpbox;
                 }
             };
             BootstrapHtmlStrategy.prototype.formatInputAppend = function (field) {
-                switch (field.data.format) {
+                switch (field.format) {
                     case "date-time":
                         return "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
                     default:
@@ -287,4 +336,3 @@ var sharpbox;
         Web.BootstrapHtmlStrategy = BootstrapHtmlStrategy;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.Form.js.map

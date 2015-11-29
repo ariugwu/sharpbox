@@ -16,13 +16,13 @@ namespace sharpbox.Bootstrap.Controllers
 
     using WebLibrary.Core;
     using WebLibrary.Core.Models;
+    using WebLibrary.Core.Wiring;
     using WebLibrary.Helpers;
-    using WebLibrary.Helpers.ControllerWiring;
     using WebLibrary.Web.Controllers;
 
-    public sealed class TestController : SharpboxScaffoldController<ExampleModel>
+    public sealed class ExampleModelController : SharpboxScaffoldController<ExampleModel>
     {
-        public TestController()
+        public ExampleModelController()
             : base(new ExampleAppContext())
         {
         }
@@ -41,7 +41,7 @@ namespace sharpbox.Bootstrap.Controllers
             list.Add(new ExampleModel() { ExampleModelId = 1, Age = 9, BirthDate = DateTime.Now.AddDays(9), FirstName = "Josh", LastName = "Holmes", Value = "I", ExampleChildId = 1 });
 
             this.WebContext.AppContext.Dispatch.Process<List<ExampleModel>>(
-                DefaultAppWiring.UpdateAll,
+                BaseWiringCommands.UpdateAll,
                 "Seeding the collection",
                 new object[] { list });
 

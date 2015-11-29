@@ -16,12 +16,16 @@ module sharpbox.Web {
         }
         footer: Footer;
         schema: any;
+        instanceName: string;
         controllerUrl: string;
         uiAction: string;
         htmlStrategy: IHtmlStrategy;
 
-        constructor(schema: any, name: string, controllerUrl: string, uiAction: string, method: string, htmlStrategy: IHtmlStrategy) {
+        lookUpDictionary: collections.Dictionary<string, any>;
+
+        constructor(schema: any, name: string, instanceName: string, controllerUrl: string, uiAction: string, method: string, htmlStrategy: IHtmlStrategy) {
             this.schema = schema;
+            this.instanceName = instanceName;
             this.header = new Header();
             this.header.name = name;
             this.controllerUrl = controllerUrl;
@@ -34,6 +38,7 @@ module sharpbox.Web {
             this.fieldDictionary = new collections.Dictionary<string, Field>();
 
             this.populateFieldDictionary();
+            
         }
 
         // Takes all the properties and fields of from the schema and creates a dictionary
@@ -42,41 +47,47 @@ module sharpbox.Web {
             let self = this;
 
             $.each(properties, (key, field) => {
-                if (key == "PLACEHOLDER") {
-                    
+                // First if tries to identify lookup fields by convention
+                if (this.isPrimaryKey(key)) {
+                    self.insertField(key, new Field(key, "hidden", "hidden"));
+                }
+                else if (this.isLookupField(key)) {
+                    var lookupField = new Field(key, "options", "options");
+                    self.insertField(key, lookupField);           
                 } else if (field.type == 'array') {
-                    console.log(`TODO: Would create a daughter grid for the array of:${key}`);
+                    //Todo: console.log(`TODO: Would create a daughter grid for the array of:${key}`);
                     $.each(field.items.properties, (k1, f1) => {
-                        console.log(k1);
+                        //console.log(k1);
                     });
                 } else if (field.type == 'object') {
-                    var titleField = new Field(key, { dataType: "title", format: "title" });
+                    var titleField = new Field(key, "title", "title");
                     self.insertField(key, titleField);
-                    console.log(`TODO: Would create an embedded form for the object:${key}`);
+                    //TODO: console.log(`TODO: Would create an embedded form for the object:${key}`);
                     $.each(field.properties, (k, f) => {
                         self.insertField(k,f);
                     });
                 } else {
-                    console.debug(`Processing: ${key}: ${field}`);
-                    this.insertField(key, field);
+                    console.debug(`Processing: ${key}: ${field.type}`);
+                    this.insertField(key, new Field(key, field.type, field.format));
                 }
             });         
         }
 
         insertField(key: string, field: any) {
-            this.fieldDictionary.setValue(key, new Field(key, { dataType: field.type, format: field.format }));
+            this.fieldDictionary.setValue(key, new Field(key, field.type, field.format));
         }
 
-        fieldDictionaryToArray() : Array<Field> {
+        fieldDictionaryToArray(): Array<Field> {
             let array = new Array<Field>();
 
             let properties = this.schema.properties;
             $.each(properties, (key, field) => {
                 var f = this.fieldDictionary.getValue(key);
 
-                if(f != null) array.push(f);
+                if (f != null) {
+                    array.push(f);
+                }
             });
-
             return array;
         }
         // Try to bind the instance to the form we target with the 'name' property in our constructor
@@ -84,16 +95,17 @@ module sharpbox.Web {
             $.each(instance, (key, value) => {
                 if (instance.hasOwnProperty(key)) {
                     var field = this.fieldDictionary.getValue(key);
-                    if (field != null && field.data != null && field.data.format == "date-time") {
+                    if (field != null && field.format != null && field.format == "date-time") {
                         var date = new Date(parseInt(value.substr(6)));
                         var d = date.getDate();
                         var m = date.getMonth() + 1;
                         var y = date.getFullYear();
-                        value = `${d}/${m}/${y}`;
+                        value = `${m}/${d}/${y}`;
                     }
 
                     var inputName = `[name="${this.prefixFieldName(key) }"]`;
                     $(inputName).val(value);
+                    $(`[data-bind="${key}"]`).html(value);
                 }
             });
         }
@@ -102,6 +114,22 @@ module sharpbox.Web {
         prefixFieldName(key: string) : string {
             return `WebRequest.Instance.${key}`;
         }
+
+        //#region Lookup Helpers
+
+        isLookupField(key: string): boolean {
+            return (this.endsWithId(key) && key.toLowerCase().slice(0, -2) != this.instanceName.toLowerCase());
+        }
+
+        isPrimaryKey(key: string): boolean {
+            return (key.toLowerCase().slice(0, -2) == this.instanceName.toLowerCase());
+        }
+
+        endsWithId(source: string) {
+            var subject = source.slice(-2);
+            return subject.toLowerCase() == "id";
+        }
+        //#endregion
     }
 
     export class Header {
@@ -128,14 +156,13 @@ module sharpbox.Web {
 
     export class Field {
         name: string;
-        data: {
-            dataType: any;
-            format: string;
-        }
+        type: any;
+        format: string;
 
-        constructor(name: string, data: { dataType: any; format: string }) {
+        constructor(name: string, type: any, format: string) {
             this.name = name;
-            this.data = data;
+            this.type = type;
+            this.format = format;
         }
     }
     
@@ -163,7 +190,7 @@ module sharpbox.Web {
         inputHtml(field: Field, extraClasses: string): string {
             let inputType = "text";
 
-            switch(field.data.dataType) {
+            switch(field.type) {
                 default:
                     return `<input type="${inputType}" id="${field.name}" name="WebRequest.Instance.${field.name}" />`;
             }
@@ -259,6 +286,20 @@ module sharpbox.Web {
             console.log(msg);
             alert(msg);
         }
+
+        // Assume that you have a property "FooId" and it's *not* the primary key. We assume this is a lookup value to populate a tag or select field
+        // We want to grab the lookup data from that controllers cached method
+        populateDropdown(key: string, callback: Function) {
+            var lookupName = key.slice(0, -2);
+            $.getJSON(`/${lookupName}/GetAsLookUpDictionary/`, data => {
+                let lookupData = [];
+                $.each(data, (key, item) => {
+                    lookupData.push({ key, item });
+                });
+            }).done(data => {
+                callback(data);
+            });
+        }
     }
 
     export class BootstrapHtmlStrategy extends BaseHtmlStrategy {
@@ -268,8 +309,13 @@ module sharpbox.Web {
 
         inputHtml(field: Field, extraClasses: string): string {
             let inputType = "text";
-
-            switch (field.data.format) {
+            switch (field.format) {
+                case "hidden":
+                    return `<div class="col-sm-10">
+                                <strong><span data-bind="${field.name}"></span></strong>
+                                <input type="hidden" name="WebRequest.Instance.${field.name}" />
+                            </div>
+                            `;
                 case "date-time":
                     return `
                             <div class="col-sm-10">
@@ -278,6 +324,25 @@ module sharpbox.Web {
                                     <input type="${inputType}" class="form-control ${extraClasses}" id="${field.name}" name="WebRequest.Instance.${field.name}" />
                                     ${this.formatInputAppend(field)}
                                 </div>
+                            </div>
+                            `;
+                case "options":
+                    var name = `WebRequest.Instance.${field.name}`;
+                    var options = "";
+                    var optData = {};
+                    this.populateDropdown(field.name, (data) => {
+                        optData = data;
+                        $.each(optData, (key, value) => {
+                            options += `<option value="${key}">${value}</option>`;
+                        });
+                        $(`select[name="${name}"]`).append(options);
+                        console.debug("There is a likely race condition on line 325(ish) of sharpbox.web.Form.ts. We assume that the form will always render before we get our options back!");
+                    });
+                    
+                    return `<div class="col-sm-10">
+                                    <select class="form-control ${extraClasses}" id="${field.name}" name="${name}">
+                                        ${options}
+                                    </select>
                             </div>
                             `;
                 default:
@@ -297,7 +362,7 @@ module sharpbox.Web {
         }
 
         formatInputPrepend(field: Field): string {
-            switch (field.data.format) {
+            switch (field.format) {
                 case "date-time":
                     return "";
                 default:
@@ -306,7 +371,7 @@ module sharpbox.Web {
         }
 
         formatInputAppend(field: Field): string {
-            switch (field.data.format) {
+            switch (field.format) {
                 case "date-time":
                     return "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
                 default:

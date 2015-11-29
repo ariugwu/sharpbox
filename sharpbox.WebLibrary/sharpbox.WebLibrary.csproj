@@ -110,8 +110,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Extension\DefaultAppPersistence.cs" />
-    <Compile Include="Core\Extension\IAppPersistence.cs" />
+    <Compile Include="Core\Wiring\BaseWiringCommands.cs" />
+    <Compile Include="Web\Helpers\AppWiring\IoAppPersistence.cs" />
+    <Compile Include="Core\Wiring\IAppPersistence.cs" />
     <Compile Include="Core\LifecycleHandler.cs" />
     <Compile Include="Core\LifeCycleHandlerName.cs" />
     <Compile Include="Core\LifeCycleHandlerState.cs" />
@@ -133,7 +134,7 @@
     <Compile Include="Web\Controllers\SharpControllerFactory.cs" />
     <Compile Include="Web\Helpers\ActionCommandMap.cs" />
     <Compile Include="Web\Helpers\AppWiring\DefaultAppWiring.cs" />
-    <Compile Include="Web\Helpers\AppWiring\IAppWiring.cs" />
+    <Compile Include="Core\Wiring\IAppWiring.cs" />
     <Compile Include="Web\Helpers\BaseCache.cs" />
     <Compile Include="Web\Helpers\BaseCacheNames.cs" />
     <Compile Include="Web\Helpers\CacheCollection.cs" />

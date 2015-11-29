@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using sharpbox.App;
-using sharpbox.Dispatch.Model;
-using sharpbox.Localization.Model;
-using sharpbox.Membership.Model;
-using Environment = sharpbox.App.Model.Environment;
-
-namespace sharpbox.WebLibrary.Core.Extension
+﻿namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
     using System.Reflection;
 
-    public class DefaultAppPersistence : IAppPersistence
+    using sharpbox.App;
+    using sharpbox.Localization.Model;
+    using sharpbox.WebLibrary.Core.Wiring;
+
+    public class IoAppPersistence : IAppPersistence
     {
         public AppContext AppContext { get; set; }
 
@@ -130,9 +128,9 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext SaveEnvironment(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, EnivronmentFileName);
+            var path = Path.Combine(appContext.DataPath, this.EnivronmentFileName);
 
-            var envs = new List<Environment> { appContext.Environment };
+            var envs = new List<App.Model.Environment> { appContext.Environment };
 
             appContext.File.Replace(path, envs);
 
@@ -141,7 +139,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext SaveAvailableClaims(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, AvailableClaimsFileName);
+            var path = Path.Combine(appContext.DataPath, this.AvailableClaimsFileName);
             //appContext.File.Replace(path, appContext.AvailableClaims);
 
             return appContext;
@@ -149,7 +147,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext SaveAvailableUserRoles(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, AvailableUserRolesFileName);
+            var path = Path.Combine(appContext.DataPath, this.AvailableUserRolesFileName);
             //appContext.File.Replace(path, appContext.AvailableUserRoles);
 
             return appContext;
@@ -157,7 +155,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext SaveClaimsByRole(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, ClaimsByRoleFileName);
+            var path = Path.Combine(appContext.DataPath, this.ClaimsByRoleFileName);
             //appContext.File.Replace(path, appContext.ClaimsByUserRole);
 
             return appContext;
@@ -165,7 +163,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext SaveUsersInRoles(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, UsersInRolesFileName);
+            var path = Path.Combine(appContext.DataPath, this.UsersInRolesFileName);
             //appContext.File.Replace(path, appContext.UsersInRoles);
 
             return appContext;
@@ -173,7 +171,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext SaveTextResources(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, TextResourcesFileName);
+            var path = Path.Combine(appContext.DataPath, this.TextResourcesFileName);
             appContext.File.Replace(path, appContext.Resources);
 
             return appContext;
@@ -181,21 +179,21 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext LoadEnvironmentFromFile(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, EnivronmentFileName);
+            var path = Path.Combine(appContext.DataPath, this.EnivronmentFileName);
 
             if (appContext.File.Exists(path))
             {
-                var envs = appContext.File.Read<List<Environment>>(path);
+                var envs = appContext.File.Read<List<App.Model.Environment>>(path);
                 appContext.Environment = envs.First();
             }
             else
             {
-                appContext.Environment = new Environment
+                appContext.Environment = new App.Model.Environment
                 {
                     EnvironmentId = 1,
                     ApplicationName = "Sample Application"
                 };
-                var envs = new List<Environment> { appContext.Environment };
+                var envs = new List<App.Model.Environment> { appContext.Environment };
                 appContext.File.Write(path, envs);
             }
 
@@ -204,7 +202,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext LoadAvailableClaimsFromFile(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, AvailableClaimsFileName);
+            var path = Path.Combine(appContext.DataPath, this.AvailableClaimsFileName);
 
             if (appContext.File.Exists(path))
             {
@@ -222,7 +220,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext LoadClaimsByRoleFromFile(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, ClaimsByRoleFileName);
+            var path = Path.Combine(appContext.DataPath, this.ClaimsByRoleFileName);
 
             if (appContext.File.Exists(path))
             {
@@ -240,7 +238,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext LoadAvailableUserRolesFromFile(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, AvailableUserRolesFileName);
+            var path = Path.Combine(appContext.DataPath, this.AvailableUserRolesFileName);
 
             if (appContext.File.Exists(path))
             {
@@ -258,7 +256,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext LoadUserInRolesFromFile(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, UsersInRolesFileName);
+            var path = Path.Combine(appContext.DataPath, this.UsersInRolesFileName);
 
             if (appContext.File.Exists(path))
             {
@@ -276,7 +274,7 @@ namespace sharpbox.WebLibrary.Core.Extension
 
         public AppContext LoadTextResourcesFromFile(AppContext appContext)
         {
-            var path = Path.Combine(appContext.DataPath, TextResourcesFileName);
+            var path = Path.Combine(appContext.DataPath, this.TextResourcesFileName);
 
             if (appContext.File.Exists(path))
             {

@@ -4,9 +4,10 @@ using sharpbox.WebLibrary.Core;
 namespace sharpbox.WebLibrary.Web.Controllers
 {
     using Common.Data;
-    using Common.Data.Helpers.ControllerWiring;
     using Common.Dispatch.Model;
     using Dispatch.Model;
+
+    using sharpbox.WebLibrary.Core.Wiring;
 
     public interface ISharpboxScaffoldController<T> : ISharpboxController<T> where T : new()
     {
@@ -15,6 +16,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         WebContext<T> WebContext { get; set; }
 
         IAppWiring AppWiring { get; set; }
+        IAppPersistence AppPersistence { get; set; }
 
         #endregion
 

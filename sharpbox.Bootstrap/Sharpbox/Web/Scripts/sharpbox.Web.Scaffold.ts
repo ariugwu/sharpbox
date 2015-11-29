@@ -17,7 +17,7 @@ module sharpbox.Web {
         loadEditForm = (containerSelector: string): void => {
             this.viewModel.getSchema(() => {
                 var formName = "UpdateForm";
-                this.viewModel.form = new sharpbox.Web.Form(this.viewModel.schema, formName, this.viewModel.controllerUrl, "Update", "POST", this.htmlStrategy);
+                this.viewModel.form = new sharpbox.Web.Form(this.viewModel.schema, formName, this.viewModel.instanceName, this.viewModel.controllerUrl, "Update", "POST", this.htmlStrategy);
                 var template = sharpbox.Web.Templating.editForm(this.viewModel);
 
                 $(containerSelector).html(template);

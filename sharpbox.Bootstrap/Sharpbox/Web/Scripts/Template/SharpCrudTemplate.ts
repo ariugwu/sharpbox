@@ -14,7 +14,7 @@ module sharpbox.Web.Templating {
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="btn-group pull-right">
-                                      <button type="button" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i></button>
+                                      <button type="button" onclick="$('form[name=${viewModel.form.header.name}]').triggerHandler('submit')" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i></button>
                                       <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-question-sign"></i></button>
                                     </div>
                                 </div>
@@ -30,7 +30,6 @@ module sharpbox.Web.Templating {
                         ${fieldsToHtml(viewModel)}
                         <hr />
                         <input type=\"hidden\" id=\"WebRequest_UiAction\" name=\"WebRequest.UiAction.Name\" value=\"${viewModel.form.uiAction}\" />
-                        <input type="submit" value="Save" class="btn btn-primary" style="width: 100%;" />
                         ${viewModel.form.footer.toHtml(viewModel.form.header.name)}
                     </div>
                     `;
@@ -48,7 +47,7 @@ module sharpbox.Web.Templating {
     }
 
     export var fieldsToHtml = (viewModel: sharpbox.Web.ViewModel<any>) : string => {
-        var fields : Field[] = viewModel.form.fieldDictionaryToArray();
+        var fields: Field[] = viewModel.form.fieldDictionaryToArray();
         var htmlStrategy: IHtmlStrategy = viewModel.form.htmlStrategy;
         var html : string = "";
             $.each(fields, (key, field) => {

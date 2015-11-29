@@ -17,4 +17,3 @@ var sharpbox;
         Web.PageArgs = PageArgs;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.PageArgs.js.map

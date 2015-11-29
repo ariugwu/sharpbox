@@ -6,7 +6,6 @@
 module sharpbox.Web {
     export class ViewModel<T> {
         pageArgs: sharpbox.Web.PageArgs;
-        lookUpDictionary: collections.Dictionary<string, any>;
         instance: T;
         instanceName: string;
         collection: Array<T>;
@@ -23,7 +22,7 @@ module sharpbox.Web {
 
             this.instanceName = instanceName;
             this.controllerUrl = `/${instanceName}/`;
-            this.lookUpDictionary = new collections.Dictionary<string, any>();
+            
         }
 
         getAll(callback: Function) {
@@ -48,21 +47,6 @@ module sharpbox.Web {
                 this.schema = JSON.parse(data);
             }).done(data => {
                 onSchemaLoad();
-            });
-        }
-
-        // Assume that you have a property "FooId" and it's *not* the primary key. We assume this is a lookup value to populate a tag or select field
-        // We want to grab the lookup data from that controllers cached method
-        getPropertyDataForLookup(lookupName: string, callback: Function) {
-            const url = `/${lookupName}/GetAsLookUpDictionary/`;
-            $.getJSON(url, data => {
-                let lookupData = [];
-                $.each(data, (key, item) => {
-                    lookupData.push({ key, item });
-                });
-                this.lookUpDictionary.setValue(lookupName, data);
-            }).done(data => {
-                callback();
             });
         }
 

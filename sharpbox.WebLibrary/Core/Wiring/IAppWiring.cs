@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace sharpbox.Common.Data.Helpers.ControllerWiring
+﻿namespace sharpbox.WebLibrary.Core.Wiring
 {
-    using sharpbox.Common.Data;
-
     public interface IAppWiring
     {
+        IAppPersistence AppPersistence { get; set; }
+
         void WireDefaultRoutes<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : new();
 
         void WireContext<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : new();

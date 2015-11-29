@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using sharpbox.App;
-using sharpbox.Common.Data;
 
-namespace sharpbox.WebLibrary.Core.Extension
+namespace sharpbox.WebLibrary.Core.Wiring
 {
     public interface IAppPersistence
     {

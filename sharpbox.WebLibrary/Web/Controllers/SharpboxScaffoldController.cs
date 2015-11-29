@@ -13,17 +13,14 @@ namespace sharpbox.WebLibrary.Web.Controllers
 {
     using System.Linq;
 
-    using Common.Data.Helpers.ControllerWiring;
     using Common.Dispatch.Model;
 
     using Core;
-    using Core.Extension;
 
     using Dispatch.Model;
 
-    using Microsoft.Win32.SafeHandles;
-
-    using WebLibrary.Helpers.ControllerWiring;
+    using sharpbox.WebLibrary.Core.Wiring;
+    using sharpbox.WebLibrary.Web.Helpers.AppWiring;
 
     public abstract class SharpboxScaffoldController<T> : SharpboxController<T>, ISharpboxScaffoldController<T>
         where T : new()
@@ -32,12 +29,12 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public WebContext<T> WebContext { get; set; }
         public IAppWiring AppWiring { get; set; }
-
+        public IAppPersistence AppPersistence { get; set; }
         #endregion
 
         #region Constructor(s)
 
-        protected SharpboxScaffoldController(AppContext appContext, IAppWiring appWiring)
+        protected SharpboxScaffoldController(AppContext appContext, IAppWiring appWiring, IAppPersistence appPersistence)
         {
             // Only create a new WebContext if one doesn't already exist.
             this.WebContext = new WebContext<T>
@@ -50,11 +47,15 @@ namespace sharpbox.WebLibrary.Web.Controllers
                                                   ModelErrors = new Dictionary<string, Stack<ModelError>>()
                                               }
                                   };
+            
+            this.AppPersistence = appPersistence;
             this.AppWiring = appWiring;
+            this.AppWiring.AppPersistence = appPersistence;
+
             this.WarmBootAppContext(this.WebContext.AppContext);
         }
 
-        protected SharpboxScaffoldController(AppContext appContext) : this(appContext, new DefaultAppWiring(new DefaultAppPersistence())) { } 
+        protected SharpboxScaffoldController(AppContext appContext) : this(appContext, new DefaultAppWiring(), new IoAppPersistence()) { } 
 
         #endregion
 
@@ -64,7 +65,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         {
             this.WebContext.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
             this.WebContext.AppContext.DataPath = this.Server.MapPath("~/App_Data/");
-            this.WebContext.AppContext.Dispatch.Process<AppContext>(DefaultAppWiring.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
+            this.WebContext.AppContext.Dispatch.Process<AppContext>(BaseWiringCommands.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
             this.WebContext.AppContext.CurrentLogOn = User.Identity.Name;
         }
 
@@ -93,13 +94,13 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult Get()
         {
-            return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.Get, null), JsonRequestBehavior.AllowGet);
+            return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(BaseWiringCommands.Get, null), JsonRequestBehavior.AllowGet);
         }
 
         [OutputCache(Duration = 20, VaryByParam = "None")]
         public virtual JsonResult GetAsLookUpDictionary()
         {
-            var items = (List<T>)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.Get, null);
+            var items = (List<T>)this.WebContext.AppContext.Dispatch.Process(BaseWiringCommands.Get, null);
             var dict = new Dictionary<string, string>();
             var type = typeof(T);
 
@@ -116,7 +117,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult GetById(string id)
         {
-            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(DefaultAppWiring.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
+            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(BaseWiringCommands.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()
