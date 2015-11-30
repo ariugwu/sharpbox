@@ -1,10 +1,8 @@
-﻿namespace sharpbox.WebLibrary.Core.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace sharpbox.Bootstrap.Models
 {
-    using System;
-    using System.Collections.Generic;
-
-    using sharpbox.Common.Data;
-
     [Serializable]
     public class ExampleModel
     {

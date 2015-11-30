@@ -57,6 +57,10 @@ namespace sharpbox.Dispatch
 
         public Dictionary<CommandName, CommandHubItem> CommandHub { get { return _commandHub; } }
 
+        public Dictionary<EventName, Queue<Action<Response>>> EventHub { get { return _eventSubscribers; } }
+
+        public Dictionary<RoutineName, Queue<RoutineItem>> RoutineHub { get { return _routineHub; }}
+
         /// <summary>
         /// This method will take the action and append it to the list for the given publisher name. Whenever publish is called for that publisherName the associated methods will be invoked.
         /// </summary>

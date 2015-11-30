@@ -36,10 +36,12 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         protected SharpboxScaffoldController(AppContext appContext, IAppWiring appWiring, IAppPersistence appPersistence)
         {
+            this.AppContext = appContext;
+
             // Only create a new WebContext if one doesn't already exist.
             this.WebContext = new WebContext<T>
                                   {
-                                      AppContext = appContext,
+                                      AppContext = this.AppContext,
                                       User = this.User,
                                       WebResponse =
                                           new WebResponse<T>()
@@ -47,7 +49,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
                                                   ModelErrors = new Dictionary<string, Stack<ModelError>>()
                                               }
                                   };
-            
+
             this.AppPersistence = appPersistence;
             this.AppWiring = appWiring;
             this.AppWiring.AppPersistence = appPersistence;
@@ -151,12 +153,11 @@ namespace sharpbox.WebLibrary.Web.Controllers
             // Also show routines w/ failover and rollback paths.
             // Show events that are listening.
 
-            Dictionary<string, string> commandNameTest;
-            Dictionary<string, string> eventNameTarget;
-            Dictionary<string, string> commandNameTarget;
-            Dictionary<string, List<string>> routineNameTarget;
+            Dictionary<string, string> commandNameTarget = (this.AppContext.Dispatch.CommandHub != null)? this.AppContext.Dispatch.CommandHub.ToDictionary(x => x.Key.Name, y => y.Value.Action.Method.ToString()) : null;
+            Dictionary<string, List<string>> eventNameTarget = (this.AppContext.Dispatch.EventHub != null)? this.AppContext.Dispatch.EventHub.ToDictionary(x => x.Key.Name, y => y.Value.Select(x => x.Method.ToString()).ToList()) : null;
+            Dictionary<string, List<Tuple<string,string,string>>> routineNameTarget = (this.AppContext.Dispatch.RoutineHub != null)? this.AppContext.Dispatch.RoutineHub.ToDictionary(x => x.Key.Name, y => y.Value.Select(x => new Tuple<string, string, string>(x.Action?.Method.ToString(), x.FailOver?.Method.ToString(), x.Rollback?.Method.ToString())).ToList()) : null;
 
-            return this.Json(null, JsonRequestBehavior.AllowGet);
+            return this.Json(new { commandNameTarget, eventNameTarget, routineNameTarget }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Execute(WebRequest<T> webRequest)

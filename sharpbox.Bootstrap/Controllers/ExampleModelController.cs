@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Web.Mvc;
 
 using FluentValidation;
+using sharpbox.Bootstrap.Models;
+using sharpbox.WebLibrary.Core.Models;
 
 namespace sharpbox.Bootstrap.Controllers
 {
@@ -15,7 +17,6 @@ namespace sharpbox.Bootstrap.Controllers
     using Dispatch.Model;
 
     using WebLibrary.Core;
-    using WebLibrary.Core.Models;
     using WebLibrary.Core.Wiring;
     using WebLibrary.Helpers;
     using WebLibrary.Web.Controllers;

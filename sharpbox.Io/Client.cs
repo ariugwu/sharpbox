@@ -18,12 +18,21 @@ namespace sharpbox.Io
 
         public void Write(FileDetail fileDetail)
         {
+            while (IsFileLocked(new FileInfo(fileDetail.FilePath))) { 
+                // Just wait if file is in use. 
+            }
+
             File.WriteAllBytes(fileDetail.FilePath, fileDetail.Data);
         }
 
         public void Write<T>(string filePath, T objectToWrite, bool append = false)
             where T : new()
         {
+            while (IsFileLocked(new FileInfo(filePath)))
+            {
+                // Just wait if file is in use. 
+            }
+
             filePath = FixPath(filePath);
             _strategy.Write(filePath, objectToWrite, append);
         }
@@ -38,12 +47,23 @@ namespace sharpbox.Io
             var newFile = FixPath(Path.Combine(directory, string.Format("{0}-new.{1}", fileName, fileExt)));
             var backupFile = FixPath(Path.Combine(directory, string.Format("{0}-backup.{1}", fileName, fileExt)));
 
+            while (IsFileLocked(new FileInfo(originalFile)))
+            {
+                // Just wait if file is in use. 
+            }
+
             _strategy.Replace<T>(originalFile, newFile, backupFile, objectToWrite);
 
         }
 
         public T Read<T>(string filePath) where T : new()
         {
+
+            while (IsFileLocked(new FileInfo(filePath)))
+            {
+                // Just wait if file is in use. 
+            }
+
             filePath = FixPath(filePath);
             var result = _strategy.Read<T>(filePath);
 
@@ -52,6 +72,11 @@ namespace sharpbox.Io
 
         public void Delete<T>(string filePath) where T : new()
         {
+            while (IsFileLocked(new FileInfo(filePath)))
+            {
+                // Just wait if file is in use. 
+            }
+
             filePath = FixPath(filePath);
             _strategy.Delete<T>(filePath);
         }
@@ -80,6 +105,7 @@ namespace sharpbox.Io
 
         /// <summary>
         /// Not a perfect solution to the "Is File locked?" aka "Don't return me until the write operatin is finished"...but there is no perfect solution @SEE: http://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use/937558#937558
+        /// @SEE: http://stackoverflow.com/a/937558
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>

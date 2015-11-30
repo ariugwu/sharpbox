@@ -38,7 +38,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
       this.File = new Io.Client(new Io.Strategy.Binary.BinaryStrategy());
 
       // Bootstrap the notification client.
-      this.Notification = new Notification.Client(Email);
+      this.Notification = new Notification.NotificationContext();
 
       // Create a email template for type 'object[]'
       var subjectResource = new Resource() { Value = "Example Subject: {0}", ResourceType = ResourceType.EmailSubject};
@@ -80,7 +80,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
       // We use this command to showcase how you can wire up existing code that you want audited, or otherwise a part of the command stream but not necessarily processed.
       this.Dispatch.Register<String>(ExampleContext.DummyPassThroughCommand, (value) => value, ExampleContext.OnDummyPassThroughCommand);
 
-      this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, Notification.Notify, NotificationEvents.OnNotificationNotify);
+      this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, (bli) => Notification.Notify(bli, this.IdentityContext.UserManger.EmailService), NotificationEvents.OnNotificationNotify);
       this.Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
       this.Dispatch.Register<MailMessage>(EmailCommands.SendEmail, SendEmail, EmailEvents.OnEmailSend);
       this.Dispatch.Register<FileDetail>(WriteARandomFile, WriteRandomTxtFile, OnRandomFileWritten);

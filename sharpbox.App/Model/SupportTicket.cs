@@ -28,7 +28,7 @@ namespace sharpbox.App.Model
         public string SubmittedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public int ResponseId { get; set; }
-        public Guid? EnvironmentId { get; set; }
+        public int EnvironmentId { get; set; }
 
     }
 }

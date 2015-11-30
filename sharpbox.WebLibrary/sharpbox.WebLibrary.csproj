@@ -110,16 +110,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Models\ExampleAppContext.cs" />
     <Compile Include="Core\Wiring\BaseWiringCommands.cs" />
     <Compile Include="Web\Helpers\AppWiring\IoAppPersistence.cs" />
     <Compile Include="Core\Wiring\IAppPersistence.cs" />
     <Compile Include="Core\LifecycleHandler.cs" />
     <Compile Include="Core\LifeCycleHandlerName.cs" />
     <Compile Include="Core\LifeCycleHandlerState.cs" />
-    <Compile Include="Core\Models\ExampleAppContext.cs" />
-    <Compile Include="Core\Models\ExampleChild.cs" />
-    <Compile Include="Core\Models\ExampleModel.cs" />
-    <Compile Include="Core\Models\TestThing.cs" />
     <Compile Include="Core\WebContext.cs" />
     <Compile Include="Core\WebContextState.cs" />
     <Compile Include="Core\WebRequest.cs" />

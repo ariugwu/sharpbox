@@ -1,7 +1,7 @@
-﻿namespace sharpbox.WebLibrary.Core.Models
-{
-    using System;
+﻿using System;
 
+namespace sharpbox.Bootstrap.Models
+{
     [Serializable]
     public class ExampleChild
     {

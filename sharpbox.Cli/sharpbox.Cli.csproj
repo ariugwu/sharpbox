@@ -54,6 +54,10 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -117,6 +121,10 @@
     <ProjectReference Include="..\sharpbox.Localization\sharpbox.Localization.csproj">
       <Project>{a24bb122-b3ae-4914-866d-e1d1ee0292d3}</Project>
       <Name>sharpbox.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\sharpbox.Membership\sharpbox.Membership.csproj">
+      <Project>{5CDEDD58-84C8-4716-A6C1-9A89A927FFD1}</Project>
+      <Name>sharpbox.Membership</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Notification\sharpbox.Notification.csproj">
       <Project>{c5e1ab92-967c-467d-97c8-7b42cf3c2366}</Project>

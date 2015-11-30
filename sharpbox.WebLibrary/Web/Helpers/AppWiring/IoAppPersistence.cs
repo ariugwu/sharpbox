@@ -172,7 +172,7 @@
         public AppContext SaveTextResources(AppContext appContext)
         {
             var path = Path.Combine(appContext.DataPath, this.TextResourcesFileName);
-            appContext.File.Replace(path, appContext.Resources);
+            appContext.File.Replace(path, appContext.Localization.Resources);
 
             return appContext;
         }
@@ -279,11 +279,11 @@
             if (appContext.File.Exists(path))
             {
                 var allResources = appContext.File.Read<List<Resource>>(path);
-                appContext.Resources = allResources.ToDictionary(x => x.ResourceName, x => x.Value);
+                appContext.Localization.Resources = allResources.ToDictionary(x => x.ResourceName, x => x.Value);
             }
             else
             {
-                appContext.Resources = new Dictionary<ResourceName, string>();
+                appContext.Localization.Resources = new Dictionary<ResourceName, string>();
 
                 appContext.File.Write(path, new List<Resource>());
             }

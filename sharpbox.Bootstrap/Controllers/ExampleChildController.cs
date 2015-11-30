@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using sharpbox.Bootstrap.Models;
+using sharpbox.WebLibrary.Core.Models;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using WebLibrary.Core.Models;
     using WebLibrary.Core.Wiring;
     using WebLibrary.Web.Controllers;
 

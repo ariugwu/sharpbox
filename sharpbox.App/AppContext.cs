@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Mail;
 
 namespace sharpbox.App
@@ -7,7 +6,7 @@ namespace sharpbox.App
     using Common.Email;
     using Common.Notification;
     using Dispatch;
-    using Localization.Model;
+    using Localization;
     using Notification.Model;
 
     [Serializable]
@@ -19,12 +18,15 @@ namespace sharpbox.App
         /// <param name="smtpClient"></param>
         /// <param name="ioStrategy"></param>
         /// <param name="defaultConnectionStringName"></param>
-        public AppContext(SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox")
+        public AppContext(string cultureCode, SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox")
         {
             this.Dispatch = new Client();
+
             this.Email = new Email.Client(smtpClient);
             this.File = new Io.Client(ioStrategy);
-            this.Notification = new Notification.Client(this.Email);
+            this.Notification = new Notification.NotificationContext();
+            this.Localization = new LocalizationContext(cultureCode);
+
             this.DefaultConnectionStringName = defaultConnectionStringName;
             
             this.RegisterCommands();
@@ -38,6 +40,9 @@ namespace sharpbox.App
         {
         }
 
+        #region Encapsulated Context(s)
+        public Client Dispatch { get; set; }
+
         /// <summary>
         /// Handy encapsulation for resources you will/could/might use throughout the application
         /// </summary>
@@ -48,18 +53,27 @@ namespace sharpbox.App
 
         public string CurrentLogOn { get; set; }
 
-        // Text Resources
-        public Dictionary<ResourceName, string> Resources { get; set; }
+        // Localization
+        public LocalizationContext Localization { get; set; }
 
-        public Client Dispatch { get; set; }
-        public Notification.Client Notification { get; set; } // A dispatch friendly notification system.
+        // Notification
+        public Notification.NotificationContext Notification { get; set; } // A dispatch friendly notification system.
+
+        // Email
         public Email.Client Email { get; set; } // A dispatch friendly email client
+
+        // File
         public Io.Client File { get; set; } // A dispatch friendly file client
 
+        #endregion
+
+        #region Properties
         public string DefaultConnectionStringName { get; set; }
         public string UploadPath { get; set; }
         public string DataPath { get; set; }
+        #endregion
 
+        #region Init Method(s)
         /// <summary>
         /// Map our actions and listeners to the dispatch
         /// </summary>
@@ -74,7 +88,7 @@ namespace sharpbox.App
             //Dispatch.Register(ExtendedCommandNames.FileCreate, WriteFile, ExtendedEventNames.OnFileCreate);
 
             // Notification
-            this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, this.Notification.Notify, NotificationEvents.OnNotificationNotify);
+            this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, (bli) => this.Notification.Notify(bli, this.IdentityContext.UserManger.EmailService), NotificationEvents.OnNotificationNotify);
             this.Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(this.Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
 
         }
@@ -90,5 +104,6 @@ namespace sharpbox.App
             this.Email.Send(mail);
             return mail;
         }
+        #endregion
     }
 }

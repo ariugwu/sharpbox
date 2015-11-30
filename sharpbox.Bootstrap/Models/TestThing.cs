@@ -1,9 +1,5 @@
-﻿namespace sharpbox.WebLibrary.Core.Models
+﻿namespace sharpbox.Bootstrap.Models
 {
-    using System;
-
-    using sharpbox.Common.Data;
-
     public class TestThing : ExampleChild
     {
         public string TestStringThingFoo { get; set; }

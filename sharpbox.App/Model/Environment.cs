@@ -17,7 +17,5 @@ namespace sharpbox.App.Model
     public BrandType BrandType { get; set; }
     public int EnvironmentTypeId { get; set; }
     public EnvironmentType EnvironmentType {get; set; }
-    public int TechSheetId { get; set; }
-    public TechSheet TechSheet { get; set; }
   }
 }

@@ -1,28 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Microsoft.AspNet.Identity;
 
 namespace sharpbox.Notification
 {
     using Common.Dispatch.Model;
-    using sharpbox.Dispatch.Model;
+    using Dispatch.Model;
     using Localization.Model;
-    using Notification.Model;
+    using Model;
 
     [Serializable]
-  public class Client
+  public class NotificationContext
   {
-    public Client(Email.Client emailClient)
-    {
-      _emailClient = emailClient;
-    }
-
-    public Client()
+    public NotificationContext()
     {
 
     }
 
-    private Email.Client _emailClient;
     private Dictionary<string, Dictionary<Type, List<string>>> _subscribers;
     private List<BackLogItem> _backLog;
     private Dictionary<string, Dictionary<Type, EmailTemplate>> _emailTempalteLookup;
@@ -96,11 +91,19 @@ namespace sharpbox.Notification
 
     }
 
-    public BackLogItem Notify(BackLogItem bli)
+    public BackLogItem Notify(BackLogItem bli, IIdentityMessageService messageService)
     {
       try
       {
-        _emailClient.Send(bli.To, bli.From, bli.Subject, bli.Message);
+          var message = new IdentityMessage
+          {
+              Body = bli.Message,
+              Destination = string.Join(",", bli.To),
+              Subject = bli.Subject
+          };
+
+          messageService.Send(message);
+
         bli.AttemptMessage = "Sent.";
         bli.AttempNumber = bli.AttempNumber + 1; 
         bli.WasSent = true;

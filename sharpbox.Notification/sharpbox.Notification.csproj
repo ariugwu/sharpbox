@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -44,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
+    <Compile Include="NotificationContext.cs" />
     <Compile Include="Model\BackLogItem.cs" />
     <Compile Include="Model\Subscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,10 +61,6 @@
     <ProjectReference Include="..\sharpbox.Dispatch\sharpbox.Dispatch.csproj">
       <Project>{2985b13a-c07a-42b5-b293-697ca78a69bd}</Project>
       <Name>sharpbox.Dispatch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\sharpbox.Email\sharpbox.Email.csproj">
-      <Project>{793637e7-810e-44b7-820e-9e8577a79d4b}</Project>
-      <Name>sharpbox.Email</Name>
     </ProjectReference>
     <ProjectReference Include="..\sharpbox.Io\sharpbox.Io.csproj">
       <Project>{7901de70-170d-47f1-9fe5-37d4300ebf1a}</Project>
