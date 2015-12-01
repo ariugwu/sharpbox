@@ -115,6 +115,10 @@ module sharpbox.Web {
             return `WebRequest.Instance.${key}`;
         }
 
+        prefixChildFieldName(childName: string, key: string) {
+            return `WebRequest.Instance.${childName}.${key}`;
+        }
+
         //#region Lookup Helpers
 
         isLookupField(key: string): boolean {
