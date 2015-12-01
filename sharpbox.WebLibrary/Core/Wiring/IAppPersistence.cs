@@ -16,7 +16,7 @@ namespace sharpbox.WebLibrary.Core.Wiring
 
         T Remove<T>(T instance) where T : new();
 
-        List<T> Get<T>() where T : new();
+        List<T> Get<T>(object args) where T : new();
 
         T GetById<T>(string id) where T : new();
 

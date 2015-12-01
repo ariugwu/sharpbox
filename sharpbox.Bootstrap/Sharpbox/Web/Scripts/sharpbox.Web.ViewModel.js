@@ -13,7 +13,7 @@ var sharpbox;
             }
             ViewModel.prototype.getAll = function (callback) {
                 var url = this.controllerUrl + "Get/";
-                $.getJSON(url, { _: new Date().getTime() }).done(function (data) {
+                $.getJSON(url).done(function (data) {
                     callback(data);
                 });
             };

@@ -26,7 +26,7 @@
             this.AppPersistence.AppContext = appContext;
 
             //Register Queries
-            appContext.Dispatch.Register<List<T>>(BaseWiringCommands.Get, new Func<List<T>>(this.AppPersistence.Get<T>));
+            appContext.Dispatch.Register<List<T>>(BaseWiringCommands.Get, new Func<object,List<T>>(this.AppPersistence.Get<T>));
             appContext.Dispatch.Register<T>(BaseWiringCommands.GetById, new Func<string, T>(this.AppPersistence.GetById<T>));
 
             //Register Command(s)

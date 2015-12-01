@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Web;
+using System.Web.Http.OData;
+using System.Web.Http.OData.Builder;
+using System.Web.Http.OData.Query;
 using System.Web.Mvc;
-
+using Microsoft.Data.Edm.Library;
 using Newtonsoft.Json;
 
 using NJsonSchema;
@@ -23,7 +27,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
     using sharpbox.WebLibrary.Web.Helpers.AppWiring;
 
     public abstract class SharpboxScaffoldController<T> : SharpboxController<T>, ISharpboxScaffoldController<T>
-        where T : new()
+        where T : class,new()
     {
         #region Properties
 
@@ -96,7 +100,17 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult Get()
         {
-            return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(BaseWiringCommands.Get, null), JsonRequestBehavior.AllowGet);
+            ODataQueryOptions<T> options = null;
+
+            if (!string.IsNullOrEmpty(this.Request.Url?.Query))
+            {
+                ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+                builder.EntitySet<T>("Instances");
+                builder.AddEntity(typeof (T));
+                options = new ODataQueryOptions<T>(new ODataQueryContext(builder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
+            }
+
+            return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(BaseWiringCommands.Get, new object[]{ options }), JsonRequestBehavior.AllowGet);
         }
 
         [OutputCache(Duration = 20, VaryByParam = "None")]

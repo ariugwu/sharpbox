@@ -1,4 +1,7 @@
-﻿namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
+﻿using System.Data.Entity;
+using System.Web.Http.OData.Query;
+
+namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
 {
     using System;
     using System.Collections.Generic;
@@ -6,9 +9,9 @@
     using System.Linq;
     using System.Reflection;
 
-    using sharpbox.App;
-    using sharpbox.Localization.Model;
-    using sharpbox.WebLibrary.Core.Wiring;
+    using App;
+    using Localization.Model;
+    using Core.Wiring;
 
     public class IoAppPersistence : IAppPersistence
     {
@@ -24,7 +27,7 @@
 
         public T Add<T>(T instance) where T : new()
         {
-            List<T> things = this.Get<T>();
+            List<T> things = this.Get<T>(null);
             things.Add(instance);
 
             return instance;
@@ -54,7 +57,7 @@
 
             if (idInfo != null)
             {
-                List<T> things = this.Get<T>();
+                List<T> things = this.Get<T>(null);
 
                 //@SEE: http://stackoverflow.com/a/28658501
                 var item = things.FirstOrDefault(x => idInfo.GetValue(x).ToString() == idInfo.GetValue(instance).ToString());
@@ -94,10 +97,10 @@
         public T GetById<T>(string id) where T : new()
         {
             PropertyInfo idInfo = Common.Type.TypeInfoHelper.GetIdPropertyByConvention(typeof(T));
-
+            
             if (idInfo != null)
             {
-                List<T> things = this.Get<T>();
+                List<T> things = this.Get<T>(null);
 
                 //@SEE: http://stackoverflow.com/a/28658501
                 return things.FirstOrDefault(x => idInfo.GetValue(x).ToString() == id);
@@ -106,7 +109,7 @@
             throw new ArgumentException("This object has no id that follows the connvention 'ObjectNameId'");
         }
 
-        public List<T> Get<T>() where T : new()
+        public List<T> Get<T>(object arg) where T : new()
         {
             List<T> things;
 
@@ -123,7 +126,22 @@
                 this.AppContext.File.Write(path, things);
             }
 
-            return things;
+            List<T> results;
+
+            if (arg != null)
+            {
+                var oDataOptions = (ODataQueryOptions<T>) arg;
+                var queryResults = oDataOptions.ApplyTo(things.AsQueryable());
+
+                results = (from r in queryResults.ToListAsync().Result select (T) r).ToList();
+
+            }
+            else
+            {
+                results = things;
+            }
+
+            return results;
         }
 
         public AppContext SaveEnvironment(AppContext appContext)
