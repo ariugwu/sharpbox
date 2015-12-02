@@ -2,7 +2,7 @@
 {
     using Core.Models;
 
-    public class ResourceController : SharpboxScaffoldController<Localization.Model.Resource>
+    public class ResourceController : SharpboxController<Localization.Model.Resource>
     {
         public ResourceController()
             : base(new ExampleAppContext())

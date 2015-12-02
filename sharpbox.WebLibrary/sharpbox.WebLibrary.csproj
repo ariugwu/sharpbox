@@ -131,6 +131,8 @@
     <Compile Include="Core\Wiring\BaseQueryName.cs" />
     <Compile Include="Core\Wiring\BaseCommandName.cs" />
     <Compile Include="Core\Wiring\BaseRoutineName.cs" />
+    <Compile Include="Web\Controllers\ErrorController.cs" />
+    <Compile Include="Web\Controllers\GenericController.cs" />
     <Compile Include="Web\Helpers\AppWiring\IoAppPersistence.cs" />
     <Compile Include="Core\Wiring\IAppPersistence.cs" />
     <Compile Include="Core\LifecycleHandler.cs" />
@@ -144,9 +146,7 @@
     <Compile Include="Web\Controllers\ResourceController.cs" />
     <Compile Include="Web\Controllers\EnvironmentController.cs" />
     <Compile Include="Web\Controllers\ISharpboxController.cs" />
-    <Compile Include="Web\Controllers\ISharpScaffoldController.cs" />
     <Compile Include="Web\Controllers\SharpboxController.cs" />
-    <Compile Include="Web\Controllers\SharpboxScaffoldController.cs" />
     <Compile Include="Web\Controllers\SharpControllerFactory.cs" />
     <Compile Include="Web\Helpers\ActionCommandMap.cs" />
     <Compile Include="Web\Helpers\AppWiring\DefaultAppWiring.cs" />

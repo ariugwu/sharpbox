@@ -7,7 +7,7 @@ namespace sharpbox.WebLibrary.Helpers.Extensions
 
     public static class WebViewPageExtensions
     {
-        public static WebContext<T> WebContext<T>(this WebViewPage wvp) where T : new()
+        public static WebContext<T> WebContext<T>(this WebViewPage wvp) where T : class, new()
         {
             return (WebContext<T>)wvp.Session["WebContext"];
         }

@@ -20,7 +20,7 @@ namespace sharpbox.App
         /// <param name="defaultConnectionStringName"></param>
         public AppContext(string cultureCode, SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox")
         {
-            this.Dispatch = new Client();
+            this.Dispatch = new DispatchContext();
 
             this.Email = new Email.Client(smtpClient);
             this.File = new Io.Client(ioStrategy);
@@ -41,7 +41,7 @@ namespace sharpbox.App
         }
 
         #region Encapsulated Context(s)
-        public Client Dispatch { get; set; }
+        public DispatchContext Dispatch { get; set; }
 
         /// <summary>
         /// Handy encapsulation for resources you will/could/might use throughout the application

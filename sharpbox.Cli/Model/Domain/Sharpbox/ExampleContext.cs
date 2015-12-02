@@ -30,7 +30,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
       : base()
     {
 
-      this.Dispatch = new Client();
+      this.Dispatch = new DispatchContext();
 
       this.LogOn = LogOn;
 

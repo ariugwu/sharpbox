@@ -8,14 +8,14 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
     using Dispatch.Model;
     using Common.Data;
 
-    public class ExecuteHandler<T> : LifecycleHandler<T> where T : new()
+    public class ExecuteHandler<T> : LifecycleHandler<T> where T : class, new()
     {
         public ExecuteHandler()
             : base(new LifeCycleHandlerName("Execute"))
         {
         }
 
-        public override void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
+        public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
         {
             // Grab the instance
             var parameters = new List<object> { webContext.WebRequest.Instance };

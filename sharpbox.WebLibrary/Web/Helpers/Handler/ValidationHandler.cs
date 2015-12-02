@@ -8,7 +8,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
     using Controllers;
     using Common.Data;
 
-    public class ValidationHandler<T> : LifecycleHandler<T> where T : new()
+    public class ValidationHandler<T> : LifecycleHandler<T> where T : class, new()
     {
         public ValidationHandler()
             : base(new LifeCycleHandlerName("Validation"))
@@ -19,7 +19,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 
         public AbstractValidator<T> Validator { get; set; }
 
-        public override void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
+        public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
         {
             if (!controller.IsModelStateValid())
             {

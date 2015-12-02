@@ -9,7 +9,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
     using Common.Data;
     using Common.Data.Helpers;
 
-    public class LoadContextHandler<T> : LifecycleHandler<T> where T : new()
+    public class LoadContextHandler<T> : LifecycleHandler<T> where T : class, new()
     {
         public LoadContextHandler()
             : base(new LifeCycleHandlerName("LoadContext"))
@@ -18,7 +18,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 
         public ActionCommandMap ActionCommandMap { get; set; }
 
-        public override void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
+        public override void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller)
         {
             try
             {

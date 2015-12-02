@@ -16,9 +16,9 @@ namespace sharpbox.TestHarness
             }
         } 
 
-        private Dispatch.Client _dispatcher;
+        private Dispatch.DispatchContext _dispatcher;
 
-        public Client(Dispatch.Client dispatcher)
+        public Client(Dispatch.DispatchContext dispatcher)
         {
             _dispatcher = dispatcher;
             TestStream = new List<Response>();
@@ -35,7 +35,7 @@ namespace sharpbox.TestHarness
             //TODO: Incorporate this ability to run the test against any previous frame. Since we know what the start and end should be could parse old data and reconstruct based on that alone.
         }
 
-      public byte[] GenerateExcelBddFile(Dispatch.Client dispatcher)
+      public byte[] GenerateExcelBddFile(Dispatch.DispatchContext dispatcher)
       {
         throw new NotImplementedException();
       }

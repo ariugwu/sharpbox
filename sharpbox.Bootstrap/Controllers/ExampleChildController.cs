@@ -11,7 +11,7 @@ namespace sharpbox.Bootstrap.Controllers
     using WebLibrary.Core.Wiring;
     using WebLibrary.Web.Controllers;
 
-    public class ExampleChildController : SharpboxScaffoldController<ExampleChild>
+    public class ExampleChildController : SharpboxController<ExampleChild>
     {
         public ExampleChildController() : base(new ExampleAppContext())
         {

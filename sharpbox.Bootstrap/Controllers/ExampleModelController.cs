@@ -21,7 +21,7 @@ namespace sharpbox.Bootstrap.Controllers
     using WebLibrary.Helpers;
     using WebLibrary.Web.Controllers;
 
-    public sealed class ExampleModelController : SharpboxScaffoldController<ExampleModel>
+    public sealed class ExampleModelController : SharpboxController<ExampleModel>
     {
         public ExampleModelController()
             : base(new ExampleAppContext())

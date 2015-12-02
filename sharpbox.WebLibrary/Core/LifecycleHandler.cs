@@ -8,7 +8,7 @@ namespace sharpbox.WebLibrary.Core
     using Dispatch.Model;
     using Web.Controllers;
 
-    public abstract class LifecycleHandler<T> where T : new()
+    public abstract class LifecycleHandler<T> where T : class, new()
     {
         protected LifecycleHandler(LifeCycleHandlerName name)
         {
@@ -32,7 +32,7 @@ namespace sharpbox.WebLibrary.Core
             this._successor = successor;
         }
 
-        public void ProcessRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
+        public void ProcessRequest(WebContext<T> webContext, ISharpboxController<T> controller)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace sharpbox.WebLibrary.Core
         /// <param name="controller"></param>
         /// <param name="key"></param>
         /// <param name="modelError"></param>
-        public void AddModelStateError(WebContext<T> webContext, ISharpboxScaffoldController<T> controller, string key, ModelError modelError)
+        public void AddModelStateError(WebContext<T> webContext, ISharpboxController<T> controller, string key, ModelError modelError)
         {
             controller.AddErrorToModelState(key, modelError.ErrorMessage);
 
@@ -97,7 +97,7 @@ namespace sharpbox.WebLibrary.Core
             webContext.WebResponse.AddLifeCycleTrailItem(this.Name, state ?? LifeCycleHandlerState.Success, message ?? string.Empty);
         }
 
-        public abstract void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller);
+        public abstract void HandleRequest(WebContext<T> webContext, ISharpboxController<T> controller);
 
     }
 }

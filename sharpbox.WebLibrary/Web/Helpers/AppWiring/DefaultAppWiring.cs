@@ -22,7 +22,7 @@
             
         }
 
-        public void WireDefaultRoutes<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : new()
+        public void WireDefaultRoutes<T>(Controllers.ISharpboxController<T> controller) where T : class, new()
         {
             var appContext = controller.WebContext.AppContext;
             this.AppPersistence.AppContext = appContext;
@@ -56,7 +56,7 @@
             controller.CommandMessageMap[BaseCommandName.Remove].Add(ResponseTypes.Success, "Removal success.");
         }
 
-        public void WireContext<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : new()
+        public void WireContext<T>(Controllers.ISharpboxController<T> controller) where T : class, new()
         {
             var appContext = controller.WebContext.AppContext;
             this.AppPersistence.AppContext = appContext;

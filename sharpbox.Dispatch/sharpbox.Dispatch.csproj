@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
     <Compile Include="DispatchContext.cs" />
     <Compile Include="Handler\BroadCastHandler.cs" />
     <Compile Include="Handler\ProcessHandler.cs" />

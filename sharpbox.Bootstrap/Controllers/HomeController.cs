@@ -11,7 +11,7 @@ namespace sharpbox.Bootstrap.Controllers
 
     using sharpbox.WebLibrary.Core.Wiring;
 
-    public sealed class HomeController : SharpboxScaffoldController<Environment>
+    public sealed class HomeController : SharpboxController<Environment>
     {
         public HomeController() : base(new ExampleAppContext())
         {

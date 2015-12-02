@@ -11,7 +11,7 @@ namespace sharpbox.WebLibrary.Core
 
   using Web.Controllers;
 
-  public class WebContext<T> where T : new()
+  public class WebContext<T> where T : class, new()
     {
 
     #region Constructor(s)
@@ -83,7 +83,7 @@ namespace sharpbox.WebLibrary.Core
 
     #endregion
 
-    public void ProcessRequest(WebRequest<T> webRequest, ISharpboxScaffoldController<T> controller)
+    public void ProcessRequest(WebRequest<T> webRequest, ISharpboxController<T> controller)
         {
       this.WebRequest = webRequest;
       this.WebResponse = new WebResponse<T>() { ModelErrors = new Dictionary<string, Stack<ModelError>>() };

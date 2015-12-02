@@ -212,6 +212,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Sharpbox\Web\Scripts\Manager.ttinclude" />
+    <Content Include="Sharpbox\Web\Vendor\DataTable\jquery.dataTables.odata.js" />
     <Content Include="Sharpbox\Web\Views\Web.config" />
     <Content Include="Sharpbox\Web\Scripts\sharpbox.poco.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
