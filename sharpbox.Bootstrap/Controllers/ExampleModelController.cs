@@ -56,17 +56,6 @@ namespace sharpbox.Bootstrap.Controllers
             return validator;
         }
 
-        public override Dictionary<object, Attribute> GetDataAnnotations()
-        {
-            var entity = new ExampleModel { Value = "", FirstName = "" }; // Seems like in order to reference the object in the dictionary it can't be null.
-
-            var annotationMap = new Dictionary<object, Attribute>();
-            annotationMap.Add(entity.Age, new MaxLengthAttribute(15));
-            annotationMap.Add(entity.FirstName, new RequiredAttribute());
-
-            return annotationMap;
-        }
-
         /// <summary>
         /// Provides the option to keep all of the default application wiring but provide your own routes for Get, GetById, Add, Update, Remove
         /// For example you might want to provide your own persistence strategy on top of the base wiring but also point to Default routes outside of that strategy.

@@ -104,6 +104,10 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return this.View("~/Sharpbox/Web/Views/Crud/Detail.cshtml");
         }
 
+        #endregion
+
+        #region API
+
         public virtual JsonResult Get()
         {
             ODataQueryOptions<T> options = null;
@@ -116,7 +120,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return this.Json((IQueryable<T>)this.WebContext.AppContext.Dispatch.Process(BaseQueryName.Get, new object[]{ options }), JsonRequestBehavior.AllowGet);
         }
 
-        [OutputCache(Duration = 20, VaryByParam = "None")]
+        [OutputCache(Duration = 3600, VaryByParam = "None")]
         public virtual JsonResult GetAsLookUpDictionary()
         {
             var items = (List<T>)this.WebContext.AppContext.Dispatch.Process(BaseQueryName.Get, null);

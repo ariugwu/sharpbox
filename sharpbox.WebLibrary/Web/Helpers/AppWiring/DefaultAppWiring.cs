@@ -21,6 +21,7 @@
         {
             
         }
+
         public void WireDefaultRoutes<T>(WebLibrary.Web.Controllers.ISharpboxScaffoldController<T> controller) where T : new()
         {
             var appContext = controller.WebContext.AppContext;

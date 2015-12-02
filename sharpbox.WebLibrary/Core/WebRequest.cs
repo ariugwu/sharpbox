@@ -11,6 +11,7 @@ namespace sharpbox.WebLibrary.Core
         public UiAction UiAction { get; set; }
         public CommandName CommandName { get; set; }
         public T Instance { get; set; }
+        public object[] Args { get; set; }
         public Io.Model.FileDetail FileDetail { get; set; }
 
     }

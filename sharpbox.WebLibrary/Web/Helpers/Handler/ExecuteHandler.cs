@@ -17,7 +17,14 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
 
         public override void HandleRequest(WebContext<T> webContext, ISharpboxScaffoldController<T> controller)
         {
+            // Grab the instance
             var parameters = new List<object> { webContext.WebRequest.Instance };
+
+            // If we are calling this handler or the entire chain out of band we might be declaring additional arguments. So we add them to the list.
+            if (webContext.WebRequest.Args != null)
+            {
+                parameters.AddRange(webContext.WebRequest.Args);
+            }
 
             // If this is a request with a file then add it to the parameters for execution
             if (webContext.WebRequest.FileDetail != null)

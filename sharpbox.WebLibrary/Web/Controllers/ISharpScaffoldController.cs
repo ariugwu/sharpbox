@@ -34,11 +34,5 @@ namespace sharpbox.WebLibrary.Web.Controllers
         void MigrateModelErrorsToWebContext();
 
         #endregion
-
-        #region Validation
-
-        void AddDataAnotationsToValidator();
-
-        #endregion
     }
 }
