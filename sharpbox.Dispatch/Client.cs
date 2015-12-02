@@ -298,7 +298,7 @@ namespace sharpbox.Dispatch
         /// <param name="message"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public T Process<T>(RoutineName routineName, string message, object[] args)
+        public T Run<T>(RoutineName routineName, string message, object[] args)
         {
             var result = default(T);
             var routine = _routineHub[routineName].ToList();
@@ -365,7 +365,7 @@ namespace sharpbox.Dispatch
         /// <param name="queryName">The name of the query</param>
         /// <param name="args">The arguments to be processed</param>
         /// <returns>The return T</returns>
-        public object Process(QueryName queryName, object[] args)
+        public object Fetch(QueryName queryName, object[] args)
         {
             var action = _queryHub[queryName];
             var result = args != null? action.DynamicInvoke(args) : action.DynamicInvoke();

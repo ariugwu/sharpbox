@@ -133,7 +133,7 @@ namespace sharpbox.Cli
 
             Console.WriteLine("Note: We baked in an exception on purpose to test the ability register and automatically call failover methods. We're also firing on an event channel that has a notification subscriber so we can see how email templates work. The exception should display below:");
             Console.WriteLine(); Console.WriteLine();
-            var finalVersionOfUserId = example.Dispatch.Process<string>(RoutineName.Example, "Changing the name using a routine.", new object[] { "johnsont" });
+            var finalVersionOfUserId = example.Dispatch.Run<string>(RoutineName.Example, "Changing the name using a routine.", new object[] { "johnsont" });
             Console.WriteLine("We chose to pass a user name through 3 different changes. One of them had an error and a failover method was executed.");
             Console.WriteLine("The final value returned is : \"{0}\" which should equal the current value in the Example class: \"{1}\"", finalVersionOfUserId, example.LogOn);
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();

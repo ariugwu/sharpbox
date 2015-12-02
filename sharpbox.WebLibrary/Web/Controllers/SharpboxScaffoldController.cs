@@ -77,7 +77,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         {
             this.WebContext.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
             this.WebContext.AppContext.DataPath = this.Server.MapPath("~/App_Data/");
-            this.WebContext.AppContext.Dispatch.Process<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
+            this.WebContext.AppContext.Dispatch.Run<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
             this.WebContext.AppContext.CurrentLogOn = User.Identity.Name;
         }
 
@@ -117,13 +117,13 @@ namespace sharpbox.WebLibrary.Web.Controllers
                 options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
             }
 
-            return this.Json((IQueryable<T>)this.WebContext.AppContext.Dispatch.Process(BaseQueryName.Get, new object[]{ options }), JsonRequestBehavior.AllowGet);
+            return this.Json((IQueryable<T>)this.WebContext.AppContext.Dispatch.Fetch(BaseQueryName.Get, new object[]{ options }), JsonRequestBehavior.AllowGet);
         }
 
         [OutputCache(Duration = 3600, VaryByParam = "None")]
         public virtual JsonResult GetAsLookUpDictionary()
         {
-            var items = (List<T>)this.WebContext.AppContext.Dispatch.Process(BaseQueryName.Get, null);
+            var items = (List<T>)this.WebContext.AppContext.Dispatch.Fetch(BaseQueryName.Get, null);
             var dict = new Dictionary<string, string>();
             var type = typeof(T);
 
@@ -140,7 +140,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult GetById(string id)
         {
-            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(BaseQueryName.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
+            return this.Json((T)this.WebContext.AppContext.Dispatch.Fetch(BaseQueryName.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()
@@ -173,7 +173,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
         public virtual JsonResult Query()
         {
             ODataQueryOptions<T> options = null;
-
             if (!string.IsNullOrEmpty(this.Request.Url?.Query))
             {
                 options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
@@ -181,7 +180,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
             var queryName = this.AppContext.Dispatch.QueryHub.First(x => x.Key.Name == this.Request.QueryString["QueryName"]).Key;
 
-            return this.Json((IQueryable<T>)this.WebContext.AppContext.Dispatch.Process(queryName, new object[] { options }), JsonRequestBehavior.AllowGet);
+            return this.Json((IQueryable<T>)this.WebContext.AppContext.Dispatch.Fetch(queryName, new object[] { options }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Execute(WebRequest<T> webRequest)
