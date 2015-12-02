@@ -127,7 +127,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Models\ExampleAppContext.cs" />
-    <Compile Include="Core\Wiring\BaseWiringCommands.cs" />
+    <Compile Include="Core\Wiring\BaseEventName.cs" />
+    <Compile Include="Core\Wiring\BaseQueryName.cs" />
+    <Compile Include="Core\Wiring\BaseCommandName.cs" />
+    <Compile Include="Core\Wiring\BaseRoutineName.cs" />
     <Compile Include="Web\Helpers\AppWiring\IoAppPersistence.cs" />
     <Compile Include="Core\Wiring\IAppPersistence.cs" />
     <Compile Include="Core\LifecycleHandler.cs" />

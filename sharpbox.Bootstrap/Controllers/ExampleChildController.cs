@@ -26,7 +26,7 @@ namespace sharpbox.Bootstrap.Controllers
             list.Add(new ExampleChild() { ExampleChildId = 9, ARandomNumber = 6610, CreatedDate = DateTime.Now.AddDays(12), IsValid = true, SomeDoubleNumber = 198823.2, Title = "Making up titles is hard." });
             list.Add(new ExampleChild() { ExampleChildId = 4, ARandomNumber = 710, CreatedDate = DateTime.Now.AddDays(-13), IsValid = true, SomeDoubleNumber = 335923.2, Title = "For science!" });
             this.WebContext.AppContext.Dispatch.Process<List<ExampleChild>>(
-                BaseWiringCommands.UpdateAll,
+                BaseCommandName.UpdateAll,
                 "Seeding the collection",
                 new object[] { list });
 

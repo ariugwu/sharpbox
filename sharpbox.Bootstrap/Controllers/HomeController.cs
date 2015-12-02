@@ -38,7 +38,7 @@ namespace sharpbox.Bootstrap.Controllers
             //var clerg = woo.ToList();
 
             this.WebContext.AppContext.Environment.BaseUrl = "http://sharpbox.io";
-            this.WebContext.AppContext.Dispatch.Process<AppContext>(BaseWiringCommands.SaveEnvironment, this.CommandMessageMap[BaseWiringCommands.SaveEnvironment][ResponseTypes.Info], new object[] { this.WebContext.AppContext.Environment });
+            this.WebContext.AppContext.Dispatch.Process<AppContext>(BaseCommandName.SaveEnvironment, this.CommandMessageMap[BaseCommandName.SaveEnvironment][ResponseTypes.Info], new object[] { this.WebContext.AppContext.Environment });
 
             return this.View("~/Sharpbox/Web/Views/Crud/Index.cshtml");
         }

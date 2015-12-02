@@ -27,10 +27,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
 
         public T Add<T>(T instance) where T : new()
         {
-            List<T> things = this.Get<T>(null);
-            things.Add(instance);
-
-            return instance;
+            return this.Update(instance);
         }
 
         public List<T> UpdateAll<T>(List<T> items) where T : new()
@@ -57,7 +54,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
 
             if (idInfo != null)
             {
-                List<T> things = this.Get<T>(null);
+                List<T> things = this.Get<T>(null).ToList();
 
                 //@SEE: http://stackoverflow.com/a/28658501
                 var item = things.FirstOrDefault(x => idInfo.GetValue(x).ToString() == idInfo.GetValue(instance).ToString());
@@ -100,7 +97,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
             
             if (idInfo != null)
             {
-                List<T> things = this.Get<T>(null);
+                List<T> things = this.Get<T>(null).ToList();
 
                 //@SEE: http://stackoverflow.com/a/28658501
                 return things.FirstOrDefault(x => idInfo.GetValue(x).ToString() == id);
@@ -109,7 +106,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
             throw new ArgumentException("This object has no id that follows the connvention 'ObjectNameId'");
         }
 
-        public List<T> Get<T>(object arg) where T : new()
+        public IQueryable<T> Get<T>(object arg) where T : new()
         {
             List<T> things;
 
@@ -126,19 +123,19 @@ namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
                 this.AppContext.File.Write(path, things);
             }
 
-            List<T> results;
+            IQueryable<T> results;
 
             if (arg != null)
             {
                 var oDataOptions = (ODataQueryOptions<T>) arg;
                 var queryResults = oDataOptions.ApplyTo(things.AsQueryable());
 
-                results = (from r in queryResults.ToListAsync().Result select (T) r).ToList();
+                results = (IQueryable<T>)queryResults;
 
             }
             else
             {
-                results = things;
+                results = things.AsQueryable();
             }
 
             return results;

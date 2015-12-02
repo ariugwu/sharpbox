@@ -101,6 +101,9 @@ var sharpbox;
             Form.prototype.prefixFieldName = function (key) {
                 return "WebRequest.Instance." + key;
             };
+            Form.prototype.prefixChildFieldName = function (childName, key) {
+                return "WebRequest.Instance." + childName + "." + key;
+            };
             //#region Lookup Helpers
             Form.prototype.isLookupField = function (key) {
                 return (this.endsWithId(key) && key.toLowerCase().slice(0, -2) != this.instanceName.toLowerCase());

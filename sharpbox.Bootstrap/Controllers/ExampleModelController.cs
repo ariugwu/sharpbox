@@ -42,7 +42,7 @@ namespace sharpbox.Bootstrap.Controllers
             list.Add(new ExampleModel() { ExampleModelId = 1, Age = 9, BirthDate = DateTime.Now.AddDays(9), FirstName = "Josh", LastName = "Holmes", Value = "I", ExampleChildId = 1 });
 
             this.WebContext.AppContext.Dispatch.Process<List<ExampleModel>>(
-                BaseWiringCommands.UpdateAll,
+                BaseCommandName.UpdateAll,
                 "Seeding the collection",
                 new object[] { list });
 

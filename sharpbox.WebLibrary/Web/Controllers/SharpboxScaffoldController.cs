@@ -34,6 +34,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
         public WebContext<T> WebContext { get; set; }
         public IAppWiring AppWiring { get; set; }
         public IAppPersistence AppPersistence { get; set; }
+
+        private ODataConventionModelBuilder _odataModelbuilder = new ODataConventionModelBuilder();
         #endregion
 
         #region Constructor(s)
@@ -41,6 +43,10 @@ namespace sharpbox.WebLibrary.Web.Controllers
         protected SharpboxScaffoldController(AppContext appContext, IAppWiring appWiring, IAppPersistence appPersistence)
         {
             this.AppContext = appContext;
+
+            // Populate what we need for OData
+            this._odataModelbuilder.EntitySet<T>($"{typeof(T).Name}s");
+            this._odataModelbuilder.AddEntity(typeof(T));
 
             // Only create a new WebContext if one doesn't already exist.
             this.WebContext = new WebContext<T>
@@ -71,7 +77,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         {
             this.WebContext.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
             this.WebContext.AppContext.DataPath = this.Server.MapPath("~/App_Data/");
-            this.WebContext.AppContext.Dispatch.Process<AppContext>(BaseWiringCommands.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
+            this.WebContext.AppContext.Dispatch.Process<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
             this.WebContext.AppContext.CurrentLogOn = User.Identity.Name;
         }
 
@@ -104,19 +110,16 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
             if (!string.IsNullOrEmpty(this.Request.Url?.Query))
             {
-                ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-                builder.EntitySet<T>("Instances");
-                builder.AddEntity(typeof (T));
-                options = new ODataQueryOptions<T>(new ODataQueryContext(builder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
+                options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
             }
 
-            return this.Json((List<T>)this.WebContext.AppContext.Dispatch.Process(BaseWiringCommands.Get, new object[]{ options }), JsonRequestBehavior.AllowGet);
+            return this.Json((IQueryable<T>)this.WebContext.AppContext.Dispatch.Process(BaseQueryName.Get, new object[]{ options }), JsonRequestBehavior.AllowGet);
         }
 
         [OutputCache(Duration = 20, VaryByParam = "None")]
         public virtual JsonResult GetAsLookUpDictionary()
         {
-            var items = (List<T>)this.WebContext.AppContext.Dispatch.Process(BaseWiringCommands.Get, null);
+            var items = (List<T>)this.WebContext.AppContext.Dispatch.Process(BaseQueryName.Get, null);
             var dict = new Dictionary<string, string>();
             var type = typeof(T);
 
@@ -133,7 +136,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult GetById(string id)
         {
-            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(BaseWiringCommands.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
+            return this.Json((T)this.WebContext.AppContext.Dispatch.Process(BaseQueryName.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()
@@ -146,17 +149,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
             //var generator = new JSchemaGenerator();
             //    generator.GenerationProviders.Add(null);
             //JSchema jSchema = generator.Generate(typeof(T));
-
-            //Try to grab the validator and poke around
-            //var validator = this.LoadValidatorByUiAction(new UiAction("Update"));
-            //var list = validator.ToList();
-            //foreach (var v in list)
-            //{
-            //    foreach (var vv in v.Validators)
-            //    {
-            //        vv.
-            //    }
-            //}
 
             return this.Json(schemaJson, JsonRequestBehavior.AllowGet);
         }
@@ -172,6 +164,20 @@ namespace sharpbox.WebLibrary.Web.Controllers
             Dictionary<string, List<Tuple<string,string,string>>> routineNameTarget = (this.AppContext.Dispatch.RoutineHub != null)? this.AppContext.Dispatch.RoutineHub.ToDictionary(x => x.Key.Name, y => y.Value.Select(x => new Tuple<string, string, string>(x.Action?.Method.ToString(), x.FailOver?.Method.ToString(), x.Rollback?.Method.ToString())).ToList()) : null;
 
             return this.Json(new { commandNameTarget, eventNameTarget, routineNameTarget }, JsonRequestBehavior.AllowGet);
+        }
+
+        public virtual JsonResult Query()
+        {
+            ODataQueryOptions<T> options = null;
+
+            if (!string.IsNullOrEmpty(this.Request.Url?.Query))
+            {
+                options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
+            }
+
+            var queryName = this.AppContext.Dispatch.QueryHub.First(x => x.Key.Name == this.Request.QueryString["QueryName"]).Key;
+
+            return this.Json((IQueryable<T>)this.WebContext.AppContext.Dispatch.Process(queryName, new object[] { options }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Execute(WebRequest<T> webRequest)
@@ -261,20 +267,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
                     this.WebContext._handler.AddModelStateError(this.WebContext, v.ToString(), new ModelError(me.ErrorMessage));
                 }
             }
-        }
-
-        #endregion
-
-        #region Validation
-
-        public virtual Dictionary<object, Attribute> GetDataAnnotations()
-        {
-            return new Dictionary<object, Attribute>(0);
-        }
-
-        public void AddDataAnotationsToValidator()
-        {
-            
         }
 
         #endregion
