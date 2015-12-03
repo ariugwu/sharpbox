@@ -34,7 +34,7 @@ namespace sharpbox.Bootstrap.Controllers
         {
             var list = new List<ExampleModel>();
             list.Add(new ExampleModel() { ExampleModelId = 9, Age = 1, BirthDate = DateTime.Now.AddDays(1), FirstName = "Sally", LastName = "Ranch", Value = "A", ExampleChildId = 1 });
-            list.Add(new ExampleModel() { ExampleModelId = 8, Age = 2, BirthDate = DateTime.Now.AddDays(2), FirstName = "Mark", LastName = "Resiling", Value = "B", ExampleChildId = 3});
+            list.Add(new ExampleModel() { ExampleModelId = 8, Age = 2, BirthDate = DateTime.Now.AddDays(2), FirstName = "Mark", LastName = "Resiling", Value = "B", ExampleChildId = 3 });
             list.Add(new ExampleModel() { ExampleModelId = 7, Age = 3, BirthDate = DateTime.Now.AddDays(3), FirstName = "Jason", LastName = "Brooks", Value = "C", ExampleChildId = 2 });
             list.Add(new ExampleModel() { ExampleModelId = 6, Age = 4, BirthDate = DateTime.Now.AddDays(4), FirstName = "Alex", LastName = "Tinsley", Value = "D", ExampleChildId = 1 });
             list.Add(new ExampleModel() { ExampleModelId = 5, Age = 5, BirthDate = DateTime.Now.AddDays(5), FirstName = "Brian", LastName = "Walker", Value = "E", ExampleChildId = 4 });
@@ -69,6 +69,7 @@ namespace sharpbox.Bootstrap.Controllers
 
         /// <summary>
         /// Only override if you want to provide your own application wiring. Very much a "everyone thinks they want to, but no one should" scenario.
+        /// * Ideally will be set once per shared environment for things like Database, Email, Localization, Membership, Io
         /// </summary>
         public override void WireApplicationContext()
         {
@@ -76,7 +77,7 @@ namespace sharpbox.Bootstrap.Controllers
         }
 
         /// <summary>
-        /// Place additional domain specific wiring here.
+        /// Place additional domain specific wiring here. i.e. - You can use this to simply append command messages or (dispatch) registrations instead of overriding base functionality.
         /// </summary>
         public override void WireDomain()
         {
@@ -100,11 +101,10 @@ namespace sharpbox.Bootstrap.Controllers
         /// <summary>
         /// Provide custom messages for your commands. One for each response type (Success, Error, Info)
         /// </summary>
-        /// <param name="webContext"></param>
         /// <returns></returns>
-        public override Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<ExampleModel> webContext)
+        public override Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap()
         {
-            return base.LoadCommandMessageMap(webContext);
+            return base.LoadCommandMessageMap();
         }
 
         public CommandName TestCommand = new CommandName("TestCommand");

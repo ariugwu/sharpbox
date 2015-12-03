@@ -44,6 +44,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         protected SharpboxController(AppContext appContext)
         {
             this.AppContext = appContext;
+            this.CommandMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
 
             // Populate what we need for OData
             //TODO: Not ideal to do this on every request.
@@ -262,12 +263,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
         [System.Web.Http.NonAction]
         public virtual Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap()
         {
-            // Register the message map
-            if (this.CommandMessageMap == null)
-            {
-                this.CommandMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
-            }
-
             this.CommandMessageMap.Add(BaseCommandName.Add, new Dictionary<ResponseTypes, string>());
             this.CommandMessageMap[BaseCommandName.Add].Add(ResponseTypes.Error, "Add failed.");
             this.CommandMessageMap[BaseCommandName.Add].Add(ResponseTypes.Success, "Add success.");
@@ -283,9 +278,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
         }
 
         [System.Web.Http.NonAction]
-        public virtual Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<T> webContext)
+        public virtual string FormatMessage(IResponse response, string message)
         {
-            return this.CommandMessageMap;
+            return message;
         }
 
         [System.Web.Http.NonAction]

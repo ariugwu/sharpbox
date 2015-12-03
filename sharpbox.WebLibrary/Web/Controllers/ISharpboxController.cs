@@ -24,7 +24,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #region CommandActionMapping
 
         [System.Web.Http.NonAction]
-        Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap(WebContext<T> webContext);
+        Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap();
 
         #endregion
 
@@ -57,7 +57,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         ActionCommandMap LoadCommandActionMap();
 
         [System.Web.Http.NonAction]
-        Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap();
+        string FormatMessage(IResponse response, string message);
 
         /// <summary>
         /// Use this to provide messaging that overrides what is supplied to the Dispatcher during command registration.
