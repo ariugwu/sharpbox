@@ -1,6 +1,7 @@
 ﻿/// <reference path="sharpbox.poco.d.ts"/>
 /// <reference path="sharpbox.domain.ts"/>
 /// <reference path="Typings/jquery.d.ts"/>
+/// <reference path="Typings/jquery.dataTables.d.ts"/>
 
 module sharpbox.Web {
     export class Scaffold<T> {
@@ -36,6 +37,8 @@ module sharpbox.Web {
             this.viewModel.getAll((data) => {
                 var table = this.htmlStrategy.makeTable(data, this.pageArgs.controllerName);
                 $(containerSelector).append(table);
+
+                $(containerSelector).find("table").DataTable();
             });
         }
     }

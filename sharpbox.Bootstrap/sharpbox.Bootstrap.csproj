@@ -377,6 +377,7 @@
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\Template\SharpCrudTemplate.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\collections.d.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\jquery.d.ts" />
+    <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\jquery.dataTables.d.ts" />
     <TypeScriptCompile Include="Sharpbox\Web\Scripts\Typings\toastr.d.ts" />
   </ItemGroup>
   <PropertyGroup>

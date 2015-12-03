@@ -59,4 +59,3 @@ $(document).ready(function () {
 //    var wat: number = test.instance.BrandTypeId;
 //    //test.execute(sharpbox.Domain.TestController.Command.TestCommand);
 //};
-//# sourceMappingURL=sharpbox.js.map

@@ -1,6 +1,7 @@
 /// <reference path="sharpbox.poco.d.ts"/>
 /// <reference path="sharpbox.domain.ts"/>
 /// <reference path="Typings/jquery.d.ts"/>
+/// <reference path="Typings/jquery.dataTables.d.ts"/>
 var sharpbox;
 (function (sharpbox) {
     var Web;
@@ -26,6 +27,7 @@ var sharpbox;
                     _this.viewModel.getAll(function (data) {
                         var table = _this.htmlStrategy.makeTable(data, _this.pageArgs.controllerName);
                         $(containerSelector).append(table);
+                        $(containerSelector).find("table").DataTable();
                     });
                 };
                 this.pageArgs = pageArgs;
@@ -37,4 +39,3 @@ var sharpbox;
         Web.Scaffold = Scaffold;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.Scaffold.js.map

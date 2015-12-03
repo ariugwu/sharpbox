@@ -390,7 +390,7 @@ module sharpbox.Web {
 
             $(caption).appendTo(table);
 
-            var tblHeader = "<tr>";
+            var tblHeader = "<thead><tr>";
             var object = data[0];
             for (let k in object) {
                 if (object.hasOwnProperty(k)) {
@@ -402,8 +402,9 @@ module sharpbox.Web {
                     }
                 }
             }
-            tblHeader += "</tr>";
+            tblHeader += "</tr></thead>";
             $(tblHeader).appendTo(table);
+            var tbody = "<tbody>";
             $.each(data, (index, value) => {
 
                 var tableRow = "<tr>";
@@ -416,8 +417,10 @@ module sharpbox.Web {
 
                 });
                 tableRow += "</tr>";
-                $(table).append(tableRow);
+                tbody += tableRow;
             });
+            tbody += "</tbody>";
+            $(table).append(tbody);
             return ($(table));
         };
     }

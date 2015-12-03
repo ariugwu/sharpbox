@@ -259,7 +259,7 @@ var sharpbox;
                     var table = $("<table class=\"table table-striped\">");
                     var caption = $("<caption><div class=\"btn-group pull-right\"><a class=\"btn btn-sm btn-info\" href=\"/" + domainName + "/Detail\">Add</a></div></caption>");
                     $(caption).appendTo(table);
-                    var tblHeader = "<tr>";
+                    var tblHeader = "<thead><tr>";
                     var object = data[0];
                     for (var k in object) {
                         if (object.hasOwnProperty(k)) {
@@ -271,8 +271,9 @@ var sharpbox;
                             }
                         }
                     }
-                    tblHeader += "</tr>";
+                    tblHeader += "</tr></thead>";
                     $(tblHeader).appendTo(table);
+                    var tbody = "<tbody>";
                     $.each(data, function (index, value) {
                         var tableRow = "<tr>";
                         $.each(value, function (key, val) {
@@ -284,8 +285,10 @@ var sharpbox;
                             }
                         });
                         tableRow += "</tr>";
-                        $(table).append(tableRow);
+                        tbody += tableRow;
                     });
+                    tbody += "</tbody>";
+                    $(table).append(tbody);
                     return ($(table));
                 };
             }
@@ -341,4 +344,3 @@ var sharpbox;
         Web.BootstrapHtmlStrategy = BootstrapHtmlStrategy;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.Form.js.map
