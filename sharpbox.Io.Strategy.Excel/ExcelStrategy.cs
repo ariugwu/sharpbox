@@ -2,6 +2,8 @@
 
 namespace sharpbox.Io.Strategy.Excel
 {
+    using sharpbox.Common.Io;
+
     [Serializable]
     public class ExcelStrategy : IStrategy
     {

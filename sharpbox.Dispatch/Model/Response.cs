@@ -2,15 +2,16 @@
 
 namespace sharpbox.Dispatch.Model
 {
-    using Common.Data;
     using Common.Dispatch.Model;
 
+    using sharpbox.Common.Dispatch;
+
     [Serializable]
-    public class Response : BasePackage
+    public class Response : BasePackage, IResponse
     {
         private string _message;
 
-        public Response(Request request, string message, ResponseTypes responseType)
+        public Response(IRequest request, string message, ResponseTypes responseType)
         {
             Entity = request.Entity;
             Message = message;
@@ -38,7 +39,7 @@ namespace sharpbox.Dispatch.Model
         public EventName EventName { get; set; }
 
         public int RequestId { get; set; }
-        public Request Request { get; set; }
+        public IRequest Request { get; set; }
         public string UserId { get; set;}
 
         public DateTime CreatedDate { get; set; }

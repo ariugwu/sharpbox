@@ -3,6 +3,8 @@ using System.IO;
 
 namespace sharpbox.Io.Strategy.Binary
 {
+    using sharpbox.Common.Io;
+
     [Serializable]
     public class BinaryStrategy : IStrategy
     {

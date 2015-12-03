@@ -9,7 +9,8 @@ namespace sharpbox.Bootstrap.Controllers
     using App.Model;
     using Dispatch.Model;
 
-    using sharpbox.WebLibrary.Core.Wiring;
+    using sharpbox.Common.App;
+    using sharpbox.Common.Dispatch;
 
     public sealed class HomeController : SharpboxController<Environment>
     {

@@ -1,44 +1,43 @@
-﻿using System.Web.Http.OData.Query;
-
-namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
+﻿namespace sharpbox.App.AppWiring
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Web.Http.OData.Query;
 
-    using App;
-    using Core.Wiring;
+    using Common.App;
+    using Common.Io;
 
-    public class IoAppPersistence : IAppPersistence
+    public class IoCrud : ICrud
     {
-        public AppContext AppContext { get; set; }
+        public Io.Client File { get; set; }
 
         public T Add<T>(T instance) where T : new()
         {
-            return this.Update(instance);
+            return this.UpdateById(instance);
         }
 
-        public List<T> UpdateAll<T>(List<T> items) where T : new()
+        public List<T> Update<T>(List<T> items) where T : new()
         {
-            var path = Path.Combine(this.AppContext.DataPath, $"{typeof(T).Name}.dat");
+            var path = Path.Combine(this.File.DataPath, $"{typeof(T).Name}.dat");
 
-            if (this.AppContext.File.Exists(path))
+            if (this.File.Exists(path))
             {
-                this.AppContext.File.Replace(path, items);
+                this.File.Replace(path, items);
             }
             else
             {
                 items = new List<T>();
 
-                this.AppContext.File.Write(path, items);
+                this.File.Write(path, items);
             }
 
             return items;
         }
 
-        public T Update<T>(T instance) where T : new()
+        public T UpdateById<T>(T instance) where T : new()
         {
             PropertyInfo idInfo = Common.Type.TypeInfoHelper.GetIdPropertyByConvention(typeof(T));
 
@@ -58,15 +57,15 @@ namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
                     things.Add(instance);
                 }
 
-                var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat", typeof(T).Name));
+                var path = Path.Combine(this.File.DataPath, string.Format("{0}.dat", typeof(T).Name));
 
-                if (this.AppContext.File.Exists(path))
+                if (this.File.Exists(path))
                 {
-                    this.AppContext.File.Replace(path, things);
+                    this.File.Replace(path, things);
                 }
                 else
                 {
-                    this.AppContext.File.Write(path, things);
+                    this.File.Write(path, things);
                 }
 
                 return instance;
@@ -78,7 +77,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
         {
             instance = new T();
 
-            return this.Update(instance);
+            return this.UpdateById(instance);
         }
 
         public T GetById<T>(string id) where T : new()
@@ -100,17 +99,17 @@ namespace sharpbox.WebLibrary.Web.Helpers.AppWiring
         {
             List<T> things;
 
-            var path = Path.Combine(this.AppContext.DataPath, string.Format("{0}.dat", typeof(T).Name));
+            var path = Path.Combine(this.File.DataPath, string.Format("{0}.dat", typeof(T).Name));
 
-            if (this.AppContext.File.Exists(path))
+            if (this.File.Exists(path))
             {
-                things = this.AppContext.File.Read<List<T>>(path);
+                things = this.File.Read<List<T>>(path);
             }
             else
             {
                 things = new List<T>();
 
-                this.AppContext.File.Write(path, things);
+                this.File.Write(path, things);
             }
 
             IQueryable<T> results;

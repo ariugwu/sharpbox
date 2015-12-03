@@ -16,8 +16,10 @@ namespace sharpbox.Bootstrap.Controllers
 
     using Dispatch.Model;
 
+    using sharpbox.Common.App;
+    using sharpbox.Common.Dispatch;
+
     using WebLibrary.Core;
-    using WebLibrary.Core.Wiring;
     using WebLibrary.Helpers;
     using WebLibrary.Web.Controllers;
 

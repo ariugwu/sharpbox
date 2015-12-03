@@ -9,22 +9,24 @@ namespace sharpbox.Dispatch
     using Common.Dispatch.Model;
     using Model;
 
+    using sharpbox.Common.Dispatch;
+
     /// <summary>
     /// 
     /// </summary>
     /// <exception cref="System.Reflection.TargetInvocationException">A registered Action failed during either the Command Processing or the Event Broadcast.</exception>
     /// <exception cref="System.Exception">General uncaught exception from either Command Processing or an Event Broadcast</exception>
     [Serializable]
-    public class DispatchContext
+    public class DispatchContext : IDispatchContext
     {
         public DispatchContext()
         {
-            _commandHub = new Dictionary<CommandName, CommandHubItem>();
-            _eventSubscribers = new Dictionary<EventName, Queue<Action<Response>>>();
-            _echoSubscribers = new Queue<Action<Response>>();
-            _routineHub = new Dictionary<RoutineName, Queue<RoutineItem>>();
+            _commandHub = new Dictionary<CommandName, ICommandHubItem>();
+            _eventSubscribers = new Dictionary<EventName, Queue<Action<IResponse>>>();
+            _echoSubscribers = new Queue<Action<IResponse>>();
+            _routineHub = new Dictionary<RoutineName, Queue<IRoutineItem>>();
             _queryHub = new Dictionary<QueryName, Delegate>();
-            CommandStream = new Queue<CommandStreamItem>();
+            CommandStream = new Queue<ICommandStreamItem>();
             QueryStream = new Queue<QueryName>();
         }
 
@@ -33,13 +35,13 @@ namespace sharpbox.Dispatch
 
         private const string ResponseMessage = "[Message: {0}] [Method: {1}] [Entity: {2}] ";
 
-        private Dictionary<EventName, Queue<Action<Response>>> _eventSubscribers;
+        private Dictionary<EventName, Queue<Action<IResponse>>> _eventSubscribers;
 
-        private Queue<Action<Response>> _echoSubscribers;
+        private Queue<Action<IResponse>> _echoSubscribers;
 
-        private Dictionary<CommandName, CommandHubItem> _commandHub;
+        private Dictionary<CommandName, ICommandHubItem> _commandHub;
 
-        private Dictionary<RoutineName, Queue<RoutineItem>> _routineHub;
+        private Dictionary<RoutineName, Queue<IRoutineItem>> _routineHub;
 
         private Dictionary<QueryName, Delegate> _queryHub;
 
@@ -48,18 +50,18 @@ namespace sharpbox.Dispatch
         /// <summary>
         /// The list of all commands processed by the Dispatcher.
         /// </summary>
-        public Queue<CommandStreamItem> CommandStream { get; private set; }
+        public Queue<ICommandStreamItem> CommandStream { get; private set; }
 
         /// <summary>
         /// List of all queries sent to the Dispatcher
         /// </summary>
         public Queue<QueryName> QueryStream { get; private set; }
 
-        public Dictionary<CommandName, CommandHubItem> CommandHub { get { return _commandHub; } }
+        public Dictionary<CommandName, ICommandHubItem> CommandHub { get { return _commandHub; } }
 
-        public Dictionary<EventName, Queue<Action<Response>>> EventHub { get { return _eventSubscribers; } }
+        public Dictionary<EventName, Queue<Action<IResponse>>> EventHub { get { return _eventSubscribers; } }
 
-        public Dictionary<RoutineName, Queue<RoutineItem>> RoutineHub { get { return _routineHub; }}
+        public Dictionary<RoutineName, Queue<IRoutineItem>> RoutineHub { get { return _routineHub; }}
 
         public Dictionary<QueryName, Delegate> QueryHub { get { return _queryHub; } }
 
@@ -68,7 +70,7 @@ namespace sharpbox.Dispatch
         /// </summary>
         /// <param name="eventName">The event you would like to subscribe to</param>
         /// <param name="method">The callback method to target when that event is fired.</param>
-        public void Listen(EventName eventName, Action<Response> method)
+        public void Listen(EventName eventName, Action<IResponse> method)
         {
             EnsureEventSubscriberKey(eventName);
 
@@ -79,7 +81,7 @@ namespace sharpbox.Dispatch
         /// Any method here will get called for every event.
         /// </summary>
         /// <param name="method">The callback method to target when an event is fired.</param>
-        public void Echo(Action<Response> method)
+        public void Echo(Action<IResponse> method)
         {
             _echoSubscribers.Enqueue(method);
         }
@@ -164,7 +166,7 @@ namespace sharpbox.Dispatch
         /// @SEE: For the apparoch to catch Target Invocation exceptions -> http://csharptest.net/350/throw-innerexception-without-the-loosing-stack-trace/
         /// </summary>
         /// <param name="response">The changed object, the original request, and other useful data is packaged in this object for easy sharing.</param>
-        public void Broadcast(Response response)
+        public void Broadcast(IResponse response)
         {
 
             // For the command response we want to loop through the echo subscribers first.
@@ -199,7 +201,7 @@ namespace sharpbox.Dispatch
         /// <param name="ex"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Response BroadCastExceptionResponse(Exception ex, Request request)
+        public IResponse BroadCastExceptionResponse(Exception ex, IRequest request)
         {
             var exResponse = new Response
             {
@@ -220,7 +222,7 @@ namespace sharpbox.Dispatch
 
         }
 
-        private void FireOffToEchoSubs(Response response)
+        private void FireOffToEchoSubs(IResponse response)
         {
             // Go through each method that wants to 'trace' all events in the system
             foreach (var t in _echoSubscribers)
@@ -384,7 +386,7 @@ namespace sharpbox.Dispatch
         /// <param name="message">The message you would like associated with this requested and stored in the audit log.</param>
         /// <param name="args">The arguments to pass to your registered delegate/func/action.</param>
         /// <returns></returns>
-        public Response Process<T>(CommandName commandName, string message, object[] args)
+        public IResponse Process<T>(CommandName commandName, string message, object[] args)
         {
             var request = Request.Create(commandName, message, args);
             var response = new Response(request, request.Message, ResponseTypes.Success);
@@ -425,7 +427,7 @@ namespace sharpbox.Dispatch
             }
         }
 
-        private T ProcessRoutineAction<T>(RoutineName routineName, RoutineItem r, string message, object[] args)
+        private T ProcessRoutineAction<T>(RoutineName routineName, IRoutineItem r, string message, object[] args)
         {
             r.BroadCastMessage = message; // Set the broadcast message. Other values are set during registration.
 
@@ -447,7 +449,7 @@ namespace sharpbox.Dispatch
             return result;
         }
 
-        private T ProcessFailOver<T>(RoutineName routineName, Request request, int exResponseId, RoutineItem r, object[] args)
+        private T ProcessFailOver<T>(RoutineName routineName, Request request, int exResponseId, IRoutineItem r, object[] args)
         {
             request.Message = request.Message;
             var response = new Response(request, "", ResponseTypes.Success);
@@ -473,12 +475,12 @@ namespace sharpbox.Dispatch
 
         private void EnsureEventSubscriberKey(EventName eventName)
         {
-            if (!_eventSubscribers.ContainsKey(eventName)) _eventSubscribers.Add(eventName, new Queue<Action<Response>>());
+            if (!_eventSubscribers.ContainsKey(eventName)) _eventSubscribers.Add(eventName, new Queue<Action<IResponse>>());
         }
 
         private void EnsureCommandHubKey(RoutineName routineName)
         {
-            if (!_routineHub.ContainsKey(routineName)) _routineHub.Add(routineName, new Queue<RoutineItem>());
+            if (!_routineHub.ContainsKey(routineName)) _routineHub.Add(routineName, new Queue<IRoutineItem>());
         }
     }
 }

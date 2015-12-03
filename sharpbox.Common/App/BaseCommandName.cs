@@ -1,4 +1,4 @@
-﻿namespace sharpbox.WebLibrary.Core.Wiring
+﻿namespace sharpbox.Common.App
 {
     using sharpbox.Common.Dispatch.Model;
 

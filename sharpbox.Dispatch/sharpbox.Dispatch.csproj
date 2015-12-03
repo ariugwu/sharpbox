@@ -53,7 +53,6 @@
     <Compile Include="Model\CommandStreamItem.cs" />
     <Compile Include="Model\Response.cs" />
     <Compile Include="Model\Request.cs" />
-    <Compile Include="Model\ResponseTypes.cs" />
     <Compile Include="Model\RoutineItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

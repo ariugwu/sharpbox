@@ -18,11 +18,10 @@ using sharpbox.WebLibrary.Helpers;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
+    using Common.App;
+    using Common.Dispatch;
     using Common.Dispatch.Model;
     using Core;
-    using Core.Wiring;
-    using Dispatch.Model;
-    using Helpers.AppWiring;
 
     public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
         where T : class, new()
@@ -32,8 +31,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
         public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; set; }
 
         public WebContext<T> WebContext { get; set; }
-        public IAppWiring AppWiring { get; set; }
-        public IAppPersistence AppPersistence { get; set; }
 
         #endregion
 
@@ -44,7 +41,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #region Constructor(s)
         protected SharpboxController() { } 
 
-        protected SharpboxController(AppContext appContext, IAppWiring appWiring, IAppPersistence appPersistence)
+        protected SharpboxController(AppContext appContext)
         {
             this.AppContext = appContext;
 
@@ -65,14 +62,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
                                           }
             };
 
-            this.AppPersistence = appPersistence;
-            this.AppWiring = appWiring;
-            this.AppWiring.AppPersistence = appPersistence;
-
             this.WarmBootAppContext(this.WebContext.AppContext);
         }
-
-        protected SharpboxController(AppContext appContext) : this(appContext, new DefaultAppWiring(), new IoAppPersistence()) { }
 
         #endregion
 
@@ -86,8 +77,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
         protected virtual void InitDuringAuthorization()
         {
             this.WebContext.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
-            this.WebContext.AppContext.DataPath = this.Server.MapPath("~/App_Data/");
-            this.WebContext.AppContext.CurrentLogOn = User.Identity.Name;
+            this.WebContext.AppContext.DataPath = this.WebContext.AppContext.File.DataPath = this.Server.MapPath("~/App_Data/");
+            this.WebContext.AppContext.CurrentLogOn = this.User.Identity.Name;
         }
 
         protected override void Dispose(bool disposing)
@@ -271,6 +262,23 @@ namespace sharpbox.WebLibrary.Web.Controllers
         [System.Web.Http.NonAction]
         public virtual Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap()
         {
+            // Register the message map
+            if (this.CommandMessageMap == null)
+            {
+                this.CommandMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
+            }
+
+            this.CommandMessageMap.Add(BaseCommandName.Add, new Dictionary<ResponseTypes, string>());
+            this.CommandMessageMap[BaseCommandName.Add].Add(ResponseTypes.Error, "Add failed.");
+            this.CommandMessageMap[BaseCommandName.Add].Add(ResponseTypes.Success, "Add success.");
+
+            this.CommandMessageMap.Add(BaseCommandName.Update, new Dictionary<ResponseTypes, string>());
+            this.CommandMessageMap[BaseCommandName.Update].Add(ResponseTypes.Error, "Update failed.");
+            this.CommandMessageMap[BaseCommandName.Update].Add(ResponseTypes.Success, "Update success.");
+
+            this.CommandMessageMap.Add(BaseCommandName.Remove, new Dictionary<ResponseTypes, string>());
+            this.CommandMessageMap[BaseCommandName.Remove].Add(ResponseTypes.Error, "Removal failed.");
+            this.CommandMessageMap[BaseCommandName.Remove].Add(ResponseTypes.Success, "Removal success.");
             return this.CommandMessageMap;
         }
 
@@ -288,7 +296,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         #endregion
 
-        #region .NET Controller Facade
+        #region .NET this Facade
         public void AddErrorToModelState(string key, string modelErrorMessage)
         {
             this.ModelState.AddModelError(key, modelErrorMessage);
@@ -331,7 +339,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         /// </summary>
         public virtual void WireApplicationContext()
         {
-            this.AppWiring.WireContext(this);
+            this.AppContext.AppWiring.WireContext<T>(this.AppContext.Dispatch);
         }
 
         /// <summary>
@@ -339,7 +347,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         /// </summary>
         public virtual void WireDefaultRoutes()
         {
-            this.AppWiring.WireDefaultRoutes(this);
+            this.AppContext.AppWiring.WireDefaultRoutes<T>(this.AppContext.Dispatch);
         }
 
         /// <summary>

@@ -3,11 +3,12 @@ using System.Net.Mail;
 
 namespace sharpbox.App
 {
-    using Common.Email;
-    using Common.Notification;
+    using AppWiring;
+    using Common.App;
+    using Common.Io;
+
     using Dispatch;
     using Localization;
-    using Notification.Model;
 
     [Serializable]
     public class AppContext
@@ -18,7 +19,7 @@ namespace sharpbox.App
         /// <param name="smtpClient"></param>
         /// <param name="ioStrategy"></param>
         /// <param name="defaultConnectionStringName"></param>
-        public AppContext(string cultureCode, SmtpClient smtpClient, Io.Strategy.IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox")
+        public AppContext(string cultureCode, SmtpClient smtpClient, IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox", IAppWiring appWiring = null)
         {
             this.Dispatch = new DispatchContext();
 
@@ -28,9 +29,9 @@ namespace sharpbox.App
             this.Localization = new LocalizationContext(cultureCode);
 
             this.DefaultConnectionStringName = defaultConnectionStringName;
-            
-            this.RegisterCommands();
-            this.MapListeners();
+
+            this.AppWiring = appWiring ?? new DefaultAppWiring(new IoCrud() { File = this.File });
+
         }
 
         /// <summary>
@@ -40,7 +41,14 @@ namespace sharpbox.App
         {
         }
 
+        #region Wiring
+
+        public IAppWiring AppWiring { get; set; }
+
+        #endregion
+
         #region Encapsulated Context(s)
+
         public DispatchContext Dispatch { get; set; }
 
         /// <summary>
@@ -71,39 +79,6 @@ namespace sharpbox.App
         public string DefaultConnectionStringName { get; set; }
         public string UploadPath { get; set; }
         public string DataPath { get; set; }
-        #endregion
-
-        #region Init Method(s)
-        /// <summary>
-        /// Map our actions and listeners to the dispatch
-        /// </summary>
-        public void RegisterCommands()
-        {
-            // Dispatch
-
-            // Email
-            this.Dispatch.Register<MailMessage>(EmailCommands.SendEmail, this.SendEmail, EmailEvents.OnEmailSend);
-
-            // IO
-            //Dispatch.Register(ExtendedCommandNames.FileCreate, WriteFile, ExtendedEventNames.OnFileCreate);
-
-            // Notification
-            this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, (bli) => this.Notification.Notify(bli, this.IdentityContext.UserManger.EmailService), NotificationEvents.OnNotificationNotify);
-            this.Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(this.Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
-
-        }
-
-        public void MapListeners()
-        {
-            // Look at the concept of 'EchoAllEventsTo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.
-            this.Dispatch.Echo(Notification.ProcessEvent);
-        }
-
-        public virtual MailMessage SendEmail(MailMessage mail)
-        {
-            this.Email.Send(mail);
-            return mail;
-        }
         #endregion
     }
 }

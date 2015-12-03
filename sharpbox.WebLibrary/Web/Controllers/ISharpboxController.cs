@@ -11,16 +11,13 @@ namespace sharpbox.WebLibrary.Web.Controllers
     using Common.Dispatch.Model;
     using Dispatch.Model;
 
-    using sharpbox.WebLibrary.Core.Wiring;
+    using sharpbox.Common.Dispatch;
 
     public interface ISharpboxController<T> : IDispatchMetadata where T : class, new()
     {
         #region Properties
 
         WebContext<T> WebContext { get; set; }
-
-        IAppWiring AppWiring { get; set; }
-        IAppPersistence AppPersistence { get; set; }
 
         #endregion
 

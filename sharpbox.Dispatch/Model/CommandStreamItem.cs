@@ -3,10 +3,12 @@ using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.Dispatch.Model
 {
+    using sharpbox.Common.Dispatch;
+
     [Serializable]
-    public class CommandStreamItem
+    public class CommandStreamItem : ICommandStreamItem
     {
         public CommandName Command { get; set; }
-        public Response Response { get; set; }
+        public IResponse Response { get; set; }
     }
 }

@@ -3,10 +3,10 @@ using System.Xml.Serialization;
 
 namespace sharpbox.Io.Strategy.Xml
 {
+    using sharpbox.Common.Io;
 
     public class XmlStrategy : IStrategy
     {
-
         public void Write<T>(string filePath, T objectToWrite, bool append = false) where T : new()
         {
             TextWriter writer = null;

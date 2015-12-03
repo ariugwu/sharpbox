@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 
 namespace sharpbox.Dispatch.Model
 {
+    using sharpbox.Common.Dispatch;
+
     [Serializable]
     public abstract class BasePackage
     {

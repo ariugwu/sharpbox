@@ -8,6 +8,8 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
     using Dispatch.Model;
     using Common.Data;
 
+    using sharpbox.Common.Dispatch;
+
     public class ExecuteHandler<T> : LifecycleHandler<T> where T : class, new()
     {
         public ExecuteHandler()

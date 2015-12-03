@@ -4,6 +4,8 @@ using System.Runtime.Serialization;
 
 namespace sharpbox.Io.Strategy.DataContract
 {
+    using sharpbox.Common.Io;
+
     public class DataContractStrategy : IStrategy
     {
         public void Write<T>(string filePath, T objectToWrite, bool append = false) where T : new()

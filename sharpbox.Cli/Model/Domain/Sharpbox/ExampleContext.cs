@@ -18,6 +18,8 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
     using Common.Email;
     using Common.Notification;
 
+    using sharpbox.Common.Dispatch;
+
     [Serializable]
   public class ExampleContext : AppContext
   {
@@ -82,7 +84,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
       this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, (bli) => Notification.Notify(bli, this.IdentityContext.UserManger.EmailService), NotificationEvents.OnNotificationNotify);
       this.Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
-      this.Dispatch.Register<MailMessage>(EmailCommands.SendEmail, SendEmail, EmailEvents.OnEmailSend);
+      //this.Dispatch.Register<MailMessage>(EmailCommands.SendEmail, SendEmail, EmailEvents.OnEmailSend);
       this.Dispatch.Register<FileDetail>(WriteARandomFile, WriteRandomTxtFile, OnRandomFileWritten);
       this.Dispatch.Register<List<Response>>(WriteAuditTrailToDisk, StoreAuditTrailAsBinary, OnWriteAuditTrailToDisk);
 
@@ -115,12 +117,12 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
     #region Event and Command Method(s)
 
-    public static void ExampleListener(Response response)
+    public static void ExampleListener(IResponse response)
     {
       Console.WriteLine("{0} broadcasts: {1}", response.EventName, response.Message);
     }
 
-    public static void FireOnException(Response response)
+    public static void FireOnException(IResponse response)
     {
       var exception = response.Entity as Exception;
       if (exception != null) Console.WriteLine("The dispatch is designed to catch all exceptions. You can listen for them and do what you need with the exception itself. Ex Message:" + exception.Message);

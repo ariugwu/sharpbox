@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace sharpbox.Dispatch.Model
+﻿namespace sharpbox.Common.Dispatch
 {
+    using System;
+
     [Serializable]
     public enum ResponseTypes
     {

@@ -95,8 +95,8 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Http.OData, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.5.0.0\lib\net45\System.Web.Http.OData.dll</HintPath>
+    <Reference Include="System.Web.Http.OData, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.5.7.0\lib\net45\System.Web.Http.OData.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -127,14 +127,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Models\ExampleAppContext.cs" />
-    <Compile Include="Core\Wiring\BaseEventName.cs" />
-    <Compile Include="Core\Wiring\BaseQueryName.cs" />
-    <Compile Include="Core\Wiring\BaseCommandName.cs" />
-    <Compile Include="Core\Wiring\BaseRoutineName.cs" />
     <Compile Include="Web\Controllers\ErrorController.cs" />
     <Compile Include="Web\Controllers\GenericController.cs" />
-    <Compile Include="Web\Helpers\AppWiring\IoAppPersistence.cs" />
-    <Compile Include="Core\Wiring\IAppPersistence.cs" />
     <Compile Include="Core\LifecycleHandler.cs" />
     <Compile Include="Core\LifeCycleHandlerName.cs" />
     <Compile Include="Core\LifeCycleHandlerState.cs" />
@@ -149,8 +143,6 @@
     <Compile Include="Web\Controllers\SharpboxController.cs" />
     <Compile Include="Web\Controllers\SharpControllerFactory.cs" />
     <Compile Include="Web\Helpers\ActionCommandMap.cs" />
-    <Compile Include="Web\Helpers\AppWiring\DefaultAppWiring.cs" />
-    <Compile Include="Core\Wiring\IAppWiring.cs" />
     <Compile Include="Web\Helpers\BaseCache.cs" />
     <Compile Include="Web\Helpers\BaseCacheNames.cs" />
     <Compile Include="Web\Helpers\CacheCollection.cs" />

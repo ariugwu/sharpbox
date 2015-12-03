@@ -1,4 +1,4 @@
-﻿namespace sharpbox.Io.Strategy
+﻿namespace sharpbox.Common.Io
 {
     /// <summary>
     /// @CREDIT: Code and notes from http://blog.danskingdom.com/saving-and-loading-a-c-objects-data-to-an-xml-json-or-binary-file/

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.IO;
 using sharpbox.Io.Model;
-using sharpbox.Io.Strategy;
 
 namespace sharpbox.Io
 {
+    using sharpbox.Common.Io;
+
     [Serializable]
     public class Client
     {
+        public string DataPath { get; set; }
 
         public Client(IStrategy strategy)
         {

@@ -5,11 +5,13 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.TestHarness
 {
+    using sharpbox.Common.Dispatch;
+
     public class Client
     {
-        public List<Response> TestStream { get; set; }
+        public List<IResponse> TestStream { get; set; }
 
-        public List<Response> TestResponses {
+        public List<IResponse> TestResponses {
             get
             {
                 return _dispatcher.CommandStream.Where(x => TestStream.Contains(x.Response)).Select(x => x.Response).ToList();
@@ -21,7 +23,7 @@ namespace sharpbox.TestHarness
         public Client(Dispatch.DispatchContext dispatcher)
         {
             _dispatcher = dispatcher;
-            TestStream = new List<Response>();
+            TestStream = new List<IResponse>();
         }
 
         public void Runner<T>(bool isPreview, T entity)

@@ -9,6 +9,8 @@ namespace sharpbox.WebLibrary.Core
 
   using Dispatch.Model;
 
+  using sharpbox.Common.Dispatch;
+
   using Web.Controllers;
 
   public class WebContext<T> where T : class, new()
@@ -33,7 +35,7 @@ namespace sharpbox.WebLibrary.Core
 
     public AppContext AppContext { get; set; }
     public WebRequest<T> WebRequest { get; set; }
-    public Response DispatchResponse { get; set; }
+    public IResponse DispatchResponse { get; set; }
     public WebResponse<T> WebResponse { get; set; }
     public WebContextState WebContextState { get; set; }
     public IPrincipal User { get; set; }

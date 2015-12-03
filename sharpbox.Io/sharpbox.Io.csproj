@@ -43,7 +43,6 @@
     <Compile Include="Client.cs" />
     <Compile Include="Model\FileDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategy\IStrategy.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

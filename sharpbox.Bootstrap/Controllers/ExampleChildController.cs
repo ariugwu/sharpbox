@@ -8,7 +8,8 @@ using sharpbox.WebLibrary.Core.Models;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using WebLibrary.Core.Wiring;
+    using sharpbox.Common.App;
+    
     using WebLibrary.Web.Controllers;
 
     public class ExampleChildController : SharpboxController<ExampleChild>

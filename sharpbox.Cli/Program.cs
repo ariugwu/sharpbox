@@ -14,6 +14,8 @@ namespace sharpbox.Cli
 
     using Notification.Model;
 
+    using sharpbox.Common.Dispatch;
+
     class Program
     {
         static void Main(string[] args)
@@ -52,7 +54,7 @@ namespace sharpbox.Cli
             Console.Clear();
 
             // Create a response object we can repopulate after each request.
-            Response response = null;
+            IResponse response = null;
 
 
 
