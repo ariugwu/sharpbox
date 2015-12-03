@@ -4,10 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using sharpbox.App;
-    using sharpbox.Common.Dispatch.Model;
-    using sharpbox.Dispatch.Model;
-    using sharpbox.WebLibrary.Core.Wiring;
+    using Common.Dispatch.Model;
+    using Core.Wiring;
+    using Dispatch.Model;
 
     public class DefaultAppWiring : IAppWiring
     {
@@ -61,58 +60,12 @@
             var appContext = controller.WebContext.AppContext;
             this.AppPersistence.AppContext = appContext;
 
-            // The Load AppContext Routine which fires on each request.
-            appContext.Dispatch.Register<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, BaseCommandName.LoadEnvironment, BaseEventName.OnFrameworkCommand, this.AppPersistence.LoadEnvironmentFromFile);
-            appContext.Dispatch.Register<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, BaseCommandName.LoadAvailableClaims, BaseEventName.OnFrameworkCommand, this.AppPersistence.LoadAvailableClaimsFromFile);
-            appContext.Dispatch.Register<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, BaseCommandName.LoadAvailableUserRoles, BaseEventName.OnFrameworkCommand, this.AppPersistence.LoadAvailableUserRolesFromFile);
-            appContext.Dispatch.Register<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, BaseCommandName.LoadClaimsByRole, BaseEventName.OnFrameworkCommand, this.AppPersistence.LoadClaimsByRoleFromFile);
-            appContext.Dispatch.Register<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, BaseCommandName.LoadUserInRoles, BaseEventName.OnFrameworkCommand, this.AppPersistence.LoadUserInRolesFromFile);
-            appContext.Dispatch.Register<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, BaseCommandName.LoadTextResources, BaseEventName.OnFrameworkCommand, this.AppPersistence.LoadTextResourcesFromFile);
-
-            appContext.Dispatch.Register<AppContext>(BaseCommandName.SaveEnvironment, this.AppPersistence.SaveEnvironment, BaseEventName.OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(BaseCommandName.SaveAvailableClaims, this.AppPersistence.SaveAvailableClaims, BaseEventName.OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(BaseCommandName.SaveAvailableUserRoles, this.AppPersistence.SaveAvailableUserRoles, BaseEventName.OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(BaseCommandName.SaveClaimsByRole, this.AppPersistence.SaveClaimsByRole, BaseEventName.OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(BaseCommandName.SaveUserInRoles, this.AppPersistence.SaveUsersInRoles, BaseEventName.OnFrameworkCommand);
-            appContext.Dispatch.Register<AppContext>(BaseCommandName.SaveTextResources, this.AppPersistence.SaveTextResources, BaseEventName.OnFrameworkCommand);
-
-            //Register Listener(s)
-
             //Populate Command-to-Message Map
             if (controller.CommandMessageMap == null)
             {
                 controller.CommandMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
             }
 
-            controller.CommandMessageMap.Add(BaseCommandName.LoadEnvironment, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.LoadEnvironment].Add(ResponseTypes.Info, "Loading Environment. MVC OnAuthorization.");
-
-            controller.CommandMessageMap.Add(BaseCommandName.LoadAvailableClaims, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.LoadAvailableClaims].Add(ResponseTypes.Info, "Loading Available Claims. MVC OnAuthorization.");
-            controller.CommandMessageMap.Add(BaseCommandName.LoadAuditTrail, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.LoadAuditTrail].Add(ResponseTypes.Info, "Loading Audit trail. MVC OnAuthorization.");
-            controller.CommandMessageMap.Add(BaseCommandName.LoadAvailableUserRoles, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.LoadAvailableUserRoles].Add(ResponseTypes.Info, "Loading Available User Roles. MVC OnAuthorization.");
-            controller.CommandMessageMap.Add(BaseCommandName.LoadClaimsByRole, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.LoadClaimsByRole].Add(ResponseTypes.Info, "Loading Claims By Role. MVC OnAuthorization.");
-            controller.CommandMessageMap.Add(BaseCommandName.LoadTextResources, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.LoadTextResources].Add(ResponseTypes.Info, "Loading Text Resources. MVC OnAuthorization.");
-            controller.CommandMessageMap.Add(BaseCommandName.LoadUserInRoles, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.LoadUserInRoles].Add(ResponseTypes.Info, "Loading User In Roles. MVC OnAuthorization.");
-            controller.CommandMessageMap.Add(BaseCommandName.SaveEnvironment, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.SaveEnvironment].Add(ResponseTypes.Info, "Saving Environment.");
-            controller.CommandMessageMap.Add(BaseCommandName.SaveAuditTrail, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.SaveAuditTrail].Add(ResponseTypes.Info, "Saving Audit Trail.");
-            controller.CommandMessageMap.Add(BaseCommandName.SaveAvailableClaims, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.SaveAvailableClaims].Add(ResponseTypes.Info, "Saving Available Claims.");
-            controller.CommandMessageMap.Add(BaseCommandName.SaveAvailableUserRoles, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.SaveAvailableUserRoles].Add(ResponseTypes.Info, "Saving Available User Roles.");
-            controller.CommandMessageMap.Add(BaseCommandName.SaveClaimsByRole, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.SaveClaimsByRole].Add(ResponseTypes.Info, "Save Claims By Role.");
-            controller.CommandMessageMap.Add(BaseCommandName.SaveTextResources, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.SaveTextResources].Add(ResponseTypes.Info, "Save Text Resources.");
-            controller.CommandMessageMap.Add(BaseCommandName.SaveUserInRoles, new Dictionary<ResponseTypes, string>());
-            controller.CommandMessageMap[BaseCommandName.SaveUserInRoles].Add(ResponseTypes.Info, "Save Users In Roles.");
         }
         
     }

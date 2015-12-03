@@ -22,28 +22,5 @@ namespace sharpbox.WebLibrary.Core.Wiring
 
         T GetById<T>(string id) where T : new();
 
-        AppContext SaveEnvironment(AppContext appContext);
-
-        AppContext SaveAvailableClaims(AppContext appContext);
-
-        AppContext SaveAvailableUserRoles(AppContext appContext);
-
-        AppContext SaveClaimsByRole(AppContext appContext);
-
-        AppContext SaveUsersInRoles(AppContext appContext);
-
-        AppContext SaveTextResources(AppContext appContext);
-
-        AppContext LoadEnvironmentFromFile(AppContext appContext);
-
-        AppContext LoadAvailableClaimsFromFile(AppContext appContext);
-
-        AppContext LoadClaimsByRoleFromFile(AppContext appContext);
-
-        AppContext LoadAvailableUserRolesFromFile(AppContext appContext);
-
-        AppContext LoadUserInRolesFromFile(AppContext appContext);
-
-        AppContext LoadTextResourcesFromFile(AppContext appContext);
     }
 }

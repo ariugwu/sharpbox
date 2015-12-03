@@ -4,7 +4,7 @@
 
     public class BaseRoutineName
     {
-        public static RoutineName RunLoadAppContextRoutine = new RoutineName("RunLoadAppContextRoutine");
+        public static RoutineName Example = new RoutineName("Example");
 
     }
 }

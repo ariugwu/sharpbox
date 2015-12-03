@@ -42,6 +42,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #endregion
 
         #region Constructor(s)
+        protected SharpboxController() { } 
 
         protected SharpboxController(AppContext appContext, IAppWiring appWiring, IAppPersistence appPersistence)
         {
@@ -86,7 +87,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
         {
             this.WebContext.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
             this.WebContext.AppContext.DataPath = this.Server.MapPath("~/App_Data/");
-            this.WebContext.AppContext.Dispatch.Run<AppContext>(BaseRoutineName.RunLoadAppContextRoutine, "Loading AppContext in OnAuthorization override", new object[] { this.WebContext.AppContext });
             this.WebContext.AppContext.CurrentLogOn = User.Identity.Name;
         }
 
