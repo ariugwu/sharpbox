@@ -210,6 +210,16 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Sharpbox\Web\Scripts\Manager.ttinclude" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\daterangepicker.css" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\daterangepicker.js" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\demo.html" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\drp.png" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\moment.js" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\moment.min.js" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\package.js" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\website\index.html" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\website\website.css" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\website\website.js" />
     <Content Include="Sharpbox\Web\Vendor\DataTable\jquery.dataTables.odata.js" />
     <Content Include="Sharpbox\Web\Views\Web.config" />
     <Content Include="Sharpbox\Web\Scripts\sharpbox.poco.tt">
@@ -252,12 +262,15 @@
     <Content Include="Sharpbox\Web\Views\Crud\Index.cshtml" />
     <Content Include="Scripts\Manager.ttinclude" />
     <Content Include="Sharpbox\Web\Views\Crud\Detail.cshtml" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\.gitignore" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\bower.json" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\package.json" />
+    <Content Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\typings\jquery\" />
     <Folder Include="Scripts\typings\toastr\" />
-    <Folder Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sharpbox\Web\Content\fonts\glyphicons-halflings-regular.woff" />
