@@ -65,6 +65,7 @@ module sharpbox.Web {
         }
     }
 
+
     class ScaffoldDataTableSettings implements  DataTables.Settings {
         buttons: string[];
     }
