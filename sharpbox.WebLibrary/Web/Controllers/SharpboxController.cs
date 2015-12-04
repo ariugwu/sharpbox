@@ -27,7 +27,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
         where T : class, new()
     {
         #region Properties
-        public AppContext AppContext { get; set; }
+        public AppContext AppContext { get { return this.WebContext.AppContext;} }
+
         public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; set; }
 
         public WebContext<T> WebContext { get; set; }
@@ -43,7 +44,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         protected SharpboxController(AppContext appContext)
         {
-            this.AppContext = appContext;
             this.CommandMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
 
             // Populate what we need for OData
@@ -54,7 +54,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             // Only create a new WebContext if one doesn't already exist.
             this.WebContext = new WebContext<T>
             {
-                AppContext = this.AppContext,
+                AppContext = appContext,
                 User = this.User,
                 WebResponse =
                                           new WebResponse<T>()

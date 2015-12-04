@@ -6,7 +6,6 @@
 
     using sharpbox.Common.App;
     using sharpbox.Common.Dispatch;
-    using sharpbox.Common.Dispatch.Model;
 
     public class DefaultAppWiring : IAppWiring
     {
