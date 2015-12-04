@@ -27,7 +27,7 @@ module sharpbox.Web.Templating {
                             </div>
                         </div>
                         ${viewModel.form.header.toHtml("")}
-                        ${fieldsToHtml(viewModel)}
+                        ${fieldsToForm(viewModel)}
                         <hr />
                         <p><a href="${viewModel.controllerUrl}">View all ${viewModel.instanceName}(s)</a></p>
                         <p class="text-muted bold"><small>*This form created dynamically based on assumptions about your model.</small></p>
@@ -48,7 +48,7 @@ module sharpbox.Web.Templating {
         return html;
     }
 
-    export var fieldsToHtml = (viewModel: sharpbox.Web.ViewModel<any>) : string => {
+    export var fieldsToForm = (viewModel: sharpbox.Web.ViewModel<any>) : string => {
         var fields: Field[] = viewModel.form.fieldDictionaryToArray();
         var htmlStrategy: IHtmlStrategy = viewModel.form.htmlStrategy;
         var html : string = "";
@@ -59,5 +59,47 @@ module sharpbox.Web.Templating {
             });
 
         return html;
+    };
+
+    export var searchDash = (viewModel: sharpbox.Web.ViewModel<any>): string => {
+        var html = `<div class="sharpform">
+                        <div class="sharpform-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <p class="pull-left title">Search</p>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="btn-group pull-right">
+                                      <button type="button" onclick="$('form[name=${viewModel.form.header.name}]').triggerHandler('submit')" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+                                      <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-question-sign"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            ${viewModel.form.header.toHtml("")}
+                    `;
+        var searchFields: string[] = fieldsToSearch(viewModel);
+        $.each(searchFields, (key, group) => {
+            html += group;
+        });
+        return html + `<hr />
+                        <p class="text-muted bold"><small>*This form created dynamically based on assumptions about your model.</small></p>
+                        <input type=\"hidden\" id=\"WebRequest_UiAction\" name=\"WebRequest.UiAction.Name\" value=\"${viewModel.form.uiAction}\" />
+                        ${viewModel.form.footer.toHtml(viewModel.form.header.name)}
+                       </div>`;
+    };
+
+    export var fieldsToSearch = (viewModel: sharpbox.Web.ViewModel<any>): Array<string> => {
+        var fields: Field[] = viewModel.form.fieldDictionaryToArray();
+        var search: string[] = [];
+        var htmlStrategy: IHtmlStrategy = viewModel.form.htmlStrategy;
+        search = $.map(fields, (key, index) => {
+            console.log(index);
+            let label = htmlStrategy.labelHtml(key, "");
+            let input = htmlStrategy.createSearchField(key);
+            return htmlStrategy.groupHtml(label, input);
+        });
+
+        return search;
     };
 };

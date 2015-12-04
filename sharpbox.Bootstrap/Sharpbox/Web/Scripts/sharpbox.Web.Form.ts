@@ -181,7 +181,10 @@ module sharpbox.Web {
 
         makeTable(data: any, domainName: string) : any;
 
+        createSearchField(field: Field) : string;
+
         wireSubmit(formName: string): void;
+        wireSearchSubmit(formName: string, containerSelector: string, callBack: Function): void;
         submitForm(formName: string): void;
     }
 
@@ -222,6 +225,16 @@ module sharpbox.Web {
                 event.preventDefault();
                 
                 this.submitForm(formName);
+            });
+        }
+
+        wireSearchSubmit(formName: string, containerSelector: string, callBack: Function): void {
+            var form = $(`[name="${formName}"]`);
+            form.submit((event) => {
+                event.preventDefault();
+                //TODO: Wire the Odata query maker
+                var odataQuery: string = "?$top=2";
+                callBack(containerSelector, odataQuery);
             });
         }
 
@@ -291,6 +304,13 @@ module sharpbox.Web {
             alert(msg);
         }
 
+        createSearchField = (field: Field): string => {
+            var msg = "Error: No search dash generation code for Base html strategy. See sharpbox.Web.Form.ts line 298(ish).";
+            console.log(msg);
+            alert(msg);
+            return msg;
+        }
+
         // Assume that you have a property "FooId" and it's *not* the primary key. We assume this is a lookup value to populate a tag or select field
         // We want to grab the lookup data from that controllers cached method
         populateDropdown(key: string, callback: Function) {
@@ -308,21 +328,21 @@ module sharpbox.Web {
 
     export class BootstrapHtmlStrategy extends BaseHtmlStrategy {
         labelHtml(field: Field, extraClasses: string): string {
-            return `<label class="control-label col-sm-2 ${extraClasses}" for="${field.name}"><small>${field.name.replace(/([a-z])([A-Z])/g, "$1 $2") }</small></label>`;
+            return `<label class="control-label col-sm-2 ${extraClasses}" for="${field.name}"><small>${field.name.replace(/([a-z])([A-Z])/g, "$1 $2")}</small></label>`;
         }
 
         inputHtml(field: Field, extraClasses: string): string {
             let inputType = "text";
             console.log(field.name + " : " + field.type + " : " + field.format);
             switch (field.format) {
-                case "hidden":
-                    return `<div class="col-sm-10">
+            case "hidden":
+                return `<div class="col-sm-10">
                                 <strong><span data-bind="${field.name}"></span></strong>
                                 <input type="hidden" name="WebRequest.Instance.${field.name}" />
                             </div>
                             `;
-                case "date-time":
-                    return `
+            case "date-time":
+                return `
                             <div class="col-sm-10">
                                 <div class="input-group">
                                     ${this.formatInputPrepend(field)}
@@ -331,28 +351,28 @@ module sharpbox.Web {
                                 </div>
                             </div>
                             `;
-                case "options":
-                    var name = `WebRequest.Instance.${field.name}`;
-                    var options = "";
-                    var optData = {};
-                    this.populateDropdown(field.name, (data) => {
-                        optData = data;
-                        $.each(optData, (key, value) => {
-                            options += `<option value="${key}">${value}</option>`;
-                        });
-                        $(`select[name="${name}"]`).append(options);
-                        console.debug("There is a likely race condition on line 325(ish) of sharpbox.web.Form.ts. We assume that the form will always render before we get our options back!");
+            case "options":
+                var name = `WebRequest.Instance.${field.name}`;
+                var options = "";
+                var optData = {};
+                this.populateDropdown(field.name, (data) => {
+                    optData = data;
+                    $.each(optData, (key, value) => {
+                        options += `<option value="${key}">${value}</option>`;
                     });
-                    
-                    return `<div class="col-sm-10">
+                    $(`select[name="${name}"]`).append(options);
+                    console.debug("There is a likely race condition on line 325(ish) of sharpbox.web.Form.ts. We assume that the form will always render before we get our options back!");
+                });
+
+                return `<div class="col-sm-10">
                                     <select class="form-control ${extraClasses}" id="${field.name}" name="${name}">
                                         ${options}
                                     </select>
                             </div>
                             `;
-                default:
-                    return `<div class="col-sm-10">
-                                ${this.formatInputPrepend(field) }<input type="${inputType}" class="form-control ${extraClasses}" id="${field.name}" name="WebRequest.Instance.${field.name}" />${this.formatInputAppend(field) }
+            default:
+                return `<div class="col-sm-10">
+                                ${this.formatInputPrepend(field)}<input type="${inputType}" class="form-control ${extraClasses}" id="${field.name}" name="WebRequest.Instance.${field.name}" />${this.formatInputAppend(field)}
                             </div>
                             `;
             }
@@ -368,19 +388,19 @@ module sharpbox.Web {
 
         formatInputPrepend(field: Field): string {
             switch (field.format) {
-                case "date-time":
-                    return "";
-                default:
-                    return "";
+            case "date-time":
+                return "";
+            default:
+                return "";
             }
         }
 
         formatInputAppend(field: Field): string {
             switch (field.format) {
-                case "date-time":
-                    return "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
-                default:
-                    return "";
+            case "date-time":
+                return "<span class=\"input-group-addon\"><i class=\"glyphicon glyphicon-calendar\"></i></span>";
+            default:
+                return "";
             }
         }
 
@@ -405,6 +425,7 @@ module sharpbox.Web {
             tblHeader += "</tr></thead>";
             $(tblHeader).appendTo(table);
             var tbody = "<tbody>";
+            console.log(data);
             $.each(data, (index, value) => {
 
                 var tableRow = "<tr>";
@@ -423,6 +444,39 @@ module sharpbox.Web {
             $(table).append(tbody);
             return ($(table));
         };
-    }
 
+        createSearchField = (field: Field): string => {
+
+            switch (field.format) {
+            case "hidden":
+                return "";
+            case "date-time":
+                    return `<div class="col-sm-10"><input type="text" class="daterange form-control" id="${field.name}" name="WebRequest.Instance.${field.name}" /></div>`;
+            case "options":
+                var name = `${field.name}`;
+                var options = "";
+                var optData = {};
+                this.populateDropdown(field.name, (data) => {
+                    optData = data;
+                    $.each(optData, (key, value) => {
+                        options += `<option value="${key}">${value}</option>`;
+                    });
+                    $(`select[name="${name}"]`).append(options);
+                    console.debug("There is a likely race condition on line 325(ish) of sharpbox.web.Form.ts. We assume that the form will always render before we get our options back!");
+                });
+
+                return `<div class="col-sm-10">
+                                    <select class="form-control" id="${field.name}" name="${name}">
+                                        ${options}
+                                    </select>
+                            </div>
+                            `;
+            default:
+                return `<div class="col-sm-10">
+                                <input type="${field.format}" class="form-control" id="${field.name}" name="WebRequest.Instance.${field.name}" />
+                            </div>
+                            `;
+            }
+        }
+    }
 }

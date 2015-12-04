@@ -257,6 +257,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\typings\jquery\" />
     <Folder Include="Scripts\typings\toastr\" />
+    <Folder Include="Sharpbox\Web\Vendor\bootstrap-daterangepicker-master\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sharpbox\Web\Content\fonts\glyphicons-halflings-regular.woff" />

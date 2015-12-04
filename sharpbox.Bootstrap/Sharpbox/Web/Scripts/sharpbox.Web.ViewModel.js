@@ -11,8 +11,9 @@ var sharpbox;
                 this.instanceName = instanceName;
                 this.controllerUrl = "/" + instanceName + "/";
             }
-            ViewModel.prototype.getAll = function (callback) {
-                var url = this.controllerUrl + "Get/";
+            ViewModel.prototype.getAll = function (odataQuery, callback) {
+                odataQuery = (odataQuery) ? odataQuery : "";
+                var url = this.controllerUrl + "Get/" + odataQuery;
                 $.getJSON(url).done(function (data) {
                     callback(data);
                 });
@@ -57,4 +58,3 @@ var sharpbox;
         Web.ViewModel = ViewModel;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.ViewModel.js.map

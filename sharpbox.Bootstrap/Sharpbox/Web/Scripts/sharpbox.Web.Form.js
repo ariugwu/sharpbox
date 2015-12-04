@@ -158,6 +158,12 @@ var sharpbox;
                     console.log(msg);
                     alert(msg);
                 };
+                this.createSearchField = function (field) {
+                    var msg = "Error: No search dash generation code for Base html strategy. See sharpbox.Web.Form.ts line 298(ish).";
+                    console.log(msg);
+                    alert(msg);
+                    return msg;
+                };
             }
             BaseHtmlStrategy.prototype.labelHtml = function (field, extraClasses) {
                 return "<label for=\"" + field.name + "\"><small>" + field.name.replace(/([a-z])([A-Z])/g, "$1 $2") + "</small></label>";
@@ -184,6 +190,15 @@ var sharpbox;
                 form.submit(function (event) {
                     event.preventDefault();
                     _this.submitForm(formName);
+                });
+            };
+            BaseHtmlStrategy.prototype.wireSearchSubmit = function (formName, containerSelector, callBack) {
+                var form = $("[name=\"" + formName + "\"]");
+                form.submit(function (event) {
+                    event.preventDefault();
+                    //TODO: Wire the Odata query maker
+                    var odataQuery = "?$top=2";
+                    callBack(containerSelector, odataQuery);
                 });
             };
             BaseHtmlStrategy.prototype.submitForm = function (formName) {
@@ -254,6 +269,7 @@ var sharpbox;
         var BootstrapHtmlStrategy = (function (_super) {
             __extends(BootstrapHtmlStrategy, _super);
             function BootstrapHtmlStrategy() {
+                var _this = this;
                 _super.apply(this, arguments);
                 this.makeTable = function (data, domainName) {
                     var table = $("<table class=\"table table-striped\">");
@@ -274,6 +290,7 @@ var sharpbox;
                     tblHeader += "</tr></thead>";
                     $(tblHeader).appendTo(table);
                     var tbody = "<tbody>";
+                    console.log(data);
                     $.each(data, function (index, value) {
                         var tableRow = "<tr>";
                         $.each(value, function (key, val) {
@@ -290,6 +307,29 @@ var sharpbox;
                     tbody += "</tbody>";
                     $(table).append(tbody);
                     return ($(table));
+                };
+                this.createSearchField = function (field) {
+                    switch (field.format) {
+                        case "hidden":
+                            return "";
+                        case "date-time":
+                            return "<div class=\"col-sm-10\"><input type=\"text\" class=\"daterange form-control\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" /></div>";
+                        case "options":
+                            var name = "" + field.name;
+                            var options = "";
+                            var optData = {};
+                            _this.populateDropdown(field.name, function (data) {
+                                optData = data;
+                                $.each(optData, function (key, value) {
+                                    options += "<option value=\"" + key + "\">" + value + "</option>";
+                                });
+                                $("select[name=\"" + name + "\"]").append(options);
+                                console.debug("There is a likely race condition on line 325(ish) of sharpbox.web.Form.ts. We assume that the form will always render before we get our options back!");
+                            });
+                            return "<div class=\"col-sm-10\">\n                                    <select class=\"form-control\" id=\"" + field.name + "\" name=\"" + name + "\">\n                                        " + options + "\n                                    </select>\n                            </div>\n                            ";
+                        default:
+                            return "<div class=\"col-sm-10\">\n                                <input type=\"" + field.format + "\" class=\"form-control\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />\n                            </div>\n                            ";
+                    }
                 };
             }
             BootstrapHtmlStrategy.prototype.labelHtml = function (field, extraClasses) {
@@ -344,4 +384,3 @@ var sharpbox;
         Web.BootstrapHtmlStrategy = BootstrapHtmlStrategy;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.Form.js.map

@@ -25,7 +25,7 @@ $(document).ready(function () {
             scaffold.loadEditForm(container); //SEE sharpbox.Web.Scaffold.ts
         }
         else {
-            scaffold.loadGrid(container);
+            scaffold.loadSearchPage(container);
         }
     });
 });
@@ -59,4 +59,3 @@ $(document).ready(function () {
 //    var wat: number = test.instance.BrandTypeId;
 //    //test.execute(sharpbox.Domain.TestController.Command.TestCommand);
 //};
-//# sourceMappingURL=sharpbox.js.map

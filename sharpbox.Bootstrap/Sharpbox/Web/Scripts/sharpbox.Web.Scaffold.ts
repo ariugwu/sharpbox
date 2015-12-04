@@ -34,14 +34,33 @@ module sharpbox.Web {
             });
         }
 
-        loadGrid = (containerSelector: string) => {
-            this.viewModel.getAll((data) => {
-                var table = this.htmlStrategy.makeTable(data, this.pageArgs.controllerName);
-                $(containerSelector).append(table);
-                var settings: DataTables.Settings = new ScaffoldDataTableSettings();
-                settings.dom = 'Bfrtip';
-                settings.buttons = ['copy', 'excel', 'pdf'];
-                $(containerSelector).find("table").DataTable(settings);
+        loadSearchPage = (containerSelector: string): void => {
+            
+            this.viewModel.getSchema(() => {
+                var formName = "SearchForm";
+                this.viewModel.form = new sharpbox.Web.Form(this.viewModel.schema, formName, this.viewModel.instanceName, this.viewModel.controllerUrl, "Search", "Get", this.htmlStrategy);
+                var searchDash = sharpbox.Web.Templating.searchDash(this.viewModel);
+                $(containerSelector).find(".searchPanel").html(searchDash);
+                this.viewModel.form.htmlStrategy.wireSearchSubmit(formName, containerSelector, this.reloadGrid);
+                this.loadGrid(containerSelector, "");
+            });
+        }
+        reloadGrid = (containerSelector: string, odataQuery: string) => {
+            this.loadGrid(containerSelector, odataQuery);
+        }
+
+        loadGrid = (containerSelector: string, odataQuery: string) => {
+            this.viewModel.getAll(odataQuery,(data) => {
+                this.viewModel.getSchema(() => {
+                    var table = this.htmlStrategy.makeTable(data, this.pageArgs.controllerName);
+
+                    $(containerSelector).find(".gridPanel").html(table);
+                    
+                    var settings: DataTables.Settings = new ScaffoldDataTableSettings();
+                    settings.dom = 'Bfrtip';
+                    settings.buttons = ['copy', 'excel', 'pdf'];
+                    $(containerSelector).find("table").DataTable(settings);
+                });
             });
         }
     }

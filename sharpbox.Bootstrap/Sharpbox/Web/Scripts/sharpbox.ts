@@ -33,7 +33,7 @@ $(document).ready(() => {
         if (pageArgs.id != null || pageArgs.actionName == "Detail") {
             scaffold.loadEditForm(container); //SEE sharpbox.Web.Scaffold.ts
         } else {
-            scaffold.loadGrid(container);
+            scaffold.loadSearchPage(container);
         }
     });
 });

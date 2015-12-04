@@ -25,8 +25,9 @@ module sharpbox.Web {
             
         }
 
-        getAll(callback: Function) {
-            const url = this.controllerUrl + "Get/";
+        getAll(odataQuery: string, callback: Function) {
+            odataQuery = (odataQuery) ? odataQuery : "";
+            const url = this.controllerUrl + "Get/" + odataQuery;
             $.getJSON(url).done(data => {
                 callback(data);
             });

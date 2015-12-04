@@ -11,7 +11,6 @@ using System.Web.Mvc;
 using FluentValidation;
 using Newtonsoft.Json;
 
-using NJsonSchema;
 using sharpbox.App;
 using sharpbox.Common.Data.Helpers;
 using sharpbox.WebLibrary.Helpers;
@@ -116,7 +115,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             var edm = new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T));
             var sElements = edm.Model.SchemaElements.ToList();
             var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects }; // Prevent circular reference errors with EF objects and other one-to-many relationships
-            return this.Json(JsonConvert.SerializeObject(sElements, serializerSettings));
+            return this.Json(JsonConvert.SerializeObject(sElements, serializerSettings), JsonRequestBehavior.AllowGet);
         }
 
         public virtual JsonResult Get()
@@ -248,7 +247,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             this.WebContext._handler.AddModelStateError(this.WebContext, this, "ExecutionError", new ModelError(ex, ex.Message));
             var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects }; // Prevent circular reference errors with EF objects and other one-to-many relationships
 
-            return this.Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings));
+            return this.Json(JsonConvert.SerializeObject(this.WebContext.WebResponse, serializerSettings), JsonRequestBehavior.AllowGet);
         }
 
         #endregion

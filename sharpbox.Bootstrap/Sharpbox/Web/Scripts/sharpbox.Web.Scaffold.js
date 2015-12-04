@@ -23,14 +23,29 @@ var sharpbox;
                         }
                     });
                 };
-                this.loadGrid = function (containerSelector) {
-                    _this.viewModel.getAll(function (data) {
-                        var table = _this.htmlStrategy.makeTable(data, _this.pageArgs.controllerName);
-                        $(containerSelector).append(table);
-                        var settings = new ScaffoldDataTableSettings();
-                        settings.dom = 'Bfrtip';
-                        settings.buttons = ['copy', 'excel', 'pdf'];
-                        $(containerSelector).find("table").DataTable(settings);
+                this.loadSearchPage = function (containerSelector) {
+                    _this.viewModel.getSchema(function () {
+                        var formName = "SearchForm";
+                        _this.viewModel.form = new sharpbox.Web.Form(_this.viewModel.schema, formName, _this.viewModel.instanceName, _this.viewModel.controllerUrl, "Search", "Get", _this.htmlStrategy);
+                        var searchDash = sharpbox.Web.Templating.searchDash(_this.viewModel);
+                        $(containerSelector).find(".searchPanel").html(searchDash);
+                        _this.viewModel.form.htmlStrategy.wireSearchSubmit(formName, containerSelector, _this.reloadGrid);
+                        _this.loadGrid(containerSelector, "");
+                    });
+                };
+                this.reloadGrid = function (containerSelector, odataQuery) {
+                    _this.loadGrid(containerSelector, odataQuery);
+                };
+                this.loadGrid = function (containerSelector, odataQuery) {
+                    _this.viewModel.getAll(odataQuery, function (data) {
+                        _this.viewModel.getSchema(function () {
+                            var table = _this.htmlStrategy.makeTable(data, _this.pageArgs.controllerName);
+                            $(containerSelector).find(".gridPanel").html(table);
+                            var settings = new ScaffoldDataTableSettings();
+                            settings.dom = 'Bfrtip';
+                            settings.buttons = ['copy', 'excel', 'pdf'];
+                            $(containerSelector).find("table").DataTable(settings);
+                        });
                     });
                 };
                 this.pageArgs = pageArgs;
@@ -47,4 +62,3 @@ var sharpbox;
         })();
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
-//# sourceMappingURL=sharpbox.Web.Scaffold.js.map
