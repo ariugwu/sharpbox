@@ -4,6 +4,7 @@
 /// <reference path="Typings/jquery.dataTables.d.ts"/>
 
 module sharpbox.Web {
+
     export class Scaffold<T> {
         viewModel: sharpbox.Web.ViewModel<any>;
         pageArgs: sharpbox.Web.PageArgs;
@@ -37,10 +38,16 @@ module sharpbox.Web {
             this.viewModel.getAll((data) => {
                 var table = this.htmlStrategy.makeTable(data, this.pageArgs.controllerName);
                 $(containerSelector).append(table);
-
-                $(containerSelector).find("table").DataTable();
+                var settings: DataTables.Settings = new ScaffoldDataTableSettings();
+                settings.dom = 'Bfrtip';
+                settings.buttons = ['copy', 'excel', 'pdf'];
+                $(containerSelector).find("table").DataTable(settings);
             });
         }
+    }
+
+    class ScaffoldDataTableSettings implements  DataTables.Settings {
+        buttons: string[];
     }
 }
 

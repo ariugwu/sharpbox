@@ -3,10 +3,13 @@ using System.Collections.Generic;
 
 namespace sharpbox.Bootstrap.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     [Serializable]
     public class ExampleModel
     {
         public int ExampleModelId { get; set; }
+        [MaxLength(100)]
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }

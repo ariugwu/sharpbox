@@ -27,7 +27,10 @@ var sharpbox;
                     _this.viewModel.getAll(function (data) {
                         var table = _this.htmlStrategy.makeTable(data, _this.pageArgs.controllerName);
                         $(containerSelector).append(table);
-                        $(containerSelector).find("table").DataTable();
+                        var settings = new ScaffoldDataTableSettings();
+                        settings.dom = 'Bfrtip';
+                        settings.buttons = ['copy', 'excel', 'pdf'];
+                        $(containerSelector).find("table").DataTable(settings);
                     });
                 };
                 this.pageArgs = pageArgs;
@@ -37,6 +40,11 @@ var sharpbox;
             return Scaffold;
         })();
         Web.Scaffold = Scaffold;
+        var ScaffoldDataTableSettings = (function () {
+            function ScaffoldDataTableSettings() {
+            }
+            return ScaffoldDataTableSettings;
+        })();
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
 //# sourceMappingURL=sharpbox.Web.Scaffold.js.map

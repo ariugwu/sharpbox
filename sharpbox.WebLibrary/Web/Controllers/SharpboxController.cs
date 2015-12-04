@@ -23,6 +23,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
     using Common.Dispatch.Model;
     using Core;
 
+    using Newtonsoft.Json.Schema;
+
     public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
         where T : class, new()
     {
@@ -109,6 +111,14 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         #region API
 
+        public virtual JsonResult MetaData()
+        {
+            var edm = new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T));
+            var sElements = edm.Model.SchemaElements.ToList();
+            var serializerSettings = new JsonSerializerSettings() { PreserveReferencesHandling = PreserveReferencesHandling.Objects }; // Prevent circular reference errors with EF objects and other one-to-many relationships
+            return this.Json(JsonConvert.SerializeObject(sElements, serializerSettings));
+        }
+
         public virtual JsonResult Get()
         {
             ODataQueryOptions<T> options = null;
@@ -125,7 +135,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         public virtual JsonResult GetAsLookUpDictionary()
         {
             ODataQueryOptions<T> options = null;
-
+            
             if (!string.IsNullOrEmpty(this.Request.Url?.Query))
             {
                 options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
@@ -153,16 +163,11 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public JsonResult JsonSchema()
         {
-            // Uses NJsonSchema lib
-            var schema = JsonSchema4.FromType<T>();
-            var schemaJson = schema.ToJson();
-
             // Uses Json.Net Schema
-            //var generator = new JSchemaGenerator();
-            //    generator.GenerationProviders.Add(null);
-            //JSchema jSchema = generator.Generate(typeof(T));
+            var generator = new JSchemaGenerator();
+            JSchema schemaJson = generator.Generate(typeof(T));
 
-            return this.Json(schemaJson, JsonRequestBehavior.AllowGet);
+            return this.Json(schemaJson.ToString(), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult DataflowMatrix()

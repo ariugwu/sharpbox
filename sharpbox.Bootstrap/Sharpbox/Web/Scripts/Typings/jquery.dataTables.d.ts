@@ -1057,6 +1057,7 @@ declare module DataTables {
 
     export interface Settings {
 
+        buttons: Array<string>;
         //#region "Features"
 
         /**
