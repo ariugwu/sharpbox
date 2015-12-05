@@ -15,6 +15,7 @@ var sharpbox;
                         _this.viewModel.form = new sharpbox.Web.Form(_this.viewModel.schema, formName, _this.viewModel.instanceName, _this.viewModel.controllerUrl, "Update", "POST", _this.htmlStrategy);
                         var template = sharpbox.Web.Templating.editForm(_this.viewModel);
                         $(containerSelector).html(template);
+                        //$(".daterange").daterangepicker();
                         _this.viewModel.form.htmlStrategy.wireSubmit(formName);
                         if (_this.pageArgs.id != null) {
                             _this.viewModel.getById(_this.pageArgs.id, function () {
@@ -28,7 +29,8 @@ var sharpbox;
                         var formName = "SearchForm";
                         _this.viewModel.form = new sharpbox.Web.Form(_this.viewModel.schema, formName, _this.viewModel.instanceName, _this.viewModel.controllerUrl, "Search", "Get", _this.htmlStrategy);
                         var searchDash = sharpbox.Web.Templating.searchDash(_this.viewModel);
-                        $(containerSelector).find(".searchPanel").html(searchDash);
+                        $("#searchPanel").html(searchDash);
+                        //$(".daterange").daterangepicker();
                         _this.viewModel.form.htmlStrategy.wireSearchSubmit(formName, containerSelector, _this.reloadGrid);
                         _this.loadGrid(containerSelector, "");
                     });
@@ -42,7 +44,7 @@ var sharpbox;
                             var table = _this.htmlStrategy.makeTable(data, _this.pageArgs.controllerName);
                             $(containerSelector).find(".gridPanel").html(table);
                             var settings = new ScaffoldDataTableSettings();
-                            settings.dom = 'Bfrtip';
+                            //settings.dom = 'Bfrtip';
                             settings.buttons = ['copy', 'excel', 'pdf'];
                             $(containerSelector).find("table").DataTable(settings);
                         });

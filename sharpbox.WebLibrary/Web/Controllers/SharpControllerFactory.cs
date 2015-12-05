@@ -31,7 +31,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             }
             catch (Exception ex)
             {
-                return new ErrorController(this.AppContext);
+                return new ErrorController();
             }
         }
 

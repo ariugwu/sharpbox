@@ -34,7 +34,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
                 parameters.Add(webContext.WebRequest.FileDetail);
             }
 
-            webContext.DispatchResponse = webContext.AppContext.Dispatch.Process<T>(webContext.WebRequest.CommandName, "Default Execution Message", parameters.ToArray());
+            webContext.DispatchResponse = webContext.Dispatch.Process<T>(webContext.WebRequest.CommandName, "Default Execution Message", parameters.ToArray());
 
             webContext.WebResponse.Instance = (T)webContext.DispatchResponse.Entity;
             webContext.WebResponse.ResponseType = webContext.DispatchResponse.ResponseType.ToString();
@@ -55,7 +55,6 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
             if (messageMap.ContainsKey(commandName) && messageMap[commandName].ContainsKey(responseType))
             {
                 webContext.WebResponse.Message = messageMap[commandName][responseType];
-
             }
             else
             {

@@ -4,10 +4,9 @@ using System.Web.Mvc;
 
 namespace sharpbox.WebLibrary.Web.Helpers.Handler
 {
+    using Common.Data.Helpers;
     using Controllers;
     using Core;
-    using Common.Data;
-    using Common.Data.Helpers;
 
     public class LoadContextHandler<T> : LifecycleHandler<T> where T : class, new()
     {
@@ -23,7 +22,7 @@ namespace sharpbox.WebLibrary.Web.Helpers.Handler
             try
             {
                 this.ActionCommandMap = controller.LoadCommandActionMap();
-                webContext.WebRequest.CommandName = this.ActionCommandMap.GetCommandByAction(webContext.AppContext,webContext.WebRequest.UiAction);
+                webContext.WebRequest.CommandName = this.ActionCommandMap.GetCommandByAction(webContext,webContext.WebRequest.UiAction);
 
                 webContext.WebResponse.AddLifeCycleTrailItem(this.Name, LifeCycleHandlerState.Success, string.Empty);
             }

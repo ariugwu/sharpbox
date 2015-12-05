@@ -273,7 +273,7 @@ var sharpbox;
                 _super.apply(this, arguments);
                 this.makeTable = function (data, domainName) {
                     var table = $("<table class=\"table table-striped\">");
-                    var caption = $("<caption><div class=\"btn-group pull-right\"><a class=\"btn btn-sm btn-info\" href=\"/" + domainName + "/Detail\">Add</a></div></caption>");
+                    var caption = $("<caption><div class=\"btn-group pull-left\"><button type=\"button\" class=\"btn btn-primary btn-sm\" data-toggle=\"offcanvas\" data-target=\"#search\" data-canvas=\"body\">Search</button><a class=\"btn btn-sm btn-info\" href=\"/" + domainName + "/Detail\">Add</a></div></caption>");
                     $(caption).appendTo(table);
                     var tblHeader = "<thead><tr>";
                     var object = data[0];
@@ -328,7 +328,7 @@ var sharpbox;
                             });
                             return "<div class=\"col-sm-10\">\n                                    <select class=\"form-control\" id=\"" + field.name + "\" name=\"" + name + "\">\n                                        " + options + "\n                                    </select>\n                            </div>\n                            ";
                         default:
-                            return "<div class=\"col-sm-10\">\n                                <input type=\"" + field.format + "\" class=\"form-control\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />\n                            </div>\n                            ";
+                            return "<div class=\"col-sm-10\">\n                                <input type=\"" + field.format + "\" class=\"form-control\" odata-syntax=\"eq\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />\n                            </div>\n                            ";
                     }
                 };
             }
@@ -342,7 +342,7 @@ var sharpbox;
                     case "hidden":
                         return "<div class=\"col-sm-10\">\n                                <strong><span data-bind=\"" + field.name + "\"></span></strong>\n                                <input type=\"hidden\" name=\"WebRequest.Instance." + field.name + "\" />\n                            </div>\n                            ";
                     case "date-time":
-                        return "\n                            <div class=\"col-sm-10\">\n                                <div class=\"input-group\">\n                                    " + this.formatInputPrepend(field) + "\n                                    <input type=\"" + inputType + "\" class=\"form-control " + extraClasses + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />\n                                    " + this.formatInputAppend(field) + "\n                                </div>\n                            </div>\n                            ";
+                        return "\n                            <div class=\"col-sm-10\">\n                                <div class=\"input-group\">\n                                    " + this.formatInputPrepend(field) + "\n                                    <input type=\"" + inputType + "\" class=\"form-control daterange " + extraClasses + "\" id=\"" + field.name + "\" name=\"WebRequest.Instance." + field.name + "\" />\n                                    " + this.formatInputAppend(field) + "\n                                </div>\n                            </div>\n                            ";
                     case "options":
                         var name = "WebRequest.Instance." + field.name;
                         var options = "";

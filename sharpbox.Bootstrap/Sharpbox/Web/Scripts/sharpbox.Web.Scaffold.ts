@@ -23,7 +23,7 @@ module sharpbox.Web {
                 var template = sharpbox.Web.Templating.editForm(this.viewModel);
 
                 $(containerSelector).html(template);
-
+                //$(".daterange").daterangepicker();
                 this.viewModel.form.htmlStrategy.wireSubmit(formName);
 
                 if (this.pageArgs.id != null) {
@@ -40,7 +40,9 @@ module sharpbox.Web {
                 var formName = "SearchForm";
                 this.viewModel.form = new sharpbox.Web.Form(this.viewModel.schema, formName, this.viewModel.instanceName, this.viewModel.controllerUrl, "Search", "Get", this.htmlStrategy);
                 var searchDash = sharpbox.Web.Templating.searchDash(this.viewModel);
-                $(containerSelector).find(".searchPanel").html(searchDash);
+                $("#searchPanel").html(searchDash);
+                //$(".daterange").daterangepicker();
+
                 this.viewModel.form.htmlStrategy.wireSearchSubmit(formName, containerSelector, this.reloadGrid);
                 this.loadGrid(containerSelector, "");
             });
@@ -57,14 +59,13 @@ module sharpbox.Web {
                     $(containerSelector).find(".gridPanel").html(table);
                     
                     var settings: DataTables.Settings = new ScaffoldDataTableSettings();
-                    settings.dom = 'Bfrtip';
+                    //settings.dom = 'Bfrtip';
                     settings.buttons = ['copy', 'excel', 'pdf'];
                     $(containerSelector).find("table").DataTable(settings);
                 });
             });
         }
     }
-
 
     class ScaffoldDataTableSettings implements  DataTables.Settings {
         buttons: string[];

@@ -10,25 +10,22 @@ using System.Web.Http.OData.Query;
 using System.Web.Mvc;
 using FluentValidation;
 using Newtonsoft.Json;
-
-using sharpbox.App;
-using sharpbox.Common.Data.Helpers;
-using sharpbox.WebLibrary.Helpers;
+using NJsonSchema;
 
 namespace sharpbox.WebLibrary.Web.Controllers
 {
+    using App;
     using Common.App;
+    using Common.Data.Helpers;
     using Common.Dispatch;
     using Common.Dispatch.Model;
     using Core;
-
-    using Newtonsoft.Json.Schema;
-
+    using WebLibrary.Helpers;
+    
     public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
         where T : class, new()
     {
         #region Properties
-        public AppContext AppContext { get { return this.WebContext.AppContext;} }
 
         public Dictionary<CommandName, Dictionary<ResponseTypes, string>> CommandMessageMap { get; set; }
 
@@ -41,9 +38,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #endregion
 
         #region Constructor(s)
-        protected SharpboxController() { } 
 
-        protected SharpboxController(AppContext appContext)
+        protected SharpboxController(WebContext<T> webContext = null)
         {
             this.CommandMessageMap = new Dictionary<CommandName, Dictionary<ResponseTypes, string>>();
 
@@ -52,19 +48,15 @@ namespace sharpbox.WebLibrary.Web.Controllers
             this._odataModelbuilder.EntitySet<T>($"{typeof(T).Name}s");
             this._odataModelbuilder.AddEntity(typeof(T));
 
-            // Only create a new WebContext if one doesn't already exist.
-            this.WebContext = new WebContext<T>
-            {
-                AppContext = appContext,
-                User = this.User,
-                WebResponse =
-                                          new WebResponse<T>()
-                                          {
-                                              ModelErrors = new Dictionary<string, Stack<ModelError>>()
-                                          }
-            };
+            this.WebContext = webContext ?? new WebContext<T>();
+            this.WebContext.User = this.User;
+            this.WebContext.WebResponse = new WebResponse<T>()
+                                              {
+                                                  ModelErrors =
+                                                      new Dictionary<string, Stack<ModelError>>()
+                                              };
 
-            this.WarmBootAppContext(this.WebContext.AppContext);
+            this.WarmBootAppContext(this.WebContext);
         }
 
         #endregion
@@ -78,9 +70,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         protected virtual void InitDuringAuthorization()
         {
-            this.WebContext.AppContext.UploadPath = this.Server.MapPath("~/Upload/");
-            this.WebContext.AppContext.DataPath = this.WebContext.AppContext.File.DataPath = this.Server.MapPath("~/App_Data/");
-            this.WebContext.AppContext.CurrentLogOn = this.User.Identity.Name;
+            this.WebContext.UploadPath = this.Server.MapPath("~/Upload/");
+            this.WebContext.DataPath = this.WebContext.File.DataPath = this.Server.MapPath("~/App_Data/");
+            this.WebContext.CurrentLogOn = this.User.Identity.Name;
         }
 
         protected override void Dispose(bool disposing)
@@ -127,7 +119,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
                 options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
             }
 
-            return this.Json((IQueryable<T>)this.WebContext.AppContext.Dispatch.Fetch(BaseQueryName.Get, new object[] { options }), JsonRequestBehavior.AllowGet);
+            return this.Json((IQueryable<T>)this.WebContext.Dispatch.Fetch(BaseQueryName.Get, new object[] { options }), JsonRequestBehavior.AllowGet);
         }
 
         [OutputCache(Duration = 3600, VaryByParam = "None")]
@@ -140,7 +132,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
                 options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
             }
 
-            var items = (IQueryable<T>)this.WebContext.AppContext.Dispatch.Fetch(BaseQueryName.Get, new object[] { options });
+            var items = (IQueryable<T>)this.WebContext.Dispatch.Fetch(BaseQueryName.Get, new object[] { options });
             var dict = new Dictionary<string, string>();
             var type = typeof(T);
 
@@ -157,16 +149,19 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult GetById(string id)
         {
-            return this.Json((T)this.WebContext.AppContext.Dispatch.Fetch(BaseQueryName.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
+            return this.Json((T)this.WebContext.Dispatch.Fetch(BaseQueryName.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()
         {
-            // Uses Json.Net Schema
-            var generator = new JSchemaGenerator();
-            JSchema schemaJson = generator.Generate(typeof(T));
+            var schema = JsonSchema4.FromType<T>();
+            var schemaJson = schema.ToJson();
 
-            return this.Json(schemaJson.ToString(), JsonRequestBehavior.AllowGet);
+            // Uses Json.Net Schema
+            //var generator = new JSchemaGenerator();
+            //JSchema schemaJson = generator.Generate(typeof(T));
+
+            return this.Json(schemaJson, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult DataflowMatrix()
@@ -175,9 +170,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
             // Also show routines w/ failover and rollback paths.
             // Show events that are listening.
 
-            Dictionary<string, string> commandNameTarget = (this.AppContext.Dispatch.CommandHub != null) ? this.AppContext.Dispatch.CommandHub.ToDictionary(x => x.Key.Name, y => y.Value.Action.Method.ToString()) : null;
-            Dictionary<string, List<string>> eventNameTarget = (this.AppContext.Dispatch.EventHub != null) ? this.AppContext.Dispatch.EventHub.ToDictionary(x => x.Key.Name, y => y.Value.Select(x => x.Method.ToString()).ToList()) : null;
-            Dictionary<string, List<Tuple<string, string, string>>> routineNameTarget = (this.AppContext.Dispatch.RoutineHub != null) ? this.AppContext.Dispatch.RoutineHub.ToDictionary(x => x.Key.Name, y => y.Value.Select(x => new Tuple<string, string, string>(x.Action?.Method.ToString(), x.FailOver?.Method.ToString(), x.Rollback?.Method.ToString())).ToList()) : null;
+            Dictionary<string, string> commandNameTarget = this.WebContext.Dispatch.CommandHub?.ToDictionary(x => x.Key.Name, y => y.Value.Action.Method.ToString());
+            Dictionary<string, List<string>> eventNameTarget = this.WebContext.Dispatch.EventHub?.ToDictionary(x => x.Key.Name, y => y.Value.Select(x => x.Method.ToString()).ToList());
+            Dictionary<string, List<Tuple<string, string, string>>> routineNameTarget = this.WebContext.Dispatch.RoutineHub?.ToDictionary(x => x.Key.Name, y => y.Value.Select(x => new Tuple<string, string, string>(x.Action?.Method.ToString(), x.FailOver?.Method.ToString(), x.Rollback?.Method.ToString())).ToList());
 
             return this.Json(new { commandNameTarget, eventNameTarget, routineNameTarget }, JsonRequestBehavior.AllowGet);
         }
@@ -190,9 +185,9 @@ namespace sharpbox.WebLibrary.Web.Controllers
                 options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
             }
 
-            var queryName = this.AppContext.Dispatch.QueryHub.First(x => x.Key.Name == this.Request.QueryString["QueryName"]).Key;
+            var queryName = this.WebContext.Dispatch.QueryHub.First(x => x.Key.Name == this.Request.QueryString["QueryName"]).Key;
 
-            return this.Json((IQueryable<T>)this.WebContext.AppContext.Dispatch.Fetch(queryName, new object[] { options }), JsonRequestBehavior.AllowGet);
+            return this.Json((IQueryable<T>)this.WebContext.Dispatch.Fetch(queryName, new object[] { options }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Execute(WebRequest<T> webRequest)
@@ -338,7 +333,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         /// </summary>
         public virtual void WireApplicationContext()
         {
-            this.AppContext.AppWiring.WireContext<T>(this.AppContext.Dispatch);
+            this.WebContext.AppWiring.WireContext<T>(this.WebContext.Dispatch);
         }
 
         /// <summary>
@@ -346,7 +341,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
         /// </summary>
         public virtual void WireDefaultRoutes()
         {
-            this.AppContext.AppWiring.WireDefaultRoutes<T>(this.AppContext.Dispatch);
+            this.WebContext.AppWiring.WireDefaultRoutes<T>(this.WebContext.Dispatch);
         }
 
         /// <summary>

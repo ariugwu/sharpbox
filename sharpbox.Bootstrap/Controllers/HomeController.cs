@@ -1,24 +1,15 @@
 ﻿using System.Web.Mvc;
 using sharpbox.App;
-using sharpbox.Bootstrap.Models;
-using sharpbox.WebLibrary.Core.Models;
 using sharpbox.WebLibrary.Web.Controllers;
 
 namespace sharpbox.Bootstrap.Controllers
 {
     using App.Model;
-    using Dispatch.Model;
-
-    using sharpbox.Common.App;
-    using sharpbox.Common.Dispatch;
+    using Common.App;
+    using Common.Dispatch;
 
     public sealed class HomeController : SharpboxController<Environment>
     {
-        public HomeController() : base(new ExampleAppContext())
-        {
-            
-        }
-
         // GET: Home
         public ActionResult Test()
         {
@@ -38,8 +29,8 @@ namespace sharpbox.Bootstrap.Controllers
 
             //var clerg = woo.ToList();
 
-            this.WebContext.AppContext.Environment.BaseUrl = "http://sharpbox.io";
-            this.WebContext.AppContext.Dispatch.Process<AppContext>(BaseCommandName.SaveEnvironment, this.CommandMessageMap[BaseCommandName.SaveEnvironment][ResponseTypes.Info], new object[] { this.WebContext.AppContext.Environment });
+            this.WebContext.Environment.BaseUrl = "http://sharpbox.io";
+            this.WebContext.Dispatch.Process<AppContext>(BaseCommandName.SaveEnvironment, this.CommandMessageMap[BaseCommandName.SaveEnvironment][ResponseTypes.Info], new object[] { this.WebContext.Environment });
 
             return this.View("~/Sharpbox/Web/Views/Crud/Index.cshtml");
         }

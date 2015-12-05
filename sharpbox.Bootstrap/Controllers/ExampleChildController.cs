@@ -1,23 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using sharpbox.Bootstrap.Models;
-using sharpbox.WebLibrary.Core.Models;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using sharpbox.Common.App;
+    using Common.App;
     
     using WebLibrary.Web.Controllers;
 
     public class ExampleChildController : SharpboxController<ExampleChild>
     {
-        public ExampleChildController() : base(new ExampleAppContext())
-        {
-        }
-
         public ActionResult Seed()
         {
             var list = new List<ExampleChild>();
@@ -26,7 +19,7 @@ namespace sharpbox.Bootstrap.Controllers
             list.Add(new ExampleChild() { ExampleChildId = 3, ARandomNumber = 12420, CreatedDate = DateTime.Now.AddDays(51), IsValid = true, SomeDoubleNumber = 499283.2, Title = "Blerg. Please use Fakes!" });
             list.Add(new ExampleChild() { ExampleChildId = 9, ARandomNumber = 6610, CreatedDate = DateTime.Now.AddDays(12), IsValid = true, SomeDoubleNumber = 198823.2, Title = "Making up titles is hard." });
             list.Add(new ExampleChild() { ExampleChildId = 4, ARandomNumber = 710, CreatedDate = DateTime.Now.AddDays(-13), IsValid = true, SomeDoubleNumber = 335923.2, Title = "For science!" });
-            this.WebContext.AppContext.Dispatch.Process<List<ExampleChild>>(
+            this.WebContext.Dispatch.Process<List<ExampleChild>>(
                 BaseCommandName.UpdateAll,
                 "Seeding the collection",
                 new object[] { list });

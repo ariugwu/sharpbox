@@ -5,7 +5,6 @@ using System.Web.Mvc;
 
 using FluentValidation;
 using sharpbox.Bootstrap.Models;
-using sharpbox.WebLibrary.Core.Models;
 
 namespace sharpbox.Bootstrap.Controllers
 {
@@ -25,11 +24,6 @@ namespace sharpbox.Bootstrap.Controllers
 
     public sealed class ExampleModelController : SharpboxController<ExampleModel>
     {
-        public ExampleModelController()
-            : base(new ExampleAppContext())
-        {
-        }
-
         public ActionResult Seed()
         {
             var list = new List<ExampleModel>();
@@ -43,7 +37,7 @@ namespace sharpbox.Bootstrap.Controllers
             list.Add(new ExampleModel() { ExampleModelId = 2, Age = 8, BirthDate = DateTime.Now.AddDays(8), FirstName = "Nick", LastName = "Lancaster", Value = "H", ExampleChildId = 1 });
             list.Add(new ExampleModel() { ExampleModelId = 1, Age = 9, BirthDate = DateTime.Now.AddDays(9), FirstName = "Josh", LastName = "Holmes", Value = "I", ExampleChildId = 1 });
 
-            this.WebContext.AppContext.Dispatch.Process<List<ExampleModel>>(
+            this.WebContext.Dispatch.Process<List<ExampleModel>>(
                 BaseCommandName.UpdateAll,
                 "Seeding the collection",
                 new object[] { list });
@@ -85,8 +79,8 @@ namespace sharpbox.Bootstrap.Controllers
             this.CommandMessageMap[this.SaveExampleModel].Add(ResponseTypes.Success, "Saving the example to the file system was successful!");
 
             // Register some example commands.
-            this.WebContext.AppContext.Dispatch.Register<ExampleModel>(this.TestCommand, ExampleModel.TestTargetMethod, this.TestEvent);
-            this.WebContext.AppContext.Dispatch.Listen(this.TestEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });
+            this.WebContext.Dispatch.Register<ExampleModel>(this.TestCommand, ExampleModel.TestTargetMethod, this.TestEvent);
+            this.WebContext.Dispatch.Listen(this.TestEvent, (response) => { Debug.WriteLine("We listened and heard: " + ((ExampleModel)response.Entity).Value); });
         }
 
         /// <summary>

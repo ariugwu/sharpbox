@@ -10,21 +10,24 @@ namespace sharpbox.App
     using Dispatch;
     using Localization;
 
+    using sharpbox.Io.Strategy.Binary;
+
     [Serializable]
     public class AppContext
     {
         /// <summary>
         /// A bit of a kitchen sink. Will instantiate Dispatch, Email, File, Audit, Notification, and map default commands and listeners.
         /// </summary>
+        /// <param name="cultureCode"></param>
         /// <param name="smtpClient"></param>
         /// <param name="ioStrategy"></param>
         /// <param name="defaultConnectionStringName"></param>
-        public AppContext(string cultureCode, SmtpClient smtpClient, IStrategy ioStrategy, string defaultConnectionStringName = "Sharpbox", IAppWiring appWiring = null)
+        public AppContext(string cultureCode = "en-us", SmtpClient smtpClient = null, IStrategy ioStrategy = null, string defaultConnectionStringName = "Sharpbox", IAppWiring appWiring = null)
         {
             this.Dispatch = new DispatchContext();
 
-            this.Email = new Email.Client(smtpClient);
-            this.File = new Io.Client(ioStrategy);
+            this.Email = new Email.Client(smtpClient ?? new SmtpClient());
+            this.File = new Io.Client(ioStrategy ?? new BinaryStrategy());
             this.Notification = new Notification.NotificationContext();
             this.Localization = new LocalizationContext(cultureCode);
 
@@ -32,13 +35,6 @@ namespace sharpbox.App
 
             this.AppWiring = appWiring ?? new DefaultAppWiring(new IoCrud() { File = this.File });
 
-        }
-
-        /// <summary>
-        /// Do all the wiring yourself
-        /// </summary>
-        public AppContext()
-        {
         }
 
         #region Wiring
