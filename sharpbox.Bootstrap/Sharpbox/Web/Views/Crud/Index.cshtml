@@ -1,13 +1,14 @@
 ﻿<div id="example" class="row">
-    <nav id="search" class="navmenu navmenu-default navmenu-fixed-left offcanvas" role="navigation">
+    <div id="search" class="navmenu-fixed-left offcanvas" role="navigation">
         <div id="searchPanel" class="searchPanel"></div>
-    </nav>
+    </div>
     <div class="col-sm-12">
         <div class="gridPanel"></div>
     </div>
+    <div id="add" class="navmenu-fixed-right offcanvas">
+        <div id="addPanel" class="addPanel" style="width: 50%;"></div>
+    </div>
 </div>
-
-
 @section scripts {
     <script type="text/javascript" src="/Sharpbox/Web/Scripts/collections.js"></script>
     <script type="text/javascript" src="/Sharpbox/Web/Scripts/sharpbox.Web.PageArgs.js"></script>

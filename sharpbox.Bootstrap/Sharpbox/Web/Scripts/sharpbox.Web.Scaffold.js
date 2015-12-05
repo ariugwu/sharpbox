@@ -30,6 +30,7 @@ var sharpbox;
                         _this.viewModel.form = new sharpbox.Web.Form(_this.viewModel.schema, formName, _this.viewModel.instanceName, _this.viewModel.controllerUrl, "Search", "Get", _this.htmlStrategy);
                         var searchDash = sharpbox.Web.Templating.searchDash(_this.viewModel);
                         $("#searchPanel").html(searchDash);
+                        _this.loadEditForm("#addPanel");
                         //$(".daterange").daterangepicker();
                         _this.viewModel.form.htmlStrategy.wireSearchSubmit(formName, containerSelector, _this.reloadGrid);
                         _this.loadGrid(containerSelector, "");

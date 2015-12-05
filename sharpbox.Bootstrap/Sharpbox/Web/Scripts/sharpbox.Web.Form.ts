@@ -406,7 +406,11 @@ module sharpbox.Web {
 
         makeTable = (data: any, domainName: string): any => {
             var table = $("<table class=\"table table-striped\">");
-            var caption = $(`<caption><div class=\"btn-group pull-left\"><button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas" data-target="#search" data-canvas="body">Search</button><a class="btn btn-sm btn-info" href="/${domainName}/Detail">Add</a></div></caption>`);
+            var caption = $(`<caption><div class=\"btn-group pull-left\">
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas" data-target="#search" data-canvas="body"><i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;Search</button>
+                                </div><div class=\"btn-group pull-right\">
+                                <button type="button" class="btn btn-info btn-sm" data-toggle="offcanvas" data-target="#add" data-canvas="body"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add</button>
+                            </div></caption>`);
 
             $(caption).appendTo(table);
 
