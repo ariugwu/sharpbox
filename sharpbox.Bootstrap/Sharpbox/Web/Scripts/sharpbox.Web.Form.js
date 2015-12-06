@@ -273,7 +273,7 @@ var sharpbox;
                 _super.apply(this, arguments);
                 this.makeTable = function (data, domainName) {
                     var table = $("<table class=\"table table-striped\">");
-                    var caption = $("<caption><div class=\"btn-group pull-left\">\n                                <button type=\"button\" class=\"btn btn-primary btn-sm\" data-toggle=\"offcanvas\" data-target=\"#search\" data-canvas=\"body\"><i class=\"glyphicon glyphicon-search\"></i>&nbsp;&nbsp;Search</button>\n                                </div><div class=\"btn-group pull-right\">\n                                <button type=\"button\" class=\"btn btn-info btn-sm\" data-toggle=\"offcanvas\" data-target=\"#add\" data-canvas=\"body\"><i class=\"glyphicon glyphicon-plus\"></i>&nbsp;&nbsp;Add</button>\n                            </div></caption>");
+                    var caption = $("<caption><div class=\"btn-group pull-left\">\n                                <button type=\"button\" class=\"btn btn-primary btn-sm\" data-toggle=\"offcanvas\" data-target=\"#search\" data-canvas=\"#example\"><i class=\"glyphicon glyphicon-search\"></i>&nbsp;&nbsp;Search</button>\n                                </div><div class=\"btn-group pull-right\">\n                                <button type=\"button\" id=\"showAddPanel\" class=\"btn btn-info btn-sm\" data-toggle=\"offcanvas\" data-target=\"#add\" data-canvas=\"#example\"><i class=\"glyphicon glyphicon-plus\"></i>&nbsp;&nbsp;Add</button>\n                            </div></caption>");
                     $(caption).appendTo(table);
                     var tblHeader = "<thead><tr>";
                     var object = data[0];
@@ -295,7 +295,7 @@ var sharpbox;
                         var tableRow = "<tr>";
                         $.each(value, function (key, val) {
                             if (key == domainName + "Id") {
-                                tableRow += "<td><a href=\"/" + domainName + "/Detail/?id=" + val + "\" class=\"btn btn-sm btn-info\">Edit</a></td>";
+                                tableRow += "<td><button value=\"" + val + "\" class=\"editGrid btn btn-sm btn-info\">Edit</button></td>";
                             }
                             else {
                                 tableRow += "<td>" + val + "</td>";

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IdentityContext.cs" />
+    <Compile Include="IdentityStrategy.cs" />
     <Compile Include="Model\Claim.cs" />
     <Compile Include="Model\UserClaimStore.cs" />
     <Compile Include="Model\RoleStore.cs" />

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace sharpbox.Membership.Model
 {
-    public class UserRoleStore : Microsoft.AspNet.Identity.IUserRoleStore<User, int>
+    public class UserRoleStore : Microsoft.AspNet.Identity.IUserRoleStore<User, Guid>
     {
         public Task AddToRoleAsync(User user, string roleName)
         {
@@ -26,7 +26,7 @@ namespace sharpbox.Membership.Model
             throw new NotImplementedException();
         }
 
-        public Task<User> FindByIdAsync(int userId)
+        public Task<User> FindByIdAsync(Guid userId)
         {
             throw new NotImplementedException();
         }

@@ -1,8 +1,10 @@
 ﻿namespace sharpbox.Membership.Model
 {
-    public class User : Microsoft.AspNet.Identity.IUser<int>
+    using System;
+
+    public class User : Microsoft.AspNet.Identity.IUser<Guid>
     {
-        public int Id { get; }
+        public Guid Id { get; }
         public string UserName { get; set; }
     }
 }

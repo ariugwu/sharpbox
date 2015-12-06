@@ -5,7 +5,7 @@ using Microsoft.AspNet.Identity;
 
 namespace sharpbox.Membership.Model
 {
-    public class RoleStore : IRoleStore<Role, int>
+    public class RoleStore : IRoleStore<Role, Guid>
     {
         public Task CreateAsync(Role role)
         {
@@ -17,7 +17,7 @@ namespace sharpbox.Membership.Model
             throw new NotImplementedException();
         }
 
-        public Task<Role> FindByIdAsync(int roleId)
+        public Task<Role> FindByIdAsync(Guid roleId)
         {
             throw new NotImplementedException();
         }

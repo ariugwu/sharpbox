@@ -76,6 +76,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.WebLibrary", "shar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Fake", "sharpbox.Fake\sharpbox.Fake.csproj", "{DC86F687-20BD-42B4-AF83-9774508F0557}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Membership.Azure", "sharpbox.Membership.Azure\sharpbox.Membership.Azure.csproj", "{9ADAB4DD-2706-4E24-AA3C-F4CC7CBA5CA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sharpbox.Membership.Google", "sharpbox.Membership.Google\sharpbox.Membership.Google.csproj", "{0416481C-3456-43FE-B85F-29B4865368BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -182,6 +186,14 @@ Global
 		{DC86F687-20BD-42B4-AF83-9774508F0557}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC86F687-20BD-42B4-AF83-9774508F0557}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC86F687-20BD-42B4-AF83-9774508F0557}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ADAB4DD-2706-4E24-AA3C-F4CC7CBA5CA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ADAB4DD-2706-4E24-AA3C-F4CC7CBA5CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ADAB4DD-2706-4E24-AA3C-F4CC7CBA5CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ADAB4DD-2706-4E24-AA3C-F4CC7CBA5CA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0416481C-3456-43FE-B85F-29B4865368BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0416481C-3456-43FE-B85F-29B4865368BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0416481C-3456-43FE-B85F-29B4865368BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0416481C-3456-43FE-B85F-29B4865368BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -216,5 +228,7 @@ Global
 		{FEDF9485-E725-4750-A898-C6E380D43D60} = {5B470941-84E5-482A-AC79-F26CF280798C}
 		{762A507F-3483-427C-882D-85E4762C4043} = {600B1494-74D2-4E0A-A7ED-A0923B8931F2}
 		{DC86F687-20BD-42B4-AF83-9774508F0557} = {754B9D58-5E28-496D-B38A-0EBC1EBD28C7}
+		{9ADAB4DD-2706-4E24-AA3C-F4CC7CBA5CA3} = {5B470941-84E5-482A-AC79-F26CF280798C}
+		{0416481C-3456-43FE-B85F-29B4865368BD} = {5B470941-84E5-482A-AC79-F26CF280798C}
 	EndGlobalSection
 EndGlobal

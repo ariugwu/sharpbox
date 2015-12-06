@@ -2,12 +2,25 @@
 
 namespace sharpbox.Membership
 {
+    using System;
+
+    using Model;
+
     public abstract class IdentityContext
     {
-        public Common.Membership.IdentityStrategy IdentityStrategy { get; set; }
+        public IdentityContext(IdentityStrategy identityStrategy)
+        {
+            this.IdentityStrategy = identityStrategy;
+            this.UserManger = new UserManager<User, Guid>(this.IdentityStrategy.GetUserStore());
+            this.RoleManager = new RoleManager<Role, Guid>(this.IdentityStrategy.GetRoleStore());
+            this.UserClaimStore = this.IdentityStrategy.GetClaimStore();
+        }
 
-        public UserManager<Model.User, int> UserManger { get; set; }
-        public RoleManager<Model.Role, int> RoleManager { get; set; }
+        public IdentityStrategy IdentityStrategy { get; set; }
+
+        public UserManager<User, Guid> UserManger { get; set; }
+        public RoleManager<Role, Guid> RoleManager { get; set; }
+        public IUserClaimStore<User,Guid> UserClaimStore { get; set; } 
         
     }
 }

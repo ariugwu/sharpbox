@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BFA599EC-C550-43DD-A4D8-8868204F6896}</ProjectGuid>
+    <ProjectGuid>{9ADAB4DD-2706-4E24-AA3C-F4CC7CBA5CA3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>sharpbox.Common</RootNamespace>
-    <AssemblyName>sharpbox.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>sharpbox.Membership.Azure</RootNamespace>
+    <AssemblyName>sharpbox.Membership.Azure</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -36,44 +36,12 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\IRepository.cs" />
-    <Compile Include="Data\IUnitOfWork.cs" />
-    <Compile Include="Dispatch\CommandName.cs" />
-    <Compile Include="Dispatch\EntityStateName.cs" />
-    <Compile Include="Dispatch\EventName.cs" />
-    <Compile Include="Dispatch\ICommandHubItem.cs" />
-    <Compile Include="Dispatch\ICommandStreamItem.cs" />
-    <Compile Include="Dispatch\IDispatchContext.cs" />
-    <Compile Include="Dispatch\IRequest.cs" />
-    <Compile Include="Dispatch\IResponse.cs" />
-    <Compile Include="Dispatch\IRoutineItem.cs" />
-    <Compile Include="Dispatch\QueryName.cs" />
-    <Compile Include="Dispatch\ResponseTypes.cs" />
-    <Compile Include="Dispatch\RoutineName.cs" />
-    <Compile Include="Email\EmailCommands.cs" />
-    <Compile Include="Email\EmailEvents.cs" />
-    <Compile Include="Io\IoCommands.cs" />
-    <Compile Include="Io\IoEvents.cs" />
-    <Compile Include="Io\IStrategy.cs" />
-    <Compile Include="Notification\EmailTemplateAttribute.cs" />
-    <Compile Include="Notification\ITemplateType.cs" />
-    <Compile Include="Notification\NotificationCommands.cs" />
-    <Compile Include="Notification\NotificationEvents.cs" />
-    <Compile Include="Notification\TemplateTypeLoader.cs" />
-    <Compile Include="Type\EnumPattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Type\TypeInfoHelper.cs" />
-    <Compile Include="App\BaseCommandName.cs" />
-    <Compile Include="App\BaseEventName.cs" />
-    <Compile Include="App\BaseQueryName.cs" />
-    <Compile Include="App\BaseRoutineName.cs" />
-    <Compile Include="App\ICrud.cs" />
-    <Compile Include="App\IAppWiring.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

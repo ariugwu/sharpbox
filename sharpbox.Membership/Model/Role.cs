@@ -5,7 +5,7 @@ namespace sharpbox.Membership.Model
     using Common.Type;
 
     [Serializable]
-    public class Role : EnumPattern, Microsoft.AspNet.Identity.IRole<int>
+    public class Role : EnumPattern, Microsoft.AspNet.Identity.IRole<Guid>
     {
         public Role(string value)
           : base(value)
@@ -13,7 +13,7 @@ namespace sharpbox.Membership.Model
             Name = value;
         }
 
-        public int Id { get; }
+        public Guid Id { get; }
 
         public string Name { get; set; }
 

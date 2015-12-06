@@ -9,6 +9,10 @@ var sharpbox;
         var Scaffold = (function () {
             function Scaffold(pageArgs, htmlStrategy) {
                 var _this = this;
+                this.gridEditClick = function (id) {
+                    _this.pageArgs.id = id;
+                    _this.loadEditForm("#addPanel");
+                };
                 this.loadEditForm = function (containerSelector) {
                     _this.viewModel.getSchema(function () {
                         var formName = "UpdateForm";
@@ -27,19 +31,21 @@ var sharpbox;
                 this.loadSearchPage = function (containerSelector) {
                     _this.viewModel.getSchema(function () {
                         var formName = "SearchForm";
-                        _this.viewModel.form = new sharpbox.Web.Form(_this.viewModel.schema, formName, _this.viewModel.instanceName, _this.viewModel.controllerUrl, "Search", "Get", _this.htmlStrategy);
-                        var searchDash = sharpbox.Web.Templating.searchDash(_this.viewModel);
+                        var self = _this;
+                        self.viewModel.form = new sharpbox.Web.Form(self.viewModel.schema, formName, self.viewModel.instanceName, self.viewModel.controllerUrl, "Search", "Get", _this.htmlStrategy);
+                        var searchDash = sharpbox.Web.Templating.searchDash(self.viewModel);
                         $("#searchPanel").html(searchDash);
-                        _this.loadEditForm("#addPanel");
+                        self.loadEditForm("#addPanel");
                         //$(".daterange").daterangepicker();
-                        _this.viewModel.form.htmlStrategy.wireSearchSubmit(formName, containerSelector, _this.reloadGrid);
-                        _this.loadGrid(containerSelector, "");
+                        self.viewModel.form.htmlStrategy.wireSearchSubmit(formName, containerSelector, self.reloadGrid);
+                        self.loadGrid(containerSelector, "");
                     });
                 };
                 this.reloadGrid = function (containerSelector, odataQuery) {
                     _this.loadGrid(containerSelector, odataQuery);
                 };
                 this.loadGrid = function (containerSelector, odataQuery) {
+                    var self = _this;
                     _this.viewModel.getAll(odataQuery, function (data) {
                         _this.viewModel.getSchema(function () {
                             var table = _this.htmlStrategy.makeTable(data, _this.pageArgs.controllerName);
@@ -48,6 +54,12 @@ var sharpbox;
                             //settings.dom = 'Bfrtip';
                             settings.buttons = ['copy', 'excel', 'pdf'];
                             $(containerSelector).find("table").DataTable(settings);
+                            $(".editGrid").on("click", function (e) {
+                                e.preventDefault();
+                                var id = $(this).val();
+                                self.gridEditClick(id);
+                                $("#showAddPanel").click();
+                            });
                         });
                     });
                 };

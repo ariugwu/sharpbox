@@ -407,9 +407,9 @@ module sharpbox.Web {
         makeTable = (data: any, domainName: string): any => {
             var table = $("<table class=\"table table-striped\">");
             var caption = $(`<caption><div class=\"btn-group pull-left\">
-                                <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas" data-target="#search" data-canvas="body"><i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;Search</button>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas" data-target="#search" data-canvas="#example"><i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;Search</button>
                                 </div><div class=\"btn-group pull-right\">
-                                <button type="button" class="btn btn-info btn-sm" data-toggle="offcanvas" data-target="#add" data-canvas="body"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add</button>
+                                <button type="button" id="showAddPanel" class="btn btn-info btn-sm" data-toggle="offcanvas" data-target="#add" data-canvas="#example"><i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;Add</button>
                             </div></caption>`);
 
             $(caption).appendTo(table);
@@ -435,7 +435,7 @@ module sharpbox.Web {
                 var tableRow = "<tr>";
                 $.each(value, (key, val) => {
                     if (key == `${domainName}Id`) {
-                        tableRow += `<td><a href="/${domainName}/Detail/?id=${val}" class="btn btn-sm btn-info">Edit</a></td>`;
+                        tableRow += `<td><button value="${val}" class="editGrid btn btn-sm btn-info">Edit</button></td>`;
                     } else {
                         tableRow += `<td>${val}</td>`;
                     }

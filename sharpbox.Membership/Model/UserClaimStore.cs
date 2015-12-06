@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 
 namespace sharpbox.Membership.Model
 {
-    public class UserClaimStore : Microsoft.AspNet.Identity.IUserClaimStore<User, int>
+    using System;
+
+    public class UserClaimStore : Microsoft.AspNet.Identity.IUserClaimStore<User, Guid>
     {
         public void Dispose()
         {
@@ -25,7 +27,7 @@ namespace sharpbox.Membership.Model
             throw new System.NotImplementedException();
         }
 
-        public Task<User> FindByIdAsync(int userId)
+        public Task<User> FindByIdAsync(Guid userId)
         {
             throw new System.NotImplementedException();
         }
