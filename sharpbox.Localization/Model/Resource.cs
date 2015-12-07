@@ -7,10 +7,14 @@ namespace sharpbox.Localization.Model
     [Serializable]
     public class Resource
     {
-        public Resource() { }
+        public Resource()
+        {
+            this.ResourceId = Guid.NewGuid();
+        }
 
         public Resource(ResourceName name, ResourceType type, string value, string cultureCode, Guid? environmentId)
         {
+            this.ResourceId = Guid.NewGuid();
             this.ResourceName = name;
             this.ResourceType = type;
             this.Value = value;
@@ -21,7 +25,7 @@ namespace sharpbox.Localization.Model
             this.EnvironmentId = environmentId;
         }
 
-        public int ResourceId { get; set; }
+        public Guid ResourceId { get; set; }
         public ResourceName ResourceName { get; set; }
         public ResourceType ResourceType { get; set; }
         public string Value { get; set; }

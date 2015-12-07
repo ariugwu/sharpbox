@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using sharpbox.App;
+using sharpbox.WebLibrary.Helpers.TypeScript;
 using sharpbox.WebLibrary.Web.Controllers;
 
 namespace sharpbox.Bootstrap.Controllers
