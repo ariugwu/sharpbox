@@ -12,7 +12,7 @@ namespace sharpbox.Common.Dispatch
 
     public interface IResponse
     {
-        int ResponseId { get; set; }
+        Guid ResponseId { get; set; }
 
         string Message { get; set; }
 
@@ -20,7 +20,7 @@ namespace sharpbox.Common.Dispatch
 
         EventName EventName { get; set; }
 
-        int RequestId { get; set; }
+        Guid RequestId { get; set; }
 
         IRequest Request { get; set; }
 

@@ -51,3 +51,4 @@ var sharpbox;
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
 ;
+//# sourceMappingURL=SharpCrudTemplate.js.map

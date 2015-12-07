@@ -10,11 +10,11 @@ namespace sharpbox.Common.Dispatch
 
     public interface IRequest
     {
-        int RequestId { get; set; }
+        Guid RequestId { get; set; }
 
         string Message { get; set; }
 
-        int CommandNameId { get; set; }
+        Guid CommandNameId { get; set; }
 
         CommandName CommandName { get; set; }
 

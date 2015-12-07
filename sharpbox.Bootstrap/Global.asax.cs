@@ -8,6 +8,9 @@ namespace sharpbox.Bootstrap
     {
         protected void Application_Start()
         {
+            //Controller Factory
+            //ControllerBuilder.Current.SetControllerFactory(typeof(sharpbox.WebLibrary.Web.Controllers.SharpControllerFactory));
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

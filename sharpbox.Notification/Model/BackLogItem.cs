@@ -11,10 +11,14 @@ namespace sharpbox.Notification.Model
     [EmailTemplate]
     public class BackLogItem
     {
-        public BackLogItem() { }
-        public int BackLogItemId { get; set; }
-        public int RequestId { get; set; }
-        public int ResponseId { get; set; }
+        public BackLogItem()
+        {
+            this.BackLogItemId = Guid.NewGuid();
+        }
+
+        public Guid BackLogItemId { get; set; }
+        public Guid RequestId { get; set; }
+        public Guid ResponseId { get; set; }
         public string LogOn { get; set; }
         public bool WasSent { get; set; }
         public DateTime? SentDate { get; set; }

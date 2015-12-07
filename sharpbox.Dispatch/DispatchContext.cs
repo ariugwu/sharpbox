@@ -449,7 +449,7 @@ namespace sharpbox.Dispatch
             return result;
         }
 
-        private T ProcessFailOver<T>(RoutineName routineName, Request request, int exResponseId, IRoutineItem r, object[] args)
+        private T ProcessFailOver<T>(RoutineName routineName, Request request, Guid exResponseId, IRoutineItem r, object[] args)
         {
             request.Message = request.Message;
             var response = new Response(request, "", ResponseTypes.Success);

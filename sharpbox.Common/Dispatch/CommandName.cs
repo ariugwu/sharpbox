@@ -9,12 +9,16 @@ namespace sharpbox.Common.Dispatch.Model
         public CommandName(string value)
             : base(value)
         {
-            Name = value;
+            this.CommandNameId = Guid.NewGuid();
+            this.Name = value;
         }
 
-        public CommandName() { }
+        public CommandName()
+        {
+            this.CommandNameId = Guid.NewGuid();
+        }
 
-        public int CommandNameId { get; set; }
+        public Guid CommandNameId { get; set; }
         public string Name { get; set; }
 
         public Guid? EnvironmentId { get; set; }

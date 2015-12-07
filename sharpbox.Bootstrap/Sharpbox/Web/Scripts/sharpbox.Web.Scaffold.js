@@ -77,3 +77,4 @@ var sharpbox;
         })();
     })(Web = sharpbox.Web || (sharpbox.Web = {}));
 })(sharpbox || (sharpbox = {}));
+//# sourceMappingURL=sharpbox.Web.Scaffold.js.map

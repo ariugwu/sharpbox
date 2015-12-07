@@ -2,16 +2,19 @@
 
 namespace sharpbox.Common.Dispatch.Model
 {
-  public class EntityStateName : EnumPattern
-  {
-    public EntityStateName(string value)
-      : base(value)
+    using System;
+
+    public class EntityStateName : EnumPattern
     {
-      Name = value;
+        public EntityStateName(string value)
+          : base(value)
+        {
+            this.EntityStateId = Guid.NewGuid();
+            this.Name = value;
+        }
+
+        public Guid EntityStateId { get; set; }
+        public string Name { get; set; }
+
     }
-
-    public int EntityStateId { get; set; }
-    public string Name { get; set; }
-
-  }
 }

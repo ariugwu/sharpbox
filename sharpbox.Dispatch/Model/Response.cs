@@ -13,20 +13,22 @@ namespace sharpbox.Dispatch.Model
 
         public Response(IRequest request, string message, ResponseTypes responseType)
         {
-            Entity = request.Entity;
-            Message = message;
-            RequestId = request.RequestId;
-            Request = request;
-            ResponseType = responseType;
-            CreatedDate = DateTime.Now;
+            this.ResponseId = Guid.NewGuid();
+            this.Entity = request.Entity;
+            this.Message = message;
+            this.RequestId = request.RequestId;
+            this.Request = request;
+            this.ResponseType = responseType;
+            this.CreatedDate = DateTime.Now;
         }
 
         public Response() 
         {
-            CreatedDate = DateTime.Now;        
+            this.CreatedDate = DateTime.Now; 
+            this.ResponseId = Guid.NewGuid();
         }
 
-        public int ResponseId { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
+        public Guid ResponseId { get; set; } // @SEE http://stackoverflow.com/questions/11938044/what-are-the-best-practices-for-using-a-guid-as-a-primary-key-specifically-rega
         
         public string Message
         {
@@ -38,7 +40,7 @@ namespace sharpbox.Dispatch.Model
 
         public EventName EventName { get; set; }
 
-        public int RequestId { get; set; }
+        public Guid RequestId { get; set; }
         public IRequest Request { get; set; }
         public string UserId { get; set;}
 

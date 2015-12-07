@@ -12,12 +12,16 @@ namespace sharpbox.Common.Dispatch.Model
         public RoutineName(string value)
             : base(value)
         {
-            Name = value;
+            this.RoutineNameId = Guid.NewGuid();
+            this.Name = value;
         }
 
-        public RoutineName() { }
+        public RoutineName()
+        {
+            this.RoutineNameId = Guid.NewGuid();
+        }
 
-        public int EventNameId { get; set; }
+        public Guid RoutineNameId { get; set; }
         public string Name { get; set; }
     }
 }

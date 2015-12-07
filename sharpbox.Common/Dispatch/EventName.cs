@@ -14,12 +14,16 @@ namespace sharpbox.Common.Dispatch.Model
 
         public EventName(string value) : base(value)
         {
-            Name = value;
+            this.EventNameId = Guid.NewGuid();
+            this.Name = value;
         }
 
-        public EventName() { }
+        public EventName()
+        {
+            this.EventNameId = Guid.NewGuid();
+        }
 
-        public int EventNameId { get; set; }
+        public Guid EventNameId { get; set; }
         public string Name { get; set; }
 
         public Guid? EnvironmentId { get; set; }

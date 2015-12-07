@@ -13,6 +13,11 @@ namespace sharpbox.WebLibrary.Web.Controllers
         {
             this.AppContext = appContext;
         }
+
+        public SharpControllerFactory()
+        {
+        }
+
         public AppContext AppContext { get; set; }
 
         //SEE: http://stackoverflow.com/questions/20043306/how-to-impelment-a-custom-controller-factory-asp-net-mvc
@@ -20,11 +25,20 @@ namespace sharpbox.WebLibrary.Web.Controllers
         {
             try
             {
-                string controllername = requestContext.RouteData.Values["controller"].ToString();
                 //@SEE: http://stackoverflow.com/a/3788316
                 var someType = this.GetType(controllerName.Trim().ToLower());
                 var yourGenericType = typeof(GenericController<>).MakeGenericType(someType);
-                var instance = Activator.CreateInstance(yourGenericType, this.AppContext);
+
+                object instance = null;
+
+                if (this.AppContext != null)
+                {
+                    instance = Activator.CreateInstance(yourGenericType, this.AppContext);
+                }
+                else
+                {
+                    instance = Activator.CreateInstance(yourGenericType);
+                }
 
                 return (IController) instance;
 
@@ -61,14 +75,17 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return null;
         }
 
-        private Type GetType(string strFullyQualifiedName)
+        private Type GetType(string entityName)
         {
-            Type type = Type.GetType(strFullyQualifiedName);
+            Type type = Type.GetType(entityName);
             if (type != null) return type;
 
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                type = asm.GetType(strFullyQualifiedName);
+                entityName = char.ToUpper(entityName[0]) + entityName.Substring(1);
+                var fn = asm.GetName().Name;
+                
+                type = asm.GetType($"{fn}.{entityName}");
                 if (type != null)
                     return type;
             }
