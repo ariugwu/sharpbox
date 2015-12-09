@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using sharpbox.Common.App;
-    using sharpbox.Common.Dispatch;
+    using Common.App;
+    using Common.Dispatch;
 
     public class DefaultAppWiring : IAppWiring
     {

@@ -69,7 +69,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             }
             catch (Exception ex)
             {
-                return new ErrorController();
+                throw;
             }
 
         }

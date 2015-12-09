@@ -6,14 +6,18 @@ namespace sharpbox.Localization.Model
     [Serializable]
     public class ResourceName : EnumPattern
     {
-        public ResourceName(string value) : base(value)
+        public ResourceName()
         {
-            Name = value;
+            this.ResourceNameId = Guid.NewGuid();
         }
 
-        public ResourceName() { }
+        public ResourceName(string value) : base(value)
+        {
+            this.ResourceNameId = Guid.NewGuid();
+            this.Name = value;
+        }
 
-        public int ResourceNameId { get; set; }
+        public Guid ResourceNameId { get; set; }
         public string Name { get; set; }
 
         public Guid? EnvironmentId { get; set; }

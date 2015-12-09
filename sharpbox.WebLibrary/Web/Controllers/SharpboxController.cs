@@ -68,7 +68,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             InitDuringAuthorization();
         }
 
-        protected virtual void InitDuringAuthorization()
+        public virtual void InitDuringAuthorization()
         {
             this.WebContext.UploadPath = this.Server.MapPath("~/Upload/");
             this.WebContext.DataPath = this.WebContext.File.DataPath = this.Server.MapPath("~/App_Data/");
@@ -88,7 +88,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         #region Action(s)
 
-        public virtual ActionResult Index()
+        public virtual ActionResult List()
         {
             return this.View("~/Sharpbox/Web/Views/Crud/Index.cshtml");
         }
@@ -190,7 +190,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             return this.Json((IQueryable<T>)this.WebContext.Dispatch.Fetch(queryName, new object[] { options }), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult Execute(WebRequest<T> webRequest)
+        public JsonResult Post(WebRequest<T> webRequest)
         {
             try
             {
@@ -212,7 +212,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
             }
         }
 
-        public JsonResult ExecuteWithAttachment(WebRequest<T> webRequest, HttpPostedFileBase file)
+        public JsonResult PostWithAttachment(WebRequest<T> webRequest, HttpPostedFileBase file)
         {
             try
             {

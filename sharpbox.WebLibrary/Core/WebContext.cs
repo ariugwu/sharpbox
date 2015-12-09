@@ -16,13 +16,7 @@ namespace sharpbox.WebLibrary.Core
 
         public WebContext()
         {
-            _handler = new AuthHandler<T>();
-
-            _handler.SetSuccessor(_loadContextHandler);
-            _loadContextHandler.SetSuccessor(_validationHandler);
-            _validationHandler.SetSuccessor(_executeHandler);
-            _executeHandler.SetSuccessor(_auditTrailHandler);
-            _auditTrailHandler.SetSuccessor(_finalizeHandler);
+            this.InitLifeCycleHandler();
         }
 
         #endregion
@@ -79,6 +73,17 @@ namespace sharpbox.WebLibrary.Core
         #endregion
 
         #endregion
+
+        public void InitLifeCycleHandler()
+        {
+            _handler = new AuthHandler<T>();
+
+            _handler.SetSuccessor(_loadContextHandler);
+            _loadContextHandler.SetSuccessor(_validationHandler);
+            _validationHandler.SetSuccessor(_executeHandler);
+            _executeHandler.SetSuccessor(_auditTrailHandler);
+            _auditTrailHandler.SetSuccessor(_finalizeHandler);
+        }
 
         public void ProcessRequest(WebRequest<T> webRequest, ISharpboxController<T> controller)
         {

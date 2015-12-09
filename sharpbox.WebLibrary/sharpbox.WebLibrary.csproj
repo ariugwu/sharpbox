@@ -130,7 +130,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Web\Controllers\ErrorController.cs" />
     <Compile Include="Web\Controllers\GenericController.cs" />
     <Compile Include="Core\LifecycleHandler.cs" />
     <Compile Include="Core\LifeCycleHandlerName.cs" />
