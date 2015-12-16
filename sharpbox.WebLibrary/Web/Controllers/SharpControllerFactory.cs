@@ -67,7 +67,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
                 return base.CreateController(requestContext, controllerName);
 
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
@@ -104,7 +104,6 @@ namespace sharpbox.WebLibrary.Web.Controllers
                 this.TypeDictionary.Add("ResourceType", typeof(Localization.Model.ResourceType));
 
                 // Membership
-                this.TypeDictionary.Add("Claim", typeof(Membership.Model.Claim));
                 this.TypeDictionary.Add("Role", typeof(Membership.Model.Role));
                 this.TypeDictionary.Add("User", typeof(Membership.Model.User));
 

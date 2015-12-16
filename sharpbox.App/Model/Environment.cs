@@ -7,7 +7,7 @@ namespace sharpbox.App.Model
     [Serializable]
     public class Environment
     {
-        public int EnvironmentId { get; set; }
+        public Guid EnvironmentId { get; set; }
         public string BaseUrl { get; set; }
         public string CacheKey { get; set; }
         public string ApplicationName { get; set; }
@@ -17,7 +17,5 @@ namespace sharpbox.App.Model
         public BrandType BrandType { get; set; }
         public int EnvironmentTypeId { get; set; }
         public EnvironmentType EnvironmentType { get; set; }
-
-        public Guid EnvironmentGuid { get; set; }
     }
 }

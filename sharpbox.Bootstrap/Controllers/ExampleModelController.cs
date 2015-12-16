@@ -8,10 +8,10 @@ using sharpbox.Bootstrap.Models;
 
 namespace sharpbox.Bootstrap.Controllers
 {
-    using Common.App;
-    using Common.Data.Helpers;
-    using Common.Dispatch;
-    using Common.Dispatch.Model;
+
+    using sharpbox.App;
+    using sharpbox.Dispatch.Model;
+    using sharpbox.WebLibrary.Web.Helpers;
 
     using WebLibrary.Helpers;
     using WebLibrary.Web.Controllers;
@@ -32,7 +32,7 @@ namespace sharpbox.Bootstrap.Controllers
             list.Add(new ExampleModel() { ExampleModelId = 1, Age = 9, BirthDate = DateTime.Now.AddDays(9), FirstName = "Josh", LastName = "Holmes", Value = "I", ExampleChildId = 1 });
 
             this.WebContext.Dispatch.Process<List<ExampleModel>>(
-                BaseCommandName.UpdateAll,
+                AppContext.UpdateAll,
                 "Seeding the collection",
                 new object[] { list });
 

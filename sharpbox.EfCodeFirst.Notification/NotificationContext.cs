@@ -4,7 +4,7 @@ using System.Data.Entity;
 namespace sharpbox.EfCodeFirst.Notification
 {
     using sharpbox.Notification.Model;
-    using Common.Dispatch.Model;
+    using sharpbox.Dispatch.Model;
 
     /// <summary>
     /// @SEE : http://devproconnections.com/entity-framework/working-schema-names-entity-framework-code-first-design

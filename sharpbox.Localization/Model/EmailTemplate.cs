@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace sharpbox.Localization.Model
 {
-  using Common.Dispatch.Model;
-  using Membership.Model;
+    using Membership.Model;
 
-  [Serializable]
+  using sharpbox.Dispatch.Model;
+
+    [Serializable]
   public abstract class EmailTemplate : ResourceFormatTemplate
   {
     protected EmailTemplate(Type entityType, Resource subjectResource, Resource bodyResource)

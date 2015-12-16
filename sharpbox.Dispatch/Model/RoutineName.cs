@@ -1,8 +1,7 @@
-﻿using System;
-using sharpbox.Common.Type;
-
-namespace sharpbox.Common.Dispatch.Model
+﻿namespace sharpbox.Dispatch.Model
 {
+    using System;
+
     [Serializable]
     public class RoutineName : EnumPattern
     {

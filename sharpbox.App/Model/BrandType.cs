@@ -17,7 +17,7 @@ namespace sharpbox.App.Model
         {
 
         }
-        public int BrandTypeId { get; set; }
+        public Guid BrandTypeId { get; set; }
 
         public string Name { get; set; }
 

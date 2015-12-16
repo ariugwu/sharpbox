@@ -5,7 +5,9 @@ using System.Security.Principal;
 namespace sharpbox.WebLibrary.Core
 {
     using App;
-    using Common.Dispatch;
+
+    using sharpbox.Dispatch.Model;
+
     using Web.Controllers;
     using Web.Helpers.Handler;
 

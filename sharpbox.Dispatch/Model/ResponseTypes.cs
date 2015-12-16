@@ -1,4 +1,4 @@
-﻿namespace sharpbox.Common.Dispatch
+﻿namespace sharpbox.Dispatch.Model
 {
     using System;
 

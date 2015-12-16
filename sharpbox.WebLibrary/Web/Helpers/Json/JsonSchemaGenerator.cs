@@ -54,9 +54,9 @@ namespace sharpbox.WebLibrary.Web.Helpers.Json
             string name = propertyInfo.Name;
             string type;
             string format;
-            int minValue;
-            int maxValue;
-            string isChildArray;
+            //int minValue;
+            //int maxValue;
+            //string isChildArray;
             bool isLookup = false;
 
             if (IsNumber(propType))

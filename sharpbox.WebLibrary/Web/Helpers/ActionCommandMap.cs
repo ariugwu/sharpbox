@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using sharpbox.App;
-using sharpbox.WebLibrary.Helpers;
-
-namespace sharpbox.Common.Data.Helpers
+﻿namespace sharpbox.WebLibrary.Web.Helpers
 {
-    
-    using Dispatch.Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using sharpbox.App;
+    using sharpbox.Dispatch.Model;
+    using sharpbox.WebLibrary.Helpers;
 
     public class ActionCommandMap
     {
         public ActionCommandMap(Dictionary<UiAction, CommandName> map, bool useOneToOneMap = false)
         {
             this._map = map;
-            UseOneToOneMap = useOneToOneMap;
+            this.UseOneToOneMap = useOneToOneMap;
         }
 
         public ActionCommandMap(bool useOneToOneMap = true) : this(new Dictionary<UiAction, CommandName>(), useOneToOneMap)
@@ -40,7 +39,7 @@ namespace sharpbox.Common.Data.Helpers
 
             if (appContext.Dispatch == null || appContext.Dispatch.CommandHub == null) { throw new ArgumentNullException("appContext", "One of these values is null: appContext, appContext.Dispatch, or appContext.Dispatch.CommandHub"); }
 
-            return this.UseOneToOneMap ? appContext.Dispatch.CommandHub.First(x => x.Key.Name.Equals(uiAction.Name)).Key : _map[uiAction];
+            return this.UseOneToOneMap ? appContext.Dispatch.CommandHub.First(x => x.Key.Name.Equals(uiAction.Name)).Key : this._map[uiAction];
       
         }
 

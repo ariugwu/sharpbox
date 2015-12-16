@@ -2,10 +2,6 @@
 
 namespace sharpbox.Dispatch.Model
 {
-    using Common.Dispatch.Model;
-
-    using sharpbox.Common.Dispatch;
-
     [Serializable]
     public class Response : BasePackage, IResponse
     {

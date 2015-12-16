@@ -50,21 +50,29 @@
     <Compile Include="Handler\ResponseHandler.cs" />
     <Compile Include="Model\BasePackage.cs" />
     <Compile Include="Model\CommandHubItem.cs" />
+    <Compile Include="Model\CommandName.cs" />
     <Compile Include="Model\CommandStreamItem.cs" />
+    <Compile Include="Model\EntityStateName.cs" />
+    <Compile Include="Model\EnumPattern.cs" />
+    <Compile Include="Model\EventName.cs" />
+    <Compile Include="Model\ICommandHubItem.cs" />
+    <Compile Include="Model\ICommandStreamItem.cs" />
+    <Compile Include="Model\IDispatchContext.cs" />
+    <Compile Include="Model\IRequest.cs" />
+    <Compile Include="Model\IResponse.cs" />
+    <Compile Include="Model\IRoutineItem.cs" />
+    <Compile Include="Model\QueryName.cs" />
     <Compile Include="Model\Response.cs" />
     <Compile Include="Model\Request.cs" />
+    <Compile Include="Model\ResponseTypes.cs" />
     <Compile Include="Model\RoutineItem.cs" />
+    <Compile Include="Model\RoutineName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\sharpbox.Common\sharpbox.Common.csproj">
-      <Project>{bfa599ec-c550-43dd-a4d8-8868204f6896}</Project>
-      <Name>sharpbox.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

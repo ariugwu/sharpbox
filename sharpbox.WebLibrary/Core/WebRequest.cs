@@ -3,7 +3,8 @@
 namespace sharpbox.WebLibrary.Core
 {
     using System;
-    using Common.Dispatch.Model;
+
+    using sharpbox.Dispatch.Model;
 
     [Serializable]
     public class WebRequest<T>

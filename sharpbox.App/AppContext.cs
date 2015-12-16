@@ -8,9 +8,14 @@ namespace sharpbox.App
     using Common.Io;
 
     using Dispatch;
+    using Io.Strategy.Binary;
     using Localization;
 
-    using sharpbox.Io.Strategy.Binary;
+    using sharpbox.App.Model;
+    using sharpbox.Dispatch.Model;
+    using sharpbox.Email;
+    using sharpbox.Membership;
+    using sharpbox.Notification;
 
     [Serializable]
     public class AppContext
@@ -22,13 +27,13 @@ namespace sharpbox.App
         /// <param name="smtpClient"></param>
         /// <param name="ioStrategy"></param>
         /// <param name="defaultConnectionStringName"></param>
-        public AppContext(string cultureCode = "en-us", SmtpClient smtpClient = null, IStrategy ioStrategy = null, string defaultConnectionStringName = "Sharpbox", IAppWiring appWiring = null)
+        public AppContext(string cultureCode = "en-us", SmtpClient smtpClient = null, IStrategy ioStrategy = null, string defaultConnectionStringName = "Sharpbox", DefaultAppWiring appWiring = null)
         {
             this.Dispatch = new DispatchContext();
 
-            this.Email = new Email.Client(smtpClient ?? new SmtpClient());
+            this.Email = new Client(smtpClient ?? new SmtpClient());
             this.File = new Io.Client(ioStrategy ?? new BinaryStrategy());
-            this.Notification = new Notification.NotificationContext();
+            this.Notification = new NotificationContext();
             this.Localization = new LocalizationContext(cultureCode);
 
             this.DefaultConnectionStringName = defaultConnectionStringName;
@@ -39,7 +44,7 @@ namespace sharpbox.App
 
         #region Wiring
 
-        public IAppWiring AppWiring { get; set; }
+        public DefaultAppWiring AppWiring { get; set; }
 
         #endregion
 
@@ -50,10 +55,10 @@ namespace sharpbox.App
         /// <summary>
         /// Handy encapsulation for resources you will/could/might use throughout the application
         /// </summary>
-        public Model.Environment Environment { get; set; }
+        public Environment Environment { get; set; }
 
         // Membership
-        public Membership.IdentityContext IdentityContext { get; set; }
+        public IdentityContext IdentityContext { get; set; }
 
         public string CurrentLogOn { get; set; }
 
@@ -61,10 +66,10 @@ namespace sharpbox.App
         public LocalizationContext Localization { get; set; }
 
         // Notification
-        public Notification.NotificationContext Notification { get; set; } // A dispatch friendly notification system.
+        public NotificationContext Notification { get; set; } // A dispatch friendly notification system.
 
         // Email
-        public Email.Client Email { get; set; } // A dispatch friendly email client
+        public Client Email { get; set; } // A dispatch friendly email client
 
         // File
         public Io.Client File { get; set; } // A dispatch friendly file client
@@ -75,6 +80,29 @@ namespace sharpbox.App
         public string DefaultConnectionStringName { get; set; }
         public string UploadPath { get; set; }
         public string DataPath { get; set; }
+        #endregion
+
+        #region Commands and Events
+
+        public static CommandName Add = new CommandName("Add");
+
+        public static CommandName Update = new CommandName("Update");
+
+        public static CommandName UpdateAll = new CommandName("UpdateAll");
+
+        public static CommandName Remove = new CommandName("Remove");
+
+        public static EventName OnGet = new EventName("OnGet");
+        public static EventName OnAdd = new EventName("OnAdd");
+        public static EventName OnUpdate = new EventName("OnUpdate");
+        public static EventName OnUpdateAll = new EventName("OnUpdateAll");
+        public static EventName OnRemove = new EventName("OnRemove");
+        public static EventName OnFrameworkCommand = new EventName("OnFrameworkCommand");
+
+        public static QueryName Get = new QueryName("Get");
+
+        public static QueryName GetById = new QueryName("GetId");
+
         #endregion
     }
 }

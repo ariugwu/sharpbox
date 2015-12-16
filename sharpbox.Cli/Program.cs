@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Mail;
-
 
 namespace sharpbox.Cli
 {
-    using Model.Domain.Sharpbox;
+    using Common.Notification;
 
     using Dispatch.Model;
-    using Common.Dispatch.Model;
-    using Common.Notification;
+
     using Io.Model;
 
-    using Notification.Model;
+    using Model.Domain.Sharpbox;
 
-    using sharpbox.Common.Dispatch;
+    using Notification.Model;
 
     class Program
     {
@@ -83,7 +80,7 @@ namespace sharpbox.Cli
             // Give the notification a subscriber. Now whenever this event is broadcast a backlog message will be created for me.
             Console.WriteLine("Example 2: We're adding a subscriber to be notified when a user change happens. This is a sub processed handled by the Notification client. The client is informed of all events firing and checks to see if anyone wants to know about it.");
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
-            response = example.Dispatch.Process<Subscriber>(NotificationCommands.AddNotificationSubscriber, "Adding a subcriber to OnUserChange.", new object[] { new Subscriber(ExampleContext.OnUserChange, "ugwua"), typeof(string) });
+            //response = example.Dispatch.Process<Subscriber>(NotificationCommands.AddNotificationSubscriber, "Adding a subcriber to OnUserChange.", new object[] { new Subscriber(ExampleContext.OnUserChange, "ugwua"), typeof(string) });
             Console.WriteLine(); Console.WriteLine(); Console.WriteLine();
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();

@@ -111,23 +111,8 @@
 
                 this.File.Write(path, things);
             }
-
-            IQueryable<T> results;
-
-            if (arg != null)
-            {
-                var oDataOptions = (ODataQueryOptions<T>) arg;
-                var queryResults = oDataOptions.ApplyTo(things.AsQueryable());
-
-                results = (IQueryable<T>)queryResults;
-
-            }
-            else
-            {
-                results = things.AsQueryable();
-            }
-
-            return results;
+            
+            return things.AsQueryable();
         }
     }
 }

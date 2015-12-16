@@ -14,14 +14,14 @@ namespace sharpbox.App.Model
 
     public EnvironmentType(string value) : base(value)
     {
-      Name = value;
+      this.Name = value;
     }
 
     public EnvironmentType()
     {
       
     }
-    public int EnvironmentTypeId { get; set; }
+    public Guid EnvironmentTypeId { get; set; }
 
     public string Name { get; set; }
   }

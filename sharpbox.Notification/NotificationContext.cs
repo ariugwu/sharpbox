@@ -5,12 +5,9 @@ using Microsoft.AspNet.Identity;
 
 namespace sharpbox.Notification
 {
-    using Common.Dispatch.Model;
     using Dispatch.Model;
     using Localization.Model;
     using Model;
-
-    using sharpbox.Common.Dispatch;
 
     [Serializable]
   public class NotificationContext

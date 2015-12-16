@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace sharpbox.Common.Dispatch
+﻿namespace sharpbox.Dispatch.Model
 {
-    using Model;
+    using System;
 
     public interface IRoutineItem
     {

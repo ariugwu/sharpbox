@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using sharpbox.Common.Dispatch.Model;
+
 using sharpbox.WebLibrary.Web.Helpers.TypeScript;
 
 namespace sharpbox.WebLibrary.Helpers.TypeScript
 {
+    using sharpbox.Dispatch.Model;
+
     using Type = System.Type;
 
     public static class MetaLoader

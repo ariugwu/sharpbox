@@ -1,11 +1,7 @@
 ﻿using System;
-using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.Dispatch.Model
 {
-    using sharpbox.Common.Data;
-    using sharpbox.Common.Dispatch;
-
     [Serializable]
     public class Request : BasePackage, IRequest
     {

@@ -1,29 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-namespace sharpbox.Common.Dispatch
+﻿namespace sharpbox.Dispatch.Model
 {
-    using Model;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public interface IDispatchContext
     {
         /// <summary>
-        /// The list of all commands processed by the Dispatcher.
+        /// Gets the list of all commands processed by the Dispatcher.
         /// </summary>
         Queue<ICommandStreamItem> CommandStream { get; }
 
         /// <summary>
-        /// List of all queries sent to the Dispatcher
+        /// Gets the list of all queries sent to the Dispatcher
         /// </summary>
         Queue<QueryName> QueryStream { get; }
 
+        /// <summary>
+        /// Gets the list of all commands sent to the Dispatcher
+        /// </summary>
         Dictionary<CommandName, ICommandHubItem> CommandHub { get; }
 
+        /// <summary>
+        /// Gets the list of all events broadcast by the dispatcher
+        /// </summary>
         Dictionary<EventName, Queue<Action<IResponse>>> EventHub { get; }
 
+        /// <summary>
+        /// Gets the list of all routines sent to the dispatcher
+        /// </summary>
         Dictionary<RoutineName, Queue<IRoutineItem>> RoutineHub { get; }
 
+        /// <summary>
+        /// Gets the list of all queries requested of the dispatcher
+        /// </summary>
         Dictionary<QueryName, Delegate> QueryHub { get; }
 
         /// <summary>
@@ -82,7 +92,7 @@ namespace sharpbox.Common.Dispatch
         /// <param name="ex"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        IResponse BroadCastExceptionResponse(Exception ex, IRequest request);
+        IResponse BroadCast(Exception ex, IRequest request);
 
         /// <summary>
         /// User beware. You can rollback an entire routine *if* you have rollback methods assigned to each RoutineItem in the queue. This method will reverse the queue and start with the last method and loop through roll backs. Passing the modified T to each in turn.
@@ -113,7 +123,7 @@ namespace sharpbox.Common.Dispatch
         /// <param name="queryName">The name of the query</param>
         /// <param name="args">The arguments to be processed</param>
         /// <returns>The return T</returns>
-        object Fetch(QueryName queryName, object[] args);
+        IQueryable<T> Fetch<T>(QueryName queryName, object[] args);
 
         /// <summary>
         /// Fires off the action associated with this command. T is the returning type. You can register your command with a Func that takes and returns T, or an inline func that takes any number of parameters to be passed in here. However, the return time must match T (always).

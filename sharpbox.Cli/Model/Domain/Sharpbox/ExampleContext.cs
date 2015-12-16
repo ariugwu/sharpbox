@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net.Mail;
 using sharpbox.App;
-using sharpbox.Common.Dispatch.Model;
 using sharpbox.Dispatch;
 using sharpbox.Dispatch.Model;
 using sharpbox.EfCodeFirst.Notification;
@@ -17,8 +16,6 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
 
     using Common.Email;
     using Common.Notification;
-
-    using sharpbox.Common.Dispatch;
 
     [Serializable]
   public class ExampleContext : AppContext
@@ -82,8 +79,8 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
       // We use this command to showcase how you can wire up existing code that you want audited, or otherwise a part of the command stream but not necessarily processed.
       this.Dispatch.Register<String>(ExampleContext.DummyPassThroughCommand, (value) => value, ExampleContext.OnDummyPassThroughCommand);
 
-      this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, (bli) => Notification.Notify(bli, this.IdentityContext.UserManger.EmailService), NotificationEvents.OnNotificationNotify);
-      this.Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
+      //this.Dispatch.Register<BackLogItem>(NotificationCommands.SendNotification, (bli) => Notification.Notify(bli, this.IdentityContext.UserManger.EmailService), NotificationEvents.OnNotificationNotify);
+      //this.Dispatch.Register<Subscriber>(NotificationCommands.AddNotificationSubscriber, new Func<Subscriber, Type, Subscriber>(Notification.AddSub), NotificationEvents.OnNotificationAddSubScriber);
       //this.Dispatch.Register<MailMessage>(EmailCommands.SendEmail, SendEmail, EmailEvents.OnEmailSend);
       this.Dispatch.Register<FileDetail>(WriteARandomFile, WriteRandomTxtFile, OnRandomFileWritten);
       this.Dispatch.Register<List<Response>>(WriteAuditTrailToDisk, StoreAuditTrailAsBinary, OnWriteAuditTrailToDisk);
@@ -108,7 +105,7 @@ namespace sharpbox.Cli.Model.Domain.Sharpbox
       // TODO: Does this hide the info? Is there any benefit to throwing it from the offending method/call?
       Dispatch.Listen(EventName.OnException, FireOnException);
 
-      Dispatch.Listen(NotificationEvents.OnNotificationAddSubScriber, ExampleListener);
+      //Dispatch.Listen(NotificationEvents.OnNotificationAddSubScriber, ExampleListener);
       Dispatch.Listen(OnWriteAuditTrailToDisk, ExampleListener);
 
       // Look at the concept of 'Echo'. We can setup a filter that will get call for all events. This is helpful for Audit and Notification subsystems.

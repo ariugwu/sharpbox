@@ -5,8 +5,6 @@ using sharpbox.Dispatch.Model;
 
 namespace sharpbox.TestHarness
 {
-    using sharpbox.Common.Dispatch;
-
     public class Client
     {
         public List<IResponse> TestStream { get; set; }

@@ -9,14 +9,14 @@ namespace sharpbox.App.Model
     {
         public SupportTicket(Exception ex)
         {
-            SupportTicketId = Guid.NewGuid();
-            SerializedException = JsonConvert.SerializeObject(ex);
-            ExceptionMessage = ex.ToString(); // This will output all the inner exception messages as well. (Hopefully)
+            this.SupportTicketId = Guid.NewGuid();
+            this.SerializedException = JsonConvert.SerializeObject(ex);
+            this.ExceptionMessage = ex.ToString(); // This will output all the inner exception messages as well. (Hopefully)
         }
 
         public SupportTicket()
         {
-            SupportTicketId = Guid.NewGuid();
+            this.SupportTicketId = Guid.NewGuid();
         }
 
         public Guid SupportTicketId { get; set; }
@@ -27,8 +27,8 @@ namespace sharpbox.App.Model
         public bool IsHighPriority { get; set; }
         public string SubmittedBy { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int ResponseId { get; set; }
-        public int EnvironmentId { get; set; }
+        public Guid ResponseId { get; set; }
+        public Guid EnvironmentId { get; set; }
 
     }
 }

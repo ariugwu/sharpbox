@@ -1,8 +1,7 @@
-﻿using System;
-using sharpbox.Common.Type;
-
-namespace sharpbox.Common.Dispatch.Model
+﻿namespace sharpbox.Dispatch.Model
 {
+    using System;
+
     [Serializable]
     public class CommandName : EnumPattern
     {
@@ -21,6 +20,5 @@ namespace sharpbox.Common.Dispatch.Model
         public Guid CommandNameId { get; set; }
         public string Name { get; set; }
 
-        public Guid? EnvironmentId { get; set; }
     }
 }

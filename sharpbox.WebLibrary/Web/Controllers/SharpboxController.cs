@@ -17,9 +17,12 @@ namespace sharpbox.WebLibrary.Web.Controllers
     using App;
     using Common.App;
     using Common.Data.Helpers;
-    using Common.Dispatch;
-    using Common.Dispatch.Model;
+
     using Core;
+
+    using sharpbox.Dispatch.Model;
+    using sharpbox.WebLibrary.Web.Helpers;
+
     using WebLibrary.Helpers;
     
     public abstract class SharpboxController<T> : Controller, ISharpboxController<T>
@@ -112,14 +115,17 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult Get()
         {
-            ODataQueryOptions<T> options = null;
+            var result = (IQueryable<T>)this.WebContext.Dispatch.Fetch(AppContext.Get, null);
 
             if (!string.IsNullOrEmpty(this.Request.Url?.Query))
             {
-                options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
+                var options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
+                var queryResults = options.ApplyTo(result);
+
+                result = (IQueryable<T>)queryResults;
             }
 
-            return this.Json((IQueryable<T>)this.WebContext.Dispatch.Fetch(BaseQueryName.Get, new object[] { options }), JsonRequestBehavior.AllowGet);
+            return this.Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [OutputCache(Duration = 3600, VaryByParam = "None")]
@@ -132,7 +138,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
                 options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
             }
 
-            var items = (IQueryable<T>)this.WebContext.Dispatch.Fetch(BaseQueryName.Get, new object[] { options });
+            var items = (IQueryable<T>)this.WebContext.Dispatch.Fetch(AppContext.Get, new object[] { options });
             var dict = new Dictionary<string, string>();
             var type = typeof(T);
 
@@ -149,7 +155,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult GetById(string id)
         {
-            return this.Json((T)this.WebContext.Dispatch.Fetch(BaseQueryName.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
+            return this.Json((T)this.WebContext.Dispatch.Fetch(AppContext.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()
@@ -262,17 +268,17 @@ namespace sharpbox.WebLibrary.Web.Controllers
         [System.Web.Http.NonAction]
         public virtual Dictionary<CommandName, Dictionary<ResponseTypes, string>> LoadCommandMessageMap()
         {
-            this.CommandMessageMap.Add(BaseCommandName.Add, new Dictionary<ResponseTypes, string>());
-            this.CommandMessageMap[BaseCommandName.Add].Add(ResponseTypes.Error, "Add failed.");
-            this.CommandMessageMap[BaseCommandName.Add].Add(ResponseTypes.Success, "Add success.");
+            this.CommandMessageMap.Add(AppContext.Add, new Dictionary<ResponseTypes, string>());
+            this.CommandMessageMap[AppContext.Add].Add(ResponseTypes.Error, "Add failed.");
+            this.CommandMessageMap[AppContext.Add].Add(ResponseTypes.Success, "Add success.");
 
-            this.CommandMessageMap.Add(BaseCommandName.Update, new Dictionary<ResponseTypes, string>());
-            this.CommandMessageMap[BaseCommandName.Update].Add(ResponseTypes.Error, "Update failed.");
-            this.CommandMessageMap[BaseCommandName.Update].Add(ResponseTypes.Success, "Update success.");
+            this.CommandMessageMap.Add(AppContext.Update, new Dictionary<ResponseTypes, string>());
+            this.CommandMessageMap[AppContext.Update].Add(ResponseTypes.Error, "Update failed.");
+            this.CommandMessageMap[AppContext.Update].Add(ResponseTypes.Success, "Update success.");
 
-            this.CommandMessageMap.Add(BaseCommandName.Remove, new Dictionary<ResponseTypes, string>());
-            this.CommandMessageMap[BaseCommandName.Remove].Add(ResponseTypes.Error, "Removal failed.");
-            this.CommandMessageMap[BaseCommandName.Remove].Add(ResponseTypes.Success, "Removal success.");
+            this.CommandMessageMap.Add(AppContext.Remove, new Dictionary<ResponseTypes, string>());
+            this.CommandMessageMap[AppContext.Remove].Add(ResponseTypes.Error, "Removal failed.");
+            this.CommandMessageMap[AppContext.Remove].Add(ResponseTypes.Success, "Removal success.");
             return this.CommandMessageMap;
         }
 

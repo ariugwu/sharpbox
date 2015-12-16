@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using System.Text;
-using sharpbox.Common.Dispatch.Model;
 
 namespace sharpbox.WebLibrary.Helpers.TypeScript
-{   
+{
+    using sharpbox.Dispatch.Model;
+
     public class DomainMetadata
     {
       public string Generate()

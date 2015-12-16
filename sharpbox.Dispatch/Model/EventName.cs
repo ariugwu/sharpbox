@@ -1,8 +1,7 @@
-﻿using System;
-using sharpbox.Common.Type;
-
-namespace sharpbox.Common.Dispatch.Model
+﻿namespace sharpbox.Dispatch.Model
 {
+    using System;
+
     /// <summary>
     /// As a rule there are events and requests. "Events" begin with "On" and have a One-To-Many relationship. Anything else is a request and should generally have a One-to-One relationship
     /// </summary>
