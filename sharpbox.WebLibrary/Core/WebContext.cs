@@ -16,7 +16,7 @@ namespace sharpbox.WebLibrary.Core
 
         #region Constructor(s)
 
-        public WebContext()
+        public WebContext() : base()
         {
             this.InitLifeCycleHandler();
         }

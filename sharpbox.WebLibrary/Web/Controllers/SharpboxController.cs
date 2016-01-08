@@ -90,8 +90,8 @@ namespace sharpbox.WebLibrary.Web.Controllers
         #endregion
 
         #region Action(s)
-
-        public virtual ActionResult List()
+        
+        public virtual ActionResult Index()
         {
             return this.View("~/Sharpbox/Web/Views/Crud/Index.cshtml");
         }
@@ -115,7 +115,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult Get()
         {
-            var result = (IQueryable<T>)this.WebContext.Dispatch.Fetch(AppContext.Get, null);
+            var result = this.WebContext.Dispatch.Fetch<T>(AppContext.Get, null);
 
             if (!string.IsNullOrEmpty(this.Request.Url?.Query))
             {
@@ -138,7 +138,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
                 options = new ODataQueryOptions<T>(new ODataQueryContext(this._odataModelbuilder.GetEdmModel(), typeof(T)), new HttpRequestMessage(HttpMethod.Get, this.Request.Url.AbsoluteUri));
             }
 
-            var items = (IQueryable<T>)this.WebContext.Dispatch.Fetch(AppContext.Get, new object[] { options });
+            var items = this.WebContext.Dispatch.Fetch<T>(AppContext.Get, new object[] { options });
             var dict = new Dictionary<string, string>();
             var type = typeof(T);
 
@@ -155,7 +155,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
         public virtual JsonResult GetById(string id)
         {
-            return this.Json((T)this.WebContext.Dispatch.Fetch(AppContext.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
+            return this.Json((T)this.WebContext.Dispatch.Fetch<T>(AppContext.GetById, new object[] { id }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult JsonSchema()
@@ -193,7 +193,7 @@ namespace sharpbox.WebLibrary.Web.Controllers
 
             var queryName = this.WebContext.Dispatch.QueryHub.First(x => x.Key.Name == this.Request.QueryString["QueryName"]).Key;
 
-            return this.Json((IQueryable<T>)this.WebContext.Dispatch.Fetch(queryName, new object[] { options }), JsonRequestBehavior.AllowGet);
+            return this.Json(this.WebContext.Dispatch.Fetch<T>(queryName, new object[] { options }), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult Post(WebRequest<T> webRequest)

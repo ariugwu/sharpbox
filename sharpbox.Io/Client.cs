@@ -20,19 +20,25 @@ namespace sharpbox.Io
 
         public void Write(FileDetail fileDetail)
         {
-            while (IsFileLocked(new FileInfo(fileDetail.FilePath))) { 
-                // Just wait if file is in use. 
+            if (File.Exists(fileDetail.FilePath))
+            {
+                while (IsFileLocked(new FileInfo(fileDetail.FilePath)))
+                {
+                    // Just wait if file is in use. 
+                }
             }
-
             File.WriteAllBytes(fileDetail.FilePath, fileDetail.Data);
         }
 
         public void Write<T>(string filePath, T objectToWrite, bool append = false)
             where T : new()
         {
-            while (IsFileLocked(new FileInfo(filePath)))
+            if (File.Exists(filePath))
             {
-                // Just wait if file is in use. 
+                while (IsFileLocked(new FileInfo(filePath)))
+                {
+                    // Just wait if file is in use. 
+                }
             }
 
             filePath = FixPath(filePath);
@@ -119,8 +125,9 @@ namespace sharpbox.Io
             {
                 stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
             }
-            catch (IOException)
+            catch (IOException ex)
             {
+                Console.WriteLine(ex.Message);
                 //the file is unavailable because it is:
                 //still being written to
                 //or being processed by another thread
