@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4baf9ce7-63ac-4665-8279-18bd956cda7f" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/AppContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/AppWiring/DefaultAppWiring.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/AppWiring/IoCrud.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/Model/BrandType.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/Model/Environment.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/Model/EnvironmentType.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/Model/SupportTicket.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/app.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.App/sharpbox.App.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Audit.Strategy.File/FileStrategy.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Audit.Strategy.File/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Audit.Strategy.File/sharpbox.Audit.Strategy.File.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/App_Data/Environment.dat" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/App_Start/BundleConfig.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/App_Start/FilterConfig.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/App_Start/RouteConfig.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/App_Start/WebApiConfig.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Controllers/ExampleChildController.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Controllers/ExampleModelController.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Controllers/HomeController.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Global.asax" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Global.asax.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Models/ExampleChild.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Models/ExampleModel.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Models/TestThing.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Project_Readme.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/Manager.ttinclude" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/TypeLite.Net4.d.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/TypeLite.Net4.tt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/_references.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery-1.10.2.intellisense.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery-2.1.4-vsdoc.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery-2.1.4.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery-2.1.4.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery-2.1.4.min.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery.validate-vsdoc.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery.validate.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery.validate.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery.validate.unobtrusive.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/jquery.validate.unobtrusive.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/modernizr-2.6.2.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/respond.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Scripts/respond.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Content/bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Content/bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Content/fonts/glyphicons-halflings-regular.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Content/fonts/glyphicons-halflings-regular.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Content/fonts/glyphicons-halflings-regular.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Content/fonts/glyphicons-halflings-regular.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Content/sharpbox.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/Manager.ttinclude" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/Template/SharpCrudTemplate.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/Template/SharpCrudTemplate.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/Template/SharpCrudTemplate.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/Typings/collections.d.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/Typings/jquery.d.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/Typings/jquery.dataTables.d.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/Typings/toastr.d.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/collections.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Environment.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Environment.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Form.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Form.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Form.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Json.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Json.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Json.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.PageArgs.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.PageArgs.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.PageArgs.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Scaffold.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Scaffold.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.Scaffold.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.ViewModel.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.ViewModel.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.ViewModel.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.Web.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.domain.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.domain.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.domain.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.domain.tt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.js.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.poco.d.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.poco.tt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.resources.d.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.resources.tt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Scripts/sharpbox.ts" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/DataTable/jquery.dataTables.odata.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/bower.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/daterangepicker.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/daterangepicker.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/demo.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/drp.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/moment.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/moment.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/package.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/package.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/website/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/website/website.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Vendor/bootstrap-daterangepicker-master/website/website.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Views/Crud/Detail.cshtml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Views/Crud/Index.cshtml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Views/Shared/_Layout.cshtml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Views/Web.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Sharpbox/Web/Views/_ViewStart.cshtml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Views/Web.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Web.Debug.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Web.Release.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/Web.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/favicon.ico" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Bootstrap/sharpbox.Bootstrap.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Cli/App.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Cli/Model/Domain/Sharpbox/ExampleContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Cli/Model/Domain/Sharpbox/ExampleEmailTemplate.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Cli/Program.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Cli/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Cli/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Cli/sharpbox.Cli.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/App/ICrud.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Data/IRepository.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Data/IUnitOfWork.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Email/EmailCommands.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Email/EmailEvents.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Io/IStrategy.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Io/IoCommands.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Io/IoEvents.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Notification/EmailTemplateAttribute.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Notification/ITemplateType.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Notification/NotificationCommands.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Notification/NotificationEvents.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Notification/TemplateTypeLoader.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Type/EnumPattern.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/Type/TypeInfoHelper.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Common/sharpbox.Common.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/DispatchContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Handler/BroadCastHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Handler/ProcessHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Handler/ResponseHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/BasePackage.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/CommandHubItem.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/CommandName.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/CommandStreamItem.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/EntityStateName.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/EnumPattern.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/EventName.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/ICommandHubItem.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/ICommandStreamItem.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/IDispatchContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/IRequest.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/IResponse.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/IRoutineItem.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/QueryName.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/Request.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/Response.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/ResponseTypes.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/RoutineItem.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Model/RoutineName.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Dispatch/sharpbox.Dispatch.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.App/App.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.App/AppDbContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.App/AppRepository.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.App/AppUnitOfWork.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.App/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.App/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.App/sharpbox.EfCodeFirst.App.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Localization/App.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Localization/LocalizationContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Localization/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Localization/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Localization/sharpbox.EfCodeFirst.Localization.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Membership/App.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Membership/MembershipContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Membership/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Membership/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Membership/sharpbox.EfCodeFirst.Membership.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Notification/App.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Notification/NotificationContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Notification/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Notification/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.EfCodeFirst.Notification/sharpbox.EfCodeFirst.Notification.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Email/Client.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Email/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Email/sharpbox.Email.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Fake/Class1.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Fake/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Fake/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Fake/sharpbox.Fake.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Binary/BinaryStrategy.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Binary/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Binary/sharpbox.Io.Strategy.Binary.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.DataContract/DataContractStrategy.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.DataContract/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.DataContract/sharpbox.Io.Strategy.DataContract.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Excel/ExcelStrategy.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Excel/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Excel/sharpbox.Io.Strategy.Excel.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Json/JsonStrategy.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Json/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Json/sharpbox.Io.Strategy.Json.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Xml/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Xml/XmlStrategy.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io.Strategy.Xml/sharpbox.Io.Strategy.Xml.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io/Client.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io/Model/FileDetail.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Io/sharpbox.Io.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Localization/LocalizationContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Localization/Model/EmailTemplate.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Localization/Model/Resource.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Localization/Model/ResourceFormatTemplate.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Localization/Model/ResourceName.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Localization/Model/ResourceType.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Localization/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Localization/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Localization/sharpbox.Localization.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership.Azure/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership.Azure/sharpbox.Membership.Azure.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership.Google/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership.Google/sharpbox.Membership.Google.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/IdentityContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/IdentityStrategy.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/Model/Role.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/Model/RoleStore.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/Model/User.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/Model/UserClaimStore.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/Model/UserRoleStore.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/Model/UserStore.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Membership/sharpbox.Membership.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Notification/Model/BackLogItem.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Notification/Model/Subscriber.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Notification/NotificationContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Notification/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Notification/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Notification/sharpbox.Notification.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security.Strategy.Crypto.DpApi/Class1.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security.Strategy.Crypto.DpApi/Model/EncryptDecryptUsing.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security.Strategy.Crypto.DpApi/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security.Strategy.Crypto.DpApi/sharpbox.Security.Strategy.Crypto.DpApi.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security.Strategy.Crypto.Pgp/Class1.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security.Strategy.Crypto.Pgp/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security.Strategy.Crypto.Pgp/sharpbox.Security.Strategy.Crypto.Pgp.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security/CryptoClient.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security/SanitizationClient.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security/Strategy/Sanitization/IStrategy.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.Security/sharpbox.Security.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.TestHarness/Client.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.TestHarness/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.TestHarness/sharpbox.TestHarness.csproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/App.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Core/LifeCycleHandlerName.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Core/LifeCycleHandlerState.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Core/LifecycleHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Core/WebContext.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Core/WebContextState.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Core/WebRequest.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Core/WebResponse.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Properties/AssemblyInfo.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Controllers/GenericController.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Controllers/ISharpboxController.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Controllers/SharpControllerFactory.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Controllers/SharpboxController.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/ActionCommandMap.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/BaseCache.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/BaseCacheNames.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/CacheCollection.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/EPplus/BaseEpplus.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/Extensions/WebViewPageExtensions.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/GenericCacheCollection.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/Handler/AuditTrailHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/Handler/AuthHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/Handler/ExecuteHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/Handler/FinalizeHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/Handler/LoadContextHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/Handler/ValidationHandler.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/Json/JsonSchemaGenerator.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/TypeScript/DomainMetadata.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/TypeScript/GenerateTypeScriptMetadata.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/TypeScript/IDispatchMetadata.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/TypeScript/MetaLoader.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/Web/Helpers/UiAction.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/packages.config" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/sharpbox.WebLibrary/sharpbox.WebLibrary.csproj" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.vs/config/applicationhost.config" afterPath="$PROJECT_DIR$/.vs/config/applicationhost.config" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sharpbox.sln" afterPath="$PROJECT_DIR$/sharpbox.sln" />
+    </list>
+    <ignored path="sharpbox.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="sharpbox" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="DispatchContext.cs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/sharpbox.Dispatch/DispatchContext.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1768">
+              <caret line="82" column="49" selection-start-line="82" selection-start-column="49" selection-end-line="82" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/sharpbox.Dispatch/DispatchContext.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="10" />
+    <option name="y" value="44" />
+    <option name="width" value="1346" />
+    <option name="height" value="704" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sharpbox" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sharpbox" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sharpbox" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sharpbox" />
+              <option name="myItemType" value="com.jetbrains.resharper.projectView.solutionExplorer.SolutionExplorerNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/sharpbox.sln" />
+  </component>
+  <component name="RunManager" selected=".NET Project.Default">
+    <configuration default="true" type="DotNetProject" factoryName=".NET Project">
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Default" type="DotNetProject" factoryName=".NET Project">
+      <option name="PROJECT_PATH" value="" />
+      <option name="PROJECT_KIND" value="None" />
+      <option name="EXE_PATH" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue=".NET Project.Default" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4baf9ce7-63ac-4665-8279-18bd956cda7f" name="Default" comment="" />
+      <created>1461781797980</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1461781797980</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="10" y="44" width="1346" height="704" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Errors in solution" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32890365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="NuGet" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/sharpbox.Dispatch/DispatchContext.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sharpbox.Dispatch/DispatchContext.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1768">
+          <caret line="82" column="49" selection-start-line="82" selection-start-column="49" selection-end-line="82" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
